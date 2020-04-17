@@ -1,24 +1,25 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>my-cosplays</ion-title>
+    <ion-title>My cosplays</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-
-  <ion-tab-bar slot="bottom">
-    <ion-tab-button tab="my-cosplays">
-      <ion-label>
-        My Cosplays
-      </ion-label>
-      <ion-icon name="man"></ion-icon>
-    </ion-tab-button>
-    <ion-tab-button tab="conventions">
-      <ion-label>
-        Cons
-      </ion-label>
-      <ion-icon name="calendar"></ion-icon>
-    </ion-tab-button>
-  </ion-tab-bar>
-
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-sm="8" offset-sm="2" text-center>
+        <ion-card justify-content-center align-items-center>
+          <ion-card-header>
+            <ion-card-title>{{ loadedCosplays[0].characterName }}</ion-card-title>
+            <ion-card-subtitle>{{ loadedCosplays[0].series }}</ion-card-subtitle>
+          </ion-card-header>
+          <ion-img [src]="loadedCosplays[0].imageUrl" style="width:50%" >
+          </ion-img>
+          <ion-card-content>
+            <p>{{ loadedCosplays[0].description }}</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
