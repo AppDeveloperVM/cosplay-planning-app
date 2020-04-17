@@ -50,7 +50,7 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: '/profile/tabs/cosplays',
+        redirectTo: '/profile/tabs/cosplays/my-cosplays',
         pathMatch: 'full'
       }
     ]
@@ -58,7 +58,7 @@ const routes: Routes = [
   ,
   {
     path: '',
-    redirectTo: '/profile/tabs/cosplays',
+    redirectTo: '/profile/tabs/cosplays/my-cosplays',
     pathMatch: 'full'
   }
 ];
