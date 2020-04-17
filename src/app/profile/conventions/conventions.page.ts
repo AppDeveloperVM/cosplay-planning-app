@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Convention } from './conventions.model';
+import { ConventionsService } from './conventions.service';
 
 @Component({
   selector: 'app-conventions',
@@ -6,10 +8,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./conventions.page.scss'],
 })
 export class ConventionsPage implements OnInit {
+  loadedCons: Convention[];
 
-  constructor() { }
+  constructor(private consService: ConventionsService) { }
 
   ngOnInit() {
+    this.loadedCons = this.consService.cons;
   }
 
 }
