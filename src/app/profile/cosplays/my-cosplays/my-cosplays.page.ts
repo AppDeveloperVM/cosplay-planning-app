@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { CosplaysService } from '../cosplays.service';
+import { Cosplay } from '../cosplay.model';
 
 @Component({
   selector: 'app-my-cosplays',
@@ -6,10 +8,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./my-cosplays.page.scss'],
 })
 export class MyCosplaysPage implements OnInit {
+  loadedCosplays: Cosplay[];
 
-  constructor() { }
+  constructor(private cosplaysService: CosplaysService) { }
 
   ngOnInit() {
+    this.loadedCosplays = this.cosplaysService.cosplays;
   }
 
 }
