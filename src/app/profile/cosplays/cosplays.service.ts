@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-
-import { Cosplay }  from './cosplay.model';
+import { Cosplay } from './cosplay.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +13,12 @@ export class CosplaysService {
 
   get cosplays() {
     return [...this._cosplays];
+  }
+
+  getCosplay(id: string){
+    // load the cosplay
+    // clone entire object "..." into new object
+    return {...this._cosplays.find(c => c.id === id)};
   }
 
   constructor() { }
