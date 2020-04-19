@@ -23,13 +23,13 @@ const routes: Routes = [
                 loadChildren: () => import('./cosplays/my-cosplays/my-cosplays.module').then( m => m.MyCosplaysPageModule)
               },
               {
+                path: 'new',
+                loadChildren: () => import('./cosplays/my-cosplays/new-cosplay/new-cosplay.module').then( m => m.NewCosplayPageModule)
+              },
+              {
                 path: ':cosplayId',
                 // tslint:disable-next-line: max-line-length
                 loadChildren: () => import('./cosplays/my-cosplays/cosplay-details/cosplay-details.module').then( m => m.CosplayDetailsPageModule)
-              },
-              {
-                path: 'new',
-                loadChildren: () => import('./cosplays/my-cosplays/new-cosplay/new-cosplay.module').then( m => m.NewCosplayPageModule)
               },
               {
                 path: 'edit/:cosplayId',
