@@ -1,0 +1,8 @@
+{
+  "appId": "com.cosplay_planning.app",
+  "appName": "cosplay-planning-app",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www",
+  "cordova": {}
+}

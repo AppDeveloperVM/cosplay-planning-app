@@ -1,5 +1,7 @@
 {
   "name": "cosplay-planning-app",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "angular"
 }
