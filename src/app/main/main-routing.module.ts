@@ -1,14 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { ProfilePage } from './profile.page';
+import { MainPage } from './main.page';
 
 const routes: Routes = [
   {
-    path: '',
-    component: ProfilePage
-    /*path: 'tabs',
-    component: ProfilePage,
+    path: 'tabs',
+    component: MainPage,
     children : [
       {
         path: 'cosplays',
@@ -57,7 +55,7 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: '/profile/tabs/cosplays/my-cosplays',
+        redirectTo: '/main/tabs/cosplays/my-cosplays',
         pathMatch: 'full'
       }
     ]
@@ -65,15 +63,13 @@ const routes: Routes = [
   ,
   {
     path: '',
-    redirectTo: '/profile/tabs/cosplays/my-cosplays',
+    redirectTo: '/main/tabs/cosplays/my-cosplays',
     pathMatch: 'full'
-    */
   }
-  ]
-;
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class ProfilePageRoutingModule {}
+export class MainPageRoutingModule {}

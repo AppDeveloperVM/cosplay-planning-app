@@ -17,7 +17,7 @@ export class CosplayDetailsPage implements OnInit {
   ngOnInit() {
     this.route.paramMap.subscribe(paramMap => {
       if (!paramMap.has('cosplayId')) {
-        this.navCtrl.navigateBack('/profile/tabs/cosplays/my-cosplays');
+        this.navCtrl.navigateBack('/main/tabs/cosplays/my-cosplays');
         return;
       }
       // load the cosplay
@@ -26,8 +26,8 @@ export class CosplayDetailsPage implements OnInit {
   }
 
   onEditCosplay() {
-    // this.router.navigateByUrl('/profile/tabs/cosplays/my-cosplays');
-    this.navCtrl.navigateBack('/profile/tabs/cosplays/my-cosplays');
+    // this.router.navigateByUrl('/main/tabs/cosplays/my-cosplays');
+    this.navCtrl.navigateBack('/main/tabs/cosplays/my-cosplays');
   }
 
 }
