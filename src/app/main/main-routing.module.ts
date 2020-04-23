@@ -54,6 +54,16 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'planning',
+        children:
+        [
+          {
+            path: '',
+            loadChildren: () => import('./planning/planning.module').then( m => m.PlanningPageModule)
+          }
+        ]
+      },
+      {
         path: '',
         redirectTo: '/main/tabs/cosplays/my-cosplays',
         pathMatch: 'full'
@@ -65,6 +75,10 @@ const routes: Routes = [
     path: '',
     redirectTo: '/main/tabs/cosplays/my-cosplays',
     pathMatch: 'full'
+  },
+  {
+    path: 'planning',
+    loadChildren: () => import('./planning/planning.module').then( m => m.PlanningPageModule)
   }
 ];
 

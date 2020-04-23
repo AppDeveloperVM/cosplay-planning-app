@@ -16,6 +16,10 @@ const routes: Routes = [
     loadChildren: () => import('./main/conventions/conventions.module').then( m => m.ConventionsPageModule)
   },
   {
+    path: 'planning',
+    loadChildren: () => import('./main/planning/planning.module').then( m => m.PlanningPageModule)
+  },
+  {
     path: 'profile',
     loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
   },
