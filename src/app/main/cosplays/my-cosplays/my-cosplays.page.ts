@@ -9,11 +9,13 @@ import { Cosplay } from '../cosplay.model';
 })
 export class MyCosplaysPage implements OnInit {
   loadedCosplays: Cosplay[];
+  listedLoadedCosplays: Cosplay[];
 
   constructor(private cosplaysService: CosplaysService) { }
 
   ngOnInit() {
     this.loadedCosplays = this.cosplaysService.cosplays;
+    this.listedLoadedCosplays = this.loadedCosplays.slice(0);
   }
 
 }
