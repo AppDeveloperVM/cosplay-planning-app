@@ -11,6 +11,10 @@ const routes: Routes = [
   {
     path: 'my-cosplays',
     loadChildren: () => import('./my-cosplays/my-cosplays.module').then( m => m.MyCosplaysPageModule)
+  },
+  {
+    path: 'cosplay-groups',
+    loadChildren: () => import('./cosplay-groups/cosplay-groups.module').then( m => m.CosplayGroupsPageModule)
   }
 ];
 
