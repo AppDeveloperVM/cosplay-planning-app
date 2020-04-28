@@ -36,6 +36,19 @@ const routes: Routes = [
                 loadChildren: () => import('./cosplays/my-cosplays/edit-cosplay/edit-cosplay.module').then( m => m.EditCosplayPageModule)
               }
             ]
+          },
+          {
+            path: 'cosplaygroups',
+            children: [
+              {
+                path: '',
+                loadChildren: () => import('./cosplays/cosplay-groups/cosplay-groups.module').then( m => m.CosplayGroupsPageModule)
+              },
+              {
+                path: ':cosplaygroupId',
+                loadChildren: () => import('./cosplays/cosplay-groups/cosplay-group-details/cosplay-group-details.module').then( m => m.CosplayGroupDetailsPageModule)
+              }
+            ]
           }
         ]
       },
@@ -53,6 +66,7 @@ const routes: Routes = [
           }
         ]
       },
+      
       {
         path: 'planning',
         children:
