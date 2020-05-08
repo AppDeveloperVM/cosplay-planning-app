@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, NavController } from '@ionic/angular';
-import { CreateCosplayGroupComponent } from '../../create-cosplay-group/create-cosplay-group.component';
 import { CosplayGroup } from '../cosplay-group.model';
 import { CosplayGroupService } from '../cosplay-group.service';
 import { ActivatedRoute } from '@angular/router';
+import { CosplayGroupSendRequestComponent } from '../cosplay-group-send-request/cosplay-group-send-request.component';
 
 @Component({
   selector: 'app-cosplay-group-details',
@@ -26,7 +26,7 @@ export class CosplayGroupDetailsPage implements OnInit {
   onSaveCosplayGroup() {
     this.modalCtrl
     .create({
-      component: CreateCosplayGroupComponent,
+      component: CosplayGroupSendRequestComponent,
       componentProps: { selectedCosplayGroup: this.cosplayGroup }
     }).then(modalEl => {
       modalEl.present();

@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { CreateCosplayGroupComponent } from './create-cosplay-group.component';
+import { CosplayGroupSendRequestComponent } from './cosplay-group-send-request.component';
 
-describe('CreateCosplayGroupComponent', () => {
-  let component: CreateCosplayGroupComponent;
-  let fixture: ComponentFixture<CreateCosplayGroupComponent>;
+describe('CosplayGroupSendRequestComponent', () => {
+  let component: CosplayGroupSendRequestComponent;
+  let fixture: ComponentFixture<CosplayGroupSendRequestComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CreateCosplayGroupComponent ],
+      declarations: [ CosplayGroupSendRequestComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(CreateCosplayGroupComponent);
+    fixture = TestBed.createComponent(CosplayGroupSendRequestComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));
