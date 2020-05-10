@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { CosplayGroupsPageRoutingModule } from './cosplay-groups-routing.module';
 
 import { CosplayGroupsPage } from './cosplay-groups.page';
+import { CosplayGroupItemComponent } from './cosplay-group-item/cosplay-group-item.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,6 @@ import { CosplayGroupsPage } from './cosplay-groups.page';
     IonicModule,
     CosplayGroupsPageRoutingModule
   ],
-  declarations: [CosplayGroupsPage]
+  declarations: [CosplayGroupsPage, CosplayGroupItemComponent]
 })
 export class CosplayGroupsPageModule {}
