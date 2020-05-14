@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
+import { Form, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-auth',
@@ -10,6 +11,7 @@ import { LoadingController } from '@ionic/angular';
 })
 export class AuthPage implements OnInit {
   isLoading = false;
+  isLogin = true;
 
   constructor(private authService: AuthService, private router: Router, private loadingCtrl: LoadingController) { }
 
@@ -29,6 +31,26 @@ export class AuthPage implements OnInit {
         this.router.navigateByUrl('/main/tabs/cosplays/my-cosplays');
       } , 1000);
      });
+  }
+
+  onSwitchAuthMode() {
+    this.isLogin = !this.isLogin;
+  }
+
+  onSubmit(form: NgForm) {
+    if (!form.valid) { //if is false
+      return;
+    }
+    const email = form.value.email;
+    const passwd = form.value.passwd;
+    console.log(email, passwd);
+
+    if (this.isLogin) {
+      // Send a request to login servers
+    } else {
+      // Send a request to signup servers
+    }
+
   }
 
 }
