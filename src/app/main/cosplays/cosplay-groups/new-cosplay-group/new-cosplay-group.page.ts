@@ -37,7 +37,7 @@ export class NewCosplayGroupPage implements OnInit {
   }
 
   onCreateOffer() {
-    console.log('Creating offered place');
+    console.log(this.form);
   }
 
 }
