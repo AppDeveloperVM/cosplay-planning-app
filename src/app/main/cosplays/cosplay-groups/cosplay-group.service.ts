@@ -20,4 +20,8 @@ export class CosplayGroupService {
     }
 
     constructor() {}
+
+    getCosplayGroup(id: string) {
+        return {...this.cosplaygroups.find(p => p.id === id)};
+    }
 }
