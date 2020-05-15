@@ -1,3 +1,17 @@
-<p>
-  cosplay-group-send-request works!
-</p>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      {{ selectedCosplayGroup.title }}
+    </ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="onCancel()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content text-center padding>
+  <p>Title: {{ selectedCosplayGroup.title }}</p>
+  <ion-button color="primary" (click)="onSendCosplayGroupRequest()">Send Request!</ion-button>
+</ion-content>
