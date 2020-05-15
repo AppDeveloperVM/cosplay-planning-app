@@ -9,12 +9,22 @@ const routes: Routes = [
     component: CosplayGroupsPage
   },
   {
-    path: 'cosplay-group-details',
+    path: 'cosplay-group-edit',
     loadChildren: () => import('./cosplay-group-details/cosplay-group-details.module').then( m => m.CosplayGroupDetailsPageModule)
   },
   {
     path: 'new-cosplay-group',
     loadChildren: () => import('./new-cosplay-group/new-cosplay-group.module').then( m => m.NewCosplayGroupPageModule)
+  },
+  {
+    path: 'cosplay-group-details',
+    children:
+      [
+        {
+          path: ':cosplayGroupId',
+          loadChildren: () => import('./cosplay-group-details/cosplay-group-details.module').then( m => m.CosplayGroupDetailsPageModule)
+        }
+      ]
   }
 ];
 
