@@ -1,9 +1,12 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>cosplay-group-details</ion-title>
+    <ion-title>{{ cosplayGroup.title }}</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/main/tabs/cosplays/my-cosplays"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <ion-button color="primary" margin (click)="onSaveCosplayGroup()">Send Request</ion-button>
 </ion-content>
