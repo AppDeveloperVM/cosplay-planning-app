@@ -23,10 +23,10 @@ export class CosplayGroupDetailsPage implements OnInit {
   ngOnInit() {
     this.route.paramMap.subscribe(paramMap => {
       if (!paramMap.has('cosplayGroupId')) {
-        this.navCtrl.navigateBack('/main/tabs(cosplays/cosplay-groups');
+        this.navCtrl.navigateBack('/main/tabs/cosplays/cosplay-groups');
         return;
       }
-      this.cosplayGroup = this.cosplayGroupService.getCosplayGroup(paramMap.get('CosplayGroupId'));
+      this.cosplayGroup = this.cosplayGroupService.getCosplayGroup(paramMap.get('cosplayGroupId'));
     });
   }
 
