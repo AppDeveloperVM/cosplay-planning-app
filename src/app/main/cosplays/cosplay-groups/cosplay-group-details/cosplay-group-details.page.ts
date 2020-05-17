@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, NavController } from '@ionic/angular';
+import { ModalController, NavController, ToastController } from '@ionic/angular';
 import { CosplayGroup } from '../cosplay-group.model';
 import { CosplayGroupService } from '../cosplay-group.service';
 import { ActivatedRoute } from '@angular/router';
 import { CosplayGroupSendRequestComponent } from '../cosplay-group-send-request/cosplay-group-send-request.component';
+import { NgForm } from '@angular/forms';
+
+
 
 @Component({
   selector: 'app-cosplay-group-details',
@@ -17,7 +20,8 @@ export class CosplayGroupDetailsPage implements OnInit {
     private navCtrl: NavController,
     private route: ActivatedRoute,
     private cosplayGroupService: CosplayGroupService,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private toastCtrl: ToastController
   ) { }
 
   ngOnInit() {
@@ -45,6 +49,15 @@ export class CosplayGroupDetailsPage implements OnInit {
         console.log('Request Send!');
       }
     });
+  }
+
+  onSubmit(form: NgForm) {
+    if (!form.valid) { //if is false
+      return;
+    }
+    const email = form.value.email;
+    const passwd = form.value.passwd;
+    console.log(email, passwd);
   }
 
 }
