@@ -3,7 +3,8 @@ export class CosplayGroup {
         public id: string,
         public title: string,
         public series: string,
-        public date: Date,
-        public imageUrl: string
+        public imageUrl: string,
+        public availableFrom: Date,
+        public availableTo: Date
     ) { }
 }
