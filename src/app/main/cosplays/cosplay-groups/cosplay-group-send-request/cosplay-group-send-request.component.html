@@ -12,6 +12,26 @@
 </ion-header>
 
 <ion-content text-center padding>
-  <p>Title: {{ selectedCosplayGroup.title }}</p>
-  <ion-button color="primary" (click)="onSendCosplayGroupRequest()">Send Request!</ion-button>
-</ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <p>Check information</p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-list>
+          <ion-item>
+            <p>Character requested: <!--{{ selectedCosplay.characterName }}--></p>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        
+        <ion-button color="primary" (click)="onSendCosplayGroupRequest()">Send Request!</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  </ion-content>
