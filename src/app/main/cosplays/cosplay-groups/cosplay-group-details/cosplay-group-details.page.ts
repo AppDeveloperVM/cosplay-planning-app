@@ -3,8 +3,9 @@ import { ModalController, NavController, ToastController } from '@ionic/angular'
 import { CosplayGroup } from '../cosplay-group.model';
 import { CosplayGroupService } from '../cosplay-group.service';
 import { ActivatedRoute } from '@angular/router';
-import { CosplayGroupSendRequestComponent } from '../cosplay-group-send-request/cosplay-group-send-request.component';
 import { NgForm } from '@angular/forms';
+import { Cosplay } from '../../cosplay.model';
+import { CosplayGroupRequestComponent } from '../cosplay-group-request/cosplay-group-request.component';
 
 
 
@@ -15,6 +16,8 @@ import { NgForm } from '@angular/forms';
 })
 export class CosplayGroupDetailsPage implements OnInit {
   cosplayGroup: CosplayGroup;
+  cosplay: Cosplay;
+  newCosplayGroup: CosplayGroup;
 
   constructor(
     private navCtrl: NavController,
@@ -31,15 +34,20 @@ export class CosplayGroupDetailsPage implements OnInit {
         return;
       }
       this.cosplayGroup = this.cosplayGroupService.getCosplayGroup(paramMap.get('cosplayGroupId'));
+      // this.cosplay.characterName = this.cosplay.characterName;
+      console.log('Cosplaygroup id: ' + this.cosplayGroup.id);
     });
   }
 
-  onSaveCosplayGroup() {
+  onRequestCosplayGroup() {
     this.modalCtrl
-    .create({
-      component: CosplayGroupSendRequestComponent,
-      componentProps: { selectedCosplayGroup: this.cosplayGroup }
-    }).then(modalEl => {
+    .create(
+      {
+      component: CosplayGroupRequestComponent,
+      componentProps: { selectedCosplayGroup: this.cosplayGroup },
+      cssClass: 'modal-fullscreen'
+      }
+    ).then(modalEl => {
       modalEl.present();
       return modalEl.onDidDismiss();
     })
@@ -52,12 +60,13 @@ export class CosplayGroupDetailsPage implements OnInit {
   }
 
   onSubmit(form: NgForm) {
-    if (!form.valid) { //if is false
+    if (!form.valid) { // if is false
       return;
     }
-    const email = form.value.email;
-    const passwd = form.value.passwd;
-    console.log(email, passwd);
+    const characterName = form.value.character;
+    // this.newCosplay = this.cosplayService.setCosplayRequest();
+
+    console.log(characterName);
   }
 
 }
