@@ -7,6 +7,7 @@ export class Cosplay {
         public series: string,
         public funds: number,
         public percentComplete: string,
-        public status: boolean
+        public status: boolean,
+        public userId: string
     ) {}
 }

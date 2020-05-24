@@ -5,6 +5,7 @@ export class CosplayGroup {
         public series: string,
         public imageUrl: string,
         public availableFrom: Date,
-        public availableTo: Date
+        public availableTo: Date,
+        public userId: string
     ) { }
 }
