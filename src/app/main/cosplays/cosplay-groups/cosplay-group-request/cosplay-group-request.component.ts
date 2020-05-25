@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CosplayGroupService } from '../cosplay-group.service';
 import { CosplayGroupSendRequestComponent } from '../cosplay-group-send-request/cosplay-group-send-request.component';
 import { NgForm } from '@angular/forms';
+import { CosplayGroupRequestService } from './cosplay-group-request.service';
 
 @Component({
   selector: 'app-cosplay-group-request',
@@ -15,6 +16,8 @@ import { NgForm } from '@angular/forms';
 export class CosplayGroupRequestComponent implements OnInit {
   @Input() selectedCosplayGroup: CosplayGroup;
   @Input() requestedCharacter: Cosplay;
+  // loadedCosplayRequest: Cosplay[] = [];
+  loadedCosplayRequest: string;
 
   cosplayGroup: CosplayGroup;
   cosplay: Cosplay;
@@ -25,10 +28,27 @@ export class CosplayGroupRequestComponent implements OnInit {
     private route: ActivatedRoute,
     private cosplayGroupService: CosplayGroupService,
     private modalCtrl: ModalController,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+
+    private cosplayGroupRequestService: CosplayGroupRequestService
   ) { }
 
   ngOnInit() {
+    // this.loadedCosplayRequest = this.cosplayGroupRequestService.cosplaygrouprequests;
+  }
+
+  onSubmit(form: NgForm) {
+    if (!form.valid) { // if is false
+      return;
+    }
+    const characterName = form.value.character;
+    // this.newCosplay = this.cosplayService.setCosplayRequest();
+  
+    this.loadedCosplayRequest = characterName;
+    console.log(this.loadedCosplayRequest);
+     // this.loadedCosplayRequest.push(characterName);
+
+    this.onRequestCosplayGroup();
   }
 
   onRequestCosplayGroup() {
@@ -38,7 +58,7 @@ export class CosplayGroupRequestComponent implements OnInit {
       component: CosplayGroupSendRequestComponent,
       componentProps: {
         selectedCosplayGroup: this.selectedCosplayGroup,
-        selectedCosplay: this.requestedCharacter
+        requestedCharacter: this.loadedCosplayRequest // ?
       },
       cssClass: 'modal-fullscreen'
       }
@@ -52,16 +72,6 @@ export class CosplayGroupRequestComponent implements OnInit {
         console.log('Request Send!');
       }
     });
-  }
-
-  onSubmit(form: NgForm) {
-    if (!form.valid) { // if is false
-      return;
-    }
-    const characterName = form.value.character;
-    // this.newCosplay = this.cosplayService.setCosplayRequest();
-
-    console.log(characterName);
   }
 
 }
