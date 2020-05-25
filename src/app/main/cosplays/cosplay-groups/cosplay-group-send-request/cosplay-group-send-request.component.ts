@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Placeholder } from '@angular/compiler/src/i18n/i18n_ast';
 import { CosplayGroup } from '../cosplay-group.model';
 import { ModalController } from '@ionic/angular';
+import { Cosplay } from '../../cosplay.model';
 
 @Component({
   selector: 'app-cosplay-group-send-request',
@@ -10,6 +11,7 @@ import { ModalController } from '@ionic/angular';
 })
 export class CosplayGroupSendRequestComponent implements OnInit {
   @Input() selectedCosplayGroup: CosplayGroup;
+  @Input() requestedCharacter: Cosplay;
 
   constructor(private modalCtrl: ModalController) { }
 
@@ -20,7 +22,7 @@ export class CosplayGroupSendRequestComponent implements OnInit {
   }
 
   onSendCosplayGroupRequest() {
-    this.modalCtrl.dismiss({message: 'Dummy message here'},'confirm');
+    this.modalCtrl.dismiss({ message: 'Request send from cosplay-group-send-request !'}, 'confirm');
   }
 
 }
