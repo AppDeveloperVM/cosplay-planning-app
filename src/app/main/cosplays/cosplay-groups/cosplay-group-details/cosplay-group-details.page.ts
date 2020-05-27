@@ -2,12 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController, NavController, ToastController } from '@ionic/angular';
 import { CosplayGroup } from '../cosplay-group.model';
 import { CosplayGroupService } from '../cosplay-group.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { Cosplay } from '../../cosplay.model';
-import { CosplayGroupRequestComponent } from '../cosplay-group-request/cosplay-group-request.component';
-
-
 
 @Component({
   selector: 'app-cosplay-group-details',
@@ -24,7 +21,8 @@ export class CosplayGroupDetailsPage implements OnInit {
     private route: ActivatedRoute,
     private cosplayGroupService: CosplayGroupService,
     private modalCtrl: ModalController,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -39,24 +37,9 @@ export class CosplayGroupDetailsPage implements OnInit {
     });
   }
 
+
   onRequestCosplayGroup() {
-    this.modalCtrl
-    .create(
-      {
-      component: CosplayGroupRequestComponent,
-      componentProps: { selectedCosplayGroup: this.cosplayGroup },
-      cssClass: 'modal-fullscreen'
-      }
-    ).then(modalEl => {
-      modalEl.present();
-      return modalEl.onDidDismiss();
-    })
-    .then(resultData => {
-      console.log(resultData.data, resultData.role);
-      if (resultData.role === 'confirm') {
-        console.log('Request Send!');
-      }
-    });
+
   }
 
   onSubmit(form: NgForm) {
