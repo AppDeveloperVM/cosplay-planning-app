@@ -25,6 +25,16 @@ const routes: Routes = [
           loadChildren: () => import('./cosplay-group-details/cosplay-group-details.module').then( m => m.CosplayGroupDetailsPageModule)
         }
       ]
+  },
+  {
+    path: 'cosplay-group-form-request',
+    children:
+    [
+      {
+        path: ':cosplayGroupId',
+        loadChildren: () => import('./cosplay-group-form-request/cosplay-group-form-request.module').then( m => m.CosplayGroupFormRequestPageModule)
+      }
+    ]
   }
 ];
 
