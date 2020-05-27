@@ -14,8 +14,9 @@ import { CosplayGroupItemComponent } from './cosplay-group-item/cosplay-group-it
     CommonModule,
     FormsModule,
     IonicModule,
-    CosplayGroupsPageRoutingModule
+    CosplayGroupsPageRoutingModule,
   ],
-  declarations: [CosplayGroupsPage, CosplayGroupItemComponent]
+  declarations: [CosplayGroupsPage, CosplayGroupItemComponent],
+  entryComponents: [ ]
 })
 export class CosplayGroupsPageModule {}
