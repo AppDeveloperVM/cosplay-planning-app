@@ -1,38 +1,38 @@
-<ion-header>
+<ion-header [translucent]="true" class="ion-no-border">
   <ion-toolbar>
-  <ion-buttons slot="start">
-    <ion-menu-button menu="m1"></ion-menu-button>
-  </ion-buttons>
-    <ion-title>Profile</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button text="Back to main" defaultHref="/main/tabs/cosplays/my-cosplays"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button color="primary"  >
+        <!--[routerLink]="['/', 'main', 'tabs' , 'cosplays', 'my-cosplays' , 'edit' , cosplay.id ]"-->
+        Edit
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-grid>
-    <ion-row size="6">
-      <ion-col size="12" text-center>
+<ion-content [fullscreen]="true" >
+  <ion-row>
+    <ion-col text-center>
+      <ion-thumbnail class="user-image">
+        <img src="/assets/avatar.png">
+      </ion-thumbnail>
+      <ion-text color="dark">
+        <h2 class="user-name">SpaceRonin</h2>
+      </ion-text>
 
-          <ion-item>
-            <ion-icon name="person-circle-outline" slot="start"></ion-icon>
-            <ion-label>
-              <h2>SpaceRonin</h2>
-              <p>Mallorca</p>
-            </ion-label>
-          </ion-item>
+      <ion-list>
+        <ion-item>
+          <ion-label position="stacked">Instagram</ion-label>
+          <ion-input color="primary" readonly="true">@SpaceRonin</ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Twitter</ion-label>
+          <ion-input color="primary" readonly="true">@SpaceRonin</ion-input>
+        </ion-item>
+      </ion-list>
 
-          <ion-item>
-            <ion-label slot="start">
-              <h2>Instagram</h2>
-              <p>instagram.com/spaceronin</p>
-            </ion-label>
-            <ion-label slot="start">
-              <h2>Twitter</h2>
-              <p>Twitter.com/spaceronin</p>
-            </ion-label>
-          </ion-item>
-
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-  
+    </ion-col>
+  </ion-row>
 </ion-content>
