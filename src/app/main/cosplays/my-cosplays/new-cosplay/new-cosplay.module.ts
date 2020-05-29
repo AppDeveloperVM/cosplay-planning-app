@@ -13,7 +13,8 @@ import { NewCosplayPage } from './new-cosplay.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    NewCosplayPageRoutingModule
+    NewCosplayPageRoutingModule,
+    FormsModule
   ],
   declarations: [NewCosplayPage]
 })
