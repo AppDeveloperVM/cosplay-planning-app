@@ -12,7 +12,12 @@ import { CosplaysService } from '../../cosplays.service';
 export class CosplayDetailsPage implements OnInit {
   cosplay: Cosplay;
 
-  constructor(private router: Router, private navCtrl: NavController, private route: ActivatedRoute, private cosplaysService: CosplaysService) { }
+  constructor(
+    private router: Router,
+    private navCtrl: NavController,
+    private route: ActivatedRoute,
+    private cosplaysService: CosplaysService
+  ) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe(paramMap => {
