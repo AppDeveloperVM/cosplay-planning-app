@@ -1,0 +1,27 @@
+[
+    {
+        "icon": "apps-outline",
+        "name": "Main",
+        "redirectTo": "/main"
+    },
+    {
+        "icon": "person-circle-outline",
+        "name": "Profile",
+        "redirectTo": "/profile"
+    },
+    {
+        "icon": "people-outline",
+        "name": "Cosplay Groups",
+        "redirectTo": "/main/tabs/cosplays/cosplay-groups"
+    },
+    {
+        "icon": "settings-outline",
+        "name": "Settings",
+        "redirectTo": "/settings"
+    },
+    {
+        "icon": "log-out-outlinee",
+        "name": "Logout",
+        "redirectTo": ""
+    }
+]
