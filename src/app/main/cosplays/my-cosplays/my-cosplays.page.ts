@@ -3,6 +3,8 @@ import { CosplaysService } from '../cosplays.service';
 import { Cosplay } from '../cosplay.model';
 import { SegmentChangeEventDetail } from '@ionic/core';
 import { AuthService } from 'src/app/auth/auth.service';
+import { PopoverController } from '@ionic/angular';
+import { PopinfoComponent } from 'src/app/components/popinfo/popinfo.component';
 
 @Component({
   selector: 'app-my-cosplays',
@@ -16,7 +18,8 @@ export class MyCosplaysPage implements OnInit {
 
   constructor(
     private cosplaysService: CosplaysService,
-    private authService: AuthService
+    private authService: AuthService,
+    private popoverCtrl: PopoverController
   ) { }
 
   ngOnInit() {
@@ -39,5 +42,22 @@ export class MyCosplaysPage implements OnInit {
     this.listedLoadedCosplays = this.relevantCosplays.slice(0);
     console.log(event.detail);
   }
+
+  async mostrarPop( event ) {
+    const popover = await this.popoverCtrl.create({
+      component: PopinfoComponent,
+      event,
+      mode: 'ios',
+      backdropDismiss: true
+    });
+
+    await popover.present();
+    
+    const { data } = await popover.onWillDismiss(); // onDidDismiss();
+
+    console.log('Padre:' + data);
+  }
+
+
 
 }
