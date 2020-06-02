@@ -9,11 +9,20 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { CosplayGroupSendRequestComponent } from './main/cosplays/cosplay-groups/cosplay-group-send-request/cosplay-group-send-request.component';
+import { ComponentsModule } from './components/components.module';
+import { PopinfoComponent } from './components/popinfo/popinfo.component';
+
 
 @NgModule({
   declarations: [AppComponent, CosplayGroupSendRequestComponent],
-  entryComponents: [CosplayGroupSendRequestComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
+  entryComponents: [CosplayGroupSendRequestComponent, PopinfoComponent],
+  imports: [
+    BrowserModule,
+    IonicModule.forRoot(),
+    AppRoutingModule,
+    ComponentsModule,
+    IonicModule
+  ],
   providers: [
     StatusBar,
     SplashScreen,
