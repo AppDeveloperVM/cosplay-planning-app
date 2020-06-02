@@ -1,8 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Placeholder } from '@angular/compiler/src/i18n/i18n_ast';
 import { CosplayGroup } from '../cosplay-group.model';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 import { Cosplay } from '../../cosplay.model';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-cosplay-group-send-request',
@@ -13,7 +14,12 @@ export class CosplayGroupSendRequestComponent implements OnInit {
   @Input() selectedCosplayGroup: CosplayGroup;
   @Input() requestedCharacter: Cosplay;
 
-  constructor(private modalCtrl: ModalController) { }
+  constructor(
+    private modalCtrl: ModalController,
+    private navCtrl: NavController,
+    private route: ActivatedRoute,
+    private router: Router
+  ) { }
 
   ngOnInit() {}
 
