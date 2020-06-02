@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PopinfoComponent } from './popinfo/popinfo.component';
 import { MenuComponent } from './menu/menu.component';
+import { IonicModule } from '@ionic/angular';
 
 
 
@@ -15,7 +16,8 @@ import { MenuComponent } from './menu/menu.component';
     PopinfoComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    IonicModule
   ]
 })
 export class ComponentsModule { }
