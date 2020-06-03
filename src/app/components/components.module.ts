@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { PopinfoComponent } from './popinfo/popinfo.component';
 import { MenuComponent } from './menu/menu.component';
 import { IonicModule } from '@ionic/angular';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -17,7 +18,8 @@ import { IonicModule } from '@ionic/angular';
   ],
   imports: [
     CommonModule,
-    IonicModule
+    IonicModule,
+    RouterModule
   ]
 })
 export class ComponentsModule { }

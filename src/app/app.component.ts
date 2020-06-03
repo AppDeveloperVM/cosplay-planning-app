@@ -12,14 +12,15 @@ import { Router } from '@angular/router';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent {
+  navigate: any;
+
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private authService: AuthService,
-    private router: Router
-  ) {
-    this.initializeApp();
+    private router: Router,
+  ) {    this.initializeApp();
   }
 
   initializeApp() {
@@ -28,6 +29,7 @@ export class AppComponent {
       this.splashScreen.hide();
     });
   }
+
 
   onLogout() {
     this.authService.logout();
