@@ -1,9 +1,14 @@
 <ion-list>
   <ion-item *ngFor="let item of items; let i = index;" 
   (click)="onClick(i + 1)"
-  detail>
+  >
+  
+  <ion-label>
+    <h3><b>Nuevo Seguidor</b> liked your comment</h3>
+    <p>
+      I've updated my info
+    </p>
+  </ion-label>
     
-    <ion-label>Item {{ i + 1}}</ion-label>
-
   </ion-item>
 </ion-list>

@@ -5,6 +5,7 @@ import { SegmentChangeEventDetail } from '@ionic/core';
 import { AuthService } from 'src/app/auth/auth.service';
 import { PopoverController } from '@ionic/angular';
 import { PopinfoComponent } from 'src/app/components/popinfo/popinfo.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-my-cosplays',
@@ -15,11 +16,13 @@ export class MyCosplaysPage implements OnInit {
   loadedCosplays: Cosplay[];
   listedLoadedCosplays: Cosplay[];
   relevantCosplays: Cosplay[];
+  notifications: number;
 
   constructor(
     private cosplaysService: CosplaysService,
     private authService: AuthService,
-    private popoverCtrl: PopoverController
+    private popoverCtrl: PopoverController,
+    private routermodule: RouterModule
   ) { }
 
   ngOnInit() {
@@ -28,6 +31,8 @@ export class MyCosplaysPage implements OnInit {
     this.relevantCosplays = this.loadedCosplays;
 
     this.listedLoadedCosplays = this.loadedCosplays.slice(0);
+
+    this.notifications = 3;
   }
 
   onFilterUpdate(event: CustomEvent<SegmentChangeEventDetail>) {
@@ -47,7 +52,7 @@ export class MyCosplaysPage implements OnInit {
     const popover = await this.popoverCtrl.create({
       component: PopinfoComponent,
       event,
-      mode: 'ios',
+      // mode: 'ios',
       backdropDismiss: true
     });
 
