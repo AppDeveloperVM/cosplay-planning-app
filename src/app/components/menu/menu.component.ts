@@ -29,14 +29,19 @@ export class MenuComponent implements OnInit {
     this.navigate =
     [
       {
-        title : "Main",
-        url   : "/main",
-        icon  : "apps-outline"
-      },
-      {
         title : "Profile",
         url   : "/profile",
         icon  : "person-circle-outline"
+      },
+      {
+        title : "Cosplay",
+        url   : "/main",
+        icon  : "body"
+      },
+      {
+        title : "Planning",
+        url   : "planning",
+        icon  : "calendar"
       },
       {
         title : "Cosplay Groups",
