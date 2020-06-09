@@ -2,13 +2,14 @@
   <ion-item *ngFor="let notif of notifications; let i = index;" 
   (click)="onClick(i + 1)"
   >
-  
-  <ion-label>
-    <h3><b>{{ notif.name }}</b> liked your comment</h3>
-    <p>
-      I've updated my info
-    </p>
-  </ion-label>
+    <ion-icon name="person" slot="start"></ion-icon>
+    <ion-label>
+      <h3><b>{{ notif.name }}</b> 
+        </h3>
+      <p *ngIf="notif.type== 'comment'"> {{ notif.text }} </p>
+      <p *ngIf="notif.type== 'like'">liked your comment</p>
+      <p *ngIf="notif.type== 'follow'">followed you</p>
+    </ion-label>
     
   </ion-item>
 </ion-list>
