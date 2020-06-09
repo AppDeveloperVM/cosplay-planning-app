@@ -1,10 +1,10 @@
 <ion-list>
-  <ion-item *ngFor="let item of items; let i = index;" 
+  <ion-item *ngFor="let notif of notifications; let i = index;" 
   (click)="onClick(i + 1)"
   >
   
   <ion-label>
-    <h3><b>Nuevo Seguidor</b> liked your comment</h3>
+    <h3><b>{{ notif.name }}</b> liked your comment</h3>
     <p>
       I've updated my info
     </p>
