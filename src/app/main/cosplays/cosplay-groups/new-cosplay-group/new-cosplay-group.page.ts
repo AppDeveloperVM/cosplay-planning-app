@@ -1,7 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { NgForm } from '@angular/forms';
-import { FormsModule } from '@angular/forms';
 import { CosplayGroup } from '../cosplay-group.model';
 
 @Component({
@@ -21,7 +19,9 @@ export class NewCosplayGroupPage implements OnInit {
   ngOnInit() {
     const availableFrom = new Date(this.selectedCosplayGroup.availableFrom);
     const availableTo = new Date(this.selectedCosplayGroup.availableTo);
-    
+
+    this.startDate = new Date().toISOString();
+    this.endDate = new Date(new Date(this.startDate).getTime()).toISOString();
 
     this.form = new FormGroup({
       title: new FormControl(null, {
@@ -47,7 +47,7 @@ export class NewCosplayGroupPage implements OnInit {
     });
   }
 
-  onSendCosplayGroupRequest() {
+  onCreateGroup() {
     console.log(this.form);
   }
 
