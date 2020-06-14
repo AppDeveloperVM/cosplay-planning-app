@@ -1,18 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ModalController, NavController, ToastController } from '@ionic/angular';
 import { CosplayGroup } from '../cosplay-group.model';
 import { CosplayGroupService } from '../cosplay-group.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { Cosplay } from '../../cosplay.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-cosplay-group-details',
   templateUrl: './cosplay-group-details.page.html',
   styleUrls: ['./cosplay-group-details.page.scss'],
 })
-export class CosplayGroupDetailsPage implements OnInit {
+export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
   cosplayGroup: CosplayGroup;
+  private cosplayGroupSub: Subscription;
   cosplay: Cosplay;
   newCosplayGroup: CosplayGroup;
 
@@ -31,8 +33,10 @@ export class CosplayGroupDetailsPage implements OnInit {
         this.navCtrl.navigateBack('/main/tabs/cosplays/cosplay-groups');
         return;
       }
-      this.cosplayGroup = this.cosplayGroupService.getCosplayGroup(paramMap.get('cosplayGroupId'));
-      // this.cosplay.characterName = this.cosplay.characterName;
+      this.cosplayGroupSub = this.cosplayGroupService.getCosplayGroup(paramMap.get('cosplayGroupId')).subscribe(cosplayGroup => {
+        this.cosplayGroup = this.cosplayGroup;
+      });
+
       console.log('Cosplaygroup id: ' + this.cosplayGroup.id);
     });
   }
@@ -50,6 +54,12 @@ export class CosplayGroupDetailsPage implements OnInit {
     // this.newCosplay = this.cosplayService.setCosplayRequest();
 
     console.log(characterName);
+  }
+
+  ngOnDestroy() {
+    if (this.cosplayGroupSub) {
+      this.cosplayGroupSub.unsubscribe();
+    }
   }
 
 }

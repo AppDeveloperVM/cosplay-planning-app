@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CosplayGroup } from './cosplay-group.model';
 import { CosplayGroupService } from './cosplay-group.service';
+import { Subscription } from 'rxjs';
 
 @Component(
   {
@@ -10,13 +11,24 @@ import { CosplayGroupService } from './cosplay-group.service';
 }
 )
 
-export class CosplayGroupsPage implements OnInit {
+export class CosplayGroupsPage implements OnInit, OnDestroy {
   cosplaygroups: CosplayGroup[];
+  private cosplayGroupsSub: Subscription;
 
   constructor(private cosplaygroupService: CosplayGroupService) { }
 
   ngOnInit() {
-    this.cosplaygroups = this.cosplaygroupService.cosplaygroups;
+    this.cosplayGroupsSub = this.cosplaygroupService.cosplaygroups.subscribe(cosplaygroups => {
+      this.cosplaygroups = cosplaygroups;
+    });
   }
+
+  ngOnDestroy() {
+    if (this.cosplayGroupsSub) {
+      this.cosplayGroupsSub.unsubscribe();
+    }
+  }
+
+
 
 }
