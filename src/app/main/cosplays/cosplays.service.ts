@@ -21,13 +21,28 @@ export class CosplaysService {
     return [...this._cosplays];
   }
 
-  getCosplay(id: string){
+  getCosplay(id: string) {
     // load the cosplay
     // clone entire object "..." into new object
     return {...this._cosplays.find(c => c.id === id)};
   }
 
-  // Add a new cosplay.. ? Pero yo necesito un nuevo cosplay Group character request
+  addCosplay(characterName: string, description: string, imageUrl: string, series: string, funds: number, percentComplete: string, status: boolean ) {
+    const newCosplay = new Cosplay(
+      Math.random().toString(),
+      characterName,
+      description,
+      'https://pbs.twimg.com/media/DluGJLAUYAEdcIT?format=jpg&name=small',
+      series,
+      funds,
+      percentComplete,
+      status,
+      this.authService.userId
+    );
+    this._cosplays.push(newCosplay);
+  }
+
+  // Pero yo necesito un nuevo cosplay Group character request
   setCosplayGroupRequest(id: string, characterName: string, description: string, imageUrl: string, series: string, funds: number, percentComplete: string, status: boolean, userId: string) {
     const newCosplayRequest = new Cosplay(
         Math.random().toString(),
@@ -40,7 +55,6 @@ export class CosplaysService {
         status,
         this.authService.userId
     );
-    this._cosplays.push(newCosplayRequest);
   }
 
 }

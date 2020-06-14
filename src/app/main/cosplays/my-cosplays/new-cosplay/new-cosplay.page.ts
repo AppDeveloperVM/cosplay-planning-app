@@ -12,40 +12,42 @@ import { Router } from '@angular/router';
 })
 export class NewCosplayPage implements OnInit {
 
-  createContactForm: FormGroup;
+  form: FormGroup;
   @ViewChild('createForm', { static: false }) createForm: FormGroupDirective;
 
   constructor(
     private modalController: ModalController,
-     private cosplaysService: CosplaysService,
-     private router: Router
+    private cosplaysService: CosplaysService,
+    private router: Router
     // private dataService: DataService
     ) { }
 
-  dismissModal() {
-    //this.modalController.dismiss();
-    this.router.navigateByUrl('/main/tabs/cosplays/my-cosplays');
-  }
 
   ngOnInit(): void {
-    this.createContactForm = new FormGroup({
-      'firstName': new FormControl('', Validators.required),
-      'lastName': new FormControl('', Validators.required),
-      'email': new FormControl(''),
-      'phone': new FormControl('', Validators.required),
-      'category': new FormControl('', Validators.required)
+    this.form = new FormGroup({
+      'characterName': new FormControl('', Validators.required),
+      'series': new FormControl('', Validators.required),
+      'description': new FormControl('')
     });
   }
 
-  submitForm() {
-    this.createForm.onSubmit(undefined);
-  }
+  onCreateCosplay(characterName: string, description: string, imageUrl: string, series: string, funds: number, percentComplete: string, status: boolean) {
+    /*if (!this.form.valid) {
+      return;
+    }*/
+    this.cosplaysService.addCosplay(
+      this.form.value.characterName,
+      this.form.value.description,
+      'https://pbs.twimg.com/media/DluGJLAUYAEdcIT?format=jpg&name=small',
+      this.form.value.series,
+      0,
+      '0',
+      false
+    );
 
-  createContact(values: any) {
-    // copy all the form values into the new contact
-    let newContact: Cosplay = { ...values };
-    //this.cosplaysService.setCosplayGroupRequest(newContact);
-    this.dismissModal();
+    this.form.reset();
+    this.router.navigate(['main/tabs/cosplays/my-cosplays']);
+
   }
 
 }
