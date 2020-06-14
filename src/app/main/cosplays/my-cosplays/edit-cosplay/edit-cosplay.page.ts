@@ -1,17 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CosplaysService } from '../../cosplays.service';
 import { NavController } from '@ionic/angular';
 import { Cosplay } from '../../cosplay.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-edit-cosplay',
   templateUrl: './edit-cosplay.page.html',
   styleUrls: ['./edit-cosplay.page.scss'],
 })
-export class EditCosplayPage implements OnInit {
+export class EditCosplayPage implements OnInit, OnDestroy {
   cosplay: Cosplay;
+  cosplaySub: Subscription;
   form: FormGroup;
 
   constructor(
@@ -26,7 +28,10 @@ export class EditCosplayPage implements OnInit {
         this.navCtrl.navigateBack('main/tabs/cosplays/my-cosplays');
         return;
       }
-      this.cosplay = this.cosplayService.getCosplay(paramMap.get('cosplayId'));
+      this.cosplaySub = this.cosplayService.getCosplay(paramMap.get('cosplayId')).subscribe(cosplay => {
+        this.cosplay = cosplay;
+      });
+      
       this.form = new FormGroup({
         characterName: new FormControl(this.cosplay.characterName , {
           updateOn: 'blur',
@@ -49,6 +54,12 @@ export class EditCosplayPage implements OnInit {
       return;
     }
     console.log(this.form);
+  }
+
+  ngOnDestroy() {
+    if (this.cosplaySub){
+      this.cosplaySub.unsubscribe();
+    }
   }
 
 }

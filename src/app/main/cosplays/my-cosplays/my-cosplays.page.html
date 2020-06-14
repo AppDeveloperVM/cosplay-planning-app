@@ -34,7 +34,7 @@
         <ion-virtual-scroll [items]="listedLoadedCosplays" approxItemHeight="45px">
           <ion-item 
           routerDirection="forward"
-          [routerLink]="['/', 'main', 'tabs', 'cosplays', 'my-cosplays', relevantCosplays[0].id ]"
+          [routerLink]="['/', 'main', 'tabs', 'cosplays', 'my-cosplays', cosplay.id ]"
           detail 
           *virtualItem="let cosplay"
           >
@@ -42,8 +42,8 @@
               <ion-img [src]="cosplay.imageUrl"></ion-img>
             </ion-thumbnail>
             <ion-label>
-              <h2>{{ relevantCosplays[0].characterName }}</h2>
-              <p>{{ relevantCosplays[0].series }}</p>
+              <h2>{{ cosplay.characterName }}</h2>
+              <p>{{ cosplay.series }}</p>
             </ion-label>
           </ion-item>
         </ion-virtual-scroll>

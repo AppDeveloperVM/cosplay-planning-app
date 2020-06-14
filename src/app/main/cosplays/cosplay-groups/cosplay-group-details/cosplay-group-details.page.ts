@@ -34,7 +34,7 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
         return;
       }
       this.cosplayGroupSub = this.cosplayGroupService.getCosplayGroup(paramMap.get('cosplayGroupId')).subscribe(cosplayGroup => {
-        this.cosplayGroup = this.cosplayGroup;
+        this.cosplayGroup = cosplayGroup;
       });
 
       console.log('Cosplaygroup id: ' + this.cosplayGroup.id);

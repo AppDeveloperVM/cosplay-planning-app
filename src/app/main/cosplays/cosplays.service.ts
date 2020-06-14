@@ -1,16 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Cosplay } from './cosplay.model';
 import { AuthService } from 'src/app/auth/auth.service';
+import { BehaviorSubject } from 'rxjs';
+import { take, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CosplaysService {
-  private _cosplays: Cosplay[] = [
-  new Cosplay('c1', 'Samatoki', 'MTC rapper', 'https://pbs.twimg.com/media/DluGJLAUYAEdcIT?format=jpg&name=small', 'Hypmic', 0, '0', true,'user1'),
-  new Cosplay('c2', 'Jyuuto', 'MTC rapper', 'https://pbs.twimg.com/media/DluGVivU0AA0U87?format=jpg&name=small', 'Hypmic', 0, '0', false, 'user1'),
-  new Cosplay('c3', 'Riou', 'MTC rapper', 'https://pbs.twimg.com/media/DluGfijU8AA0XcX?format=jpg&name=small', 'Hypmic', 0, '0', false, 'user1')
-  ];
+  private _cosplays = new BehaviorSubject<Cosplay[]>(
+    [
+      new Cosplay('c1', 'Samatoki', 'MTC rapper', 'https://pbs.twimg.com/media/DluGJLAUYAEdcIT?format=jpg&name=small', 'Hypmic', 0, '0', true,'user1'),
+      new Cosplay('c2', 'Jyuuto', 'MTC rapper', 'https://pbs.twimg.com/media/DluGVivU0AA0U87?format=jpg&name=small', 'Hypmic', 0, '0', false, 'user1'),
+      new Cosplay('c3', 'Riou', 'MTC rapper', 'https://pbs.twimg.com/media/DluGfijU8AA0XcX?format=jpg&name=small', 'Hypmic', 0, '0', false, 'user1')
+      ]
+  );
 
   private _cosplay_character_requested: Cosplay[] = [
   ];
@@ -18,13 +22,15 @@ export class CosplaysService {
   constructor(private authService: AuthService) { }
 
   get cosplays() {
-    return [...this._cosplays];
+    return this._cosplays.asObservable();
   }
 
   getCosplay(id: string) {
-    // load the cosplay
-    // clone entire object "..." into new object
-    return {...this._cosplays.find(c => c.id === id)};
+    return this.cosplays.pipe(
+      take(1),
+      map(cosplays => {
+        return {...cosplays.find(c => c.id === id)};
+    }))
   }
 
   addCosplay(characterName: string, description: string, imageUrl: string, series: string, funds: number, percentComplete: string, status: boolean ) {
@@ -39,7 +45,9 @@ export class CosplaysService {
       status,
       this.authService.userId
     );
-    this._cosplays.push(newCosplay);
+    this.cosplays.pipe(take(1)).subscribe((cosplays)=> {
+      this._cosplays.next(cosplays.concat(newCosplay));
+    })
   }
 
   // Pero yo necesito un nuevo cosplay Group character request
