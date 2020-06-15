@@ -17,6 +17,7 @@ import { Subscription } from 'rxjs';
 export class MyCosplaysPage implements OnInit, OnDestroy {
   loadedCosplays: Cosplay[];
   private cosplaysSub: Subscription;
+  private filter = 'all';
   listedLoadedCosplays: Cosplay[];
   relevantCosplays: Cosplay[];
   notifications: any[];
@@ -31,8 +32,8 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.cosplaysSub = this.cosplaysService.cosplays.subscribe(cosplays => {
       this.loadedCosplays = cosplays;
-    })
-
+      this.onFilterUpdate(this.filter);
+    });
     this.relevantCosplays = this.loadedCosplays;
 
     this.listedLoadedCosplays = this.loadedCosplays;
@@ -40,8 +41,8 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
     this.notifications = [{name: 'John'}, {name: 'John'}, {name: 'John'}];
   }
 
-  onFilterUpdate(event: CustomEvent<SegmentChangeEventDetail>) {
-    if (event.detail.value === 'all') {
+  onFilterUpdate(filter: string) {
+    if (filter === 'all') {
       this.relevantCosplays = this.loadedCosplays; // show everything (?)
     } else {
       // filtro - a mostrar tras elegir segundo segmented button on main
@@ -50,7 +51,7 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
       );
     }
     this.listedLoadedCosplays = this.relevantCosplays;
-    console.log(event.detail);
+    console.log(filter);
   }
 
 
@@ -75,9 +76,11 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
   }*/
 
   ngOnDestroy() {
-    if (this.cosplaysSub){
+    if (this.cosplaysSub) {
       this.cosplaysSub.unsubscribe();
     }
   }
+
+  
 
 }
