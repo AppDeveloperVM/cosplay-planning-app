@@ -3,7 +3,7 @@ import { CosplayGroup } from './cosplay-group.model';
 import { Cosplay } from '../cosplay.model';
 import { AuthService } from 'src/app/auth/auth.service';
 import { BehaviorSubject } from 'rxjs';
-import { take, map } from 'rxjs/operators';
+import { take, map, delay, tap } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -39,7 +39,14 @@ export class CosplayGroupService {
     );
     }
 
-    addCosplayGroup(title: string, series: string, imageUrl: string, dateFrom: Date, dateTo: Date, place: string) {
+    addCosplayGroup(
+        title: string,
+        series: string,
+        imageUrl: string,
+        place: string,
+        dateFrom: Date,
+        dateTo: Date
+    ) {
         const newCosplayGroup = new CosplayGroup(
             Math.random().toString(),
             title,
@@ -53,7 +60,6 @@ export class CosplayGroupService {
         this.cosplaygroups.pipe(take(1)).subscribe((cosplaygroups) => {
             this._cosplaygroups.next(cosplaygroups.concat(newCosplayGroup));
         }); // have a look at cosplayG subject, and subscribe, but take only 1 object and cancel subscrib
-
     }
 
 }

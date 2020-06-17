@@ -61,9 +61,9 @@ export class NewCosplayGroupPage implements OnInit {
       this.form.value.title,
       this.form.value.series,
       this.form.value.description,
+      this.form.value.place,
       new Date(this.form.value.dateFrom),
       new Date(this.form.value.dateTo),
-      this.form.value.place
     );
 
     this.form.reset();
