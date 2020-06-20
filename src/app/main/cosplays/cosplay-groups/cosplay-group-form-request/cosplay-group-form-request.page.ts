@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NavController, ModalController } from '@ionic/angular';
+import { NavController, ModalController, LoadingController } from '@ionic/angular';
 import { CosplayGroupService } from '../cosplay-group.service';
 import { CosplayGroup } from '../cosplay-group.model';
 import { NgForm } from '@angular/forms';
@@ -14,8 +14,9 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./cosplay-group-form-request.page.scss'],
 })
 export class CosplayGroupFormRequestPage implements OnInit, OnDestroy {
+  subscription: Subscription;
   cosplayGroup: CosplayGroup;
-  private cosplaygroupSub : Subscription;
+  private cosplaygroupSub: Subscription;
   loadedCosplayRequest: string;
 
   constructor(
@@ -23,7 +24,8 @@ export class CosplayGroupFormRequestPage implements OnInit, OnDestroy {
     private navCtrl: NavController,
     private modalCtrl: ModalController,
     private router: Router,
-    private cosplayGroupService: CosplayGroupService
+    private cosplayGroupService: CosplayGroupService,
+    private loadingCtrl: LoadingController
   ) { }
 
   ngOnInit() {
@@ -32,7 +34,9 @@ export class CosplayGroupFormRequestPage implements OnInit, OnDestroy {
         this.navCtrl.navigateBack('/main/tabs/cosplays/cosplay-groups');
         return;
       }
-      this.cosplaygroupSub = this.cosplayGroupService.getCosplayGroup(paramMap.get('cosplayGroupId')).subscribe(cosplayGroup => {
+      this.cosplaygroupSub = this.cosplayGroupService
+        .getCosplayGroup(paramMap.get('cosplayGroupId'))
+        .subscribe(cosplayGroup => {
         this.cosplayGroup = cosplayGroup;
       });
       // this.cosplay.characterName = this.cosplay.characterName;
@@ -70,17 +74,34 @@ export class CosplayGroupFormRequestPage implements OnInit, OnDestroy {
       return modalEl.onDidDismiss();
     })
     .then(resultData => {
-      console.log(resultData.data, resultData.role);
       if (resultData.role === 'confirm') {
-        console.log('Request Send!');
-        this.router.navigateByUrl('/main/tabs/cosplays/cosplay-groups');
+        this.loadingCtrl.create({message: 'Sending request..'})
+        .then(
+          loadingEl => {
+            loadingEl.present();
+            const data = resultData.data; // get possible extra data from here
+            this.cosplayGroupService
+            .addCosplayGroup(
+              this.cosplayGroup.id,
+              this.cosplayGroup.title,
+              this.cosplayGroup.series,
+              this.cosplayGroup.place,
+              this.cosplayGroup.availableFrom,
+              this.cosplayGroup.availableTo
+            )
+            .subscribe(() => {
+              loadingEl.dismiss();
+            });
+            this.router.navigateByUrl('/main/tabs/cosplays/cosplay-groups');
+          }
+        );
       }
-      
+
     });
   }
 
   ngOnDestroy() {
-    if (this.cosplaygroupSub){
+    if (this.cosplaygroupSub) {
       this.cosplaygroupSub.unsubscribe();
     }
   }
