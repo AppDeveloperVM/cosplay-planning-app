@@ -57,9 +57,13 @@ export class CosplayGroupService {
             dateTo,
             this.authService.userId
         );
-        this.cosplaygroups.pipe(take(1)).subscribe((cosplaygroups) => {
+        return this.cosplaygroups.pipe(
+            take(1),
+            delay(1000),
+            tap(cosplaygroups => {
             this._cosplaygroups.next(cosplaygroups.concat(newCosplayGroup));
-        }); // have a look at cosplayG subject, and subscribe, but take only 1 object and cancel subscrib
+            })
+        ); // have a look at cosplayG subject, and subscribe, but take only 1 object and cancel subscrib
     }
 
 }
