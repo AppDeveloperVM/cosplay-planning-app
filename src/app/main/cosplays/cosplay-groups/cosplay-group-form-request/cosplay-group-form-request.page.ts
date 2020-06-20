@@ -80,8 +80,9 @@ export class CosplayGroupFormRequestPage implements OnInit, OnDestroy {
           loadingEl => {
             loadingEl.present();
             const data = resultData.data; // get possible extra data from here
-            this.cosplayGroupService
-            .addCosplayGroup(
+
+            /* Aquí se crearía o enviaría la solicitud de personaje para la GRUPAL
+            this.cosplayGroupService.addCosplayGroup(
               this.cosplayGroup.id,
               this.cosplayGroup.title,
               this.cosplayGroup.series,
@@ -92,6 +93,8 @@ export class CosplayGroupFormRequestPage implements OnInit, OnDestroy {
             .subscribe(() => {
               loadingEl.dismiss();
             });
+            */
+
             this.router.navigateByUrl('/main/tabs/cosplays/cosplay-groups');
           }
         );
