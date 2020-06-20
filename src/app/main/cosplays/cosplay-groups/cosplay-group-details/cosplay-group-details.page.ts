@@ -33,7 +33,9 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
         this.navCtrl.navigateBack('/main/tabs/cosplays/cosplay-groups');
         return;
       }
-      this.cosplayGroupSub = this.cosplayGroupService.getCosplayGroup(paramMap.get('cosplayGroupId')).subscribe(cosplayGroup => {
+      this.cosplayGroupSub = this.cosplayGroupService
+      .getCosplayGroup(paramMap.get('cosplayGroupId'))
+      .subscribe(cosplayGroup => {
         this.cosplayGroup = cosplayGroup;
       });
 
