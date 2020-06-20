@@ -97,21 +97,22 @@ export class CosplaysService {
       take(1),
       delay(1000),
       tap(cosplays => {
-      const updatedCosplayIndex = cosplays.findIndex(cos => cos.id === cosplayId);
-      const updatedCosplays = [...cosplays];
-      const oldCosplay = updatedCosplays[updatedCosplayIndex];
-      updatedCosplays[updatedCosplayIndex] = new Cosplay(
-        oldCosplay.id,
-        characterName,
-        description,
-        imageUrl,
-        series,
-        oldCosplay.funds,
-        oldCosplay.percentComplete,
-        oldCosplay.status,
-        oldCosplay.userId
-      );
-      this._cosplays.next(updatedCosplays);
+        const updatedCosplayIndex = cosplays.findIndex(cos => cos.id === cosplayId);
+        const updatedCosplays = [...cosplays];
+        const oldCosplay = updatedCosplays[updatedCosplayIndex];
+
+        updatedCosplays[updatedCosplayIndex] = new Cosplay(
+          oldCosplay.id,
+          characterName,
+          description,
+          imageUrl,
+          series,
+          oldCosplay.funds,
+          oldCosplay.percentComplete,
+          oldCosplay.status,
+          oldCosplay.userId
+        );
+        this._cosplays.next(updatedCosplays);
     }));
   }
 
