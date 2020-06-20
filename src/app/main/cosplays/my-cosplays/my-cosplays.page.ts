@@ -16,10 +16,10 @@ import { Subscription } from 'rxjs';
 })
 export class MyCosplaysPage implements OnInit, OnDestroy {
   loadedCosplays: Cosplay[];
-  private cosplaysSub: Subscription;
-  private filter = 'all';
   listedLoadedCosplays: Cosplay[];
   relevantCosplays: Cosplay[];
+  private cosplaysSub: Subscription;
+  private filter = 'all';
   notifications: any[];
 
   constructor(
@@ -32,11 +32,10 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.cosplaysSub = this.cosplaysService.cosplays.subscribe(cosplays => {
       this.loadedCosplays = cosplays;
+      this.listedLoadedCosplays = this.loadedCosplays;
       this.onFilterUpdate(this.filter);
     });
-    this.relevantCosplays = this.loadedCosplays;
-
-    this.listedLoadedCosplays = this.loadedCosplays;
+    //this.relevantCosplays = this.loadedCosplays;
 
     this.notifications = [{name: 'John'}, {name: 'John'}, {name: 'John'}];
   }
@@ -81,6 +80,5 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
     }
   }
 
-  
 
 }
