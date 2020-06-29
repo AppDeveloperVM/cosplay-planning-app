@@ -28,7 +28,7 @@ export class AuthPage implements OnInit {
       setTimeout(() => {
         this.isLoading = false;
         loadingEl.dismiss();
-        this.router.navigateByUrl('/profile');
+        this.router.navigateByUrl('/main/tabs/cosplays/my-cosplays');
       } , 1000);
      });
   }
