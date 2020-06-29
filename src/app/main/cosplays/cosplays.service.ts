@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Cosplay } from './cosplay.model';
 import { AuthService } from 'src/app/auth/auth.service';
 import { BehaviorSubject } from 'rxjs';
-import { take, map, tap, delay } from 'rxjs/operators';
+import { take, map, tap, delay, switchMap } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class CosplaysService {
   private _cosplay_character_requested: Cosplay[] = [
   ];
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private http: HttpClient) { }
 
   get cosplays() {
     return this._cosplays.asObservable();
@@ -50,6 +51,7 @@ export class CosplaysService {
     percentComplete: string,
     status: boolean
   ) {
+    let generatedId: string;
     const newCosplay = new Cosplay(
       Math.random().toString(),
       characterName,
@@ -61,9 +63,23 @@ export class CosplaysService {
       status,
       this.authService.userId
     );
-    this.cosplays.pipe(take(1)).subscribe((cosplays) => {
+
+    return this.http
+    .post<{name: string}>('https://cosplay-planning-app.firebaseio.com/my-cosplays.json', { ...newCosplay, id: null})
+    .pipe(
+      switchMap(resData => {
+        generatedId = resData.name;
+        return this.cosplays;
+      }),
+      take(1),
+      tap(cosplays => {
+        newCosplay.id = generatedId;
+        this._cosplays.next(cosplays.concat(newCosplay));
+      })
+    );
+    /*return this.cosplays.pipe(take(1)).subscribe((cosplays) => {
       this._cosplays.next(cosplays.concat(newCosplay));
-    });
+    });**/
   }
 
   // Pero yo necesito un nuevo cosplay Group character request

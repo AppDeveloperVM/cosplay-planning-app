@@ -11,6 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { CosplayGroupSendRequestComponent } from './main/cosplays/cosplay-groups/cosplay-group-send-request/cosplay-group-send-request.component';
 import { ComponentsModule } from './components/components.module';
 import { PopinfoComponent } from './components/popinfo/popinfo.component';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import { PopinfoComponent } from './components/popinfo/popinfo.component';
   entryComponents: [CosplayGroupSendRequestComponent, PopinfoComponent],
   imports: [
     BrowserModule,
+    HttpClientModule,
     IonicModule.forRoot(),
     AppRoutingModule,
     ComponentsModule,
