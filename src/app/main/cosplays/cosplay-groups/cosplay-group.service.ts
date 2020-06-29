@@ -57,12 +57,12 @@ export class CosplayGroupService {
             dateTo,
             this.authService.userId
         );
-        return this.cosplaygroups.pipe(
+        this.cosplaygroups.pipe(
             take(1),
-            delay(1000),
-            tap(cosplaygroups => {
+            delay(1000))
+            .subscribe(cosplaygroups => {
             this._cosplaygroups.next(cosplaygroups.concat(newCosplayGroup));
-            })
+            }
         ); // have a look at cosplayG subject, and subscribe, but take only 1 object and cancel subscrib
     }
 
