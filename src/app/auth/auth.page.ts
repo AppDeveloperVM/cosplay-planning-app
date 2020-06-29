@@ -28,7 +28,7 @@ export class AuthPage implements OnInit {
       setTimeout(() => {
         this.isLoading = false;
         loadingEl.dismiss();
-        this.router.navigateByUrl('/main/tabs/cosplays/my-cosplays');
+        this.router.navigateByUrl('/profile');
       } , 1000);
      });
   }
@@ -38,7 +38,7 @@ export class AuthPage implements OnInit {
   }
 
   onSubmit(form: NgForm) {
-    if (!form.valid) { //if is false
+    if (!form.valid) { // if is false
       return;
     }
     const email = form.value.email;
