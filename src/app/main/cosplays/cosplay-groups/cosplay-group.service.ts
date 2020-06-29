@@ -20,6 +20,16 @@ export class CosplayGroupService {
                 new Date('2019-01-20'),
                 new Date('2019-01-25'),
                 'user1'
+            ),
+            new CosplayGroup(
+                'g2',
+                'Grupal Naruto',
+                'Naruto',
+                'https://static.timesofisrael.com/www/uploads/2019/03/iStock-1060517676-e1553784733101.jpg',
+                'Sevilla',
+                new Date('2019-01-20'),
+                new Date('2019-01-25'),
+                'user33'
             )
         ]
     ) ;
