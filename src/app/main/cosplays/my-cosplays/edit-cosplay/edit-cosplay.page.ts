@@ -65,10 +65,10 @@ export class EditCosplayPage implements OnInit, OnDestroy {
       loadingEl.present();
       this.cosplayService.updateCosplay(
         this.cosplay.id,
-        this.cosplay.characterName,
-        this.cosplay.description,
+        this.form.value.characterName,
+        this.form.value.description,
         this.cosplay.imageUrl,
-        this.cosplay.series,
+        this.form.value.series,
         this.cosplay.funds,
         this.cosplay.percentComplete,
         this.cosplay.status,
