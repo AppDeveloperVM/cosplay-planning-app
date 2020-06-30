@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { BehaviorSubject } from 'rxjs';
 import { take, map, tap, delay, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
+import { platform } from 'os';
 
 
 /*
@@ -150,10 +151,9 @@ export class CosplaysService {
     status: boolean,
     userId: string
   ) {
+    let updatedCosplays: Cosplay[];
     return this.cosplays.pipe(
-      take(1),
-      delay(1000),
-      tap(cosplays => {
+      take(1), switchMap( cosplays => {
         const updatedCosplayIndex = cosplays.findIndex(cos => cos.id === cosplayId);
         const updatedCosplays = [...cosplays];
         const oldCosplay = updatedCosplays[updatedCosplayIndex];
@@ -169,8 +169,13 @@ export class CosplaysService {
           oldCosplay.status,
           oldCosplay.userId
         );
+        return this.http.put(
+          `https://cosplay-planning-app.firebaseio.com/my-cosplays/${cosplayId}.json`,
+          { ...updatedCosplays[updatedCosplayIndex], id: null}
+        );
+      }), tap(()  => {
         this._cosplays.next(updatedCosplays);
-    }));
+      }));
   }
 
 }
