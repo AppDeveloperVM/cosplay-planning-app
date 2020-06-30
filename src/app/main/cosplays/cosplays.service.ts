@@ -5,25 +5,66 @@ import { BehaviorSubject } from 'rxjs';
 import { take, map, tap, delay, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 
+
+/*
+new Cosplay('c1', 'Samatoki', 'MTC rapper', 'https://pbs.twimg.com/media/DluGJLAUYAEdcIT?format=jpg&name=small', 'Hypmic', 0, '0', true,'user1'),
+new Cosplay('c2', 'Jyuuto', 'MTC rapper', 'https://pbs.twimg.com/media/DluGVivU0AA0U87?format=jpg&name=small', 'Hypmic', 0, '0', false, 'user1'),
+new Cosplay('c3', 'Riou', 'MTC rapper', 'https://pbs.twimg.com/media/DluGfijU8AA0XcX?format=jpg&name=small', 'Hypmic', 0, '0', false, 'user1')
+*/
+
+interface CosplayData {
+  characterName: string;
+  description: string;
+  imageUrl: string;
+  series: string;
+  funds: number;
+  percentComplete: string;
+  status: boolean;
+  userId: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class CosplaysService {
-  private _cosplays = new BehaviorSubject<Cosplay[]>(
-    [
-      new Cosplay('c1', 'Samatoki', 'MTC rapper', 'https://pbs.twimg.com/media/DluGJLAUYAEdcIT?format=jpg&name=small', 'Hypmic', 0, '0', true,'user1'),
-      new Cosplay('c2', 'Jyuuto', 'MTC rapper', 'https://pbs.twimg.com/media/DluGVivU0AA0U87?format=jpg&name=small', 'Hypmic', 0, '0', false, 'user1'),
-      new Cosplay('c3', 'Riou', 'MTC rapper', 'https://pbs.twimg.com/media/DluGfijU8AA0XcX?format=jpg&name=small', 'Hypmic', 0, '0', false, 'user1')
-      ]
-  );
+  private _cosplays = new BehaviorSubject<Cosplay[]>([]);
 
   private _cosplay_character_requested: Cosplay[] = [
   ];
 
-  constructor(private authService: AuthService, private http: HttpClient) { }
-
   get cosplays() {
     return this._cosplays.asObservable();
+  }
+
+  constructor(private authService: AuthService, private http: HttpClient) { }
+
+  fetchCosplays() {
+    return this.http
+    .get<{[key: string]: CosplayData}>(
+      'https://cosplay-planning-app.firebaseio.com/my-cosplays.json'
+      )
+    .pipe(map(resData => {
+      const cosplays = [];
+      for (const key in resData) {
+        if (resData.hasOwnProperty(key)) {
+          cosplays.push(new Cosplay(
+            key,
+            resData[key].characterName,
+            resData[key].description,
+            resData[key].imageUrl,
+            resData[key].series,
+            resData[key].funds,
+            resData[key].percentComplete,
+            resData[key].status,
+            resData[key].userId));
+        }
+      }
+      return cosplays;
+    }),
+    tap(cosplays => {
+      this._cosplays.next(cosplays);
+    })
+    );
   }
 
   getCosplay(id: string) {

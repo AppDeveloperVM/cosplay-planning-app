@@ -16,6 +16,7 @@ import { Subscription } from 'rxjs';
 })
 export class MyCosplaysPage implements OnInit, OnDestroy {
   loadedCosplays: Cosplay[];
+  isLoading = false;
   listedLoadedCosplays: Cosplay[];
   relevantCosplays: Cosplay[];
   private cosplaysSub: Subscription;
@@ -38,6 +39,13 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
     //this.relevantCosplays = this.loadedCosplays;
 
     this.notifications = [{name: 'John'}, {name: 'John'}, {name: 'John'}];
+  }
+
+  ionViewWillEnter() {
+    this.isLoading = true;
+    this.cosplaysService.fetchCosplays().subscribe(() => {
+      this.isLoading = false;
+    });
   }
 
   onFilterUpdate(filter: string) {

@@ -43,10 +43,11 @@ export class NewCosplayPage implements OnInit {
       0,
       '0',
       false
-    );
-
-    this.form.reset();
-    this.router.navigate(['main/tabs/cosplays/my-cosplays']);
+    )
+    .subscribe(() => {
+      this.form.reset();
+      this.router.navigate(['/main/tabs/cosplays/my-cosplays']);
+    });
 
   }
 
