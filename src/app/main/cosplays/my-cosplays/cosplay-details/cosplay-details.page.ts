@@ -12,6 +12,8 @@ import { Subscription } from 'rxjs';
 })
 export class CosplayDetailsPage implements OnInit, OnDestroy {
   cosplay: Cosplay;
+  cosplayId: string;
+  isLoading = false;
   private cosplaySub: Subscription;
 
   constructor(
@@ -27,9 +29,13 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
         this.navCtrl.navigateBack('/main/tabs/cosplays/my-cosplays');
         return;
       }
+      this.isLoading = true;
+      this.cosplayId = paramMap.get('cosplayId');
       this.cosplaySub = this.cosplaysService.getCosplay(paramMap.get('cosplayId')).subscribe(cosplay => {
+        this.isLoading = false;
         this.cosplay = cosplay;
-      })
+        console.log(cosplay);
+      });
       // load the cosplay
     });
   }
@@ -40,7 +46,7 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.cosplaySub){
+    if (this.cosplaySub) {
       this.cosplaySub.unsubscribe();
     }
   }

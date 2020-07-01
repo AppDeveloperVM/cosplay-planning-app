@@ -13,7 +13,9 @@ import { Subscription } from 'rxjs';
 })
 export class EditCosplayPage implements OnInit, OnDestroy {
   cosplay: Cosplay;
+  cosplayId: string;
   private cosplaySub: Subscription;
+  isLoading = false;
   form: FormGroup;
 
   constructor(
@@ -30,6 +32,8 @@ export class EditCosplayPage implements OnInit, OnDestroy {
         this.navCtrl.navigateBack('main/tabs/cosplays/my-cosplays');
         return;
       }
+      this.cosplayId = paramMap.get('cosplayId');
+      this.isLoading = true;
       this.cosplaySub = this.cosplayService
       .getCosplay(paramMap.get('cosplayId'))
       .subscribe(cosplay => {
@@ -48,6 +52,7 @@ export class EditCosplayPage implements OnInit, OnDestroy {
             validators: [Validators.required, Validators.maxLength(180)]
           })
         });
+        this.isLoading = false;
       });
 
     });

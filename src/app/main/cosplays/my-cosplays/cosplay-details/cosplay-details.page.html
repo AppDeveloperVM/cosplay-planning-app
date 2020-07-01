@@ -8,7 +8,7 @@
         <ion-icon #favIcon name="heart"></ion-icon>
       </ion-button>
       <ion-button color="primary"  
-        [routerLink]="['/', 'main', 'tabs' , 'cosplays', 'my-cosplays' , 'edit' , cosplay.id ]"
+        [routerLink]="['/', 'main', 'tabs' , 'cosplays', 'my-cosplays' , 'edit' , cosplayId ]"
       >
         Edit
       </ion-button>
@@ -18,7 +18,10 @@
 
 <ion-content [fullscreen]="true" >
   <ion-row>
-    <ion-col class="content-col">
+    <div *ngIf="isLoading" text-center>        
+      <ion-spinner color="primary" ></ion-spinner>
+    </div>
+    <ion-col class="content-col" *ngIf="!isLoading">
       <ion-thumbnail class="user-image">
         <img src="{{ cosplay.imageUrl }}">
       </ion-thumbnail>
