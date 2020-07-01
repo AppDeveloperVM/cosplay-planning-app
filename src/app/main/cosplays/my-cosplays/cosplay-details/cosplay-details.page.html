@@ -4,6 +4,7 @@
       <ion-back-button text="Cosplay List" defaultHref="/"></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="end">
+      <ion-title>{{ isLoading ? 'Loading...' : cosplay.characterName}}</ion-title>
       <ion-button >
         <ion-icon #favIcon name="heart"></ion-icon>
       </ion-button>
@@ -17,11 +18,12 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" >
+  <div text-center *ngIf="isLoading">        
+    <ion-spinner color="primary" ></ion-spinner>
+  </div>
+  <ion-grid *ngIf="!isLoading">
   <ion-row>
-    <div *ngIf="isLoading" text-center>        
-      <ion-spinner color="primary" ></ion-spinner>
-    </div>
-    <ion-col class="content-col" *ngIf="!isLoading">
+    <ion-col class="content-col" >
       <ion-thumbnail class="user-image">
         <img src="{{ cosplay.imageUrl }}">
       </ion-thumbnail>
@@ -42,4 +44,5 @@
 
     </ion-col>
   </ion-row>
+</ion-grid>
 </ion-content>

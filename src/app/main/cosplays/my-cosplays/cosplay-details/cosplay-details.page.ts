@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { NavController, AlertController } from '@ionic/angular';
 import { Cosplay } from '../../cosplay.model';
 import { CosplaysService } from '../../cosplays.service';
 import { Subscription } from 'rxjs';
@@ -20,7 +20,8 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
     private router: Router,
     private navCtrl: NavController,
     private route: ActivatedRoute,
-    private cosplaysService: CosplaysService
+    private cosplaysService: CosplaysService,
+    private alertCtrl: AlertController
   ) { }
 
   ngOnInit() {
@@ -32,9 +33,22 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
       this.isLoading = true;
       this.cosplayId = paramMap.get('cosplayId');
       this.cosplaySub = this.cosplaysService.getCosplay(paramMap.get('cosplayId')).subscribe(cosplay => {
-        this.isLoading = false;
         this.cosplay = cosplay;
-        console.log(cosplay);
+        this.isLoading = false;
+      }, error => {
+        this.alertCtrl
+        .create({
+          header: 'An error ocurred!',
+          message: 'Could not load cosplay. Try again later.',
+          buttons: [{
+            text: 'Okay',
+            handler: () => {
+              this.router.navigate(['/main/tabs/cosplays/my-cosplays']);
+            }
+          }]
+        }).then(alertEl => {
+          alertEl.present();
+        });
       });
       // load the cosplay
     });

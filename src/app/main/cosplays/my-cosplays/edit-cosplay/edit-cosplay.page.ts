@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CosplaysService } from '../../cosplays.service';
-import { NavController, LoadingController } from '@ionic/angular';
+import { NavController, LoadingController, AlertController } from '@ionic/angular';
 import { Cosplay } from '../../cosplay.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -23,7 +23,8 @@ export class EditCosplayPage implements OnInit, OnDestroy {
     private cosplayService: CosplaysService,
     private navCtrl: NavController,
     private router: Router,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private alertCtrl: AlertController
   ) { }
 
   ngOnInit() {
@@ -53,6 +54,17 @@ export class EditCosplayPage implements OnInit, OnDestroy {
           })
         });
         this.isLoading = false;
+      }, error => {
+        this.alertCtrl.create({
+          header: 'An error ocurred!',
+          message: 'Cosplay could not be fetched. Try again later',
+          buttons:  [{text: 'Okay',
+          handler: () => {
+            this.router.navigate(['/main/tabs/cosplays/my-cosplays']);
+          }}] })
+      .then(alertEl => {
+        alertEl.present();
+      });
       });
 
     });
