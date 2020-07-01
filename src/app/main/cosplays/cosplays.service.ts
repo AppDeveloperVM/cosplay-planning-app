@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Cosplay } from './cosplay.model';
 import { AuthService } from 'src/app/auth/auth.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { take, map, tap, delay, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { platform } from 'os';
 
 
 /*
@@ -69,11 +68,23 @@ export class CosplaysService {
   }
 
   getCosplay(id: string) {
-    return this.cosplays.pipe(
-      take(1),
-      map(cosplays => {
-        return {...cosplays.find(c => c.id === id)};
-    }));
+    return this.http.get<CosplayData>(
+      `https://cosplay-planning-app.firebaseio.com/my-cosplays/${id}.json`
+    ).pipe(
+      map(cosplayData => {
+        return new Cosplay(
+          id,
+          cosplayData.characterName,
+          cosplayData.description,
+          cosplayData.imageUrl,
+          cosplayData.series,
+          cosplayData.funds,
+          cosplayData.percentComplete,
+          cosplayData.status,
+          cosplayData.userId
+          );
+      })
+    );
   }
 
   getCosplayById(cosplayId: string) {
@@ -125,7 +136,17 @@ export class CosplaysService {
   }
 
   // Pero yo necesito un nuevo cosplay Group character request
-  setCosplayGroupRequest(id: string, characterName: string, description: string, imageUrl: string, series: string, funds: number, percentComplete: string, status: boolean, userId: string) {
+  setCosplayGroupRequest(
+    id: string,
+    characterName: string,
+    description: string,
+    imageUrl: string,
+    series: string,
+    funds: number,
+    percentComplete: string,
+    status: boolean,
+    userId: string
+  ) {
     const newCosplayRequest = new Cosplay(
         Math.random().toString(),
         characterName,
@@ -138,7 +159,6 @@ export class CosplaysService {
         this.authService.userId
     );
   }
-
 
   updateCosplay(
     cosplayId: string,
@@ -153,9 +173,18 @@ export class CosplaysService {
   ) {
     let updatedCosplays: Cosplay[];
     return this.cosplays.pipe(
-      take(1), switchMap( cosplays => {
+      take(1),
+      switchMap( cosplays => {
+        if (!cosplays || cosplays.length <= 0) {
+          return this.fetchCosplays();
+        } else {
+          return of(cosplays);
+        }
+
+      }),
+      switchMap(cosplays => {
         const updatedCosplayIndex = cosplays.findIndex(cos => cos.id === cosplayId);
-        const updatedCosplays = [...cosplays];
+        updatedCosplays = [...cosplays];
         const oldCosplay = updatedCosplays[updatedCosplayIndex];
 
         updatedCosplays[updatedCosplayIndex] = new Cosplay(
@@ -173,7 +202,8 @@ export class CosplaysService {
           `https://cosplay-planning-app.firebaseio.com/my-cosplays/${cosplayId}.json`,
           { ...updatedCosplays[updatedCosplayIndex], id: null}
         );
-      }), tap(()  => {
+      })
+      , tap(cosplays  => {
         this._cosplays.next(updatedCosplays);
       }));
   }
