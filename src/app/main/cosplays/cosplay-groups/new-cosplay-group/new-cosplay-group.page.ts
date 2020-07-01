@@ -54,8 +54,7 @@ export class NewCosplayGroupPage implements OnInit {
   }
 
   onCreateGroup() {
-    console.log(this.form.value);  // { first: '', last: '' }
-    console.log(this.form.valid);
+
 
     this.cosplayGroupService.addCosplayGroup(
       this.form.value.title,
@@ -64,10 +63,11 @@ export class NewCosplayGroupPage implements OnInit {
       this.form.value.place,
       new Date(this.form.value.dateFrom),
       new Date(this.form.value.dateTo),
-    );
+    ).subscribe(() => {
+      this.form.reset();
+      this.router.navigate(['main/tabs/cosplays/cosplay-groups']);
+    });
 
-    this.form.reset();
-    this.router.navigate(['main/tabs/cosplays/cosplay-groups']);
   }
 
 

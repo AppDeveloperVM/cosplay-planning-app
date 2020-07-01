@@ -3,42 +3,45 @@ import { CosplayGroup } from './cosplay-group.model';
 import { Cosplay } from '../cosplay.model';
 import { AuthService } from 'src/app/auth/auth.service';
 import { BehaviorSubject } from 'rxjs';
-import { take, map, delay, tap } from 'rxjs/operators';
+import { take, map, delay, tap, switchMap } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+
+/*
+new CosplayGroup(
+    'g1',
+    'Grupal Kimetsu',
+    'Kimetsu no Yaiba',
+    'https://static.timesofisrael.com/www/uploads/2019/03/iStock-1060517676-e1553784733101.jpg',
+    'Mallorca',
+    new Date('2019-01-20'),
+    new Date('2019-01-25'),
+    'user1'
+),
+new CosplayGroup(
+    'g2',
+    'Grupal Naruto',
+    'Naruto',
+    'https://static.timesofisrael.com/www/uploads/2019/03/iStock-1060517676-e1553784733101.jpg',
+    'Sevilla',
+    new Date('2019-01-20'),
+    new Date('2019-01-25'),
+    'user33'
+)
+*/
 
 @Injectable({
     providedIn: 'root'
 })
 export class CosplayGroupService {
     private _cosplaygroups = new BehaviorSubject<CosplayGroup[]>(
-        [
-            new CosplayGroup(
-                'g1',
-                'Grupal Kimetsu',
-                'Kimetsu no Yaiba',
-                'https://static.timesofisrael.com/www/uploads/2019/03/iStock-1060517676-e1553784733101.jpg',
-                'Mallorca',
-                new Date('2019-01-20'),
-                new Date('2019-01-25'),
-                'user1'
-            ),
-            new CosplayGroup(
-                'g2',
-                'Grupal Naruto',
-                'Naruto',
-                'https://static.timesofisrael.com/www/uploads/2019/03/iStock-1060517676-e1553784733101.jpg',
-                'Sevilla',
-                new Date('2019-01-20'),
-                new Date('2019-01-25'),
-                'user33'
-            )
-        ]
+        []
     ) ;
 
     get cosplaygroups() {
         return this._cosplaygroups.asObservable();
     }
 
-    constructor( private authService: AuthService ) {}
+    constructor( private authService: AuthService, private http: HttpClient ) {}
 
     getCosplayGroup(id: string) {
         return this.cosplaygroups.pipe(
@@ -57,6 +60,7 @@ export class CosplayGroupService {
         dateFrom: Date,
         dateTo: Date
     ) {
+        let generatedId: string;
         const newCosplayGroup = new CosplayGroup(
             Math.random().toString(),
             title,
@@ -67,13 +71,21 @@ export class CosplayGroupService {
             dateTo,
             this.authService.userId
         );
-        this.cosplaygroups.pipe(
+        return this.http
+        .post<{title: string}>(
+            'https://cosplay-planning-app.firebaseio.com/cosplay-groups.json',
+            { ...newCosplayGroup, id: null}
+        ).pipe(
+            switchMap(resData => {
+                generatedId = resData.title;
+                return this.cosplaygroups;
+            }),
             take(1),
-            delay(1000))
-            .subscribe(cosplaygroups => {
-            this._cosplaygroups.next(cosplaygroups.concat(newCosplayGroup));
-            }
-        ); // have a look at cosplayG subject, and subscribe, but take only 1 object and cancel subscrib
+            tap(cosplaygroups => {
+                newCosplayGroup.id = generatedId;
+                this._cosplaygroups.next(cosplaygroups.concat(newCosplayGroup));
+            }));
+
     }
 
 }
