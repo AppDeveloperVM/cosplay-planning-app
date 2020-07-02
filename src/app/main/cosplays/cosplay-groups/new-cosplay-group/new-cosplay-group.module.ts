@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { NewCosplayGroupPageRoutingModule } from './new-cosplay-group-routing.module';
 
 import { NewCosplayGroupPage } from './new-cosplay-group.page';
+import { SharedModule } from '../../../../shared/shared.module';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { NewCosplayGroupPage } from './new-cosplay-group.page';
     ReactiveFormsModule,
     IonicModule,
     NewCosplayGroupPageRoutingModule,
-    FormsModule
+    FormsModule,
+    SharedModule
   ],
   declarations: [NewCosplayGroupPage]
 })
