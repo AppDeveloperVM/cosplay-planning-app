@@ -21,6 +21,7 @@ export class CosplayGroupsPage implements OnInit, OnDestroy {
   relevantCosplayGroups: CosplayGroup[];
   private cosplaysGSub: Subscription;
   private filter = 'all';
+  isLoading = false;
 
   constructor(private cosplaygroupService: CosplayGroupService, private authService: AuthService) { }
 
@@ -30,6 +31,13 @@ export class CosplayGroupsPage implements OnInit, OnDestroy {
       this.loadedCosplayGroups = cosplaygroups;
       this.listedLoadedCosplays = this.loadedCosplayGroups;
       this.onFilterUpdate(this.filter);
+    });
+  }
+
+  ionViewWillEnter() {
+    this.isLoading = true;
+    this.cosplaygroupService.fetchCosplayGroups().subscribe(() => {
+      this.isLoading = false;
     });
   }
 

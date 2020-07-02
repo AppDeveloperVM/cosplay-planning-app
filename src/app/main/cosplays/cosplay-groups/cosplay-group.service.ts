@@ -29,6 +29,16 @@ new CosplayGroup(
 )
 */
 
+interface CosplayGroupData {
+    availableFrom: Date;
+    availableTo: Date;
+    imageUrl: string;
+    place: string;
+    series: string;
+    title: string;
+    userId: string;
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -50,6 +60,37 @@ export class CosplayGroupService {
                 return {...cosplaygroups.find(p => p.id === id)};
         })
     );
+    }
+
+    fetchCosplayGroups() {
+        return this.http.get<{ [key: string]: CosplayGroupData}>(
+            `https://cosplay-planning-app.firebaseio.com/cosplay-groups.json?orderBy="userId"&equalTo="${
+            this.authService.userId
+            }"`
+        )
+        .pipe(
+            map(CosplayGroupData => {
+                const cosplayGroups = [];
+                for (const key in CosplayGroupData) {
+                    if (CosplayGroupData.hasOwnProperty(key)) {
+                        cosplayGroups.push(new CosplayGroup(
+                            key,
+                            CosplayGroupData[key].title,
+                            CosplayGroupData[key].series,
+                            CosplayGroupData[key].imageUrl,
+                            CosplayGroupData[key].place,
+                            new Date(CosplayGroupData[key].availableFrom),
+                            new Date(CosplayGroupData[key].availableTo),
+                            CosplayGroupData[key].userId
+                            )
+                        );
+                    }
+                }
+                return cosplayGroups;
+            }), tap(cosplaygroups => {
+                this._cosplaygroups.next(cosplaygroups);
+            })
+        );
     }
 
     addCosplayGroup(
