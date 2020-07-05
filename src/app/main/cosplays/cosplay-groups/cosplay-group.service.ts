@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { BehaviorSubject } from 'rxjs';
 import { take, map, delay, tap, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
+import { PlaceLocation } from './location.model';
 
 /*
 new CosplayGroup(
@@ -37,6 +38,7 @@ interface CosplayGroupData {
     series: string;
     title: string;
     userId: string;
+    location: PlaceLocation;
 }
 
 @Injectable({
@@ -81,7 +83,8 @@ export class CosplayGroupService {
                             CosplayGroupData[key].place,
                             new Date(CosplayGroupData[key].availableFrom),
                             new Date(CosplayGroupData[key].availableTo),
-                            CosplayGroupData[key].userId
+                            CosplayGroupData[key].userId,
+                            CosplayGroupData[key].location
                             )
                         );
                     }
@@ -99,7 +102,8 @@ export class CosplayGroupService {
         imageUrl: string,
         place: string,
         dateFrom: Date,
-        dateTo: Date
+        dateTo: Date,
+        location: PlaceLocation,
     ) {
         let generatedId: string;
         const newCosplayGroup = new CosplayGroup(
@@ -110,7 +114,8 @@ export class CosplayGroupService {
             place,
             dateFrom,
             dateTo,
-            this.authService.userId
+            this.authService.userId,
+            location
         );
         return this.http
         .post<{title: string}>(

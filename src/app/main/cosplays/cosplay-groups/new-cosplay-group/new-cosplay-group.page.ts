@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CosplayGroup } from '../cosplay-group.model';
 import { CosplayGroupService } from '../cosplay-group.service';
 import { Router } from '@angular/router';
+import { PlaceLocation } from '../location.model';
 
 @Component({
   selector: 'app-new-cosplay-group',
@@ -49,12 +50,19 @@ export class NewCosplayGroupPage implements OnInit {
       dateTo: new FormControl(null, {
         updateOn: 'blur',
         validators: [ Validators.required]
-      })
+      }),
+      location: new FormControl(null, {validators: [Validators.required]})
     });
   }
 
-  onCreateGroup() {
+  onLocationPicked(location: PlaceLocation) {
+    this.form.patchValue({ location: location });
+  }
 
+  onCreateGroup() {
+    if (!this.form.valid) {
+      return;
+    }
 
     this.cosplayGroupService.addCosplayGroup(
       this.form.value.title,
@@ -63,6 +71,7 @@ export class NewCosplayGroupPage implements OnInit {
       this.form.value.place,
       new Date(this.form.value.dateFrom),
       new Date(this.form.value.dateTo),
+      this.form.value.location
     ).subscribe(() => {
       this.form.reset();
       this.router.navigate(['main/tabs/cosplays/cosplay-groups']);

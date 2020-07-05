@@ -10,6 +10,16 @@
 <ion-content>
   <ion-grid>
     <ion-row>
+      <ion-col size-sm="6" offset-sm="3" padding text-center>
+        <p>{{ cosplayGroup.location.address }}</p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-sm="6" offset-sm="3" no-padding>
+        <ion-img role="button" (click)="onShowFullMap()" class="location-image" [src]="cosplayGroup.location.staticMapImageUrl"></ion-img>
+      </ion-col>
+    </ion-row>
+    <ion-row>
       <ion-col size-sm="6" offset-sm="3">
         <p>Actual characters taken</p>
         <ion-list>
@@ -32,7 +42,6 @@
           >
           Send Request
           </ion-button>
-        
       </ion-col>
     </ion-row>
   </ion-grid>

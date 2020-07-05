@@ -1,3 +1,5 @@
+import { PlaceLocation } from './location.model';
+
 export class CosplayGroup {
     constructor(
         public id: string,
@@ -7,6 +9,7 @@ export class CosplayGroup {
         public place: string,
         public availableFrom: Date,
         public availableTo: Date,
-        public userId: string
+        public userId: string,
+        public location: PlaceLocation
     ) { }
 }

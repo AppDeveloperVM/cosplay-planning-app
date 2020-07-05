@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { Cosplay } from '../../cosplay.model';
 import { Subscription } from 'rxjs';
+import { MapModalComponent } from 'src/app/shared/map-modal/map-modal.component';
 
 @Component({
   selector: 'app-cosplay-group-details',
@@ -56,6 +57,17 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
     // this.newCosplay = this.cosplayService.setCosplayRequest();
 
     console.log(characterName);
+  }
+
+  onShowFullMap() {
+    this.modalCtrl.create({component: MapModalComponent, componentProps: {
+      center: { lat: this.cosplayGroup.location.lat, lng: this.cosplayGroup.location.lng },
+      selectable: false,
+      closeButtonText: 'close',
+      title: this.cosplayGroup.title
+    } }).then(modalEl => {
+      modalEl.present();
+    });
   }
 
   ngOnDestroy() {
