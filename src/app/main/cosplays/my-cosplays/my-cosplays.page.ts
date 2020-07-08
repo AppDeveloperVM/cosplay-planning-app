@@ -58,7 +58,6 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
       );
     }
     this.listedLoadedCosplays = this.relevantCosplays;
-    console.log(filter);
   }
 
 
@@ -72,7 +71,6 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
       // mode: 'ios',
       backdropDismiss: true
     });
-
     await popover.present();
 
     const { data } = await popover.onWillDismiss(); // onDidDismiss();

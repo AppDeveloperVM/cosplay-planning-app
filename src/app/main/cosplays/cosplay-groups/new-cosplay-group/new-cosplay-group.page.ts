@@ -4,6 +4,8 @@ import { CosplayGroup } from '../cosplay-group.model';
 import { CosplayGroupService } from '../cosplay-group.service';
 import { Router } from '@angular/router';
 import { PlaceLocation } from '../location.model';
+import { switchMap } from 'rxjs/operators';
+import { LoadingController } from '@ionic/angular';
 
 function base64toBlob(base64Data, contentType) {
   contentType = contentType || '';
@@ -39,7 +41,7 @@ export class NewCosplayGroupPage implements OnInit {
   startDate: string;
   endDate: string;
 
-  constructor(private cosplayGroupService: CosplayGroupService, private router: Router) { }
+  constructor(private cosplayGroupService: CosplayGroupService, private router: Router, private loadingCtrl: LoadingController) { }
 
   ngOnInit() {
     const availableFrom = new Date();
@@ -103,21 +105,34 @@ export class NewCosplayGroupPage implements OnInit {
     if (!this.form.valid || !this.form.get('image').value ) {
       return;
     }
-    this.cosplayGroupService.
-    addCosplayGroup(
-      this.form.value.title,
-      this.form.value.series,
-      this.form.value.description,
-      this.form.value.place,
-      new Date(this.form.value.dateFrom),
-      new Date(this.form.value.dateTo),
-      this.form.value.location
-    ).subscribe(() => {
-      this.form.reset();
-      this.router.navigate(['main/tabs/cosplays/cosplay-groups']);
+
+    this.loadingCtrl
+    .create({
+      message: 'Creating Cosplay Group...'
+    })
+    .then(loadingEl => {
+      loadingEl.present();
+      this.cosplayGroupService.uploadImage(this.form.get('image').value)
+      .pipe(
+        switchMap(uploadRes => {
+          return this.cosplayGroupService.
+            addCosplayGroup(
+              this.form.value.title,
+              this.form.value.series,
+              uploadRes.imageUrl,
+              this.form.value.place,
+              new Date(this.form.value.dateFrom),
+              new Date(this.form.value.dateTo),
+              this.form.value.location
+            );
+      }))
+      .subscribe(() => {
+        loadingEl.dismiss();
+        this.form.reset();
+        this.router.navigate(['main/tabs/cosplays/cosplay-groups']);
+      });
     });
 
   }
-
 
 }
