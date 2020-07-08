@@ -96,6 +96,16 @@ export class CosplayGroupService {
         );
     }
 
+    uploadImage(image: File) {
+        const uploadData = new FormData();
+        uploadData.append('image', image);
+
+        return this.http.post<{imageUrl: string, imagePath: string}>(
+            'https://us-central1-cosplay-planning-app.cloudfunctions.net/storeImage',
+            uploadData
+        );
+    }
+
     addCosplayGroup(
         title: string,
         series: string,
@@ -110,7 +120,7 @@ export class CosplayGroupService {
             Math.random().toString(),
             title,
             series,
-            'https://static.timesofisrael.com/www/uploads/2019/03/iStock-1060517676-e1553784733101.jpg',
+            imageUrl,
             place,
             dateFrom,
             dateTo,
