@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { NewCosplayPageRoutingModule } from './new-cosplay-routing.module';
 
 import { NewCosplayPage } from './new-cosplay.page';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { NewCosplayPage } from './new-cosplay.page';
     FormsModule,
     IonicModule,
     NewCosplayPageRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
   ],
   declarations: [NewCosplayPage]
 })

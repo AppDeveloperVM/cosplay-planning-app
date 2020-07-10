@@ -95,6 +95,16 @@ export class CosplaysService {
     }));
   }
 
+  uploadImage(image: File) {
+    const uploadData = new FormData();
+    uploadData.append('image', image);
+
+    return this.http.post<{imageUrl: string, imagePath: string}>(
+        'https://us-central1-cosplay-planning-app.cloudfunctions.net/storeImage',
+        uploadData
+    );
+  }
+
   addCosplay(
     characterName: string,
     description: string,
@@ -109,7 +119,7 @@ export class CosplaysService {
       Math.random().toString(),
       characterName,
       description,
-      'https://pbs.twimg.com/media/DluGJLAUYAEdcIT?format=jpg&name=small',
+      imageUrl,
       series,
       funds,
       percentComplete,
@@ -118,7 +128,9 @@ export class CosplaysService {
     );
 
     return this.http
-    .post<{name: string}>('https://cosplay-planning-app.firebaseio.com/my-cosplays.json', { ...newCosplay, id: null})
+    .post<{name: string}>(
+      'https://cosplay-planning-app.firebaseio.com/my-cosplays.json',
+      { ...newCosplay, id: null})
     .pipe(
       switchMap(resData => {
         generatedId = resData.name;
@@ -151,7 +163,7 @@ export class CosplaysService {
         Math.random().toString(),
         characterName,
         description,
-        'https://pbs.twimg.com/media/DluGJLAUYAEdcIT?format=jpg&name=small',
+        imageUrl,
         series,
         funds,
         percentComplete,
