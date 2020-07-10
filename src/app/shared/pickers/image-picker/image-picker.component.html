@@ -1,13 +1,14 @@
 <div class="picker">
   <ion-img 
   role="button"
-  class="image" [src]="selectedImage" 
+  class="image" 
   (click)="onPickImage()"
-  *ngIf="!selectedImage || !showPreview"
+  [src]="selectedImage"
+  *ngIf="selectedImage && showPreview"
   >
 </ion-img>
   <ion-button color="primary" (click)="onPickImage()" 
-  *ngIf="!selectedImage">
+  *ngIf="!selectedImage || !showPreview">
     <ion-icon name="camera"></ion-icon>
     <ion-label>Take picture</ion-label>
   </ion-button>
