@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CosplayGroup } from '../cosplay-group.model';
 import { Subscription } from 'rxjs';
-import { NavController, ModalController, ToastController, AlertController } from '@ionic/angular';
+import { NavController, ModalController, ToastController, AlertController, LoadingController } from '@ionic/angular';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CosplayGroupService } from '../cosplay-group.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { switchMap } from 'rxjs/operators';
 
 function base64toBlob(base64Data, contentType) {
   contentType = contentType || '';
@@ -45,6 +46,7 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
     private cosplayGroupService: CosplayGroupService,
     private modalCtrl: ModalController,
     private toastCtrl: ToastController,
+    private loadingCtrl: LoadingController,
     private router: Router,
     private alertCtrl: AlertController) { }
 
@@ -129,7 +131,35 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
   }
 
   onUpdateCosplayGroup() {
-    return;
+    if (!this.form.valid) {
+      return;
+    }
+
+    this.loadingCtrl
+    .create({
+      message: 'Updating Cosplay...'
+    }).then(loadingEl => {
+      loadingEl.present();
+      this.cosplayGroupService.uploadImage(this.form.get('image').value)
+      .pipe(
+        switchMap(uploadRes => {
+          return this.cosplayGroupService.
+            updateCosplayGroup(
+              this.form.value.title,
+              this.form.value.series,
+              uploadRes.imageUrl,
+              this.form.value.place,
+              new Date(this.form.value.dateFrom),
+              new Date(this.form.value.dateTo),
+              this.form.value.location
+            );
+        }))
+        .subscribe(() => {
+          loadingEl.dismiss();
+          this.form.reset();
+          this.router.navigate(['main/tabs/cosplays/cosplay-groups']);
+        });
+    });
   }
 
   ngOnDestroy() {

@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { CosplayGroup } from './cosplay-group.model';
 import { Cosplay } from '../cosplay.model';
 import { AuthService } from 'src/app/auth/auth.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { take, map, delay, tap, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { PlaceLocation } from './location.model';
+import { stringify } from 'querystring';
 
 /*
 new CosplayGroup(
@@ -17,16 +18,6 @@ new CosplayGroup(
     new Date('2019-01-20'),
     new Date('2019-01-25'),
     'user1'
-),
-new CosplayGroup(
-    'g2',
-    'Grupal Naruto',
-    'Naruto',
-    'https://static.timesofisrael.com/www/uploads/2019/03/iStock-1060517676-e1553784733101.jpg',
-    'Sevilla',
-    new Date('2019-01-20'),
-    new Date('2019-01-25'),
-    'user33'
 )
 */
 
@@ -143,5 +134,56 @@ export class CosplayGroupService {
             }));
 
     }
+
+    updateCosplayGroup(
+        cosplayGroupId: string,
+        title: string,
+        series: string,
+        imageUrl: string,
+        place: string,
+        availableFrom: Date,
+        availableTo: Date,
+        userId: string,
+        location: PlaceLocation
+    ) {
+
+        let updatedCosplayGroups: CosplayGroup[];
+        return this.cosplaygroups.pipe(
+        take(1),
+        switchMap( cosplays => {
+            if (!cosplays || cosplays.length <= 0) {
+            return this.fetchCosplayGroups();
+            } else {
+            return of(cosplays);
+            }
+
+        }),
+        switchMap(cosplaygroups => {
+            const updatedCosplayGroupIndex = cosplaygroups.findIndex(cos => cos.id === cosplayId);
+            updatedCosplayGroups = [...cosplaygroups];
+            const oldCosplay = updatedCosplayGroups[updatedCosplayGroupIndex];
+
+            updatedCosplayGroups[updatedCosplayGroupIndex] = new CosplayGroup(
+            oldCosplay.id,
+            title,
+            series,
+            imageUrl,
+            place,
+            availableFrom,
+            availableTo,
+            userId,
+            location
+            );
+            return this.http.put(
+            `https://cosplay-planning-app.firebaseio.com/cosplay-groups/${cosplayGroupId}.json`,
+            { ...updatedCosplayGroups[updatedCosplayGroupIndex], id: null}
+            );
+        })
+        , tap(cosplaygroups  => {
+            this._cosplaygroups.next(updatedCosplayGroups);
+        }));
+
+    }
+
 
 }
