@@ -50,13 +50,20 @@ const routes: Routes = [
                 [
                   {
                     path: ':cosplaygroupId',
-                    loadChildren: () => import('./cosplays/cosplay-groups/cosplay-group-form-request/cosplay-group-form-request.module').then( m => m.CosplayGroupFormRequestPageModule)
+                    loadChildren: () => import('./cosplays/cosplay-groups/cosplay-group-form-request/cosplay-group-form-request.module').
+                    then( m => m.CosplayGroupFormRequestPageModule)
                   }
                 ]
               },
               {
                 path: ':cosplaygroupId',
-                loadChildren: () => import('./cosplays/cosplay-groups/cosplay-group-details/cosplay-group-details.module').then( m => m.CosplayGroupDetailsPageModule)
+                loadChildren: () => import('./cosplays/cosplay-groups/cosplay-group-details/cosplay-group-details.module').
+                then( m => m.CosplayGroupDetailsPageModule)
+              },
+              {
+                path: 'edit/:cosplaygroupId',
+                loadChildren: () => import('./cosplays/cosplay-groups/edit-cosplay-group/edit-cosplay-group.module').
+                then( m => m.EditCosplayGroupPageModule)
               }
             ]
           }
