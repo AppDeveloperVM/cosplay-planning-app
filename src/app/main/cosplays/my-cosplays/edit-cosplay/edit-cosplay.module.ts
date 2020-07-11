@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { EditCosplayPageRoutingModule } from './edit-cosplay-routing.module';
 
 import { EditCosplayPage } from './edit-cosplay.page';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     ReactiveFormsModule,
     IonicModule,
-    EditCosplayPageRoutingModule
+    EditCosplayPageRoutingModule,
+    SharedModule
   ],
   declarations: [EditCosplayPage]
 })

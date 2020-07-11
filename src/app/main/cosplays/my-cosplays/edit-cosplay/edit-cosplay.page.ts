@@ -5,6 +5,28 @@ import { NavController, LoadingController, AlertController } from '@ionic/angula
 import { Cosplay } from '../../cosplay.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+
+function base64toBlob(base64Data, contentType) {
+  contentType = contentType || '';
+  const sliceSize = 1024;
+  const byteCharacters = atob(base64Data);
+  const bytesLength = byteCharacters.length;
+  const slicesCount = Math.ceil(bytesLength / sliceSize);
+  const byteArrays = new Array(slicesCount);
+
+  for (let sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
+    const begin = sliceIndex * sliceSize;
+    const end = Math.min(begin + sliceSize, bytesLength);
+
+    const bytes = new Array(end - begin);
+    for (let offset = begin, i = 0; offset < end; ++i, ++offset) {
+      bytes[i] = byteCharacters[offset].charCodeAt(0);
+    }
+    byteArrays[sliceIndex] = new Uint8Array(bytes);
+  }
+  return new Blob(byteArrays, { type: contentType });
+}
 
 @Component({
   selector: 'app-edit-cosplay',
@@ -51,7 +73,8 @@ export class EditCosplayPage implements OnInit, OnDestroy {
           description: new FormControl(this.cosplay.description, {
             updateOn: 'blur',
             validators: [Validators.required, Validators.maxLength(180)]
-          })
+          }),
+          image: new FormControl(null)
         });
         this.isLoading = false;
       }, error => {
@@ -70,31 +93,55 @@ export class EditCosplayPage implements OnInit, OnDestroy {
     });
   }
 
+  onImagePicked(imageData: string | File) {
+    let imageFile;
+    if (typeof imageData === 'string') {
+      try {
+        imageFile = base64toBlob(
+          imageData.replace('data:image/jpeg;base64,', ''),
+          'image/jpeg');
+      } catch (error) {
+        console.log(error);
+        return;
+      }
+    } else {
+      imageFile = imageData;
+    }
+    this.form.patchValue({image: imageFile});
+  }
+
   onUpdateCosplay() {
     if (!this.form.valid) {
       return;
     }
     console.log('cosplay id:' + this.cosplay.id + ', cosplay char:' + this.cosplay.characterName);
 
-    this.loadingCtrl.create(
-      { message: 'Updating Cosplay...' }
-    ).then(loadingEl => {
+    this.loadingCtrl
+    .create({
+      message: 'Updating Cosplay...'
+    }).then(loadingEl => {
       loadingEl.present();
-      this.cosplayService.updateCosplay(
-        this.cosplay.id,
-        this.form.value.characterName,
-        this.form.value.description,
-        this.cosplay.imageUrl,
-        this.form.value.series,
-        this.cosplay.funds,
-        this.cosplay.percentComplete,
-        this.cosplay.status,
-        this.cosplay.userId
-      ).subscribe(() => {
-        loadingEl.dismiss();
-        this.form.reset();
-        this.router.navigate(['main/tabs/cosplays/my-cosplays']);
-      });
+      this.cosplayService.uploadImage(this.form.get('image').value)
+      .pipe(
+        switchMap(uploadRes => {
+          return this.cosplayService.
+            updateCosplay(
+              this.cosplay.id,
+              this.form.value.characterName,
+              this.form.value.description,
+              uploadRes.imageUrl,
+              this.form.value.series,
+              this.cosplay.funds,
+              this.cosplay.percentComplete,
+              this.cosplay.status,
+              this.cosplay.userId
+            );
+        }))
+        .subscribe(() => {
+          loadingEl.dismiss();
+          this.form.reset();
+          this.router.navigate(['main/tabs/cosplays/my-cosplays']);
+        });
     });
 
   }
