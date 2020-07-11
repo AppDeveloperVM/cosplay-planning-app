@@ -1,9 +1,55 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>edit-cosplay-group</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button
+      [defaultHref]="'main/tabs/cosplays/cosplaygroups/' + cosplayGroupId"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Edit Cosplay</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button >
+        <ion-icon name="checkmark" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-
+<ion-content padding>
+  <div text-center *ngIf="isLoading">
+    <ion-spinner color="primary"></ion-spinner>
+  </div>
+  <form [formGroup]="form" *ngIf="!isLoading">
+    <ion-grid>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <app-image-picker
+          [showPreview]="form.get('image').value"
+          (imagePick)="onImagePicked($event)"></app-image-picker>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">Character Name</ion-label>
+            <ion-input type="text" formControlName="characterName"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">Series</ion-label>
+            <ion-input type="text" formControlName="series"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">Description</ion-label>
+            <ion-input type="text" formControlName="description"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
 </ion-content>
