@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ModalController, NavController, ToastController } from '@ionic/angular';
+import { ModalController, NavController, ToastController, AlertController } from '@ionic/angular';
 import { CosplayGroup } from '../cosplay-group.model';
 import { CosplayGroupService } from '../cosplay-group.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -15,6 +15,8 @@ import { MapModalComponent } from 'src/app/shared/map-modal/map-modal.component'
 })
 export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
   cosplayGroup: CosplayGroup;
+  cosplayGroupId: string;
+  isLoading = false;
   private cosplayGroupSub: Subscription;
   cosplay: Cosplay;
   newCosplayGroup: CosplayGroup;
@@ -25,7 +27,8 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
     private cosplayGroupService: CosplayGroupService,
     private modalCtrl: ModalController,
     private toastCtrl: ToastController,
-    private router: Router
+    private router: Router,
+    private alertCtrl: AlertController
   ) { }
 
   ngOnInit() {
@@ -34,11 +37,29 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
         this.navCtrl.navigateBack('/main/tabs/cosplays/cosplay-groups');
         return;
       }
+      this.isLoading = true;
+      this.cosplayGroupId = paramMap.get('cosplayGroupId');
       this.cosplayGroupSub = this.cosplayGroupService
       .getCosplayGroup(paramMap.get('cosplayGroupId'))
       .subscribe(cosplayGroup => {
         this.cosplayGroup = cosplayGroup;
-      });
+        this.isLoading = false;
+      }, error => {
+        this.alertCtrl
+        .create({
+          header: 'An error ocurred!',
+          message: 'Could not load cosplay. Try again later.',
+          buttons: [{
+            text: 'Okay',
+            handler: () => {
+              this.router.navigate(['/main/tabs/cosplays/cosplay-groups']);
+            }
+          }]
+        }).then(alertEl => {
+          alertEl.present();
+        });
+      }
+      );
 
       console.log('Cosplaygroup id: ' + this.cosplayGroup.id);
     });

@@ -4,6 +4,17 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/main/tabs/cosplays/my-cosplays"></ion-back-button>
     </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-title text-center>{{ isLoading ? 'Loading...' : '' }}</ion-title>
+      <ion-button >
+        <ion-icon #favIcon name="heart"></ion-icon>
+      </ion-button>
+      <ion-button color="primary"  
+        [routerLink]="['/', 'main', 'tabs' , 'cosplays', 'cosplaygroups' , 'edit' , cosplayGroupId ]"
+      >
+        Edit
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
