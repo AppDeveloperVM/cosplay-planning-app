@@ -7,7 +7,11 @@ const routes: Routes = [
   {
     path: '',
     component: PlanningPage
+  },  {
+    path: 'new-planning',
+    loadChildren: () => import('./new-planning/new-planning.module').then( m => m.NewPlanningPageModule)
   }
+
 ];
 
 @NgModule({

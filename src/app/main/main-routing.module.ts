@@ -90,7 +90,11 @@ const routes: Routes = [
           {
             path: '',
             loadChildren: () => import('./planning/planning.module').then( m => m.PlanningPageModule)
-          }
+          },
+          {
+            path: 'new-planning',
+            loadChildren: () => import('./planning/new-planning/new-planning.module').then( m => m.NewPlanningPageModule)
+          },
         ]
       },
       {
