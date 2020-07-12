@@ -28,8 +28,8 @@ const routes: Routes = [
               },
               {
                 path: ':cosplayId',
-                // tslint:disable-next-line: max-line-length
-                loadChildren: () => import('./cosplays/my-cosplays/cosplay-details/cosplay-details.module').then( m => m.CosplayDetailsPageModule)
+                loadChildren: () => import('./cosplays/my-cosplays/cosplay-details/cosplay-details.module').
+                  then( m => m.CosplayDetailsPageModule)
               },
               {
                 path: 'edit/:cosplayId',
@@ -38,7 +38,7 @@ const routes: Routes = [
             ]
           },
           {
-            path: 'cosplaygroups',
+            path: 'cosplay-groups',
             children: [
               {
                 path: '',
@@ -83,7 +83,6 @@ const routes: Routes = [
           }
         ]
       },
-      
       {
         path: 'planning',
         children:
