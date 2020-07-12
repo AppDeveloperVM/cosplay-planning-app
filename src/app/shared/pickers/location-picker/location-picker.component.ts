@@ -19,7 +19,8 @@ export class LocationPickerComponent implements OnInit {
   selectedLocationImage: string;
   isLoading = false;
 
-  constructor(private modalCtrl: ModalController,
+  constructor(
+      private modalCtrl: ModalController,
       private http: HttpClient,
       private actionSheetCtrl: ActionSheetController,
       private alertCtrl: AlertController
