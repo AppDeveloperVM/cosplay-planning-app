@@ -7,7 +7,7 @@
       </ion-back-button>
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-button color="primary" [disabled]="!form.valid" (click)="onCreateCosplay()">
+      <ion-button color="primary" [disabled]="!form.valid || !form.get('image').value" (click)="onCreateCosplay()">
         Done
       </ion-button>
     </ion-buttons>
