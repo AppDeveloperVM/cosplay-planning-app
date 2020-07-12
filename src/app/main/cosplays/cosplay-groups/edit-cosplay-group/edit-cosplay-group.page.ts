@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CosplayGroupService } from '../cosplay-group.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { switchMap } from 'rxjs/operators';
+import { PlaceLocation } from '../location.model';
 
 function base64toBlob(base64Data, contentType) {
   contentType = contentType || '';
@@ -39,6 +40,7 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
   isLoading = false;
   private cosplayGroupSub: Subscription;
   form: FormGroup;
+  selectedLocationImage: string;
 
   constructor(
     private navCtrl: NavController,
@@ -62,6 +64,8 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
       .getCosplayGroup(paramMap.get('cosplaygroupId'))
       .subscribe(cosplayGroup => {
         this.cosplayGroup = cosplayGroup;
+        
+        // this.selectedLocationImage = new Plac this.cosplayGroup.location;
 
         this.form = new FormGroup({
           title: new FormControl(this.cosplayGroup.title, {
@@ -92,7 +96,7 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
         this.alertCtrl
         .create({
           header: 'An error ocurred!',
-          message: 'Could not load cosplay. Try again later.',
+          message: 'Could not load cosplay Group. Try again later.',
           buttons: [{
             text: 'Okay',
             handler: () => {
@@ -107,6 +111,10 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
 
       console.log('Cosplaygroup id: ' + this.cosplayGroup.id);
     });
+  }
+
+  onLocationPicked(location: PlaceLocation) {
+    this.form.patchValue({ location });
   }
 
   onImagePicked(imageData: string | File) {
