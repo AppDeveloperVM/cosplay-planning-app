@@ -159,7 +159,7 @@ export class CosplayGroupService {
 
         }),
         switchMap(cosplaygroups => {
-            const updatedCosplayGroupIndex = cosplaygroups.findIndex(cos => cos.id === cosplayId);
+            const updatedCosplayGroupIndex = cosplaygroups.findIndex(cos => cos.id === cosplayGroupId);
             updatedCosplayGroups = [...cosplaygroups];
             const oldCosplay = updatedCosplayGroups[updatedCosplayGroupIndex];
 
