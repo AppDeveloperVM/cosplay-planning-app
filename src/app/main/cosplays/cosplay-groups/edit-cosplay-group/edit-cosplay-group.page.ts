@@ -64,27 +64,23 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
         this.cosplayGroup = cosplayGroup;
 
         this.form = new FormGroup({
-          title: new FormControl(null, {
+          title: new FormControl(this.cosplayGroup.title, {
             updateOn: 'blur',
             validators: [Validators.required]
           }),
-          series: new FormControl(null, {
+          series: new FormControl(this.cosplayGroup.series, {
             updateOn: 'blur',
             validators: [Validators.required, Validators.maxLength(180)]
           }),
-          description: new FormControl(null, {
+          place: new FormControl(this.cosplayGroup.place, {
             updateOn: 'blur',
             validators: [Validators.required, Validators.maxLength(180)]
           }),
-          place: new FormControl(null, {
-            updateOn: 'blur',
-            validators: [Validators.required, Validators.maxLength(180)]
-          }),
-          dateFrom: new FormControl(null, {
+          dateFrom: new FormControl(this.cosplayGroup.availableFrom, {
             updateOn: 'blur',
             validators: [ Validators.required]
           }),
-          dateTo: new FormControl(null, {
+          dateTo: new FormControl(this.cosplayGroup.availableTo, {
             updateOn: 'blur',
             validators: [ Validators.required]
           }),
@@ -145,12 +141,14 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
         switchMap(uploadRes => {
           return this.cosplayGroupService.
             updateCosplayGroup(
+              this.cosplayGroup.id,
               this.form.value.title,
               this.form.value.series,
               uploadRes.imageUrl,
               this.form.value.place,
               new Date(this.form.value.dateFrom),
               new Date(this.form.value.dateTo),
+              this.cosplayGroup.userId,
               this.form.value.location
             );
         }))
