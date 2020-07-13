@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormGroupDirective, FormControl, Validators } from '@angular/forms';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-new-planning',
@@ -11,16 +12,29 @@ export class NewPlanningPage implements OnInit {
   form: FormGroup;
   @ViewChild('createForm', { static: false }) createForm: FormGroupDirective;
 
-
-  constructor() { }
+  constructor(
+    private loadingCtrl: LoadingController
+  ) { }
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      characterName: new FormControl('', Validators.required),
-      series: new FormControl('', Validators.required),
+      title: new FormControl('', Validators.required),
       description: new FormControl(''),
-      image: new FormControl(null)
     });
+    this.loadingCtrl
+    .create({
+
+    })
+    .then(loadingEl => {
+      loadingEl.present();
+      
+    });
+  }
+
+  onCreatePlanning() {
+    if (!this.form.valid) {
+      return;
+    }
   }
 
 }
