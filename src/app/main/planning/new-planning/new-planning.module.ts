@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { NewPlanningPageRoutingModule } from './new-planning-routing.module';
 
 import { NewPlanningPage } from './new-planning.page';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { NewPlanningPage } from './new-planning.page';
     FormsModule,
     IonicModule,
     NewPlanningPageRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
   ],
   declarations: [NewPlanningPage]
 })
