@@ -21,20 +21,22 @@ export class NewPlanningPage implements OnInit {
       title: new FormControl('', Validators.required),
       description: new FormControl(''),
     });
-    this.loadingCtrl
-    .create({
-
-    })
-    .then(loadingEl => {
-      loadingEl.present();
-      
-    });
+    
   }
 
   onCreatePlanning() {
     if (!this.form.valid) {
       return;
     }
+
+    this.loadingCtrl
+    .create({
+      
+    })
+    .then(loadingEl => {
+      loadingEl.present();
+      
+    });
   }
 
 }
