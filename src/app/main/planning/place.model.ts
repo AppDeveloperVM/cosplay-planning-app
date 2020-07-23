@@ -4,6 +4,6 @@ export class Place {
     public planningId: string,
     public name: string,
     public description: string,
-    public coords: Coordinates,
+    public coords: Coordinates
   ) {}
 }
