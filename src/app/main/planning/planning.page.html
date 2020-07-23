@@ -13,5 +13,26 @@
 </ion-header>
 
 <ion-content>
-  
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center" >
+      <ion-virtual-scroll [items]="listedLoadedPlannings" approxItemHeight="45px" >
+        <ion-item 
+        routerDirection="forward"
+        [routerLink]="['/', 'main', 'tabs', 'plannings', planning.id ]"
+        detail 
+        *virtualItem="let planning"
+        >
+          <ion-thumbnail slot="start">
+            <ion-img [src]="planning.imageUrl"></ion-img>
+          </ion-thumbnail>
+          <ion-label>
+            <h2>{{ planning.title }}</h2>
+            <p>{{ planning.description }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-virtual-scroll>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

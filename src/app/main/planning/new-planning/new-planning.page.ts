@@ -50,8 +50,7 @@ export class NewPlanningPage implements OnInit {
         validators: [Validators.required]
       }),
       description: new FormControl(null, {
-        updateOn: 'blur',
-        validators: [Validators.required]
+        updateOn: 'blur'      
       }),
       location: new FormControl(null, {
         validators: [Validators.required]
@@ -98,8 +97,8 @@ export class NewPlanningPage implements OnInit {
         switchMap(uploadRes => {
           return this.planningService.
           addPlanning(
-            '',
-            '',
+            this.form.value.title,
+            this.form.value.description,
             uploadRes.imageUrl,
             ''
           );
