@@ -56,7 +56,8 @@ export class CosplayGroupService {
     }
 
     fetchCosplayGroups() {
-        return this.http.get<{ [key: string]: CosplayGroupData}>(
+        return this.http
+        .get<{ [key: string]: CosplayGroupData}>(
             `https://cosplay-planning-app.firebaseio.com/cosplay-groups.json?orderBy="userId"&equalTo="${
             this.authService.userId
             }"`
