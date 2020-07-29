@@ -4,7 +4,6 @@ import { Planning } from './planning.model';
 import { AuthService } from 'src/app/auth/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { switchMap, take, tap, map } from 'rxjs/operators';
-import { title } from 'process';
 
 interface PlanningData {
   title: string;
@@ -28,26 +27,38 @@ export class PlanningService {
 
   constructor(private authService: AuthService, private http: HttpClient) { }
 
+  getPlanning(id: string) {
+    return this.plannings.pipe(
+      take(1),
+      map(plannings => {
+        return {...plannings.find(p => p.id === id)}
+      })
+    );
+  }
+
   fetchPlannings() {
     return this.http
     .get<{[key: string]: PlanningData}>(
-      'https://cosplay-planning-app.firebaseio.com/plannings.json'
+      `https://cosplay-planning-app.firebaseio.com/plannings.json?orderBy="userId"&equalTo="${
+            this.authService.userId
+            }"`
       )
-    .pipe(map(resData => {
-      const plannings = [];
-      for (const key in resData) {
-        if (resData.hasOwnProperty(key)) {
-          plannings.push(new Planning(
-            key,
-            resData[key].title,
-            resData[key].description,
-            resData[key].imageUrl,
-            resData[key].places,
-            resData[key].userId
-            ));
+    .pipe(
+      map(resData => {
+        const plannings = [];
+        for (const key in resData) {
+          if (resData.hasOwnProperty(key)) {
+            plannings.push(new Planning(
+              key,
+              resData[key].title,
+              resData[key].description,
+              resData[key].imageUrl,
+              resData[key].places,
+              resData[key].userId
+              ));
+          }
         }
-      }
-      return plannings;
+        return plannings;
     }),
     tap(plannings => {
       this._plannings.next(plannings);
@@ -55,22 +66,7 @@ export class PlanningService {
     );
   }
 
-  getPlanning(id: string) {
-    return this.http.get<Planning>(
-      `https://cosplay-planning-app.firebaseio.com/plannings/${id}.json`
-    ).pipe(
-      map(PlanningData => {
-        return new Planning(
-          id,
-          PlanningData.title,
-          PlanningData.description,
-          PlanningData.imageurl,
-          PlanningData.places,
-          this.authService.userId
-          );
-      })
-    );
-  }
+  
 
   uploadImage(image: File) {
     const uploadData = new FormData();
@@ -85,7 +81,7 @@ export class PlanningService {
   addPlanning(
     title: string,
     description: string,
-    imageurl: string,
+    imageUrl: string,
     places: any,
 ) {
     let generatedId: string;
@@ -93,7 +89,7 @@ export class PlanningService {
         Math.random().toString(),
         title,
         description,
-        imageurl,
+        imageUrl,
         places,
         this.authService.userId
     );

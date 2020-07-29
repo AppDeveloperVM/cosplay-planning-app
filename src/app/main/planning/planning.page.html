@@ -19,7 +19,7 @@
       <ion-virtual-scroll [items]="listedLoadedPlannings" approxItemHeight="45px" >
         <ion-item 
         routerDirection="forward"
-        [routerLink]="['/', 'main', 'tabs', 'plannings', planning.id ]"
+        [routerLink]="['/', 'main', 'planning', planning.id ]"
         detail 
         *virtualItem="let planning"
         >

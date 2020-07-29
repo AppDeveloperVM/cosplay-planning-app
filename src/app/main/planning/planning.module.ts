@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { PlanningPageRoutingModule } from './planning-routing.module';
 
 import { PlanningPage } from './planning.page';
+import { PlanningItemComponent } from './planning-item/planning-item.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,6 @@ import { PlanningPage } from './planning.page';
     IonicModule,
     PlanningPageRoutingModule
   ],
-  declarations: [PlanningPage]
+  declarations: [PlanningPage,PlanningItemComponent]
 })
 export class PlanningPageModule {}
