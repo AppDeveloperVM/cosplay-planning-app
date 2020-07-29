@@ -95,6 +95,10 @@ const routes: Routes = [
             path: 'new-planning',
             loadChildren: () => import('./planning/new-planning/new-planning.module').then( m => m.NewPlanningPageModule)
           },
+          {
+            path: ':planningId',
+            loadChildren: () => import('./planning/planning-detail/planning-detail.module').then( m => m.PlanningDetailPageModule)
+          }
         ]
       },
       {
