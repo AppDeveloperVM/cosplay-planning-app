@@ -1,0 +1,13 @@
+<ion-item [routerLink]="['/','main','planning', 'planning-details', planning.id ]"
+detail>
+    <ion-thumbnail slot="start">
+      <ion-img [src]="planning.imageurl"></ion-img>
+    </ion-thumbnail>
+    <ion-label>
+      <h1>{{ planning.title }}</h1>
+      <div class="cosplaygroup-details">
+        <ion-icon name="location" color="secondary"></ion-icon>
+        <span class="place space-left space-right">{{ planning.places }}</span>
+      </div>
+    </ion-label>
+</ion-item>
