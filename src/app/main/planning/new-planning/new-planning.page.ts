@@ -43,7 +43,7 @@ export class NewPlanningPage implements OnInit {
     private router: Router
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.form = new FormGroup({
       title: new FormControl(null, {
         updateOn: 'blur',
@@ -106,7 +106,7 @@ export class NewPlanningPage implements OnInit {
       .subscribe(()=>{
         loadingEl.dismiss();
         this.form.reset();
-        this.router.navigate(['main/tabs/plannings']);
+        this.router.navigate(['main/planning']);
       })
     });
   }

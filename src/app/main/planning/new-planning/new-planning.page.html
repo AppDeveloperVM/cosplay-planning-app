@@ -1,13 +1,13 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/"></ion-back-button>
+      <ion-back-button defaultHref="/main/planning"></ion-back-button>
     </ion-buttons>
     <ion-title>New Planning</ion-title>
     <ion-buttons slot="end">
       <ion-title text-center></ion-title>
       <ion-button (click)="onCreatePlanning()" [disabled]="!form.valid || !form.get('image').value">
-        <ion-icon name="add" slot="icon-only"></ion-icon>
+        <ion-icon name="checkmark" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
