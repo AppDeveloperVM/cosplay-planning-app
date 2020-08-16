@@ -32,7 +32,7 @@ export class PlanningPage implements OnInit, OnDestroy {
       this.listedLoadedPlannings = this.loadedPlannings;
       this.onFilterUpdate(this.filter);
     });
-    //this.relevantCosplays = this.loadedCosplays;
+    // this.relevantCosplays = this.loadedCosplays;
 
   }
 
