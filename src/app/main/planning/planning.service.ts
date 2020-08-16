@@ -32,7 +32,7 @@ export class PlanningService {
     return this.plannings.pipe(
       take(1),
       map(plannings => {
-        return {...plannings.find(p => p.id === id)}
+        return {...plannings.find(p => p.id === id)};
       })
     );
   }
