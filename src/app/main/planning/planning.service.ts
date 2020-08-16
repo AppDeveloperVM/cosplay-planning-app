@@ -10,6 +10,7 @@ interface PlanningData {
   description: string;
   imageUrl: string;
   places: any;
+  location: any;
   userId: string;
 }
 
@@ -53,6 +54,7 @@ export class PlanningService {
               resData[key].title,
               resData[key].description,
               resData[key].imageUrl,
+              resData[key].location,
               resData[key].places,
               resData[key].userId
               ));
@@ -66,7 +68,7 @@ export class PlanningService {
     );
   }
 
-  
+
 
   uploadImage(image: File) {
     const uploadData = new FormData();
@@ -82,6 +84,7 @@ export class PlanningService {
     title: string,
     description: string,
     imageUrl: string,
+    location: any,
     places: any,
 ) {
     let generatedId: string;
@@ -90,6 +93,7 @@ export class PlanningService {
         title,
         description,
         imageUrl,
+        location,
         places,
         this.authService.userId
     );
