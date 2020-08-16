@@ -73,7 +73,16 @@ export class PlanningDetailPage implements OnInit {
     console.log(characterName);
   }
 
-
+  onShowFullMap() {
+    this.modalCtrl.create({component: MapModalComponent, componentProps: {
+      center: { lat: this.planning.location.lat, lng: this.planning.location.lng },
+      selectable: false,
+      closeButtonText: 'close',
+      title: this.planning.title
+    } }).then(modalEl => {
+      modalEl.present();
+    });
+  }
 
 
 }
