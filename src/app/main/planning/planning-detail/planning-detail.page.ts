@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs';
 import { NavController, ModalController, AlertController } from '@ionic/angular';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PlanningService } from '../planning.service';
-import { Route } from '@angular/compiler/src/core';
 import { MapModalComponent } from 'src/app/shared/map-modal/map-modal.component';
 import { NgForm } from '@angular/forms';
 
@@ -32,7 +31,7 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.route.paramMap.subscribe(paramMap => {
       if (!paramMap.has('planningId')) {
-        this.navCtrl.navigateBack('/main/planning');
+        this.navCtrl.navigateBack('/planning');
         return;
       }
       this.isLoading = true;
@@ -50,7 +49,7 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
           buttons: [{
             text: 'Okay',
             handler: () => {
-              this.router.navigate(['/main/planning']);
+              this.router.navigate(['/planning']);
             }
           }]
         }).then(alertEl => {
