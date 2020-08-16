@@ -50,14 +50,14 @@ export class NewPlanningPage implements OnInit {
         validators: [Validators.required]
       }),
       description: new FormControl(null, {
-        updateOn: 'blur'      
+        updateOn: 'blur'
       }),
       location: new FormControl(null, {
         validators: [Validators.required]
       }),
       image: new FormControl(null)
     });
-    
+
   }
 
   onLocationPicked(location: PlaceLocation) {
@@ -82,7 +82,7 @@ export class NewPlanningPage implements OnInit {
   }
 
   onCreatePlanning() {
-    if (!this.form.valid|| !this.form.get('image').value ) {
+    if (!this.form.valid || !this.form.get('image').value ) {
       return;
     }
 
@@ -100,10 +100,11 @@ export class NewPlanningPage implements OnInit {
             this.form.value.title,
             this.form.value.description,
             uploadRes.imageUrl,
+            this.form.value.location,
             ''
           );
       }))
-      .subscribe(()=>{
+      .subscribe(() => {
         loadingEl.dismiss();
         this.form.reset();
         this.router.navigate(['main/planning']);
