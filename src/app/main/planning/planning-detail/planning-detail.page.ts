@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Planning } from '../planning.model';
 import { Subscription } from 'rxjs';
 import { NavController, ModalController, AlertController } from '@ionic/angular';
@@ -13,7 +13,7 @@ import { NgForm } from '@angular/forms';
   templateUrl: './planning-detail.page.html',
   styleUrls: ['./planning-detail.page.scss'],
 })
-export class PlanningDetailPage implements OnInit {
+export class PlanningDetailPage implements OnInit, OnDestroy {
   planning: Planning;
   planningId: string;
   private planningSub: Subscription;
@@ -82,6 +82,12 @@ export class PlanningDetailPage implements OnInit {
     } }).then(modalEl => {
       modalEl.present();
     });
+  }
+
+  ngOnDestroy() {
+    if (this.planningSub) {
+      this.planningSub.unsubscribe();
+    }
   }
 
 
