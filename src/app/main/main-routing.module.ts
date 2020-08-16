@@ -84,39 +84,31 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'planning',
-        children:
+        path: '',
+        redirectTo: '/main/tabs/cosplays/my-cosplays',
+        pathMatch: 'full'
+      }
+    ]
+  },
+  {
+    path: 'planning',
+    children:
         [
           {
             path: '',
             loadChildren: () => import('./planning/planning.module').then( m => m.PlanningPageModule)
           },
           {
-            path: 'new-planning',
-            loadChildren: () => import('./planning/new-planning/new-planning.module').then( m => m.NewPlanningPageModule)
-          },
-          {
             path: ':planningId',
             loadChildren: () => import('./planning/planning-detail/planning-detail.module').then( m => m.PlanningDetailPageModule)
           }
         ]
-      },
-      {
-        path: '',
-        redirectTo: '/main/tabs/cosplays/my-cosplays',
-        pathMatch: 'full'
-      }
-    ]
   }
   ,
   {
     path: '',
     redirectTo: '/main/tabs/cosplays/my-cosplays',
     pathMatch: 'full'
-  },
-  {
-    path: 'planning',
-    loadChildren: () => import('./planning/planning.module').then( m => m.PlanningPageModule)
   }
 ];
 
