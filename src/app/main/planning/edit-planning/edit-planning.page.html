@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Edit Planning</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="onUpdatePlanning()" [disabled]="!form?.valid || !form.get('image').value">
+        <ion-icon name="checkmark" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div text-center *ngIf="isLoading">
+    <ion-spinner color="primary"></ion-spinner>
+  </div>
+  <form [formGroup]="form" *ngIf="!isLoading">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">Title</ion-label>
+            <ion-input type="text" formControlName="title"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label position="floating">Description</ion-label>
+            <ion-input type="text" formControlName="description"></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <app-location-picker
+          [showPreview]="form.get('location').value"
+          (locationPick)="onLocationPicked($event)"></app-location-picker>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <app-image-picker
+          [showPreview]="form.get('image').value"
+          (imagePick)="onImagePicked($event)"></app-image-picker>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>
