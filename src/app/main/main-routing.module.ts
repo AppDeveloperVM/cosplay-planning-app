@@ -78,6 +78,11 @@ const routes: Routes = [
             loadChildren: () => import('./conventions/conventions.module').then( m => m.ConventionsPageModule)
           },
           {
+            path: 'edit/:cosplaygroupId',
+            loadChildren: () => import('./cosplays/cosplay-groups/edit-cosplay-group/edit-cosplay-group.module').
+            then( m => m.EditCosplayGroupPageModule)
+          },
+          {
             path: ':conId',
             loadChildren: () => import('./conventions/con-detail/con-detail.module').then( m => m.ConDetailPageModule)
           }
@@ -97,10 +102,16 @@ const routes: Routes = [
           {
             path: '',
             loadChildren: () => import('./planning/planning.module').then( m => m.PlanningPageModule)
-          },
+          }
+          ,
           {
             path: ':planningId',
             loadChildren: () => import('./planning/planning-detail/planning-detail.module').then( m => m.PlanningDetailPageModule)
+          },
+          {
+            path: 'edit/:planningId',
+            loadChildren: () => import('./planning/edit-planning/edit-planning.module').
+            then( m => m.EditPlanningPageModule)
           }
         ]
   }
