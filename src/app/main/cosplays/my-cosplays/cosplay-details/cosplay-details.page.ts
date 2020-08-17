@@ -32,7 +32,9 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
       }
       this.isLoading = true;
       this.cosplayId = paramMap.get('cosplayId');
-      this.cosplaySub = this.cosplaysService.getCosplay(paramMap.get('cosplayId')).subscribe(cosplay => {
+      this.cosplaySub = this.cosplaysService
+      .getCosplay(paramMap.get('cosplayId'))
+      .subscribe(cosplay => {
         this.cosplay = cosplay;
         this.isLoading = false;
       }, error => {
