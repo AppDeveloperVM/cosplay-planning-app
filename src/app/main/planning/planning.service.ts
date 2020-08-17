@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { Planning } from './planning.model';
 import { AuthService } from 'src/app/auth/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { switchMap, take, tap, map } from 'rxjs/operators';
+import { PlaceLocation } from '../cosplays/cosplay-groups/location.model';
 
 interface PlanningData {
   title: string;
@@ -112,6 +113,52 @@ export class PlanningService {
             this._plannings.next(plannings.concat(newPlanning));
         }));
 
-}
+    }
+
+    updatePlanning(
+      planningId: string,
+      title: string,
+      description: string,
+      imageUrl: string,
+      location: PlaceLocation,
+      places: any,
+      userId: string,
+  ) {
+
+      let updatedPlannings: Planning[];
+      return this.plannings.pipe(
+      take(1),
+      switchMap( plannings => {
+          if (!plannings || plannings.length <= 0) {
+          return this.fetchPlannings();
+          } else {
+          return of(plannings);
+          }
+
+      }),
+      switchMap(plannings => {
+          const updatedPlanningIndex = plannings.findIndex(cos => cos.id === planningId);
+          updatedPlannings = [...plannings];
+          const oldPlanning = updatedPlannings[updatedPlanningIndex];
+
+          updatedPlannings[updatedPlanningIndex] = new Planning(
+            oldPlanning.id,
+            title,
+            description,
+            imageUrl,
+            location,
+            places,
+            userId
+          );
+          return this.http.put(
+          `https://cosplay-planning-app.firebaseio.com/plannings/${planningId}.json`,
+          { ...updatedPlannings[updatedPlanningIndex], id: null}
+          );
+      })
+      , tap(plannings => {
+          this._plannings.next(updatedPlannings);
+      }));
+
+  }
 
 }
