@@ -4,6 +4,13 @@
       <ion-back-button defaultHref="/planning"></ion-back-button>
     </ion-buttons>
     <ion-title>{{ planning.title }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="primary"  
+        [routerLink]="['/', 'planning' , 'edit' , planningId ]"
+      >
+        Edit
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
