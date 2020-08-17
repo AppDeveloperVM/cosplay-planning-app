@@ -21,7 +21,13 @@ const routes: Routes = [
           loadChildren: () => import('./planning-detail/planning-detail.module').then( m => m.PlanningDetailPageModule)
         }
       ]
+  },
+  {
+    path: 'edit/:planningId',
+    loadChildren: () => import('./edit-planning/edit-planning.module').
+    then( m => m.EditPlanningPageModule)
   }
+
 
 ];
 
