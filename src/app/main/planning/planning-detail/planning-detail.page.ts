@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PlanningService } from '../planning.service';
 import { MapModalComponent } from 'src/app/shared/map-modal/map-modal.component';
 import { NgForm } from '@angular/forms';
+import { PlaceDataService } from 'src/app/services/place-data.service';
 
 @Component({
   selector: 'app-planning-detail',
@@ -18,15 +19,23 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
   private planningSub: Subscription;
   newPlanning: Planning;
   isLoading = false;
+  placesData = [];
 
   constructor(
+    private router: Router,
     private navCtrl: NavController,
     private route: ActivatedRoute,
     private planningService: PlanningService,
     private modalCtrl: ModalController,
-    private router: Router,
-    private alertCtrl: AlertController
-  ) { }
+    private alertCtrl: AlertController,
+    private placeDataService: PlaceDataService
+  ) {
+    fetch('./assets/data/places_1.json').then(res => res.json()) // json file depends on planning id
+      .then(data => {
+        this.placesData = data.places;
+        this.placeDataService.setPlaces(this.placesData);
+      });
+   }
 
   ngOnInit() {
     this.route.paramMap.subscribe(paramMap => {
@@ -75,6 +84,7 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
   onShowFullMap() {
     this.modalCtrl.create({component: MapModalComponent, componentProps: {
       center: { lat: this.planning.location.lat, lng: this.planning.location.lng },
+      markers: this.placesData , // array of markers
       selectable: false,
       closeButtonText: 'close',
       title: this.planning.title
