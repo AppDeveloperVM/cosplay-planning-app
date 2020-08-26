@@ -108,7 +108,7 @@ export class NewPlanningPage implements OnInit {
         loadingEl.dismiss();
         this.form.reset();
         this.router.navigate(['main/planning']);
-      })
+      });
     });
   }
 

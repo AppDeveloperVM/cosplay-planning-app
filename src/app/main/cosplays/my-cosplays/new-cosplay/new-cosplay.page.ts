@@ -42,9 +42,7 @@ export class NewCosplayPage implements OnInit {
     private cosplaysService: CosplaysService,
     private router: Router,
     private loadingCtrl: LoadingController
-    // private dataService: DataService
-    ) { }
-
+  ) { }
 
   ngOnInit(): void {
     this.form = new FormGroup({

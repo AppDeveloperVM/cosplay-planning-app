@@ -64,7 +64,6 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
       .getCosplayGroup(paramMap.get('cosplaygroupId'))
       .subscribe(cosplayGroup => {
         this.cosplayGroup = cosplayGroup;
-        
         // this.selectedLocationImage = new Plac this.cosplayGroup.location;
 
         this.form = new FormGroup({

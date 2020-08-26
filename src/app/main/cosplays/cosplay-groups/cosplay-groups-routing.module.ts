@@ -32,7 +32,8 @@ const routes: Routes = [
     [
       {
         path: ':cosplayGroupId',
-        loadChildren: () => import('./cosplay-group-form-request/cosplay-group-form-request.module').then( m => m.CosplayGroupFormRequestPageModule)
+        loadChildren: () => import('./cosplay-group-form-request/cosplay-group-form-request.module')
+        .then( m => m.CosplayGroupFormRequestPageModule)
       }
     ]
   },
