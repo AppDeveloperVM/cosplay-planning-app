@@ -39,7 +39,6 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
         center: this.center, // center of the view
         zoom: 16,
       });
-      this.map = map;
 
       googleMaps.event.addListenerOnce(map, 'idle', () => {
         this.renderer.addClass(mapEl, 'visible');
@@ -56,10 +55,8 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
           this.modalCtrl.dismiss(selectedCoords);
         });
       } else {
-
+        // Obtener mapa y markers a mostrar
         this.getMarkers(googleMaps, map);
-
-        // const position = new googleMaps.LatLng(museum.latitude, museum.longitude);
 
         /*const marker = new googleMaps.Marker({
           position: this.center,
@@ -67,7 +64,6 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
           title: this.title
         });
         marker.setMap(map);*/
-
       }
 
     }).catch( err => {
@@ -85,7 +81,6 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-
   getMarkers(googleMaps, map) {
     // tslint:disable-next-line:variable-name
     for (let _i = 0; _i < this.placesData.length; _i++) {
@@ -100,10 +95,27 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
     const myLatlng = new googleMaps.LatLng( parseFloat(place.latitude), parseFloat(place.longitude));
     const placeMarker = new googleMaps.Marker({
       position: myLatlng,
-      map: map,
+      map,
       title: place.name
      });
-    placeMarker.setMap(this.map);
+
+    const content = '<h4 style="color:black">' + place.name + '</h4>';
+
+    this.addInfoWindow(placeMarker, content);
+
+    placeMarker.setMap(map);
+  }
+
+
+  addInfoWindow(marker, content){
+
+    const infoWindow = new google.maps.InfoWindow({
+      content: content
+    });
+
+    google.maps.event.addListener(marker, 'click', () => {
+      infoWindow.open(this.map, marker);
+    });
   }
 
   private getGoogleMaps(): Promise<any> {
