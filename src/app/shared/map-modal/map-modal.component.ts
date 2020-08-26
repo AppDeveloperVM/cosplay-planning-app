@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, Renderer2, OnDestroy, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { environment } from '../../../environments/environment';
+import { PlaceDataService } from 'src/app/services/place-data.service';
 
 @Component({
   selector: 'app-map-modal',
@@ -9,34 +10,43 @@ import { environment } from '../../../environments/environment';
 })
 export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('map', { static: false }) mapElementRef: ElementRef;
-  @Input() center = { lat: 39.5695818, lng: 2.6500745 };
+  placesData = [];
+  @Input() center = { lat: 39.5695818, lng: 2.6500745 }; // initial route point
+  @Input() markers = []; // array of markers given
   @Input() selectable = true;
   @Input() closeButtonText = 'Cancel';
   @Input() title = 'Pick Location';
   clickListener: any;
   googleMaps: any;
+  map: any;
 
 
   constructor(
     private modalCtrl: ModalController,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private placeDataService: PlaceDataService
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.placesData = this.placeDataService.getPlaces();
+  }
 
   ngAfterViewInit() {
     this.getGoogleMaps().then(googleMaps => {
       this.getGoogleMaps = googleMaps;
       const mapEl = this.mapElementRef.nativeElement;
       const map = new googleMaps.Map(mapEl, {
-        center: this.center,
+        center: this.center, // center of the view
         zoom: 16,
       });
+      this.map = map;
 
       googleMaps.event.addListenerOnce(map, 'idle', () => {
         this.renderer.addClass(mapEl, 'visible');
       });
 
+      // hay que modificar cómo se obtienen los marcadores y
+      // se añaden al mapa
       if (this.selectable) {
         this.clickListener = map.addListener('click', event => {
           const selectedCoords = {
@@ -46,12 +56,18 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
           this.modalCtrl.dismiss(selectedCoords);
         });
       } else {
-        const marker = new googleMaps.Marker({
+
+        this.getMarkers(googleMaps, map);
+
+        // const position = new googleMaps.LatLng(museum.latitude, museum.longitude);
+
+        /*const marker = new googleMaps.Marker({
           position: this.center,
           map: map,
           title: this.title
         });
-        marker.setMap(map);
+        marker.setMap(map);*/
+
       }
 
     }).catch( err => {
@@ -64,9 +80,30 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.clickListener){
+    if (this.clickListener) {
       this.googleMaps.event.removeListener(this.clickListener);
     }
+  }
+
+
+  getMarkers(googleMaps, map) {
+    // tslint:disable-next-line:variable-name
+    for (let _i = 0; _i < this.placesData.length; _i++) {
+      // if (_i > 0) {
+        this.addMarkersToMap(googleMaps, map, this.placesData[_i]);
+      // }
+    }
+  }
+
+  addMarkersToMap(googleMaps, map, place) {
+    // const position = new googleMaps.LatLng(museum.latitude, museum.longitude);
+    const myLatlng = new googleMaps.LatLng( parseFloat(place.latitude), parseFloat(place.longitude));
+    const placeMarker = new googleMaps.Marker({
+      position: myLatlng,
+      map: map,
+      title: place.name
+     });
+    placeMarker.setMap(this.map);
   }
 
   private getGoogleMaps(): Promise<any> {
