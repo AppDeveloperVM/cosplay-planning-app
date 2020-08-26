@@ -1,0 +1,16 @@
+{
+  "places": [
+      {
+        "name": "OpenCor",
+        "state" : "Spain",
+        "latitude": 39.575136,
+        "longitude": 2.641592
+      },
+      {
+        "name": "Mercadona",
+        "state": "Spain",
+        "latitude": 39.575727,
+        "longitude": 2.640717
+      }
+  ]
+}
