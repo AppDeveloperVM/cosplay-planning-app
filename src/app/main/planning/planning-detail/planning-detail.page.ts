@@ -85,7 +85,8 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
     this.modalCtrl.create({component: MapModalComponent, componentProps: {
       center: { lat: this.planning.location.lat, lng: this.planning.location.lng },
       markers: this.placesData , // array of markers
-      selectable: false,
+      selectable: true,
+      multiple: true,
       closeButtonText: 'close',
       title: this.planning.title
     } }).then(modalEl => {

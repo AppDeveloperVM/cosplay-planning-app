@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, Renderer2, OnDestroy, Input } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, AlertController } from '@ionic/angular';
 import { environment } from '../../../environments/environment';
 import { PlaceDataService } from 'src/app/services/place-data.service';
 
@@ -14,6 +14,7 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() center = { lat: 39.5695818, lng: 2.6500745 }; // initial route point
   @Input() markers = []; // array of markers given
   @Input() selectable = true;
+  @Input() multiple = false;
   @Input() closeButtonText = 'Cancel';
   @Input() title = 'Pick Location';
   clickListener: any;
@@ -23,6 +24,7 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private modalCtrl: ModalController,
+    private alertCtrl: AlertController,
     private renderer: Renderer2,
     private placeDataService: PlaceDataService
   ) { }
@@ -47,16 +49,61 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
       // hay que modificar cómo se obtienen los marcadores y
       // se añaden al mapa
       if (this.selectable) {
-        this.clickListener = map.addListener('click', event => {
-          const selectedCoords = {
-            lat: event.latLng.lat(),
-            lng: event.latLng.lng()
-          };
-          this.modalCtrl.dismiss(selectedCoords);
-        });
+        if (this.multiple) {
+          this.clickListener = map.addListener('click', event => {
+            const selectedCoords = {
+              lat: event.latLng.lat(),
+              lng: event.latLng.lng()
+            };
+            // centrar cámara en la nueva posición ( con animacion )
+            map.panTo(selectedCoords); //
+            // -- drawing manager with options --
+            // añadir marcador en esta ubicacion..
+            // la idea es montar un formulario para nombrar el marcador nuevo..
+
+            // map.setClickable(false);
+
+            const alert = this.alertCtrl.create({
+              header: 'New Place',
+              message: 'Choose a name :',
+              buttons: [
+                  {
+                      text: 'Dismiss',
+                      role: 'cancel',
+                      handler: () => {
+
+                          // Enable the map again
+                          // map.setClickable(true);
+
+                      }
+                  }
+              ]
+            })
+            .then(alertEl => {
+              alertEl.present();
+            });
+
+            this.markers.push(selectedCoords);
+
+            // this.modalCtrl.dismiss(selectedCoords);
+          });
+          console.log(this.markers);
+        } else {
+          this.clickListener = map.addListener('click', event => {
+            const selectedCoords = {
+              lat: event.latLng.lat(),
+              lng: event.latLng.lng()
+            };
+            this.modalCtrl.dismiss(selectedCoords);
+          });
+        }
       } else {
         // Obtener mapa y markers a mostrar
         this.getMarkers(googleMaps, map);
+
+        // Get actual location - with a button
+        // map.setMyLocationEnabled(true);
+        // map.getUiSettings().setMyLocationButtonEnabled(true);
 
         /*const marker = new googleMaps.Marker({
           position: this.center,
@@ -101,19 +148,19 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const content = '<h4 style="color:black">' + place.name + '</h4>';
 
-    this.addInfoWindow(placeMarker, content);
+    this.addInfoWindow(googleMaps, placeMarker, content);
 
     placeMarker.setMap(map);
   }
 
 
-  addInfoWindow(marker, content){
+  addInfoWindow(googleMaps, marker, content){
 
-    const infoWindow = new google.maps.InfoWindow({
+    const infoWindow = new googleMaps.InfoWindow({
       content: content
     });
 
-    google.maps.event.addListener(marker, 'click', () => {
+    googleMaps.event.addListener(marker, 'click', () => {
       infoWindow.open(this.map, marker);
     });
   }
