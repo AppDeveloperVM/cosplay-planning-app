@@ -36,6 +36,7 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     this.getGoogleMaps().then(googleMaps => {
       this.getGoogleMaps = googleMaps;
+      this.googleMaps = googleMaps;
       const mapEl = this.mapElementRef.nativeElement;
       const map = new googleMaps.Map(mapEl, {
         center: this.center, // center of the view
@@ -46,11 +47,15 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
         this.renderer.addClass(mapEl, 'visible');
       });
 
+      // get actual markers
+      this.getMarkers(googleMaps, map);
+
       // hay que modificar cómo se obtienen los marcadores y
       // se añaden al mapa
       if (this.selectable) {
         if (this.multiple) {
           this.clickListener = map.addListener('click', event => {
+
             const selectedCoords = {
               lat: event.latLng.lat(),
               lng: event.latLng.lng()
@@ -66,24 +71,62 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
             const alert = this.alertCtrl.create({
               header: 'New Place',
               message: 'Choose a name :',
+              inputs: [
+                {
+                  name: 'name',
+                  placeholder: 'Name'
+                }
+              ],
               buttons: [
-                  {
-                      text: 'Dismiss',
-                      role: 'cancel',
-                      handler: () => {
+                {
+                  text: 'Add',
+                  handler: data => {
+                  // show new marker
 
-                          // Enable the map again
-                          // map.setClickable(true);
+                    // new googleMaps Marker object
+                    const newPlace = new this.googleMaps.Marker({
+                      position: selectedCoords,
+                      map : map,
+                      title: data.name
+                    });
+                    this.addMarkerToMap(googleMaps, map, newPlace);
 
+                    // new Marker Object
+                    const PlaceData = [
+                      {
+                        name : data.name,
+                        state : 'Spain',
+                        latitude: selectedCoords.lat,
+                        longitude: selectedCoords.lng
                       }
+                    ];
+                    this.placeDataService.setPlace(PlaceData);
+                    this.markers.push(PlaceData[0]);
+
+                    this.getMarkers(googleMaps, map);
+                    console.log(this.markers);
+                    map.setZoom(map.getZoom()); // used to reload the map
                   }
+                },
+                {
+                    text: 'Cancel',
+                    role: 'cancel',
+                    handler: () => {
+
+                        // Enable the map again
+                        // map.setClickable(true);
+
+                    }
+                }
               ]
             })
             .then(alertEl => {
-              alertEl.present();
+              alertEl.present().then(() => {
+                const firstInput: any = document.querySelector('ion-alert input');
+                firstInput.focus();
+                return;
+              });
             });
-
-            this.markers.push(selectedCoords);
 
             // this.modalCtrl.dismiss(selectedCoords);
           });
@@ -104,13 +147,6 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
         // Get actual location - with a button
         // map.setMyLocationEnabled(true);
         // map.getUiSettings().setMyLocationButtonEnabled(true);
-
-        /*const marker = new googleMaps.Marker({
-          position: this.center,
-          map: map,
-          title: this.title
-        });
-        marker.setMap(map);*/
       }
 
     }).catch( err => {
@@ -128,36 +164,84 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  updatePlacesData() {
+    this.placesData = this.placeDataService.getPlaces();
+  }
+
+  /* reloadMarkers() {
+    for (let _i = 0; _i < this.markers.length; _i++) {
+      // if (_i > 0) {
+        const place = this.markers[_i];
+        const Coords = {
+          lat: place.latLng.lat(),
+          lng: place.latLng.lng()
+        };
+        const placeMarker = new this.googleMaps.Marker({
+          position: Coords,
+          map : this.map,
+          title: place.name
+        });
+        place.setMap(null);
+      // }
+    }
+
+    this.markers = [];
+
+    this.setMarkers( this.placeDataService.getPlaces() );
+  }
+  */
+
   getMarkers(googleMaps, map) {
     // tslint:disable-next-line:variable-name
     for (let _i = 0; _i < this.placesData.length; _i++) {
       // if (_i > 0) {
-        this.addMarkersToMap(googleMaps, map, this.placesData[_i]);
+        this.addMarkerToMap(googleMaps, map, this.placesData[_i]);
       // }
     }
   }
 
-  addMarkersToMap(googleMaps, map, place) {
+  addMarkerToMap(googleMaps, map, place) {
     // const position = new googleMaps.LatLng(museum.latitude, museum.longitude);
     const myLatlng = new googleMaps.LatLng( parseFloat(place.latitude), parseFloat(place.longitude));
     const placeMarker = new googleMaps.Marker({
       position: myLatlng,
       map,
       title: place.name
-     });
+    });
 
     const content = '<h4 style="color:black">' + place.name + '</h4>';
 
     this.addInfoWindow(googleMaps, placeMarker, content);
 
     placeMarker.setMap(map);
+    this.placeDataService.setPlace(placeMarker);
+  }
+
+  setMarkers(places) {
+
+    for (let _i = 0; _i < places.length; _i++) {
+      const place = places[_i];
+
+      const myLatLng = new this.googleMaps.LatLng(place[1], place[2]);
+      const marker = new this.googleMaps.Marker({
+          position: myLatLng,
+          map: this.map,
+          animation: this.googleMaps.Animation.DROP,
+          title: place[0],
+          zIndex: place[3]
+      });
+
+      // Push marker to markers array
+      this.markers.push(marker);
+    }
+
   }
 
 
-  addInfoWindow(googleMaps, marker, content){
+  addInfoWindow(googleMaps, marker, content) {
 
     const infoWindow = new googleMaps.InfoWindow({
-      content: content
+      content
     });
 
     googleMaps.event.addListener(marker, 'click', () => {
