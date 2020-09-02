@@ -209,7 +209,7 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
       title: place.name
     });
 
-    const content = '<h4 style="color:black">' + place.name + '</h4>';
+    const content = '<div id="iw-container"><div class="iw-title" style="color:black;font-size:22px;text-transform:capitalize;">' + place.name + '</div></div>';
 
     this.addInfoWindow(googleMaps, placeMarker, content);
 
