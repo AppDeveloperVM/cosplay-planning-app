@@ -40,7 +40,7 @@ export class MenuComponent implements OnInit {
       },
       {
         title : "Planning",
-        url   : "planning",
+        url   : "/main/tabs/planning",
         icon  : "calendar"
       },
       {
