@@ -7,18 +7,6 @@ const routes: Routes = [
   {
     path: '',
     component: MyCosplaysPage
-  },
-  {
-    path: 'new-cosplay',
-    loadChildren: () => import('./new-cosplay/new-cosplay.module').then( m => m.NewCosplayPageModule)
-  },
-  {
-    path: 'edit-cosplay',
-    loadChildren: () => import('./edit-cosplay/edit-cosplay.module').then( m => m.EditCosplayPageModule)
-  },
-  {
-    path: 'cosplay-details',
-    loadChildren: () => import('./cosplay-details/cosplay-details.module').then( m => m.CosplayDetailsPageModule)
   }
 ];
 
