@@ -8,26 +8,14 @@ import { HttpClient } from '@angular/common/http';
 import { PlaceLocation } from './location.model';
 import { stringify } from 'querystring';
 
-/*
-new CosplayGroup(
-    'g1',
-    'Grupal Kimetsu',
-    'Kimetsu no Yaiba',
-    'https://static.timesofisrael.com/www/uploads/2019/03/iStock-1060517676-e1553784733101.jpg',
-    'Mallorca',
-    new Date('2019-01-20'),
-    new Date('2019-01-25'),
-    'user1'
-)
-*/
 
 interface CosplayGroupData {
+    title: string;
+    place: string;
     availableFrom: Date;
     availableTo: Date;
     imageUrl: string;
-    place: string;
     series: string;
-    title: string;
     userId: string;
     location: PlaceLocation;
 }
@@ -38,7 +26,7 @@ interface CosplayGroupData {
 export class CosplayGroupService {
     private _cosplaygroups = new BehaviorSubject<CosplayGroup[]>(
         []
-    ) ;
+    );
 
     get cosplaygroups() {
         return this._cosplaygroups.asObservable();
@@ -47,12 +35,23 @@ export class CosplayGroupService {
     constructor( private authService: AuthService, private http: HttpClient ) {}
 
     getCosplayGroup(id: string) {
-        return this.cosplaygroups.pipe(
-            take(1),
-            map(cosplaygroups => {
-                return {...cosplaygroups.find(p => p.id === id)};
-        })
-    );
+        return this.http.get<CosplayGroupData>(
+            `https://cosplay-planning-app.firebaseio.com/cosplay-groups/${id}.json`
+          ).pipe(
+            map(cosplayGroupData => {
+              return new CosplayGroup(
+                  id,
+                  cosplayGroupData.title,
+                  cosplayGroupData.series,
+                  cosplayGroupData.imageUrl,
+                  cosplayGroupData.place,
+                  cosplayGroupData.availableFrom,
+                  cosplayGroupData.availableTo,
+                  this.authService.userId,
+                  cosplayGroupData.location
+              );
+            })
+        );
     }
 
     fetchCosplayGroups() {
