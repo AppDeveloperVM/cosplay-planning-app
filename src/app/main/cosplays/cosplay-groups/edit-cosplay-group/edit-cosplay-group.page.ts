@@ -54,14 +54,14 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.route.paramMap.subscribe(paramMap => {
-      if (!paramMap.has('cosplaygroupId')) {
+      if (!paramMap.has('cosplayGroupId')) {
         this.navCtrl.navigateBack('/main/tabs/cosplays/cosplay-groups');
         return;
       }
       this.isLoading = true;
-      this.cosplayGroupId = paramMap.get('cosplaygroupId');
+      this.cosplayGroupId = paramMap.get('cosplayGroupId');
       this.cosplayGroupSub = this.cosplayGroupService
-      .getCosplayGroup(paramMap.get('cosplaygroupId'))
+      .getCosplayGroup(paramMap.get('cosplayGroupId'))
       .subscribe(cosplayGroup => {
         this.cosplayGroup = cosplayGroup;
         // this.selectedLocationImage = new Plac this.cosplayGroup.location;
@@ -108,7 +108,6 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
       }
       );
 
-      console.log('Cosplaygroup id: ' + this.cosplayGroup.id);
     });
   }
 
