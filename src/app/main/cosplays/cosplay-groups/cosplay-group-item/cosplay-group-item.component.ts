@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import { CosplayGroup } from '../cosplay-group.model';
 
 @Component({
@@ -6,11 +6,18 @@ import { CosplayGroup } from '../cosplay-group.model';
   templateUrl: './cosplay-group-item.component.html',
   styleUrls: ['./cosplay-group-item.component.scss'],
 })
-export class CosplayGroupItemComponent implements OnInit {
+export class CosplayGroupItemComponent implements OnInit, AfterViewInit {
   @Input() cosplaygroup: CosplayGroup;
-  constructor() { }
 
-  ngOnInit() {}
+  constructor() {
+  }
+
+  ngOnInit() {
+    console.log(this.cosplaygroup);
+  }
+
+  ngAfterViewInit() {
+  }
 
   getDummyDate() {
     return new Date();
