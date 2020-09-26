@@ -39,8 +39,8 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.route.paramMap.subscribe(paramMap => {
-      if (!paramMap.has('planningId')) {
-        this.navCtrl.navigateBack('/planning');
+      if (!paramMap.has('planningId') ) {
+        this.navCtrl.navigateBack('/main/tabs/planning');
         return;
       }
       this.isLoading = true;
@@ -58,7 +58,7 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
           buttons: [{
             text: 'Okay',
             handler: () => {
-              this.router.navigate(['/planning']);
+              this.router.navigate(['/main/tabs/planning']);
             }
           }]
         }).then(alertEl => {
@@ -70,6 +70,7 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
       console.log('Planning id: ' + this.planning.id);
     });
   }
+
 
   onSubmit(form: NgForm) {
     if (!form.valid) { // if is false

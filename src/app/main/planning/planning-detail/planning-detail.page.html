@@ -1,12 +1,12 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/planning"></ion-back-button>
+      <ion-back-button defaultHref="/main/tabs/planning"></ion-back-button>
     </ion-buttons>
     <ion-title>{{ planning.title }}</ion-title>
     <ion-buttons slot="end">
       <ion-button color="primary"  
-        [routerLink]="['/', 'planning' , 'edit' , planningId ]"
+        [routerLink]="['/', 'main' , 'tabs' ,'planning' , 'edit' , planningId ]"
       >
         Edit
       </ion-button>
@@ -14,8 +14,11 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-grid>
+<ion-content [fullscreen]="true">
+  <div text-center *ngIf="isLoading">        
+    <ion-spinner color="primary" ></ion-spinner>
+  </div>
+  <ion-grid *ngIf="!isLoading && planningId != undefined">
     <ion-row>
       <ion-col size-sm="6" offset-sm="3" padding text-center>
         <p>{{ planning.location.address }}</p>
