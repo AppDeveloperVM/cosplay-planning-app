@@ -91,8 +91,8 @@ export class LocationPickerComponent implements OnInit {
   private createPlace(lat: number, lng: number) {
 
     const pickedLocation: PlaceLocation = {
-      lat: lat,
-      lng: lng,
+      lat,
+      lng,
       address: null,
       staticMapImageUrl: null
     };
