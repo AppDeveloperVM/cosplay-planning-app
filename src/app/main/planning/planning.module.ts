@@ -16,6 +16,6 @@ import { PlanningItemComponent } from './planning-item/planning-item.component';
     IonicModule,
     PlanningPageRoutingModule
   ],
-  declarations: [PlanningPage,PlanningItemComponent]
+  declarations: [PlanningPage, PlanningItemComponent]
 })
 export class PlanningPageModule {}
