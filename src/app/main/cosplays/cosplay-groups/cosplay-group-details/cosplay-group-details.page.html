@@ -1,15 +1,15 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>{{ cosplayGroup.title }}</ion-title>
+    <ion-title *ngIf="!isLoading">{{ cosplayGroup.title }}</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/main/tabs/cosplays/my-cosplays"></ion-back-button>
+      <ion-back-button defaultHref="/main/tabs/cosplays/cosplay-groups"></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-title text-center>{{ isLoading ? 'Loading...' : '' }}</ion-title>
       <ion-button >
         <ion-icon #favIcon name="heart"></ion-icon>
       </ion-button>
-      <ion-button color="primary"  
+      <ion-button *ngIf="!isLoading" color="primary"  
         [routerLink]="['/', 'main', 'tabs' , 'cosplays', 'cosplay-groups' , 'edit' , cosplayGroupId ]"
       >
         Edit
@@ -19,7 +19,10 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid>
+  <div text-center *ngIf="isLoading">        
+    <ion-spinner color="primary" ></ion-spinner>
+  </div>
+  <ion-grid *ngIf="!isLoading">
     <ion-row>
       <ion-col size-sm="6" offset-sm="3" padding text-center>
         <p>{{ cosplayGroup.location.address }}</p>

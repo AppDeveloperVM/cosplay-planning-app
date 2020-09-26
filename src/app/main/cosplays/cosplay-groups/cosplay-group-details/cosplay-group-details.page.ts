@@ -15,6 +15,7 @@ import { MapModalComponent } from 'src/app/shared/map-modal/map-modal.component'
 })
 export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
   cosplayGroup: CosplayGroup;
+  cosplaygroup: CosplayGroup;
   cosplayGroupId: string;
   isLoading = false;
   private cosplayGroupSub: Subscription;
@@ -35,14 +36,17 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
     this.route.paramMap.subscribe(paramMap => {
       if (!paramMap.has('cosplayGroupId')) {
         this.navCtrl.navigateBack('/main/tabs/cosplays/cosplay-groups');
+        console.log('cant get cosplaygroupid');
         return;
       }
       this.isLoading = true;
       this.cosplayGroupId = paramMap.get('cosplayGroupId');
+      console.log('id:' + paramMap.get('cosplayGroupId'));
       this.cosplayGroupSub = this.cosplayGroupService
       .getCosplayGroup(paramMap.get('cosplayGroupId'))
       .subscribe(cosplayGroup => {
         this.cosplayGroup = cosplayGroup;
+        this.cosplaygroup = cosplayGroup;
         this.isLoading = false;
       }, error => {
         this.alertCtrl
@@ -52,6 +56,7 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
           buttons: [{
             text: 'Okay',
             handler: () => {
+              console.log(error);
               this.router.navigate(['/main/tabs/cosplays/cosplay-groups']);
             }
           }]
@@ -61,8 +66,11 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
       }
       );
 
-      console.log('Cosplaygroup id: ' + this.cosplayGroup.id);
     });
+  }
+
+  ionViewWillEnter() {
+    console.log('ionViewWillEnter');
   }
 
 
