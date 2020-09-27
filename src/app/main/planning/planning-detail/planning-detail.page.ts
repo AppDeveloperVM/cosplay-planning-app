@@ -14,6 +14,7 @@ import { PlaceDataService } from 'src/app/services/place-data.service';
   styleUrls: ['./planning-detail.page.scss'],
 })
 export class PlanningDetailPage implements OnInit, OnDestroy {
+  paramMapId: string;
   planning: Planning;
   planningId: string;
   private planningSub: Subscription;
@@ -30,25 +31,26 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
     private alertCtrl: AlertController,
     private placeDataService: PlaceDataService
   ) {
-    fetch('./assets/data/places_1.json').then(res => res.json()) // json file depends on planning id
-      .then(data => {
-        this.placesData = data.places;
-        this.placeDataService.setPlaces(this.placesData);
-      });
+
    }
 
   ngOnInit() {
+    // this.fetchPlacesData();
+
     this.route.paramMap.subscribe(paramMap => {
-      if (!paramMap.has('planningId') ) {
+      this.planningId = paramMap.get('planningId');
+      if (!this.planningId === null) {
         this.navCtrl.navigateBack('/main/tabs/planning');
         return;
       }
+
       this.isLoading = true;
-      this.planningId = paramMap.get('planningId');
       this.planningSub = this.planningService
-      .getPlanning(paramMap.get('planningId'))
+      .getPlanning(this.planningId)
       .subscribe(planning => {
         this.planning = planning;
+        console.log('Planning id: ' + this.planningId);
+        console.log('Planning: ' , planning);
         this.isLoading = false;
       }, error => {
         this.alertCtrl
@@ -58,6 +60,7 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
           buttons: [{
             text: 'Okay',
             handler: () => {
+              console.log(error);
               this.router.navigate(['/main/tabs/planning']);
             }
           }]
@@ -67,10 +70,20 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
       }
       );
 
-      console.log('Planning id: ' + this.planning.id);
     });
   }
 
+  ionViewWillEnter() {
+    console.log('ionViewWillEnter');
+  }
+
+  fetchPlacesData() {
+    fetch('../../assets/data/places_1.json').then(res => res.json()) // json file depends on planning id
+      .then(data => {
+        this.placesData = data.places;
+        this.placeDataService.setPlaces(this.placesData);
+      });
+  }
 
   onSubmit(form: NgForm) {
     if (!form.valid) { // if is false
