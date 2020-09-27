@@ -7,6 +7,7 @@ import { NgForm } from '@angular/forms';
 import { Cosplay } from '../../cosplay.model';
 import { Subscription } from 'rxjs';
 import { MapModalComponent } from 'src/app/shared/map-modal/map-modal.component';
+import { PlaceDataService } from 'src/app/services/place-data.service';
 
 @Component({
   selector: 'app-cosplay-group-details',
@@ -16,6 +17,7 @@ import { MapModalComponent } from 'src/app/shared/map-modal/map-modal.component'
 export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
   cosplayGroup: CosplayGroup;
   cosplaygroup: CosplayGroup;
+  placesData = [];
   cosplayGroupId: string;
   isLoading = false;
   private cosplayGroupSub: Subscription;
@@ -26,6 +28,7 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
     private navCtrl: NavController,
     private route: ActivatedRoute,
     private cosplayGroupService: CosplayGroupService,
+    private placeDataService: PlaceDataService,
     private modalCtrl: ModalController,
     private toastCtrl: ToastController,
     private router: Router,
@@ -46,7 +49,6 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
       .getCosplayGroup(paramMap.get('cosplayGroupId'))
       .subscribe(cosplayGroup => {
         this.cosplayGroup = cosplayGroup;
-        this.cosplaygroup = cosplayGroup;
         this.isLoading = false;
       }, error => {
         this.alertCtrl
