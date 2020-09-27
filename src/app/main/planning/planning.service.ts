@@ -30,7 +30,8 @@ export class PlanningService {
   constructor(private authService: AuthService, private http: HttpClient) { }
 
   getPlanning(id: string) {
-    return this.plannings.pipe(
+    return this.plannings
+    .pipe(
       take(1),
       map(plannings => {
         return {...plannings.find(p => p.id === id)};

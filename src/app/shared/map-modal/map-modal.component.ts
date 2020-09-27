@@ -86,7 +86,7 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
                     // new googleMaps Marker object
                     const newPlace = new this.googleMaps.Marker({
                       position: selectedCoords,
-                      map : map,
+                      map,
                       title: data.name
                     });
                     this.addMarkerToMap(googleMaps, map, newPlace);
