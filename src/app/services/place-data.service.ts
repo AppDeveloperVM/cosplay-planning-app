@@ -7,6 +7,7 @@ import { Place } from '../main/planning/place.model';
 export class PlaceDataService {
   places: [];
   place: Place;
+  placesUpdated: any;
 
   constructor() { }
 
@@ -16,6 +17,10 @@ export class PlaceDataService {
 
   getPlaces() {
     return this.places;
+  }
+
+  getPlacesUpdateListener() {
+    return this.placesUpdated.asObservable();
   }
 
   setPlace(data) {
