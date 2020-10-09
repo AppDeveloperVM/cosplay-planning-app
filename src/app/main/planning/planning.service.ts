@@ -30,6 +30,9 @@ export class PlanningService {
   constructor(private authService: AuthService, private http: HttpClient) { }
 
   getPlanning(id: string) {
+    // probably this needs to change
+    // the way the data is obtained and it persists
+    // like saving in it in an object or subscribing
     return this.plannings
     .pipe(
       take(1),
