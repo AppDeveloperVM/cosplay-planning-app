@@ -1,7 +1,9 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, Renderer2, OnDestroy, Input } from '@angular/core';
-import { ModalController, AlertController } from '@ionic/angular';
+import { ModalController, AlertController, ToastController } from '@ionic/angular';
 import { environment } from '../../../environments/environment';
 import { PlaceDataService } from 'src/app/services/place-data.service';
+import { from, fromEvent, Observable } from 'rxjs';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-map-modal',
@@ -15,6 +17,7 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() markers = []; // array of markers given
   @Input() selectable = true;
   @Input() multiple = false;
+  clickTriggersNewPlace = false;
   @Input() closeButtonText = 'Cancel';
   @Input() title = 'Pick Location';
   clickListener: any;
@@ -25,6 +28,7 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private modalCtrl: ModalController,
     private alertCtrl: AlertController,
+    private toastCtrl: ToastController,
     private renderer: Renderer2,
     private placeDataService: PlaceDataService
   ) { }
@@ -42,6 +46,8 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
         center: this.center, // center of the view
         zoom: 16,
       });
+      // this.map
+      this.map = map;
 
       googleMaps.event.addListenerOnce(map, 'idle', () => {
         this.renderer.addClass(mapEl, 'visible');
@@ -52,16 +58,43 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
 
       // hay que modificar cómo se obtienen los marcadores y
       // se añaden al mapa
-      if (this.selectable) {
-        if (this.multiple) {
-          this.clickListener = map.addListener('click', event => {
+
+      // Obtener mapa y markers a mostrar
+      this.getMarkers(googleMaps, map);
+
+        // Get actual location - with a button
+        // map.setMyLocationEnabled(true);
+        // map.getUiSettings().setMyLocationButtonEnabled(true);
+
+      // map.removeListener(this.clickListener);
+      // this.clickListener...
+
+    }).catch( err => {
+      console.log(err);
+    });
+  }
+
+  onCancel() {
+    this.modalCtrl.dismiss();
+  }
+
+  detectNewPlace() {
+    this.clickTriggersNewPlace = true;
+
+    if (this.selectable) {
+      if (this.multiple) {
+
+        const source = fromEvent(this.mapElementRef.nativeElement, 'click');
+        source.subscribe(
+          this.clickListener = this.map.addListener('click',
+            event => {
 
             const selectedCoords = {
               lat: event.latLng.lat(),
               lng: event.latLng.lng()
             };
             // centrar cámara en la nueva posición ( con animacion )
-            map.panTo(selectedCoords); //
+            this.map.panTo(selectedCoords); //
             // -- drawing manager with options --
             // añadir marcador en esta ubicacion..
             // la idea es montar un formulario para nombrar el marcador nuevo..
@@ -86,10 +119,10 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
                     // new googleMaps Marker object
                     const newPlace = new this.googleMaps.Marker({
                       position: selectedCoords,
-                      map,
+                      map : this.map,
                       title: data.name
                     });
-                    this.addMarkerToMap(googleMaps, map, newPlace);
+                    this.addMarkerToMap(this.googleMaps, this.map, newPlace);
 
                     // new Marker Object
                     const PlaceData = [
@@ -103,9 +136,14 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.placeDataService.setPlace(PlaceData);
                     this.markers.push(PlaceData[0]);
 
-                    this.getMarkers(googleMaps, map);
+                    this.getMarkers(this.googleMaps, this.map);
                     console.log(this.markers);
-                    map.setZoom(map.getZoom()); // used to reload the map
+                    this.map.setZoom(this.map.getZoom()); // used to reload the map
+
+                    this.clickTriggersNewPlace = false;
+                    this.removeListener();
+
+                    this.showToast('Place Added!');
                   }
                 },
                 {
@@ -115,53 +153,51 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
 
                         // Enable the map again
                         // map.setClickable(true);
-
+                        this.clickTriggersNewPlace = false;
+                        this.removeListener();
                     }
                 }
               ]
             })
-            .then(alertEl => {
-              alertEl.present().then(() => {
-                const firstInput: any = document.querySelector('ion-alert input');
-                firstInput.focus();
-                return;
-              });
+          .then(alertEl => {
+            alertEl.present().then(() => {
+              const firstInput: any = document.querySelector('ion-alert input');
+              firstInput.focus();
+              return;
             });
+          });
 
-            // this.modalCtrl.dismiss(selectedCoords);
-          });
-          console.log(this.markers);
-        } else {
-          this.clickListener = map.addListener('click', event => {
-            const selectedCoords = {
-              lat: event.latLng.lat(),
-              lng: event.latLng.lng()
-            };
-            this.modalCtrl.dismiss(selectedCoords);
-          });
-        }
+          // this.modalCtrl.dismiss(selectedCoords);
+        }, {once: true})
+
+      );
+
       } else {
-        // Obtener mapa y markers a mostrar
-        this.getMarkers(googleMaps, map);
-
-        // Get actual location - with a button
-        // map.setMyLocationEnabled(true);
-        // map.getUiSettings().setMyLocationButtonEnabled(true);
+        this.clickListener = this.map.addListener('click',
+        event => {
+          const selectedCoords = {
+            lat: event.latLng.lat(),
+            lng: event.latLng.lng()
+          };
+          this.modalCtrl.dismiss(selectedCoords);
+        }, {once: true});
       }
-
-    }).catch( err => {
-      console.log(err);
-    });
-  }
-
-  onCancel() {
-    this.modalCtrl.dismiss();
-  }
-
-  ngOnDestroy() {
-    if (this.clickListener) {
-      this.googleMaps.event.removeListener(this.clickListener);
     }
+
+  }
+
+  removeListener() {
+    this.googleMaps.event.removeListener(this.clickListener);
+    console.log('click listener removed');
+  }
+
+  async showToast(message: string) {
+    const toast = await this.toastCtrl.create({
+      message,
+      duration: 1000,
+      position: 'middle',
+    });
+    toast.present();
   }
 
   updatePlacesData() {
@@ -209,7 +245,8 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
       title: place.name
     });
 
-    const content = '<div id="iw-container"><div class="iw-title" style="color:black;font-size:22px;text-transform:capitalize;">' + place.name + '</div></div>';
+    const content = '<div id="iw-container"><div class="iw-title" style="color:black;font-size:22px;text-transform:capitalize;">'
+    + place.name + '</div></div>';
 
     this.addInfoWindow(googleMaps, placeMarker, content);
 
@@ -270,6 +307,12 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       };
     });
+  }
+
+  ngOnDestroy() {
+    if (this.clickListener) {
+      this.googleMaps.event.removeListener(this.clickListener);
+    }
   }
 
 }
