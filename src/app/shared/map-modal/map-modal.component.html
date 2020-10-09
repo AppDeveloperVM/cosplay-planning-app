@@ -9,4 +9,12 @@
 
 <ion-content>
   <div class="map" #map></div>
+  <div id="map_options">
+    <div *ngIf="!clickTriggersNewPlace">
+      <ion-button (click)="detectNewPlace()">
+        Añadir nuevo lugar
+      </ion-button>
+    </div>
+      <ion-label *ngIf="clickTriggersNewPlace" class="options_label">Select a Place by clicking on the map</ion-label>
+  </div>
 </ion-content>
