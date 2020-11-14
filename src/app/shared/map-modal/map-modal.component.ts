@@ -15,7 +15,7 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
   placesData = [];
   @Input() center = { lat: 39.5695818, lng: 2.6500745 }; // initial route point
   @Input() markers = []; // array of markers given
-  @Input() selectable = true;
+  @Input() selectable; // = true;
   @Input() multiple = false;
   clickTriggersNewPlace = false;
   @Input() closeButtonText = 'Cancel';
@@ -76,9 +76,10 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onCancel() {
     this.modalCtrl.dismiss();
+    // volver a crear la imagen del mapa
   }
 
-  detectNewPlace() {
+  addClickListenertoMap() {
     this.clickTriggersNewPlace = true;
 
     if (this.selectable) {
@@ -141,7 +142,7 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.map.setZoom(this.map.getZoom()); // used to reload the map
 
                     this.clickTriggersNewPlace = false;
-                    this.removeListener();
+                    this.removeListenerFromMap();
 
                     this.showToast('Place Added!');
                   }
@@ -154,7 +155,7 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
                         // Enable the map again
                         // map.setClickable(true);
                         this.clickTriggersNewPlace = false;
-                        this.removeListener();
+                        this.removeListenerFromMap();
                     }
                 }
               ]
@@ -186,7 +187,7 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
-  removeListener() {
+  removeListenerFromMap() {
     this.googleMaps.event.removeListener(this.clickListener);
     console.log('click listener removed');
   }
@@ -204,28 +205,6 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
     this.placesData = this.placeDataService.getPlaces();
   }
 
-  /* reloadMarkers() {
-    for (let _i = 0; _i < this.markers.length; _i++) {
-      // if (_i > 0) {
-        const place = this.markers[_i];
-        const Coords = {
-          lat: place.latLng.lat(),
-          lng: place.latLng.lng()
-        };
-        const placeMarker = new this.googleMaps.Marker({
-          position: Coords,
-          map : this.map,
-          title: place.name
-        });
-        place.setMap(null);
-      // }
-    }
-
-    this.markers = [];
-
-    this.setMarkers( this.placeDataService.getPlaces() );
-  }
-  */
 
   getMarkers(googleMaps, map) {
     // tslint:disable-next-line:variable-name
