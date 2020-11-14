@@ -80,6 +80,14 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
 
   }
 
+  fetchPlacesData() {
+    fetch('../../assets/data/places_1.json').then(res => res.json()) // json file depends on planning id
+      .then(data => {
+        this.placesData = data.places;
+        this.placeDataService.setPlaces(this.placesData);
+      });
+  }
+
   onSubmit(form: NgForm) {
     if (!form.valid) { // if is false
       return;
@@ -93,6 +101,7 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
   onShowFullMap() {
     this.modalCtrl.create({component: MapModalComponent, componentProps: {
       center: { lat: this.cosplayGroup.location.lat, lng: this.cosplayGroup.location.lng },
+      markers: this.placesData , // array of markers
       selectable: false,
       closeButtonText: 'close',
       title: this.cosplayGroup.title
