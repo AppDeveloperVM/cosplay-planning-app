@@ -38,7 +38,7 @@ export class NewPlanningPage implements OnInit {
   @ViewChild('createForm', { static: false }) createForm: FormGroupDirective;
 
   constructor(
-    private loadingCtrl: LoadingController, 
+    private loadingCtrl: LoadingController,
     private planningService: PlanningService,
     private router: Router
   ) { }
