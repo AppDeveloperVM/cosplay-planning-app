@@ -1,0 +1,29 @@
+{
+  "notifications" : [
+    {
+      "user_from": "SpaceRonin",
+      "type": "request",
+      "text": "Cosplay Group Character Request",
+    },
+    {
+      "user_from":"JhonMarcus",
+      "type": "comment",
+      "text": "I really liked your photo, you are improving!"
+    },
+    {
+      "user_from": "Elizabeth duck looking",
+      "type": "comment",
+      "text": "Are you planning on buying another t-shirt?"
+    },
+    {
+      "user_from": "Fantastic Metal Computer",
+      "type" : "like",
+      "text" : ""
+    },
+    {
+      "user_from": "Refined Concrete Chair",
+      "type": "follow",
+      "text" : ""
+    }
+  ]
+}
