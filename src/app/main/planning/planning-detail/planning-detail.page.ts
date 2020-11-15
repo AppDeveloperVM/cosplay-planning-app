@@ -35,7 +35,7 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
    }
 
   ngOnInit() {
-    // this.fetchPlacesData();
+    this.fetchPlacesData();
 
     this.route.paramMap.subscribe(paramMap => {
       this.planningId = paramMap.get('planningId');
