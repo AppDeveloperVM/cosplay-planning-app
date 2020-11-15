@@ -4,7 +4,7 @@
   >
     <ion-icon name="person" slot="start"></ion-icon>
     <ion-label>
-      <h3><b>{{ notif.name }}</b> 
+      <h3><b>{{ notif.user_from }}</b> 
         </h3>
       <p *ngIf="notif.type== 'comment'"> {{ notif.text }} </p>
       <p *ngIf="notif.type== 'like'">liked your comment</p>
