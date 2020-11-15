@@ -36,6 +36,8 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.fetchPlacesData();
+
     this.route.paramMap.subscribe(paramMap => {
       if (!paramMap.has('cosplayGroupId')) {
         this.navCtrl.navigateBack('/main/tabs/cosplays/cosplay-groups');
