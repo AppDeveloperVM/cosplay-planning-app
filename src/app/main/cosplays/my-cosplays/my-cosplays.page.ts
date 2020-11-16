@@ -7,7 +7,7 @@ import { PopoverController } from '@ionic/angular';
 import { PopinfoComponent } from 'src/app/components/popinfo/popinfo.component';
 import { RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-my-cosplays',
@@ -21,25 +21,28 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
   relevantCosplays: Cosplay[];
   private cosplaysSub: Subscription;
   private filter = 'all';
-  notifications: any;
+
+  notifications: any = [];
 
   constructor(
     private cosplaysService: CosplaysService,
     private authService: AuthService,
     private popoverCtrl: PopoverController,
     private routermodule: RouterModule,
-    private httpClient: HttpClient
-  ) { }
+    private http: HttpClient
+  ) {
+   }
 
   ngOnInit() {
+    this.fetchPlacesData();
+
     this.cosplaysSub = this.cosplaysService.cosplays.subscribe(cosplays => {
       this.loadedCosplays = cosplays;
       this.listedLoadedCosplays = this.loadedCosplays;
       this.onFilterUpdate(this.filter);
     });
-    //this.relevantCosplays = this.loadedCosplays;
+    // this.relevantCosplays = this.loadedCosplays;
 
-    this.fetchNotifications();
     /* this.httpClient.get('assets/notifications.json').subscribe(data => {
       console.log(data);
       this.notifications = data['notifications'];
@@ -66,6 +69,14 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
     this.listedLoadedCosplays = this.relevantCosplays;
   }
 
+  fetchPlacesData() {
+    fetch('../../assets/data/notifications.json').then(res => res.json()) // json file depends on planning id
+      .then(data => {
+        console.log(data['notifications']);
+        this.notifications = data['notifications'];
+        });
+  }
+
 
   async mostrarPop( event ) {
     // console.log('notif:' + this.notifications);
@@ -80,21 +91,6 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
     await popover.present();
 
     const { data } = await popover.onWillDismiss(); // onDidDismiss();
-  }
-
-  fetchNotifications() {
-    fetch('assets/data/notifications.json', {
-      method: 'POST',
-      headers: {
-         "Accept": "application/json"
-      }
-    }
-    ).then(res => res.json()) // json file depends on planning id
-    .then(data => {
-      this.notifications = data.notifications;
-      // this.placeDataService.setPlaces(this.placesData);
-      console.log(data.notifications);
-    });
   }
 
   /* getItems() {
