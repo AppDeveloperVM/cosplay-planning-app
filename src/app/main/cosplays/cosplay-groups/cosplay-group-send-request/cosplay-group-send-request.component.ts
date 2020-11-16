@@ -4,6 +4,7 @@ import { CosplayGroup } from '../cosplay-group.model';
 import { ModalController, NavController } from '@ionic/angular';
 import { Cosplay } from '../../cosplay.model';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NoticesService } from 'src/app/services/notices.service';
 
 @Component({
   selector: 'app-cosplay-group-send-request',
@@ -18,7 +19,8 @@ export class CosplayGroupSendRequestComponent implements OnInit {
     private modalCtrl: ModalController,
     private navCtrl: NavController,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private noticesService: NoticesService
   ) { }
 
   ngOnInit() {}
@@ -28,6 +30,7 @@ export class CosplayGroupSendRequestComponent implements OnInit {
   }
 
   onSendCosplayGroupRequest() {
+    this.noticesService.addNotice( this.requestedCharacter.toString() , 'request', 'Cosplay group character request');
     this.modalCtrl.dismiss({ message: 'Request send from cosplay-group-send-request !'}, 'confirm');
   }
 

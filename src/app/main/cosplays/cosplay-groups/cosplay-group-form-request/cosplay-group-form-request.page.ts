@@ -40,7 +40,8 @@ export class CosplayGroupFormRequestPage implements OnInit, OnDestroy {
         this.cosplayGroup = cosplayGroup;
       });
       // this.cosplay.characterName = this.cosplay.characterName;
-      console.log('Cosplaygroup id: ' + this.cosplayGroup.id);
+
+      // console.log('Cosplaygroup id: ' + this.cosplayGroup.id);
     });
   }
 
@@ -75,6 +76,7 @@ export class CosplayGroupFormRequestPage implements OnInit, OnDestroy {
     })
     .then(resultData => {
       if (resultData.role === 'confirm') {
+
         this.loadingCtrl.create({message: 'Sending request..'})
         .then(
           loadingEl => {
@@ -94,6 +96,8 @@ export class CosplayGroupFormRequestPage implements OnInit, OnDestroy {
               loadingEl.dismiss();
             });
             */
+
+            loadingEl.dismiss();
 
             this.router.navigateByUrl('/main/tabs/cosplays/cosplay-groups');
           }
