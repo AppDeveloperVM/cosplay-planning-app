@@ -8,14 +8,14 @@ import { PopoverController } from '@ionic/angular';
 })
 export class PopinfoComponent implements OnInit {
 
-  //items = this.notif_count;
+  // items = this.notif_count;
 
   @Input() notifications;
 
   constructor( private popoverCtrl: PopoverController) { }
 
   ngOnInit() {
-    //console.log(this.notif_count);
+    // console.log(this.notif_count);
   }
 
 
