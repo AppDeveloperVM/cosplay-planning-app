@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { CosplaysService } from '../cosplays.service';
 import { Cosplay } from '../cosplay.model';
 import { SegmentChangeEventDetail } from '@ionic/core';
@@ -6,7 +6,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { PopoverController } from '@ionic/angular';
 import { PopinfoComponent } from 'src/app/components/popinfo/popinfo.component';
 import { RouterModule } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -21,13 +21,14 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
   relevantCosplays: Cosplay[];
   private cosplaysSub: Subscription;
   private filter = 'all';
-  notifications: any[];
+  notifications: any;
 
   constructor(
     private cosplaysService: CosplaysService,
     private authService: AuthService,
     private popoverCtrl: PopoverController,
-    private routermodule: RouterModule
+    private routermodule: RouterModule,
+    private httpClient: HttpClient
   ) { }
 
   ngOnInit() {
@@ -38,7 +39,12 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
     });
     //this.relevantCosplays = this.loadedCosplays;
 
-    this.notifications = [{name: 'John'}, {name: 'John'}, {name: 'John'}];
+    this.fetchNotifications();
+    /* this.httpClient.get('assets/notifications.json').subscribe(data => {
+      console.log(data);
+      this.notifications = data['notifications'];
+    });
+    */
   }
 
   ionViewWillEnter() {
@@ -66,7 +72,7 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
 
     const popover = await this.popoverCtrl.create({
       component: PopinfoComponent,
-      componentProps: { notif_count: this.notifications},
+       componentProps: { notifications: this.notifications},
       event,
       // mode: 'ios',
       backdropDismiss: true
@@ -74,6 +80,21 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
     await popover.present();
 
     const { data } = await popover.onWillDismiss(); // onDidDismiss();
+  }
+
+  fetchNotifications() {
+    fetch('assets/data/notifications.json', {
+      method: 'POST',
+      headers: {
+         "Accept": "application/json"
+      }
+    }
+    ).then(res => res.json()) // json file depends on planning id
+    .then(data => {
+      this.notifications = data.notifications;
+      // this.placeDataService.setPlaces(this.placesData);
+      console.log(data.notifications);
+    });
   }
 
   /* getItems() {
