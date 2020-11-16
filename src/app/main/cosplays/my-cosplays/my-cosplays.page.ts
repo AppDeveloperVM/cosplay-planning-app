@@ -21,7 +21,6 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
   relevantCosplays: Cosplay[];
   private cosplaysSub: Subscription;
   private filter = 'all';
-
   notifications: any = [];
 
   constructor(
@@ -72,8 +71,8 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
   fetchPlacesData() {
     fetch('../../assets/data/notifications.json').then(res => res.json()) // json file depends on planning id
       .then(data => {
-        console.log(data['notifications']);
-        this.notifications = data['notifications'];
+        console.log(data.notifications);
+        this.notifications = data.notifications;
         });
   }
 
