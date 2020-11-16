@@ -8,6 +8,7 @@ import { PopinfoComponent } from 'src/app/components/popinfo/popinfo.component';
 import { RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Observable, Subscription } from 'rxjs';
+import { NoticesService } from 'src/app/services/notices.service';
 
 @Component({
   selector: 'app-my-cosplays',
@@ -25,6 +26,7 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
 
   constructor(
     private cosplaysService: CosplaysService,
+    private noticesService: NoticesService,
     private authService: AuthService,
     private popoverCtrl: PopoverController,
     private routermodule: RouterModule,
@@ -73,6 +75,8 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
       .then(data => {
         console.log(data.notifications);
         this.notifications = data.notifications;
+
+        this.noticesService.setNotices(this.notifications);
         });
   }
 
