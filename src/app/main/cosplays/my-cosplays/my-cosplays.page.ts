@@ -35,7 +35,8 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
    }
 
   ngOnInit() {
-    this.fetchPlacesData();
+    // this.fetchNoticesData();
+    this.notifications = this.noticesService.getNotices();
 
     this.cosplaysSub = this.cosplaysService.cosplays.subscribe(cosplays => {
       this.loadedCosplays = cosplays;
@@ -70,15 +71,19 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
     this.listedLoadedCosplays = this.relevantCosplays;
   }
 
-  fetchPlacesData() {
+  /* fetchNoticesData() {
     fetch('../../assets/data/notifications.json').then(res => res.json()) // json file depends on planning id
       .then(data => {
         console.log(data.notifications);
         this.notifications = data.notifications;
 
         this.noticesService.setNotices(this.notifications);
+
+        this.noticesService.addNotice('SpaceRonin', 'request', 'Cosplay group character request');
+
+        this.notifications = this.noticesService.getNotices();
         });
-  }
+  }*/
 
 
   async mostrarPop( event ) {
