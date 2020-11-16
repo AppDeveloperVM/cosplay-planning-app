@@ -21,7 +21,7 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
   relevantCosplays: Cosplay[];
   private cosplaysSub: Subscription;
   private filter = 'all';
-  notifications: any;
+  notifications: any = [];
 
   constructor(
     private cosplaysService: CosplaysService,
@@ -83,7 +83,7 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
   }
 
   fetchNotifications() {
-    fetch('assets/data/notifications.json', {
+    fetch(`/src/assets/data/notifications.json`, {
       method: 'POST',
       headers: {
          "Accept": "application/json"
