@@ -42,7 +42,7 @@ export class PlanningPage implements OnInit, OnDestroy {
     } else {
       // filtro - a mostrar tras elegir segundo segmented button on main
       this.relevantPlannings = this.loadedPlannings.filter(
-        planning => planning//.status !== true // checking status
+        planning => planning// .status !== true // checking status
       );
     }
     this.listedLoadedPlannings = this.relevantPlannings;
@@ -56,7 +56,7 @@ export class PlanningPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if(this.planningSub) {
+    if (this.planningSub) {
       this.planningSub.unsubscribe();
     }
   }

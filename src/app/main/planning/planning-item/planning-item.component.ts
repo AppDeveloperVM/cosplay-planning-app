@@ -11,6 +11,8 @@ export class PlanningItemComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log(this.planning);
+  }
 
 }

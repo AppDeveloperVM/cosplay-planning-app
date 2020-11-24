@@ -16,13 +16,12 @@ import { PlaceDataService } from 'src/app/services/place-data.service';
 })
 export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
   cosplayGroup: CosplayGroup;
-  cosplaygroup: CosplayGroup;
+  newCosplayGroup: CosplayGroup;
+  cosplay: Cosplay;
   placesData = [];
   cosplayGroupId: string;
   isLoading = false;
   private cosplayGroupSub: Subscription;
-  cosplay: Cosplay;
-  newCosplayGroup: CosplayGroup;
 
   constructor(
     private navCtrl: NavController,
@@ -30,7 +29,6 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
     private cosplayGroupService: CosplayGroupService,
     private placeDataService: PlaceDataService,
     private modalCtrl: ModalController,
-    private toastCtrl: ToastController,
     private router: Router,
     private alertCtrl: AlertController
   ) { }
@@ -41,12 +39,16 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
     this.route.paramMap.subscribe(paramMap => {
       if (!paramMap.has('cosplayGroupId')) {
         this.navCtrl.navigateBack('/main/tabs/cosplays/cosplay-groups');
-        console.log('cant get cosplaygroupid');
+        console.log('cant get cosplaygroupId');
         return;
       }
       this.isLoading = true;
       this.cosplayGroupId = paramMap.get('cosplayGroupId');
       console.log('id:' + paramMap.get('cosplayGroupId'));
+      console.log(
+        this.cosplayGroupService.getCosplayGroup(paramMap.get('cosplayGroupId'))
+      );
+
       this.cosplayGroupSub = this.cosplayGroupService
       .getCosplayGroup(paramMap.get('cosplayGroupId'))
       .subscribe(cosplayGroup => {
