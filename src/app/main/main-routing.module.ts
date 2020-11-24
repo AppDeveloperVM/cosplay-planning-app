@@ -46,11 +46,13 @@ const routes: Routes = [
               },
               {
                 path: 'new-cosplay-group',
-                loadChildren: () => import('./cosplays/cosplay-groups/new-cosplay-group/new-cosplay-group.module').then( m => m.NewCosplayGroupPageModule)
+                loadChildren: () =>
+                 import('./cosplays/cosplay-groups/new-cosplay-group/new-cosplay-group.module').then( m => m.NewCosplayGroupPageModule)
               },
               {
                 path: ':cosplayGroupId',
-                      loadChildren: () => import('./cosplays/cosplay-groups/cosplay-group-details/cosplay-group-details.module').then( m => m.CosplayGroupDetailsPageModule)
+                      loadChildren: () =>
+                       import('./cosplays/cosplay-groups/cosplay-group-details/cosplay-group-details.module').then( m => m.CosplayGroupDetailsPageModule)
 
               },
               {
@@ -60,7 +62,8 @@ const routes: Routes = [
               },
               {
                 path: 'edit/:cosplayGroupId',
-                loadChildren: () => import('./cosplays/cosplay-groups/edit-cosplay-group/edit-cosplay-group.module').then( m => m.EditCosplayGroupPageModule)
+                loadChildren: () =>
+                import('./cosplays/cosplay-groups/edit-cosplay-group/edit-cosplay-group.module').then( m => m.EditCosplayGroupPageModule)
               }
             ]
           }
@@ -98,7 +101,7 @@ const routes: Routes = [
             loadChildren: () => import('./planning/new-planning/new-planning.module').then( m => m.NewPlanningPageModule)
           },
           {
-            path: ':planningId',
+            path: 'planning-details/:planningId',
             loadChildren: () => import('./planning/planning-detail/planning-detail.module').then( m => m.PlanningDetailPageModule)
           },
           {
