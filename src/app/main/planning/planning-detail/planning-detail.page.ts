@@ -14,18 +14,17 @@ import { PlaceDataService } from 'src/app/services/place-data.service';
   styleUrls: ['./planning-detail.page.scss'],
 })
 export class PlanningDetailPage implements OnInit, OnDestroy {
-  paramMapId: string;
   planning: Planning;
-  planningId: string;
-  private planningSub: Subscription;
   newPlanning: Planning;
-  isLoading = false;
   placesData = [];
+  planningId: string;
+  isLoading = false;
+  private planningSub: Subscription;
 
   constructor(
+    private route: ActivatedRoute,
     private router: Router,
     private navCtrl: NavController,
-    private route: ActivatedRoute,
     private planningService: PlanningService,
     private modalCtrl: ModalController,
     private alertCtrl: AlertController,
@@ -38,19 +37,24 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
     this.fetchPlacesData();
 
     this.route.paramMap.subscribe(paramMap => {
-      this.planningId = paramMap.get('planningId');
-      if (!this.planningId === null) {
-        this.navCtrl.navigateBack('/main/tabs/planning');
+      if (!paramMap.has('planningId')) {
+        this.navCtrl.navigateBack('/planning');
+        console.log('cant get planningId');
         return;
       }
 
       this.isLoading = true;
+      this.planningId = paramMap.get('planningId');
+      console.log('id:' + paramMap.get('planningId'));
+      console.log(
+        this.planningService.getPlanning(paramMap.get('planningId'))
+      );
+
       this.planningSub = this.planningService
-      .getPlanning(this.planningId)
+      .getPlanning(paramMap.get('planningId'))
       .subscribe(planning => {
         this.planning = planning;
-        console.log('Planning id: ' + this.planningId);
-        console.log('Planning: ' , planning);
+        console.log(this.planning);
         this.isLoading = false;
       }, error => {
         this.alertCtrl
