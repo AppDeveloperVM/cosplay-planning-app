@@ -1,13 +1,12 @@
 <ion-header>
   <ion-toolbar>
+    <ion-title *ngIf="!isLoading">{{ planning.title }}</ion-title>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/main/tabs/planning"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{ planning.title }}</ion-title>
     <ion-buttons slot="end">
       <ion-button color="primary"  
-        [routerLink]="['/', 'main' , 'tabs' ,'planning' , 'edit' , planningId ]"
-      >
+        [routerLink]="['/', 'main' , 'tabs' ,'planning' , 'edit' , planningId ]">
         Edit
       </ion-button>
     </ion-buttons>
