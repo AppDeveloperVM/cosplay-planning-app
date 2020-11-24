@@ -30,16 +30,23 @@ export class PlanningService {
   constructor(private authService: AuthService, private http: HttpClient) { }
 
   getPlanning(id: string) {
-    // probably this needs to change
-    // the way the data is obtained and it persists
-    // like saving in it in an object or subscribing
-    return this.plannings
-    .pipe(
-      take(1),
-      map(plannings => {
-        return {...plannings.find(p => p.id === id)};
+
+    return this.http.get<PlanningData>(
+      `https://cosplay-planning-app.firebaseio.com/plannings/${id}.json`
+    ).pipe(
+      map(planningData => {
+        return new Planning(
+            id,
+            planningData.title,
+            planningData.description,
+            planningData.imageUrl,
+            planningData.places,
+            planningData.location,
+            this.authService.userId
+        );
       })
-    );
+
+  );
   }
 
   fetchPlannings() {
