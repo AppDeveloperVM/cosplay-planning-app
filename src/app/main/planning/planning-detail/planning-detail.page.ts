@@ -101,7 +101,7 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
 
   onShowFullMap() {
     this.modalCtrl.create({component: MapModalComponent, componentProps: {
-      center: { lat: this.planning.location.lat, lng: this.planning.location.lng },
+      center: { lat: this.planning.places['lat'], lng: this.planning.places['lng'] },
       markers: this.placesData , // array of markers
       selectable: true,
       multiple: true,
