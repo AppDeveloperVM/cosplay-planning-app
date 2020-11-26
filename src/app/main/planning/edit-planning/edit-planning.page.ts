@@ -97,7 +97,7 @@ export class EditPlanningPage implements OnInit, OnDestroy {
       }
       );
 
-      console.log(' Planning id: ' + this.planning.id);
+      //console.log(' Planning id: ' + this.planning.id);
     });
   }
 
