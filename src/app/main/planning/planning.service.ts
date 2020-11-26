@@ -49,6 +49,12 @@ export class PlanningService {
   );
   }
 
+  //getCity
+  /*
+  https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452
+  &location_type=ROOFTOP&result_type=street_address&key=YOUR_API_KEY
+  */
+
   fetchPlannings() {
     return this.http
     .get<{[key: string]: PlanningData}>(
@@ -126,7 +132,7 @@ export class PlanningService {
 
     }
 
-    updatePlanning(
+  updatePlanning(
       planningId: string,
       title: string,
       description: string,
