@@ -16,6 +16,7 @@ import { Plugins, Capacitor } from '@capacitor/core';
 export class LocationPickerComponent implements OnInit {
   @Output() locationPick = new EventEmitter<PlaceLocation>();
   @Input() showPreview = false;
+  center = {};
   selectedLocationImage: string;
   isLoading = false;
 
@@ -23,10 +24,12 @@ export class LocationPickerComponent implements OnInit {
       private modalCtrl: ModalController,
       private http: HttpClient,
       private actionSheetCtrl: ActionSheetController,
-      private alertCtrl: AlertController
+      private alertCtrl: AlertController,
     ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getCurrentCoords();
+  }
 
   onPickLocation() {
     this.actionSheetCtrl.create({header: 'Please Choose', buttons: [
@@ -54,6 +57,8 @@ export class LocationPickerComponent implements OnInit {
         lat: geoPosition.coords.latitude,
         lng: geoPosition.coords.longitude
       };
+      this.center = coordinates;
+      
       this.createPlace(coordinates.lat, coordinates.lng);
       this.isLoading = false;
     }).
@@ -73,19 +78,31 @@ export class LocationPickerComponent implements OnInit {
   }
 
   private openMap() {
-    this.modalCtrl.create({component: MapModalComponent}).then(modalEl => {
-      modalEl.onDidDismiss().then(modalData => {
-        if (!modalData.data) {
-          return;
-        }
-        const coordinates: Coordinates = {
-          lat: modalData.data.lat,
-          lng: modalData.data.lng
-        };
-        this.createPlace(coordinates.lat, coordinates.lng);
+    this.modalCtrl.create(
+      {
+        component: MapModalComponent,
+        componentProps: {
+          center: this.center,
+          //markers: this.placesData , // array of markers
+          selectable: true,
+          multiple: true,
+          closeButtonText: 'close',
+          //title: this.planning.title
+        } 
+      }).then(
+      modalEl => {
+        modalEl.onDidDismiss().then(modalData => {
+          if (!modalData.data) {
+            return;
+          }
+          const coordinates: Coordinates = {
+            lat: modalData.data.lat,
+            lng: modalData.data.lng
+          };
+          this.createPlace(coordinates.lat, coordinates.lng);
+        });
+        modalEl.present();
       });
-      modalEl.present();
-    });
   }
 
   private createPlace(lat: number, lng: number) {
@@ -108,6 +125,29 @@ export class LocationPickerComponent implements OnInit {
       this.selectedLocationImage = staticMapImageUrl;
       this.isLoading = false;
       this.locationPick.emit(pickedLocation);
+    });
+  }
+
+  private getCurrentCoords(){
+    if (!Capacitor.isPluginAvailable('Geolocation')) {
+      this.showErrorAlert();
+      return;
+    }
+    this.isLoading = true;
+    Plugins.Geolocation.getCurrentPosition().
+    then(geoPosition => {
+      const coordinates: Coordinates = {
+        lat: geoPosition.coords.latitude,
+        lng: geoPosition.coords.longitude
+      };
+      this.center = coordinates;
+      
+      console.log('Coords Obtained');
+      this.isLoading = false;
+    }).
+    catch(err => {
+      this.isLoading = false;
+      this.showErrorAlert();
     });
   }
 

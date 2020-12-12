@@ -42,6 +42,7 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
       this.getGoogleMaps = googleMaps;
       this.googleMaps = googleMaps;
       const mapEl = this.mapElementRef.nativeElement;
+    
       const map = new googleMaps.Map(mapEl, {
         center: this.center, // center of the view
         zoom: 16,
@@ -208,6 +209,9 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getMarkers(googleMaps, map) {
     // tslint:disable-next-line:variable-name
+    if(!this.placesData){
+      return;
+    }
     for (let _i = 0; _i < this.placesData.length; _i++) {
       // if (_i > 0) {
         this.addMarkerToMap(googleMaps, map, this.placesData[_i]);
