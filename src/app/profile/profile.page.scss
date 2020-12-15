@@ -1,4 +1,4 @@
-ion-content {
+  ion-content {
     --padding-top: 16px;
   
     .content-col {
@@ -12,6 +12,14 @@ ion-content {
   
     .user-name {
       text-align: center;
+    }
+
+    a {
+      text-decoration: none;
+    }
+    
+    a:hover {
+      color:orangered;
     }
   }
   
