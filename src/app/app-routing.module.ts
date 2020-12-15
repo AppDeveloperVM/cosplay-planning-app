@@ -26,7 +26,16 @@ const routes: Routes = [
   },
   {
     path: 'profile',
-    loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule),
+    children : [
+      {
+        path: '',
+        loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule),
+      },
+      {
+        path: 'edit-profile',
+        loadChildren: () => import('./profile/edit-profile/edit-profile.module').then( m => m.EditProfilePageModule),
+      }
+    ],
     canLoad: [AuthGuard]
   },
   {
