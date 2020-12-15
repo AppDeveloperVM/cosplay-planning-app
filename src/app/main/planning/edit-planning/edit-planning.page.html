@@ -1,5 +1,9 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button
+      [defaultHref]="'main/tabs/planning/planning-details/' + planningId"></ion-back-button>
+    </ion-buttons>
     <ion-title>Edit Planning</ion-title>
     <ion-buttons slot="primary">
       <ion-button (click)="onUpdatePlanning()" [disabled]="!form?.valid || !form.get('image').value">
