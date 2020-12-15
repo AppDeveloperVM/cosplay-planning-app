@@ -4,8 +4,9 @@
       <ion-back-button text="Back to main" defaultHref="/main/tabs/cosplays/my-cosplays"></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-button color="primary"  >
-        <!--[routerLink]="['/', 'main', 'tabs' , 'cosplays', 'my-cosplays' , 'edit' , cosplay.id ]"-->
+      <ion-button color="primary" 
+        [routerLink]="['/', 'profile', 'edit-profile' ]"
+      >
         Edit
       </ion-button>
     </ion-buttons>
