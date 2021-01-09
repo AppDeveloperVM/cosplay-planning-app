@@ -43,36 +43,13 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
       this.googleMaps = googleMaps;
       const mapEl = this.mapElementRef.nativeElement;
 
-      // directions Service ( routes )
-      let directionsService = new googleMaps.DirectionsService();
-      let directionsDisplay = new googleMaps.DirectionsRenderer();
-      directionsDisplay.setMap(this.map);
+      
     
       const map = new googleMaps.Map(mapEl, {
         center: this.center, // center of the view
         zoom: 16,
       });
 
-      var request = {
-        origin:{lat: -34.6496604, lng: -58.4047352},
-        destination:{lat: -34.650078, lng: -58.402425},
-        waypoints:  [{
-                         location: {lat: -34.597353,lng: -58.415832},
-                         stopover: true
-                     },
-                     {
-                         location:{lat: -34.608441,lng: -58.406194},
-                         stopover: true
-                    }],
-        optimizeWaypoints:true,
-        provideRouteAlternatives: false,
-        travelMode: 'DRIVING'
-      };
-      directionsService.route(request, function(response, status) {
-        if (status == 'OK') {
-          directionsDisplay.setDirections(response);
-        }
-      });
 
       // this.map
       this.map = map;
@@ -267,6 +244,56 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
 
   defineRoute() {
     // draw line between 2 markers
+      // needs array of places 
+      // -> origin, destination, waypoints
+    var origin = {lat:0,lng:0};
+    var destination = {lat:0,lng:0};
+    var waypoints = [];
+    var iterations = this.placesData.length;
+    var element = {lat:0,lng:0};
+
+    for (let _i = 0; _i < this.placesData.length; _i++) {
+      if (_i == 0) {
+        origin.lat = this.placesData[_i].latitude;
+        origin.lng = this.placesData[_i].longitude;
+        console.log(origin);
+      } else if (_i == (this.placesData.length -1) ) { // must fix _ last one
+        destination.lat = this.placesData[_i].latitude;
+        destination.lng = this.placesData[_i].longitude;
+        console.log(destination);
+      } else {
+        element.lat = this.placesData[_i].latitude;
+        element.lng = this.placesData[_i].longitude;
+        waypoints.push( element );
+        console.log(waypoints);
+      }
+    }
+
+    // directions Service ( routes )
+    let directionsService = new this.googleMaps.DirectionsService();
+    let directionsDisplay = new this.googleMaps.DirectionsRenderer();
+    directionsDisplay.setMap(this.map);
+
+    var request = {
+      origin,
+      destination,//:{lat: -34.650078, lng: -58.402425}
+      waypoints:  [{
+                       location: waypoints[0],
+                       stopover: true
+                   },
+                   {
+                       location:waypoints[1],
+                       stopover: true
+                  }],
+      optimizeWaypoints:true,
+      provideRouteAlternatives: false,
+      travelMode: 'WALKING'
+    };
+    directionsService.route(request, function(response, status) {
+      if (status == 'OK') {
+        directionsDisplay.setDirections(response);
+      }
+    });
   }
 
   updatePlacesData() {
