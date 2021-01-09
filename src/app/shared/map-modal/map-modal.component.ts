@@ -42,11 +42,38 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
       this.getGoogleMaps = googleMaps;
       this.googleMaps = googleMaps;
       const mapEl = this.mapElementRef.nativeElement;
+
+      // directions Service ( routes )
+      let directionsService = new googleMaps.DirectionsService();
+      let directionsDisplay = new googleMaps.DirectionsRenderer();
+      directionsDisplay.setMap(this.map);
     
       const map = new googleMaps.Map(mapEl, {
         center: this.center, // center of the view
         zoom: 16,
       });
+
+      var request = {
+        origin:{lat: -34.6496604, lng: -58.4047352},
+        destination:{lat: -34.650078, lng: -58.402425},
+        waypoints:  [{
+                         location: {lat: -34.597353,lng: -58.415832},
+                         stopover: true
+                     },
+                     {
+                         location:{lat: -34.608441,lng: -58.406194},
+                         stopover: true
+                    }],
+        optimizeWaypoints:true,
+        provideRouteAlternatives: false,
+        travelMode: 'DRIVING'
+      };
+      directionsService.route(request, function(response, status) {
+        if (status == 'OK') {
+          directionsDisplay.setDirections(response);
+        }
+      });
+
       // this.map
       this.map = map;
 
@@ -55,7 +82,7 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
       });
 
       // get actual markers
-      this.getMarkers(googleMaps, map);
+      // this.getMarkers(googleMaps, map);
 
       // hay que modificar cómo se obtienen los marcadores y
       // se añaden al mapa
@@ -73,11 +100,6 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
     }).catch( err => {
       console.log(err);
     });
-  }
-
-  onCancel() {
-    this.modalCtrl.dismiss();
-    // volver a crear la imagen del mapa
   }
 
   addClickListenertoMap() {
@@ -193,32 +215,6 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log('click listener removed');
   }
 
-  async showToast(message: string) {
-    const toast = await this.toastCtrl.create({
-      message,
-      duration: 1000,
-      position: 'middle',
-    });
-    toast.present();
-  }
-
-  updatePlacesData() {
-    this.placesData = this.placeDataService.getPlaces();
-  }
-
-
-  getMarkers(googleMaps, map) {
-    // tslint:disable-next-line:variable-name
-    if(!this.placesData){
-      return;
-    }
-    for (let _i = 0; _i < this.placesData.length; _i++) {
-      // if (_i > 0) {
-        this.addMarkerToMap(googleMaps, map, this.placesData[_i]);
-      // }
-    }
-  }
-
   addMarkerToMap(googleMaps, map, place) {
     // const position = new googleMaps.LatLng(museum.latitude, museum.longitude);
     const myLatlng = new googleMaps.LatLng( parseFloat(place.latitude), parseFloat(place.longitude));
@@ -235,6 +231,18 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
 
     placeMarker.setMap(map);
     this.placeDataService.setPlace(placeMarker);
+  }
+
+  getMarkers(googleMaps, map) {
+    // tslint:disable-next-line:variable-name
+    if(!this.placesData){
+      return;
+    }
+    for (let _i = 0; _i < this.placesData.length; _i++) {
+      // if (_i > 0) {
+        this.addMarkerToMap(googleMaps, map, this.placesData[_i]);
+      // }
+    }
   }
 
   setMarkers(places) {
@@ -257,6 +265,13 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
+  defineRoute() {
+    // draw line between 2 markers
+  }
+
+  updatePlacesData() {
+    this.placesData = this.placeDataService.getPlaces();
+  }
 
   addInfoWindow(googleMaps, marker, content) {
 
@@ -267,6 +282,15 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
     googleMaps.event.addListener(marker, 'click', () => {
       infoWindow.open(this.map, marker);
     });
+  }
+
+  async showToast(message: string) {
+    const toast = await this.toastCtrl.create({
+      message,
+      duration: 1000,
+      position: 'middle',
+    });
+    toast.present();
   }
 
   private getGoogleMaps(): Promise<any> {
@@ -290,6 +314,11 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       };
     });
+  }
+
+  onCancel() {
+    this.modalCtrl.dismiss();
+    // volver a crear la imagen del mapa
   }
 
   ngOnDestroy() {
