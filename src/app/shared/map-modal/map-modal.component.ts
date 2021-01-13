@@ -273,7 +273,7 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // directions Service ( routes )
     let directionsService = new this.googleMaps.DirectionsService();
-    let directionsDisplay = new this.googleMaps.DirectionsRenderer();
+    let directionsDisplay = new this.googleMaps.DirectionsRenderer({suppressMarkers: true});
     this.googleMaps.event.trigger(this.map, 'resize');
     directionsDisplay.setMap(this.map);
 
@@ -282,7 +282,7 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
       destination,//:{lat: -34.650078, lng: -58.402425}
       waypoints,
       optimizeWaypoints:true,
-      provideRouteAlternatives: false,
+      provideRouteAlternatives: true,
       travelMode: 'WALKING'
     };
     directionsService.route(request, function(response, status) {
