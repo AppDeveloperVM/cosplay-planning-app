@@ -249,6 +249,7 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
     var origin = {lat:0,lng:0};
     var destination = {lat:0,lng:0};
     var waypoints = [];
+    var waypoints_iteration = 0;
     var iterations = this.placesData.length;
     var element = {lat:0,lng:0};
 
@@ -264,7 +265,8 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
       } else {
         element.lat = this.placesData[_i].latitude;
         element.lng = this.placesData[_i].longitude;
-        waypoints.push( element );
+        waypoints[waypoints_iteration] = { location : element, stopover : false};
+        waypoints_iteration++;
         console.log(waypoints);
       }
     }
@@ -272,19 +274,13 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
     // directions Service ( routes )
     let directionsService = new this.googleMaps.DirectionsService();
     let directionsDisplay = new this.googleMaps.DirectionsRenderer();
+    this.googleMaps.event.trigger(this.map, 'resize');
     directionsDisplay.setMap(this.map);
 
     var request = {
       origin,
       destination,//:{lat: -34.650078, lng: -58.402425}
-      waypoints:  [{
-                       location: waypoints[0],
-                       stopover: true
-                   },
-                   {
-                       location:waypoints[1],
-                       stopover: true
-                  }],
+      waypoints,
       optimizeWaypoints:true,
       provideRouteAlternatives: false,
       travelMode: 'WALKING'
