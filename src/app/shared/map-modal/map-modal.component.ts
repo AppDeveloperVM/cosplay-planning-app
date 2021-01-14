@@ -3,7 +3,6 @@ import { ModalController, AlertController, ToastController } from '@ionic/angula
 import { environment } from '../../../environments/environment';
 import { PlaceDataService } from 'src/app/services/place-data.service';
 import { from, fromEvent, Observable } from 'rxjs';
-import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-map-modal',
@@ -23,7 +22,7 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
   clickListener: any;
   googleMaps: any;
   map: any;
-
+  directionsDisplay;
 
   constructor(
     private modalCtrl: ModalController,
@@ -270,26 +269,38 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log(waypoints);
       }
     }
+    
 
     // directions Service ( routes )
     let directionsService = new this.googleMaps.DirectionsService();
     let directionsDisplay = new this.googleMaps.DirectionsRenderer({suppressMarkers: true});
-    this.googleMaps.event.trigger(this.map, 'resize');
-    directionsDisplay.setMap(this.map);
 
-    var request = {
-      origin,
-      destination,//:{lat: -34.650078, lng: -58.402425}
-      waypoints,
-      optimizeWaypoints:true,
-      provideRouteAlternatives: true,
-      travelMode: 'WALKING'
-    };
-    directionsService.route(request, function(response, status) {
-      if (status == 'OK') {
-        directionsDisplay.setDirections(response);
+    //if (! this.googleMaps.DirectionsRenderer.directions_changed) {
+      if(this.directionsDisplay){
+        this.directionsDisplay = directionsDisplay;
+        directionsDisplay.setMap(null);
       }
-    });
+      directionsDisplay.setMap(this.map);
+    
+      var request = {
+        origin,
+        destination,//:{lat: -34.650078, lng: -58.402425}
+        waypoints,
+        optimizeWaypoints:true,
+        provideRouteAlternatives: true,
+        travelMode: 'WALKING'
+      };
+      directionsService.route(request, function(response, status) {
+        if (status == 'OK') {
+          
+          directionsDisplay.setDirections(response);
+          console.log(response.routes);
+          console.log('distance:' + response.routes[0].legs[0].distance.text);
+          console.log('duration:' + response.routes[0].legs[0].duration.text);
+        }
+      });
+      this.directionsDisplay = directionsDisplay;
+    
   }
 
   updatePlacesData() {
