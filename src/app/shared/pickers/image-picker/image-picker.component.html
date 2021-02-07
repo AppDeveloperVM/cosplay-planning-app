@@ -2,16 +2,15 @@
   <ion-img 
   role="button"
   class="image" 
-  (click)="onPickImage()"
   [src]="selectedImage"
-  *ngIf="selectedImage && showPreview"
+  *ngIf="selectedImage"
   >
-</ion-img>
-  <ion-button color="primary" (click)="onPickImage()" 
+  </ion-img>
+  <ion-button id="btn_overlay" color="primary" (click)="onPickImage()" 
   *ngIf="!selectedImage || !showPreview">
-    <ion-icon name="camera"></ion-icon>
-    <ion-label>Take picture</ion-label>
+    <ion-icon class="icon_over" name="camera"></ion-icon>
+    <ion-label class="label_over">Take picture</ion-label>
   </ion-button>
 </div>
 <input type="file" accept="image/jpeg"
-*ngIf="usePicker" #filePicker  (change)="onFileChosen($event)" />
+*ngIf="usePicker" #filePicker (change)="onFileChosen($event)" />

@@ -11,7 +11,7 @@ export class ImagePickerComponent implements OnInit {
   @ViewChild('filePicker', { static: false }) filePicker: ElementRef<HTMLInputElement>;
   @Output() imagePick = new EventEmitter<string | File>();
   @Input() showPreview = false;
-  selectedImage: string;
+  @Input() selectedImage: string;
   usePicker = false;
 
   constructor(private platform: Platform) { }
@@ -21,6 +21,8 @@ export class ImagePickerComponent implements OnInit {
     console.log('Hybrid' + this.platform.is('hybrid'));
     console.log('Android' + this.platform.is('android'));
     console.log('Desktop' + this.platform.is('desktop'));
+
+    console.log('selectedImage: ' + this.selectedImage);
 
     if ((this.platform.is('mobile') && !this.platform.is('hybrid')) ||
      this.platform.is('desktop') ) {

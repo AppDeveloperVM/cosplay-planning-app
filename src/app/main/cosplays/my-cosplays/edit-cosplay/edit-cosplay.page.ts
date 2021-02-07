@@ -39,6 +39,7 @@ export class EditCosplayPage implements OnInit, OnDestroy {
   private cosplaySub: Subscription;
   isLoading = false;
   form: FormGroup;
+  actualImage = "";
 
   constructor(
     private route: ActivatedRoute,
@@ -76,6 +77,7 @@ export class EditCosplayPage implements OnInit, OnDestroy {
           }),
           image: new FormControl(null)
         });
+        this.actualImage = this.cosplay.imageUrl;
         this.isLoading = false;
       }, error => {
         this.alertCtrl.create({
@@ -108,6 +110,7 @@ export class EditCosplayPage implements OnInit, OnDestroy {
       imageFile = imageData;
     }
     this.form.patchValue({image: imageFile});
+    this.form.get('image').value;
   }
 
   onUpdateCosplay() {
