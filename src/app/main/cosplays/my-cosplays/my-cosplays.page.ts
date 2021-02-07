@@ -87,18 +87,24 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
 
 
   async mostrarPop( event ) {
-    // console.log('notif:' + this.notifications);
+    
+    if (this.notifications.length > 0) {
+      console.log('notif:' + this.notifications);
 
-    const popover = await this.popoverCtrl.create({
-      component: PopinfoComponent,
-       componentProps: { notifications: this.notifications},
-      event,
-      // mode: 'ios',
-      backdropDismiss: true
-    });
-    await popover.present();
+      const popover = await this.popoverCtrl.create({
+        component: PopinfoComponent,
+         componentProps: { notifications: this.notifications},
+        event,
+        // mode: 'ios',
+        backdropDismiss: true
+      });
+      await popover.present();
+  
+      const { data } = await popover.onWillDismiss(); // onDidDismiss();
+    } else {
+      console.log('No notifications - no popup');
+    }
 
-    const { data } = await popover.onWillDismiss(); // onDidDismiss();
   }
 
   /* getItems() {
