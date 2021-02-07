@@ -19,6 +19,8 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
   clickTriggersNewPlace = false;
   @Input() closeButtonText = 'Cancel';
   @Input() title = 'Pick Location';
+  markers_array = [];
+
   clickListener: any;
   googleMaps: any;
   map: any;
@@ -58,13 +60,12 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
       });
 
       // get actual markers
-      // this.getMarkers(googleMaps, map);
 
       // hay que modificar cómo se obtienen los marcadores y
       // se añaden al mapa
 
       // Obtener mapa y markers a mostrar
-      this.getMarkers(googleMaps, map);
+      this.setMarkers(googleMaps, map);
 
         // Get actual location - with a button
         // map.setMyLocationEnabled(true);
@@ -88,6 +89,8 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
         source.subscribe(
           this.clickListener = this.map.addListener('click',
             event => {
+
+              console.log('Selected Coords:' + event.latLng.lat() , event.latLng.lng() );
 
             const selectedCoords = {
               lat: event.latLng.lat(),
@@ -116,6 +119,7 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
                   handler: data => {
                   // show new marker
 
+                  
                     // new googleMaps Marker object
                     const newPlace = new this.googleMaps.Marker({
                       position: selectedCoords,
@@ -136,8 +140,7 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.placeDataService.setPlace(PlaceData);
                     this.markers.push(PlaceData[0]);
 
-                    this.getMarkers(this.googleMaps, this.map);
-                    console.log(this.markers);
+                    // this.setMarkers(this.googleMaps, this.map);
                     this.map.setZoom(this.map.getZoom()); // used to reload the map
 
                     this.clickTriggersNewPlace = false;
@@ -200,6 +203,8 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
       title: place.name
     });
 
+    this.markers_array.push(myLatlng);
+
     const content = '<div id="iw-container"><div class="iw-title" style="color:black;font-size:22px;text-transform:capitalize;">'
     + place.name + '</div></div>';
 
@@ -209,7 +214,7 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
     this.placeDataService.setPlace(placeMarker);
   }
 
-  getMarkers(googleMaps, map) {
+  setMarkers(googleMaps, map) {
     // tslint:disable-next-line:variable-name
     if(!this.placesData){
       return;
@@ -221,7 +226,7 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  setMarkers(places) {
+  /*setMarkers(places) {
 
     for (let _i = 0; _i < places.length; _i++) {
       const place = places[_i];
@@ -240,6 +245,7 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
   }
+*/
 
   defineRoute() {
     // draw line between 2 markers
@@ -251,6 +257,8 @@ export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
     var waypoints_iteration = 0;
     var iterations = this.placesData.length;
     var element = {lat:0,lng:0};
+
+    console.log('markers:' + this.markers_array);
 
     for (let _i = 0; _i < this.placesData.length; _i++) {
       if (_i == 0) {
