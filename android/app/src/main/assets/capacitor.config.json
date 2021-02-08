@@ -4,5 +4,6 @@
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",
-  "cordova": {}
+  "cordova": {},
+  "windowsAndroidStudioPath": "D:\\Users\\SpaceRonin\\Program Files\\Android Studio\bin\\studio64.exe"
 }
