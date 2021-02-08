@@ -31,6 +31,3 @@ npm-debug.log*
 /www
 *.code-workspace
 
-# Ignore gradle files
-android\.gradle
-/build
