@@ -30,3 +30,7 @@ npm-debug.log*
 /plugins
 /www
 *.code-workspace
+
+# Ignore gradle files
+.gradle/
+build/
