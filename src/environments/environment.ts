@@ -4,7 +4,17 @@
 
 export const environment = {
   production: false,
-  googleMapsAPIKey: 'AIzaSyC6A6IeeIRA25u3T3MMI4M84D2bkbMuQXs'
+  googleMapsAPIKey: 'AIzaSyC6A6IeeIRA25u3T3MMI4M84D2bkbMuQXs',
+  firebase: {
+    apiKey: "AIzaSyC6IykPJQ8vddxcsaCVZNqBF_zV9pygqZo",
+    authDomain: "cosplay-planning-app.firebaseapp.com",
+    databaseURL: "https://cosplay-planning-app.firebaseio.com",
+    projectId: "cosplay-planning-app",
+    storageBucket: "cosplay-planning-app.appspot.com",
+    messagingSenderId: "588940181672",
+    appId: "1:588940181672:web:344b35e3ede161f057029d",
+    measurementId: "G-J1SXPNPEZK"
+  }
 };
 
 /*
