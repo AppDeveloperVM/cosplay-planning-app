@@ -4,7 +4,7 @@
       <ion-back-button
       [defaultHref]="'main/tabs/cosplays/cosplay-groups/' + cosplayGroupId"></ion-back-button>
     </ion-buttons>
-    <ion-title>Edit Cosplay</ion-title>
+    <ion-title>Edit Cosplay Group</ion-title>
     <ion-buttons slot="primary">
       <ion-button (click)="onUpdateCosplayGroup()" [disabled]="!form?.valid || !form.get('image').value">
         <ion-icon name="checkmark" slot="icon-only"></ion-icon>
