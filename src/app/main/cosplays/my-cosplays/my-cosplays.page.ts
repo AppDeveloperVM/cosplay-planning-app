@@ -22,7 +22,10 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
   relevantCosplays: Cosplay[];
   private cosplaysSub: Subscription;
   private filter = 'all';
-  notifications: any = [];
+  file_notifications: any = []; // past ones from file
+  all_notifications: any = []; // full list 
+  notifications: any = []; // last ones
+  checked_notif = false;
 
   constructor(
     private cosplaysService: CosplaysService,
@@ -35,21 +38,16 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
    }
 
   ngOnInit() {
-    // this.fetchNoticesData();
-    this.notifications = this.noticesService.getNotices();
+    this.fetchFileData(); // get notifs from file - this.file_notifications
+    this.noticesService.setNotices(this.all_notifications);
+    //this.notifications = this.noticesService.getNotices();
 
     this.cosplaysSub = this.cosplaysService.cosplays.subscribe(cosplays => {
       this.loadedCosplays = cosplays;
       this.listedLoadedCosplays = this.loadedCosplays;
       this.onFilterUpdate(this.filter);
     });
-    // this.relevantCosplays = this.loadedCosplays;
 
-    /* this.httpClient.get('assets/notifications.json').subscribe(data => {
-      console.log(data);
-      this.notifications = data['notifications'];
-    });
-    */
   }
 
   ionViewWillEnter() {
@@ -71,25 +69,26 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
     this.listedLoadedCosplays = this.relevantCosplays;
   }
 
-  /* fetchNoticesData() {
-    fetch('../../assets/data/notifications.json').then(res => res.json()) // json file depends on planning id
+   fetchFileData() {
+    fetch('../../assets/data/notifications.json').then(res => res.json())
       .then(data => {
         console.log(data.notifications);
-        this.notifications = data.notifications;
+        this.notifications.push(data.notifications);
 
-        this.noticesService.setNotices(this.notifications);
+        //example - this.noticesService.addNotice('SpaceRonin', 'request', 'Cosplay group character request');
+        
 
-        this.noticesService.addNotice('SpaceRonin', 'request', 'Cosplay group character request');
-
-        this.notifications = this.noticesService.getNotices();
+        
         });
-  }*/
+  }
 
 
   async mostrarPop( event ) {
     
-    if (this.notifications.length > 0) {
+    if (true) { // if this.notifications.length > 0
       console.log('notif:' + this.notifications);
+
+      this.checked_notif = true;
 
       const popover = await this.popoverCtrl.create({
         component: PopinfoComponent,

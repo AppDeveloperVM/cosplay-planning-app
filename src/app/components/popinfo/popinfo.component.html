@@ -1,16 +1,16 @@
 <ion-list>
-  <ion-item *ngFor="let notif of notifications; let i = index;" 
+  <ion-item class="new" *ngFor="let notif of notifications; let i = index;" 
   (click)="onClick(i + 1)"
   >
     <ion-icon name="person" slot="start"></ion-icon>
     <ion-label>
-      <h3><b>{{ notif.user_from }}</b> 
+      <h3><b>{{ notif[i].user_from }}</b> 
         </h3>
-      <p *ngIf="notif.type== 'comment'"> {{ notif.text }} </p>
-      <p *ngIf="notif.type== 'like'">liked your comment</p>
-      <p *ngIf="notif.type== 'follow'">followed you</p>
-      <p *ngIf="notif.type== 'request'">new request</p>
+      <p *ngIf="notif[i].type== 'comment'"> {{ notif[i].text }} </p>
+      <p *ngIf="notif[i].type== 'like'">liked your comment</p>
+      <p *ngIf="notif[i].type== 'follow'">followed you</p>
+      <p *ngIf="notif[i].type== 'request'">new request</p>
     </ion-label>
-    
   </ion-item>
+  
 </ion-list>
