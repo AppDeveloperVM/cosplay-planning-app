@@ -32,6 +32,14 @@ export class NoticesService {
     this.noticeList.push(newNotice);
   }
 
+  setNotice(data) {
+    this.notice = data;
+  }
+
+  getNotice() {
+    return this.notice;
+  }
+
   setNotices(data) {
     this.noticeList = data;
   }
@@ -44,12 +52,27 @@ export class NoticesService {
     return this.noticesUpdated.asObservable();
   }
 
-  setNotice(data) {
-    this.notice = data;
+  // Notif Badges
+
+  setNotifBadges(badgeNumber: number) {
+
   }
 
-  getNotice() {
-    return this.notice;
+  getNotifBadges(){
+
   }
+
+  increaseNotifBadges(){
+
+  }
+
+  decreaseNotifBadges(){
+
+  }
+
+  clearBadges(){
+
+  }
+   
 
 }
