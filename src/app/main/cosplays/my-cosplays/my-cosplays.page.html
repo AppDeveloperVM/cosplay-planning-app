@@ -7,7 +7,7 @@
     <ion-buttons slot="primary">
       <ion-button size="small" shape="round" color="medium" (click)="mostrarPop($event)">
         <ion-icon name="notifications-outline"></ion-icon>
-        <ion-badge color="dark" slot="end" *ngIf="notifications.length > 0">{{notifications.length}}</ion-badge>
+        <ion-badge color="dark" slot="end" *ngIf="notifications.length > 0 && checked_notif == false">{{notifications.length}}</ion-badge>
       </ion-button>
       <ion-button routerLink="/main/tabs/cosplays/my-cosplays/new">
         <ion-icon name="add" slot="icon-only"></ion-icon>
