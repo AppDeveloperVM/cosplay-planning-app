@@ -8,13 +8,17 @@ import { PlanningPageRoutingModule } from './planning-routing.module';
 
 import { PlanningPage } from './planning.page';
 import { PlanningItemComponent } from './planning-item/planning-item.component';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    PlanningPageRoutingModule
+    PlanningPageRoutingModule,
+    RouterModule,
+    SharedModule
   ],
   declarations: [PlanningPage, PlanningItemComponent]
 })

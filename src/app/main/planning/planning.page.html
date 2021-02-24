@@ -1,16 +1,5 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>Planning</ion-title>
-    <ion-buttons slot="primary">
-      <ion-button [routerLink]="['/', 'main', 'tabs' , 'planning', 'new-planning' ]">
-        <ion-icon name="add" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<app-header titulo="Planning" [routeArray]="['/', 'main', 'tabs' , 'planning', 'new-planning' ]">
+</app-header>
 
 <ion-content>
   <ion-grid>
