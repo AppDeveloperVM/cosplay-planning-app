@@ -12,11 +12,12 @@ import { CosplayGroupSendRequestComponent } from './main/cosplays/cosplay-groups
 import { ComponentsModule } from './components/components.module';
 import { PopinfoComponent } from './components/popinfo/popinfo.component';
 import { HttpClientModule } from '@angular/common/http';
+import { HeaderComponent } from './components/header/header.component';
 
 
 @NgModule({
   declarations: [AppComponent, CosplayGroupSendRequestComponent],
-  entryComponents: [CosplayGroupSendRequestComponent, PopinfoComponent],
+  entryComponents: [CosplayGroupSendRequestComponent,PopinfoComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
