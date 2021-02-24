@@ -38,7 +38,7 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
    }
 
   ngOnInit() {
-    this.fetchFileData(); // get notifs from file - this.file_notifications
+    //this.fetchFileData(); // get notifs from file - this.file_notifications
     this.noticesService.setNotices(this.all_notifications);
     //this.notifications = this.noticesService.getNotices();
 
@@ -69,42 +69,6 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
     this.listedLoadedCosplays = this.relevantCosplays;
   }
 
-   fetchFileData() {
-    fetch('../../assets/data/notifications.json').then(res => res.json())
-      .then(data => {
-        console.log(data.notifications);
-        this.notifications.push(data.notifications);
-
-        //example - this.noticesService.addNotice('SpaceRonin', 'request', 'Cosplay group character request');
-        
-
-        
-        });
-  }
-
-
-  async mostrarPop( event ) {
-    
-    if (true) { // if this.notifications.length > 0
-      console.log('notif:' + this.notifications);
-
-      this.checked_notif = true;
-
-      const popover = await this.popoverCtrl.create({
-        component: PopinfoComponent,
-         componentProps: { notifications: this.notifications},
-        event,
-        // mode: 'ios',
-        backdropDismiss: true
-      });
-      await popover.present();
-  
-      const { data } = await popover.onWillDismiss(); // onDidDismiss();
-    } else {
-      console.log('No notifications - no popup');
-    }
-
-  }
 
   /* getItems() {
     return this.http.get<[]>('components/popinfo');
