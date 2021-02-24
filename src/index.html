@@ -18,6 +18,28 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   <script type="module" src="https://unpkg.com/@ionic/pwa-elements@latest/dist/ionicpwaelements/ionicpwaelements.esm.js"></script>
+
+  <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-app.js"></script>
+
+  <!-- Add Firebase products that you want to use -->
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-auth.js" defer></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-firestore.js" defer></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyC6IykPJQ8vddxcsaCVZNqBF_zV9pygqZo",
+      authDomain: "cosplay-planning-app.firebaseapp.com",
+      databaseURL: "https://cosplay-planning-app.firebaseio.com",
+      projectId: "cosplay-planning-app",
+      storageBucket: "cosplay-planning-app.appspot.com",
+      messagingSenderId: "588940181672",
+      appId: "1:588940181672:web:344b35e3ede161f057029d",
+      measurementId: "G-J1SXPNPEZK"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig); 
+  </script>
+
 </head>
 
 <body>
