@@ -8,7 +8,7 @@ import { HeaderComponent } from '../components/header/header.component';
 import { RouterModule } from '@angular/router';
 
 @NgModule({
-  declarations: [LocationPickerComponent, MapModalComponent, ImagePickerComponent,HeaderComponent ],
+  declarations: [LocationPickerComponent, MapModalComponent, ImagePickerComponent,HeaderComponent],
   imports: [ CommonModule, IonicModule,RouterModule ],
   exports: [ LocationPickerComponent, MapModalComponent, ImagePickerComponent,HeaderComponent ],
   entryComponents: [ MapModalComponent]
