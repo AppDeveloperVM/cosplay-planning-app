@@ -6,10 +6,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./main.page.scss'],
 })
 export class MainPage implements OnInit {
+  tabs : any;
 
   constructor() { }
 
   ngOnInit() {
+   // this.tabs['home']['label'] = 'home';
+
   }
 
 }

@@ -1,14 +1,10 @@
 <ion-tabs>
-  <ion-tab-bar slot="bottom">
-    <ion-tab-button tab="cosplays/my-cosplays">
+  <ion-tab-bar slot="bottom" *ngFor="let tabdata of tabs; let i = index">
+    <ion-tab-button tab="tabdata.route">
       <ion-label>
+        {{ tabdata.label }}
       </ion-label>
-      <ion-icon name="home"></ion-icon>
-    </ion-tab-button>
-    <ion-tab-button tab="planning">
-      <ion-label>
-      </ion-label>
-      <ion-icon name="notifications"></ion-icon>
+      <ion-icon name="{{ tabdata.icon }}"></ion-icon>
     </ion-tab-button>
   </ion-tab-bar>
 </ion-tabs>
