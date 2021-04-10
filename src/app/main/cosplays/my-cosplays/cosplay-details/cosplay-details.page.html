@@ -39,7 +39,38 @@
         </ion-item>
       </ion-list>
 
+     
+      
     </ion-col>
   </ion-row>
+
+  <div padding>
+    <ion-segment [(ngModel)]="pet">
+      <ion-segment-button value="kittens">
+        Kittens
+      </ion-segment-button>
+      <ion-segment-button value="puppies">
+        Puppies
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+  <div [ngSwitch]="pet">
+    <ion-list *ngSwitchCase="'kittens'">
+      <ion-item>
+        
+        <h2>Luna</h2>
+      </ion-item>
+      
+    </ion-list>
+    <ion-list *ngSwitchCase="'puppies'">
+      <ion-item>
+        
+        <h2>Ruby</h2>
+      </ion-item>
+    </ion-list>
+
+  </div>
+
 </ion-grid>
 </ion-content>

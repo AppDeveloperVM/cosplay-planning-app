@@ -11,10 +11,13 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./cosplay-details.page.scss'],
 })
 export class CosplayDetailsPage implements OnInit, OnDestroy {
+  //rootPage: any = TabsPage;
+
   cosplay: Cosplay;
   cosplayId: string;
   isLoading = false;
   private cosplaySub: Subscription;
+  pet: string = "kittens";
 
   constructor(
     private router: Router,
