@@ -28,7 +28,7 @@
         <img src="{{ cosplay.imageUrl }}">
       </ion-thumbnail>
 
-      <ion-list>
+      <ion-list class="ion-no-padding">
         <ion-item>
           <ion-label position="stacked">Series</ion-label>
           <ion-input color="primary" readonly="true">{{cosplay.series}}</ion-input>
@@ -46,29 +46,60 @@
 
   <div padding>
     <ion-segment [(ngModel)]="pet">
-      <ion-segment-button value="kittens">
-        Kittens
+      <ion-segment-button value="elements">
+        <ion-icon name="shirt-outline"></ion-icon>
       </ion-segment-button>
-      <ion-segment-button value="puppies">
-        Puppies
+      <ion-segment-button value="tasks">
+        <ion-icon name="list-outline"></ion-icon>
       </ion-segment-button>
     </ion-segment>
   </div>
 
   <div [ngSwitch]="pet">
-    <ion-list *ngSwitchCase="'kittens'">
-      <ion-item>
-        
-        <h2>Luna</h2>
-      </ion-item>
+    <div *ngSwitchCase="'elements'">
+
+      <ion-title class="ion-text-center">
+        <h3>Elementos del Cosplay</h3>
+      </ion-title>
+
+      <ion-list class="ion-no-padding" lines="full">
+        <ion-item no-lines class="bottom-border item-background-color" >
+          <ion-label>Ejemplo</ion-label>
+        </ion-item>
+      </ion-list>
       
-    </ion-list>
-    <ion-list *ngSwitchCase="'puppies'">
-      <ion-item>
-        
-        <h2>Ruby</h2>
-      </ion-item>
-    </ion-list>
+    </div>
+    <div *ngSwitchCase="'tasks'">
+
+      <ion-title class="ion-text-center">
+        <h3>Tasks</h3>
+      </ion-title>
+
+      
+        <ion-list class="ion-no-padding" lines="full">
+          <ion-item no-lines class="bottom-border item-background-color" *ngFor="let task of tasks">
+            <ion-grid  class="ion-no-padding">
+
+              <ion-row>
+                <ion-col>
+                  {{ task.name }}
+                </ion-col>
+              </ion-row>
+              
+              <ion-row>
+                <ion-col col-1>
+                <small>
+                  <ion-icon name="image-outline" *ngIf="task.image"></ion-icon>
+                </small>
+                </ion-col>
+              </ion-row>
+
+            </ion-grid>
+          </ion-item>
+
+        </ion-list>
+      
+      </div>
 
   </div>
 

@@ -17,7 +17,8 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
   cosplayId: string;
   isLoading = false;
   private cosplaySub: Subscription;
-  pet: string = "kittens";
+  pet: string = "tasks"; // default segment
+  tasks: any = [{name : "Task 1",image: "photo"},{name : "Task 2"},{name : "Task 3"}];
 
   constructor(
     private router: Router,
