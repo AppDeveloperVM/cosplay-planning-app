@@ -77,8 +77,13 @@
 
       
         <ion-list class="ion-no-padding" lines="full">
+
+          
+          
           <ion-item no-lines class="bottom-border item-background-color" *ngFor="let task of tasks">
             <ion-grid  class="ion-no-padding">
+
+              <div *ngIf="task.type == 'buy'">To Buy List</div>
 
               <ion-row>
                 <ion-col>

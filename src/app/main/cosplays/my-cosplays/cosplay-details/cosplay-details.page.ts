@@ -18,7 +18,8 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
   isLoading = false;
   private cosplaySub: Subscription;
   pet: string = "tasks"; // default segment
-  tasks: any = [{name : "Task 1",image: "photo"},{name : "Task 2"},{name : "Task 3"}];
+  tasks: any = [{name : "Task 1",image: "photo",type:"buy"},{name : "Task 2",type:"make"},{name : "Task 3",type:"make"}];
+  toBuy: boolean;
 
   constructor(
     private router: Router,
@@ -57,12 +58,23 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
         });
       });
       // load the cosplay
+
+      //check
+      this.toBuyList();
     });
   }
 
   onEditCosplay() {
     // this.router.navigateByUrl('/main/tabs/cosplays/my-cosplays');
     this.navCtrl.navigateBack('/main/tabs/cosplays/my-cosplays');
+  }
+
+  toBuyList() {
+    for (let i = 0; i < this.tasks.length; i++) {
+      if (this.tasks[i].type == "buy"){
+        this.toBuy = true;
+      }
+    }
   }
 
   ngOnDestroy() {
