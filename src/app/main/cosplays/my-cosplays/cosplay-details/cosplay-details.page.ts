@@ -17,9 +17,14 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
   cosplayId: string;
   isLoading = false;
   private cosplaySub: Subscription;
-  pet: string = "tasks"; // default segment
+  default: string = "elements"; // default segment
+  //array para los tipos de segment y sus datos
+  tasks_segment: string = "tasks"; 
   tasks: any = [{name : "Task 1",image: "photo",type:"buy"},{name : "Task 2",type:"make"},{name : "Task 3",type:"make"}];
+  cosElements: any = [{name : "Hat",image: "photo",type:"buy"},{name : "Suit",type:"make"},{name : "Shoes",type:"make"}];
   toBuy: boolean;
+
+  // seria necesario ordenar los arrays por 'a comprar' y 'a hacer'
 
   constructor(
     private router: Router,
@@ -59,7 +64,7 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
       });
       // load the cosplay
 
-      //check
+      //check buy lists for header
       this.toBuyList();
     });
   }
@@ -76,6 +81,7 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
       }
     }
   }
+
 
   ngOnDestroy() {
     if (this.cosplaySub) {
