@@ -66,7 +66,7 @@
 
         <ion-item no-lines class="ion-no-padding bottom-border item-background-color header-item">
 
-          <ion-grid class="ion-no-padding">
+          <ion-grid class="ion-no-padding ion-no-border">
             <ion-row class="list-header-row">
               <ion-col class="list-header-col main">
                 To Buy :
@@ -74,7 +74,7 @@
               <ion-col class="list-header-col sec">
                 Store
               </ion-col >
-              <ion-col class="list-header-col sec">
+              <ion-col class=" col list-header-col sec">
                 Status
               </ion-col >
             </ion-row>
@@ -83,7 +83,10 @@
 
         </ion-item>
 
-        <ion-item no-lines class="ion-no-padding bottom-border item-background-color list-item" *ngFor="let el of cosElements">
+        <ion-item no-lines class="ion-no-padding bottom-border item-background-color list-item" detail
+        routerDirection="forward"
+        [routerLink]=""
+        *ngFor="let el of cosElements">
           
           <ion-grid class="ion-no-padding">
 
