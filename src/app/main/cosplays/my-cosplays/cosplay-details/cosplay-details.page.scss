@@ -39,6 +39,12 @@ ion-item {
     --min-height: 20px;
 }
 
+// eliminar padding final
+ion-item {
+  --padding-end: 0px;
+  --inner-padding-end: 0px;
+}
+
 ion-item.list-item {
   --min-height: 40px;
 }
