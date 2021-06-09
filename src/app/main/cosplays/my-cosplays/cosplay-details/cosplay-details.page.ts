@@ -21,7 +21,7 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
   //array para los tipos de segment y sus datos
   tasks_segment: string = "tasks"; 
   tasks: any = [{name : "Task 1",image: "photo",type:"buy"},{name : "Task 2",type:"make"},{name : "Task 3",type:"make"}];
-  cosElements: any = [{name : "Hat",image: "photo",type:"buy"},{name : "Suit",type:"make"},{name : "Shoes",type:"make"}];
+  cosElements: any = [{name : "Hat",image: "photo",type:"buy",store:"amazon.es",store_url:"amazon.es"},{name : "Suit",type:"make"},{name : "Shoes",type:"make"}];
   toBuy: boolean;
 
   // seria necesario ordenar los arrays por 'a comprar' y 'a hacer'
