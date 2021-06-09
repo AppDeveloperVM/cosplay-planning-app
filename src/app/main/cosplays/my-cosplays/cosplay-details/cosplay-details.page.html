@@ -63,18 +63,29 @@
       </ion-title>
 
       <ion-list class="ion-no-padding" lines="full">
-        <ion-item no-lines class="ion-no-padding bottom-border item-background-color" *ngFor="let el of cosElements">
-          
-          <ion-grid class="ion-no-padding">
 
-            <ion-row class="list-header-row" *ngIf="el.type == 'buy'">
+        <ion-item no-lines class="ion-no-padding bottom-border item-background-color header-item">
+
+          <ion-grid class="ion-no-padding">
+            <ion-row class="list-header-row">
               <ion-col class="list-header-col main">
                 To Buy :
               </ion-col>
               <ion-col class="list-header-col sec">
+                Store
+              </ion-col >
+              <ion-col class="list-header-col sec">
                 Status
               </ion-col >
             </ion-row>
+
+          </ion-grid>
+
+        </ion-item>
+
+        <ion-item no-lines class="ion-no-padding bottom-border item-background-color list-item" *ngFor="let el of cosElements">
+          
+          <ion-grid class="ion-no-padding">
 
             <ion-row>
               <ion-col>
@@ -84,6 +95,9 @@
                   <ion-icon name="image-outline" *ngIf="el.image"></ion-icon>
                 </small>
               </div>
+              </ion-col>
+              <ion-col class="elements-list sec">
+                <div><a href="http://www.{{ el.store_url }}" target="_blank">{{ el.store }}</a></div>
               </ion-col>
               <ion-col class="elements-list sec">
                 <div>-</div>
@@ -99,16 +113,15 @@
     <div *ngSwitchCase="'tasks'">
 
       <ion-title class="ion-text-center">
-        <h3>Tasks</h3>
+        <h3>Tareas</h3>
       </ion-title>
 
         <ion-list class="ion-no-padding" lines="full">
 
-          <ion-item no-lines class="ion-no-padding bottom-border item-background-color" *ngFor="let task of tasks">
-            
-            <ion-grid class="ion-no-padding" *ngIf="task.type == 'buy'">
+          <ion-item no-lines class="ion-no-padding bottom-border item-background-color header-item">
+            <ion-grid class="ion-no-padding">
 
-              <ion-row class="list-header-row" >
+              <ion-row class="list-header-row">
                 <ion-col class="list-header-col main">
                   To Buy :
                 </ion-col>
@@ -116,6 +129,13 @@
                   Status
                 </ion-col>
               </ion-row>
+
+            </ion-grid>
+          </ion-item>
+
+          <ion-item no-lines class="ion-no-padding bottom-border item-background-color list-item" *ngFor="let task of tasks">
+            
+            <ion-grid class="ion-no-padding">
 
               <ion-row>
                 <ion-col >
