@@ -68,14 +68,14 @@
 
           <ion-grid class="ion-no-padding ion-no-border">
             <ion-row class="list-header-row">
-              <ion-col class="list-header-col main">
-                To Buy :
+              <ion-col class="list-header-col">
+                <div class="main">To Buy :</div>
               </ion-col>
-              <ion-col class="list-header-col sec">
-                Store
+              <ion-col class="list-header-col">
+                <div class="sec">Store</div>
               </ion-col >
-              <ion-col class=" col list-header-col sec">
-                Status
+              <ion-col class=" col list-header-col ">
+                <div class="sec">Status</div>
               </ion-col >
             </ion-row>
 
@@ -90,20 +90,22 @@
           
           <ion-grid class="ion-no-padding">
 
-            <ion-row>
+            <ion-row class="elements-list">
               <ion-col>
+              <div class="elements-list-data">
                 <div class="elements-list-name">{{ el.name }}</div>
                 <div class="elements-list-icons">
                   <small>
                   <ion-icon name="image-outline" *ngIf="el.image"></ion-icon>
                 </small>
+                </div>
               </div>
               </ion-col>
-              <ion-col class="elements-list sec">
-                <div><a href="http://www.{{ el.store_url }}" target="_blank">{{ el.store }}</a></div>
+              <ion-col class="elements-list-data sec">
+                <div class="">{{ el.store }}</div>
               </ion-col>
-              <ion-col class="elements-list sec">
-                <div>-</div>
+              <ion-col class="elements-list-data sec">
+                <div class="">-</div>
               </ion-col>
             </ion-row>
 
@@ -125,27 +127,29 @@
             <ion-grid class="ion-no-padding">
 
               <ion-row class="list-header-row">
-                <ion-col class="list-header-col main">
-                  To Buy :
+                <ion-col class="list-header-col">
+                  <div class="main">To Buy :</div>
                 </ion-col>
-                <ion-col class="list-header-col sec">
-                  Status
+                <ion-col class="list-header-col">
+                  <div class="sec">Status</div>
                 </ion-col>
               </ion-row>
 
             </ion-grid>
           </ion-item>
 
-          <ion-item no-lines class="ion-no-padding bottom-border item-background-color list-item" *ngFor="let task of tasks">
+          <ion-item no-lines class="ion-no-padding bottom-border item-background-color list-item" *ngFor="let task of tasks" detail>
             
             <ion-grid class="ion-no-padding">
 
-              <ion-row>
-                <ion-col >
-                  <div class="elements-list-name">{{ task.name }}</div>
+              <ion-row class="elements-list">
+                <ion-col>
+                  <div class="elements-list-data">
+                    <div class="">{{ task.name }}</div>
+                  </div>
                 </ion-col>
                 <ion-col>
-                  <div class="elements-list sec">
+                  <div class="elements-list-data sec">
                     -
                   </div>
                 </ion-col>
