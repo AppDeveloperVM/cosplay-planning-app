@@ -20,7 +20,7 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
   default: string = "elements"; // default segment
   //array para los tipos de segment y sus datos
   tasks_segment: string = "tasks"; 
-  tasks: any = [{name : "Task 1",image: "photo",type:"buy"},{name : "Task 2",type:"make"},{name : "Task 3",type:"make"}];
+  tasks: any = [{name : "Coser traje de tienda china",image: "photo",type:"buy"},{name : "Imprimar goma Eva",type:"make"},{name : "Planear piezas collar",type:"make"}];
   cosElements: any = [{name : "Hat",image: "photo",type:"buy",store:"amazon.es",store_url:"amazon.es"},{name : "Suit",type:"buy",store:"la tienda de la pepa"},{name : "Shoes",type:"make"}];
   toBuy: boolean;
 
