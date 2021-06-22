@@ -24,11 +24,13 @@ export class EditProfilePage implements OnInit {
     this.isLoading = true;
 
     this.form = new FormGroup({
-      userrName: new FormControl(this.profile.userName , {
+      //this.profile.userName,
+      userrName: new FormControl(  {
         updateOn: 'blur',
         validators: [Validators.required]
       }),
-      description: new FormControl(this.profile.description , {
+      //this.profile.description ,
+      description: new FormControl( {
         updateOn: 'blur',
         validators: [Validators.required]
       })

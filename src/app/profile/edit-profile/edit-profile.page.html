@@ -8,13 +8,29 @@
   <div text-center *ngIf="isLoading">
     <ion-spinner color="primary"></ion-spinner>
   </div>
+  
+  <ion-list>  
+    <ion-item button>General</ion-item>
+    <ion-item button>Avatar</ion-item>
+    <ion-item button>Fondo del perfil</ion-item>
+    <ion-item button>Miniperfil</ion-item>
+    <ion-item button>Tema</ion-item>
+    <ion-item button>Insignias</ion-item>
+    <ion-item button>Grupos</ion-item>
+    <ion-item button>Expositor</ion-item>
+    <ion-item-divider></ion-item-divider>
+    <ion-item button>Configuracion de privacidad</ion-item>
+  </ion-list>
+     
+ 
+  <!--
   <form [formGroup]="form" *ngIf="!isLoading">
     <ion-grid>
       <ion-row>
         <ion-col>
           <ion-item>
             <ion-label position="floating">User Name ( to show )</ion-label>
-            <ion-input type="text" formControlName="userName"></ion-input>
+            <ion-input type="text" ></ion-input>
           </ion-item>
         </ion-col>
       </ion-row>
@@ -22,10 +38,11 @@
         <ion-col>
           <ion-item>
             <ion-label position="floating">Description</ion-label>
-            <ion-input type="text" formControlName="description"></ion-input>
+            <ion-input type="text" ></ion-input>
           </ion-item>
         </ion-col>
       </ion-row>
     </ion-grid>
   </form>
+-->
 </ion-content>
