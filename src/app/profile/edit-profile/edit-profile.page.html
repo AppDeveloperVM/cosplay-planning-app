@@ -1,15 +1,19 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Edit profile</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button text="" defaultHref="/main/tabs/cosplays/my-cosplays"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
+  <div class="page" >
   <div text-center *ngIf="isLoading">
     <ion-spinner color="primary"></ion-spinner>
   </div>
   <ion-row>
-    <ion-col size-md="3" size-xs="12">
+    <ion-col size-md="3" size-sm="4" size-xs="12">
       <ion-list>  
         <ion-item button>General</ion-item>
         <ion-item button>Avatar</ion-item>
@@ -23,7 +27,7 @@
         <ion-item button>Configuracion de privacidad</ion-item>
       </ion-list>
     </ion-col>
-    <ion-col class="main-content" size-md="9" size-xs="12">
+    <ion-col class="main-content" size-md="9" size-sm="8" size-xs="12">
         
         <ion-title class="title">GENERAL</ion-title>
         <div class="description">
@@ -32,6 +36,7 @@
 
     </ion-col>
 </ion-row>
+</div>
      
  
   <!--
