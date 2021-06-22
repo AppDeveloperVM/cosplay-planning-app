@@ -8,19 +8,30 @@
   <div text-center *ngIf="isLoading">
     <ion-spinner color="primary"></ion-spinner>
   </div>
-  
-  <ion-list>  
-    <ion-item button>General</ion-item>
-    <ion-item button>Avatar</ion-item>
-    <ion-item button>Fondo del perfil</ion-item>
-    <ion-item button>Miniperfil</ion-item>
-    <ion-item button>Tema</ion-item>
-    <ion-item button>Insignias</ion-item>
-    <ion-item button>Grupos</ion-item>
-    <ion-item button>Expositor</ion-item>
-    <ion-item-divider></ion-item-divider>
-    <ion-item button>Configuracion de privacidad</ion-item>
-  </ion-list>
+  <ion-row>
+    <ion-col size-md="3" size-xs="12">
+      <ion-list>  
+        <ion-item button>General</ion-item>
+        <ion-item button>Avatar</ion-item>
+        <ion-item button>Fondo del perfil</ion-item>
+        <ion-item button>Miniperfil</ion-item>
+        <ion-item button>Tema</ion-item>
+        <ion-item button>Insignias</ion-item>
+        <ion-item button>Grupos</ion-item>
+        <ion-item button>Expositor</ion-item>
+        <ion-item-divider></ion-item-divider>
+        <ion-item button>Configuracion de privacidad</ion-item>
+      </ion-list>
+    </ion-col>
+    <ion-col class="main-content" size-md="9" size-xs="12">
+        
+        <ion-title class="title">GENERAL</ion-title>
+        <div class="description">
+          <p>En este apartado se tratan los ajustes más básicos.</p>
+        </div>
+
+    </ion-col>
+</ion-row>
      
  
   <!--
