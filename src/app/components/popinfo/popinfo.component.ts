@@ -15,7 +15,7 @@ export class PopinfoComponent implements OnInit {
   constructor( private popoverCtrl: PopoverController) { }
 
   ngOnInit() {
-    // console.log(this.notif_count);
+    
   }
 
 
