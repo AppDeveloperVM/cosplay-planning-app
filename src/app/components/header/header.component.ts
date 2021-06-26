@@ -25,15 +25,22 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.fetchFileData(); // get notifs from file - this.file_notifications
+    let notif_count = this.noticesService.getNotices().length;
+    console.log(notif_count);
+    if( notif_count <= 0){
+      this.fetchFileData(); // get notifs from file - this.file_notifications
+    }
+
+    this.notifications = this.noticesService.getNotices();
   }
 
   fetchFileData() {
+
     fetch('../../assets/data/notifications.json').then(res => res.json())
-      .then(data => {
- 
+    .then(data => {
+      console.log("Fetching from json..");
+      
         for(var i in data.notifications){
-          //this.notifications.push([data.notifications[i]]);
           this.noticesService.addNotice( 
             data.notifications[i].user_from ,
             data.notifications[i].type,
@@ -41,18 +48,13 @@ export class HeaderComponent implements OnInit {
           )
         }
 
-        //example 
-        this.noticesService.addNotice('SpaceRonin', 'request', 'Cosplay group character request');
-
-        this.notifications = this.noticesService.getNotices();
         console.log( this.notifications);
-
-        });
+    });
   }
 
   async mostrarPop( event ) {
     
-    if (this.notifications.length > 0) { // if this.notifications.length > 0
+    if (this.notifications.length > 0) { 
       console.log(this.notifications);
 
       this.checked_notif = true;

@@ -38,10 +38,8 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
    }
 
   ngOnInit() {
-    //this.fetchFileData(); // get notifs from file - this.file_notifications
-    this.noticesService.setNotices(this.all_notifications);
-    //this.notifications = this.noticesService.getNotices();
-
+    this.notifications = this.noticesService.getNotices();
+    
     this.cosplaysSub = this.cosplaysService.cosplays.subscribe(cosplays => {
       this.loadedCosplays = cosplays;
       this.listedLoadedCosplays = this.loadedCosplays;

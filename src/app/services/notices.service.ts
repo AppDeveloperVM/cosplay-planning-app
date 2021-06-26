@@ -23,13 +23,21 @@ export class NoticesService {
     text: string
   ) {
 
-    const newNotice = {
+    const newNotice = 
+      {
         "user_from" : userFrom,
         "type" : type,
         "text" : text
       };
 
-    this.noticeList.push(newNotice);
+    console.log("checking notice list");
+    console.log(this.noticeList);
+
+    if (this.containsObject(newNotice) === false )  {
+      this.noticeList.push(newNotice);
+    }
+
+    
   }
   //
   setNotice(data : any) {
@@ -73,6 +81,21 @@ export class NoticesService {
   clearBadges(){
 
   }
+
+  containsObject(obj) {
+    var i;
+    for (i = 0; i < this.noticeList.length; i++) {
+
+        if (this.noticeList[i] == obj) {
+          console.log(this.noticeList[i]);
+          console.log(" = ");
+          console.log(obj);
+            return true;
+        }
+    }
+
+    return false;
+}
    
 
 }
