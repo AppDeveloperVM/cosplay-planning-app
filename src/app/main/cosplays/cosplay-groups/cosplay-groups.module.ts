@@ -8,6 +8,7 @@ import { CosplayGroupsPageRoutingModule } from './cosplay-groups-routing.module'
 
 import { CosplayGroupsPage } from './cosplay-groups.page';
 import { CosplayGroupItemComponent } from './cosplay-group-item/cosplay-group-item.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { CosplayGroupItemComponent } from './cosplay-group-item/cosplay-group-it
     FormsModule,
     IonicModule,
     CosplayGroupsPageRoutingModule,
+    SharedModule
   ],
   declarations: [CosplayGroupsPage, CosplayGroupItemComponent],
   entryComponents: [ ]
