@@ -9,9 +9,11 @@
         <ion-icon name="notifications-outline"></ion-icon>
         <ion-badge color="dark" slot="end" *ngIf="notifications.length > 0 && checked_notif == false">{{notifications.length}}</ion-badge>
       </ion-button>
-      <ion-button [routerLink]="routeArray">
+      <div *ngIf="routeArray != null">
+      <ion-button  [routerLink]="routeArray">
         <ion-icon name="add" slot="icon-only"></ion-icon>
       </ion-button>
+      </div>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
