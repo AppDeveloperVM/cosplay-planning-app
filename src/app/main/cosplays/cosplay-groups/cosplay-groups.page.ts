@@ -3,6 +3,7 @@ import { CosplayGroup } from './cosplay-group.model';
 import { CosplayGroupService } from './cosplay-group.service';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
+import { NoticesService } from 'src/app/services/notices.service';
 
 @Component(
   {
@@ -15,6 +16,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 export class CosplayGroupsPage implements OnInit, OnDestroy {
   cosplaygroups: CosplayGroup[];
   private cosplayGroupsSub: Subscription;
+  all_notifications: any = []; // full list 
 
   loadedCosplayGroups: CosplayGroup[];
   listedLoadedCosplays: CosplayGroup[];
@@ -23,9 +25,12 @@ export class CosplayGroupsPage implements OnInit, OnDestroy {
   private filter = 'all';
   isLoading = false;
 
-  constructor(private cosplaygroupService: CosplayGroupService, private authService: AuthService) { }
+  constructor(private cosplaygroupService: CosplayGroupService, private authService: AuthService,private noticesService: NoticesService,) { }
 
   ngOnInit() {
+
+    this.noticesService.setNotices(this.all_notifications);
+
     this.cosplayGroupsSub = this.cosplaygroupService.cosplaygroups.subscribe(cosplaygroups => {
       this.cosplaygroups = cosplaygroups;
       this.loadedCosplayGroups = cosplaygroups;
