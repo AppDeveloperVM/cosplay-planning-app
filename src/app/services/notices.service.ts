@@ -53,6 +53,7 @@ export class NoticesService {
   }
 
   getNotices() {
+    //this.noticeList.reverse();
     return this.noticeList;
   }
 
@@ -83,8 +84,7 @@ export class NoticesService {
   }
 
   containsObject(obj) {
-    var i;
-    for (i = 0; i < this.noticeList.length; i++) {
+    for (var i = 0; i < this.noticeList.length; i++) {
 
         if (this.noticeList[i] == obj) {
           console.log(this.noticeList[i]);
