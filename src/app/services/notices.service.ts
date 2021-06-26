@@ -24,23 +24,23 @@ export class NoticesService {
   ) {
 
     const newNotice = {
-        'user_from' : userFrom,
-        'type' : type,
-        'text' : text
+        "user_from" : userFrom,
+        "type" : type,
+        "text" : text
       };
 
     this.noticeList.push(newNotice);
   }
-
-  setNotice(data) {
+  //
+  setNotice(data : any) {
     this.notice = data;
   }
 
   getNotice() {
     return this.notice;
   }
-
-  setNotices(data) {
+  //
+  setNotices(data : any) {
     this.noticeList = data;
   }
 
