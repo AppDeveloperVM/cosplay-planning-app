@@ -27,7 +27,8 @@ export class PlanningPage implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.planningSub = this.planningService.plannings.subscribe(plannings => {
+    this.planningSub = this.planningService.plannings.subscribe(
+    plannings => {
       this.loadedPlannings = plannings;
       this.listedLoadedPlannings = this.loadedPlannings;
       this.onFilterUpdate(this.filter);

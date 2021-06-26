@@ -29,7 +29,7 @@ export class CosplayGroupsPage implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.noticesService.setNotices(this.all_notifications);
+    //this.noticesService.setNotices(this.all_notifications);
 
     this.cosplayGroupsSub = this.cosplaygroupService.cosplaygroups.subscribe(cosplaygroups => {
       this.cosplaygroups = cosplaygroups;
