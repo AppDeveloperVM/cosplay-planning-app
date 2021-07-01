@@ -54,7 +54,7 @@ export class CosplayGroupService {
         );
     }
 
-    fetchCosplayGroups() {
+    fetchCosplayGroups(userId: String) {
         return this.http
         .get<{ [key: string]: CosplayGroupData}>(
             `https://cosplay-planning-app.firebaseio.com/cosplay-groups.json?orderBy="userId"&equalTo="${
@@ -146,13 +146,12 @@ export class CosplayGroupService {
         userId: string,
         location: PlaceLocation
     ) {
-
         let updatedCosplayGroups: CosplayGroup[];
         return this.cosplaygroups.pipe(
         take(1),
         switchMap( cosplays => {
             if (!cosplays || cosplays.length <= 0) {
-            return this.fetchCosplayGroups();
+            return this.fetchCosplayGroups(userId);
             } else {
             return of(cosplays);
             }

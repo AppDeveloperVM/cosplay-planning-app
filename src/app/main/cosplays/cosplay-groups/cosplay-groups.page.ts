@@ -21,6 +21,9 @@ export class CosplayGroupsPage implements OnInit, OnDestroy {
   loadedCosplayGroups: CosplayGroup[];
   listedLoadedCosplays: CosplayGroup[];
   relevantCosplayGroups: CosplayGroup[];
+
+  my_requested: CosplayGroup[];
+
   private cosplaysGSub: Subscription;
   private filter = 'all';
   isLoading = false;
@@ -41,7 +44,8 @@ export class CosplayGroupsPage implements OnInit, OnDestroy {
 
   ionViewWillEnter() {
     this.isLoading = true;
-    this.cosplaygroupService.fetchCosplayGroups().subscribe(() => {
+    let userId = this.authService.userId
+    this.cosplaygroupService.fetchCosplayGroups(userId).subscribe(() => {
       this.isLoading = false;
     });
   }
@@ -49,6 +53,10 @@ export class CosplayGroupsPage implements OnInit, OnDestroy {
   onFilterUpdate(filter: string) {
     if (filter === 'all') {
       this.relevantCosplayGroups = this.loadedCosplayGroups; // show everything (?)
+
+    //test
+    }else if(filter === 'requested'){
+      this.relevantCosplayGroups
     } else {
       // filtro - a mostrar tras elegir segundo segmented button on main
       this.relevantCosplayGroups = this.loadedCosplayGroups.filter(
