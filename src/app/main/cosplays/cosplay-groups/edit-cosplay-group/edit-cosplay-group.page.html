@@ -6,7 +6,7 @@
     </ion-buttons>
     <ion-title>Edit Cosplay Group</ion-title>
     <ion-buttons slot="primary">
-      <ion-button (click)="onUpdateCosplayGroup()" [disabled]="!form?.valid || !form.get('image').value">
+      <ion-button (click)="onUpdateCosplayGroup()" [disabled]="!form?.valid">
         <ion-icon name="checkmark" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -43,9 +43,11 @@
           </ion-item>
         </ion-col>
       </ion-row>
+
       <ion-row>
         <ion-col size-sm="6" offset-sm="3">
           <app-location-picker
+          [selectedLocationImage]="actualMapImage"
           [showPreview]="form.get('location').value"
           (locationPick)="onLocationPicked($event)"></app-location-picker>
         </ion-col>
@@ -53,10 +55,12 @@
       <ion-row>
         <ion-col size-sm="6" offset-sm="3">
           <app-image-picker
+          [selectedImage]="actualImage"
           [showPreview]="form.get('image').value"
           (imagePick)="onImagePicked($event)"></app-image-picker>
         </ion-col>
       </ion-row>
+
     </ion-grid>
   </form>
 </ion-content>

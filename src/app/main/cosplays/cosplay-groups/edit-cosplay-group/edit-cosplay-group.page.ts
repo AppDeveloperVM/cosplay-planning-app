@@ -40,6 +40,8 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
   isLoading = false;
   private cosplayGroupSub: Subscription;
   form: FormGroup;
+  actualImage = "";
+  actualMapImage = "";
   selectedLocationImage: string;
 
   constructor(
@@ -87,9 +89,13 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
             updateOn: 'blur',
             validators: [ Validators.required]
           }),
-          location: new FormControl(null, {validators: [Validators.required]}),
-          image: new FormControl(null)
+          location: new FormControl(), //this.cosplayGroup.location.staticMapImageUrl
+          image: new FormControl() //this.cosplayGroup.imageUrl
         });
+
+        this.actualImage = this.cosplayGroup.imageUrl;
+        this.actualMapImage = this.cosplayGroup.location.staticMapImageUrl;
+        
         this.isLoading = false;
       }, error => {
         this.alertCtrl
