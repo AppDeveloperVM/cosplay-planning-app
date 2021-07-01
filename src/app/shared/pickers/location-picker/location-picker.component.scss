@@ -15,3 +15,18 @@
   height: 100%;
   object-fit: cover;
 }
+
+
+
+
+.picker {
+  position: relative;
+}
+
+.picker #btn_overlay {
+  position:absolute;
+}
+
+.picker .image {
+  width: 100%;
+}
