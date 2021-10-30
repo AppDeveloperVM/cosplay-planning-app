@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Detalles</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="onCancel()">{{ closeButtonText }}</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Name</ion-label>
+      <ion-input placeholder="{{title}}" autofocus="true" type="text" required></ion-input>
+    </ion-item>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label position="floating">Cost</ion-label>
+          <ion-input placeholder="0,00" autofocus="true" type="text" required></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+          <ion-label>Done?</ion-label>
+          <ion-radio slot="start" value="buford"></ion-radio>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-item>
+        <ion-label position="floating">Comment</ion-label>
+        <ion-textarea clearOnEdit="true"></ion-textarea>
+      </ion-item>
+    </ion-row>
+
+  </form>
+
+    <div class="action-buttons">
+      <ion-button>
+        Delete
+      </ion-button>
+      <ion-button>
+        Edit
+      </ion-button>
+      <ion-button type="submit">
+        <ion-icon name="save-outline"></ion-icon>
+      </ion-button>
+    </div>
+  
+  
+</ion-content>
