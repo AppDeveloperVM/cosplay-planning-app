@@ -34,7 +34,7 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
    }
 
   ngOnInit() {
-    this.fetchPlacesData();
+    //this.fetchPlacesData(); //add places from json
 
     this.route.paramMap.subscribe(paramMap => {
       if (!paramMap.has('planningId')) {
@@ -81,7 +81,7 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
     console.log('ionViewWillEnter');
   }
 
-  fetchPlacesData() {
+  fetchPlacesData() { // fetch places from json
     fetch('../../assets/data/places_1.json').then(res => res.json()) // json file depends on planning id
       .then(data => {
         this.placesData = data.places;
