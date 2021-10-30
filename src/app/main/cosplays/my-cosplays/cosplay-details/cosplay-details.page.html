@@ -86,7 +86,7 @@
         <ion-item no-lines class="ion-no-padding bottom-border item-background-color list-item" detail
         routerDirection="forward"
         [routerLink]=""
-        *ngFor="let el of cosElements">
+        *ngFor="let el of cosElements" (click)="OpenItemDetails( el.name, el.store, el.status )">
           
           <ion-grid class="ion-no-padding">
 

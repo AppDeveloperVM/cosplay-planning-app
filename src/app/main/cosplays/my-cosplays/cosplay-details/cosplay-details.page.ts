@@ -1,9 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { NavController, AlertController } from '@ionic/angular';
+import { NavController, ModalController, AlertController } from '@ionic/angular';
 import { Cosplay } from '../../cosplay.model';
 import { CosplaysService } from '../../cosplays.service';
 import { Subscription } from 'rxjs';
+import { CosElementModalComponent } from './cos-element-modal/cos-element-modal.component';
+import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-cosplay-details',
@@ -24,6 +26,7 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
   cosElements: any = [{name : "Hat",image: "photo",type:"buy",store:"amazon.es",store_url:"amazon.es"},{name : "Suit",type:"buy",store:"la tienda de la pepa"},{name : "Shoes",type:"make"}];
   toBuy: boolean;
 
+
   // seria necesario ordenar los arrays por 'a comprar' y 'a hacer'
 
   constructor(
@@ -31,7 +34,8 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
     private navCtrl: NavController,
     private route: ActivatedRoute,
     private cosplaysService: CosplaysService,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private modalCtrl: ModalController
   ) { }
 
   ngOnInit() {
@@ -67,6 +71,8 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
       //check buy lists for header
       this.toBuyList();
     });
+
+    
   }
 
   onEditCosplay() {
@@ -80,6 +86,18 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
         this.toBuy = true;
       }
     }
+  }
+
+  OpenItemDetails(title : String, store: String, status: boolean){
+    this.modalCtrl.create({component: CosElementModalComponent, 
+    componentProps: {
+      closeButtonText: 'close',
+      title,
+      store,
+      status
+    } }).then(modalEl => {
+      modalEl.present();
+    });
   }
 
 
