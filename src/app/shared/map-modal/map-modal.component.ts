@@ -12,7 +12,7 @@ import { from, fromEvent, Observable } from 'rxjs';
 export class MapModalComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('map', { static: false }) mapElementRef: ElementRef;
   placesData = [];
-  @Input() center ; // { lat: 39.5695818, lng: 2.6500745 }; // initial route point
+  @Input() center ; // initial route point
   @Input() markers; // = []; // array of markers given
   @Input() selectable; // = true;
   @Input() multiple = false;
