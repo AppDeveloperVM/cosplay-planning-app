@@ -14,6 +14,9 @@ import { PopinfoComponent } from './components/popinfo/popinfo.component';
 import { HttpClientModule } from '@angular/common/http';
 import { HeaderComponent } from './components/header/header.component';
 
+import { AuthGuardService } from './services/auth-guard.service';
+import { AuthenticationService } from './services/Authentication.service';
+
 
 @NgModule({
   declarations: [AppComponent, CosplayGroupSendRequestComponent],
@@ -29,6 +32,8 @@ import { HeaderComponent } from './components/header/header.component';
   providers: [
     StatusBar,
     SplashScreen,
+    AuthGuardService,
+    AuthenticationService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

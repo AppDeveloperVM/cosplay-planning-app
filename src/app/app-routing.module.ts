@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from './auth/auth.guard';
+import { AuthGuardService } from './services/auth-guard.service';
+
 
 const routes: Routes = [
   { path: '', redirectTo: 'main', pathMatch: 'full' },
@@ -36,7 +37,7 @@ const routes: Routes = [
         loadChildren: () => import('./profile/edit-profile/edit-profile.module').then( m => m.EditProfilePageModule),
       }
     ],
-    canLoad: [AuthGuard]
+    canActivate: [AuthGuardService] //CanLoad
   },
   {
     path: 'settings',
@@ -46,6 +47,11 @@ const routes: Routes = [
     path: 'main',
     loadChildren: () => import('./main/main.module').then( m => m.MainPageModule)
   },
+  {
+    path: 'login',
+    loadChildren: () => import('./login/login/login.module').then( m => m.LoginPageModule)
+  },
+
 ];
 
 @NgModule({
