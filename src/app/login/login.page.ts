@@ -5,11 +5,18 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
+
 export class LoginPage implements OnInit {
+  email: string = "";
+  password: string = "";
 
   constructor() { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
+  onSubmit() {
+    alert(
+     this.email + ', ' + this.password
+    )
+ }
 }
