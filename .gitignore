@@ -19,7 +19,7 @@ npm-debug.log*
 
 /.idea
 /.ionic
-/.gradle
+/android
 /.angular/cache
 /.sass-cache
 /.sourcemaps
@@ -31,5 +31,7 @@ npm-debug.log*
 /platforms
 /plugins
 /www
+
 *.code-workspace
+
 
