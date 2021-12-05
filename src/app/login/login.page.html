@@ -1,27 +1,84 @@
 <ion-header>
-  <ion-toolbar color="Primary">
+  <ion-toolbar>
     <ion-title>Login</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/main/tabs/cosplays/my-cosplays"></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content color="Primary">
-  <ion-item color="Primary">
-    <ion-label position="floating">Email</ion-label>
-    <ion-input [(ngModel)]="email" type="text" required></ion-input>
-  </ion-item>
+<ion-content padding>
+  <form [formGroup]="ionicForm" (ngSubmit)="onSubmit(f)" novalidate>
+    <ion-grid>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-list>
 
-  <ion-item color="Primary">
-    <ion-label position="floating">Password</ion-label>
-    <ion-input [(ngModel)]="password" type="text" required></ion-input>
-  </ion-item>
+            <ion-item>
+              <ion-label position="floating">E-mail</ion-label>
+              <ion-input 
+                type="email" 
+                name="email" 
+                email
+                formControlName="email"
+              ></ion-input>
+            </ion-item>
+            <!-- Error messages -->
+            <span class="error ion-padding" *ngIf="isSubmitted && errorControl.email.errors?.required">
+              Email is required.
+            </span>
+            <span class="error ion-padding" *ngIf="isSubmitted && errorControl.email.errors?.minlength">
+              Email should be min 2 chars long.
+            </span>
 
-  <ion-button class="ion-margin-top" type="submit" expand="block" color="light" (click)="onSubmit()">
-    Signin
-  </ion-button>
+            <ion-item>
+              <ion-label position="floating">Password</ion-label>
+              <ion-input 
+                type="password"
+                name="password" 
+                formControlName="password"
+              ></ion-input>
+            </ion-item>
+            <!-- Error messages -->
+            <span class="error ion-padding" *ngIf="isSubmitted && errorControl.password.errors?.required">
+              Password is required.
+            </span>
+            <span class="error ion-padding" *ngIf="isSubmitted && errorControl.password.errors?.minlength">
+              Password should be min 2 chars long.
+            </span>
+           
 
-  <ion-item color="Primary" class="ion-text-center">
-    <ion-label>Or</ion-label>
-  </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
 
-  <ion-button color="dark" expand="block" fill="outline" [routerLink]="['/signup']">Create Account</ion-button>
+          <ion-button 
+          type="button"
+          color="primary" 
+          fill="clear"
+          expand="block"
+          [routerLink]="['/signup']"
+          >Signup</ion-button>
+
+          <ion-button 
+          type="submit" 
+          color="primary" 
+          (click)="onLogin()" 
+          expand="block"
+          >
+            Login
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+
+  <!-- <div text-center>
+    <ion-spinner color="primary" *ngIf="isLoading"></ion-spinner>
+  </div>
+  --->
+
+  
 </ion-content>

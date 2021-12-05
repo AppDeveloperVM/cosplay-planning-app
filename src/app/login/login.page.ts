@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
+import { LoadingController } from '@ionic/angular';
+import { Form, NgForm,FormGroup, FormBuilder, Validators } from '@angular/forms';
+
 
 @Component({
   selector: 'app-login',
@@ -7,16 +12,49 @@ import { Component, OnInit } from '@angular/core';
 })
 
 export class LoginPage implements OnInit {
-  email: string = "";
-  password: string = "";
+  ionicForm: FormGroup;
+  isLoading = false;
+  isSubmitted = false;
 
-  constructor() { }
+  constructor(public formBuilder: FormBuilder,private authService: AuthService, private router: Router, private loadingCtrl: LoadingController) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.ionicForm = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.minLength(2)]],
+      password: ['', [Validators.required, Validators.minLength(2)]],
+    })
+  }
 
-  onSubmit() {
-    alert(
-     this.email + ', ' + this.password
-    )
- }
+  get errorControl() {
+    return this.ionicForm.controls;
+  }
+
+  onSubmit(form: NgForm) {
+    this.isSubmitted = true;
+    if (!this.ionicForm.valid) {
+      //Show errors
+      console.log('Please provide all the required values!')
+      return false;
+    } else {
+      //LOGIN
+      this.isLoading = true;
+      this.authService.login();
+      this.loadingCtrl
+      .create({keyboardClose: true, message: 'Logging in..'})
+      .then(loadingEl => {
+        loadingEl.present();
+        
+        setTimeout(() => {
+          this.isLoading = false;
+          loadingEl.dismiss();
+          this.router.navigateByUrl('/profile');
+        } , 1000);
+        
+       });
+      
+
+    }
+
+  }
+
 }
