@@ -38,11 +38,13 @@ export class LoginPage implements OnInit {
     } else {
       //LOGIN
       this.isLoading = true;
-      this.authService.login();
+      
       this.loadingCtrl
       .create({keyboardClose: true, message: 'Logging in..'})
       .then(loadingEl => {
         loadingEl.present();
+
+        this.authService.login();
         
         setTimeout(() => {
           this.isLoading = false;

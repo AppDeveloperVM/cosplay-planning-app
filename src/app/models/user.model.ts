@@ -1,6 +1,7 @@
 export class User {
-    name?: string;
-    email?: string;
-    password?: string;
-    accessToken?: string;
+    uid: string;
+    email: string;
+    displayName: string;
+    photoURL: string;
+    emailVerified: boolean;
 }
