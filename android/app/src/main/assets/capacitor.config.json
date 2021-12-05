@@ -1,6 +1,6 @@
 {
   "appId": "com.cosplay_planning.app",
-  "appName": "cosplay-planning-app",
+  "appName": "CosPlanningApp",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",
