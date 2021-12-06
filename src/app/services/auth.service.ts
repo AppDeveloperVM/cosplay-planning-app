@@ -16,7 +16,7 @@ interface UserData {
   providedIn: 'root'
 })
 export class AuthService {
-  private _userIsAuthenticated = false;
+  private _userIsAuthenticated = true;
   private _userId = 'user1';
 
   get userIsAuthenticated() {
@@ -41,13 +41,17 @@ export class AuthService {
     var email = data.email;
     var password = data.password;
    
-    return this.http
+    /*return this.http
     .post<User>('https://cosplay-planning-app.firebaseio.com/users.json',{email,password})//.do(res => this.setSession);
     .subscribe(() => {
       this.router.navigateByUrl(
         '/profile'
       )
-    });
+    });*/
+
+    this.router.navigateByUrl(
+      '/'
+    )
   }
 
   signUp(data){ 
@@ -67,18 +71,18 @@ export class AuthService {
       {...newUser, id: null}) 
     .subscribe(() => {
       this.router.navigateByUrl(
-        '/profile'
+        '/'
       )
     });
   }
 
   
 
-  logout(): void {
+  logout() {
     this._userIsAuthenticated = false;
     
     this.router.navigate([
-      './login'
+      '/login'
     ])
   }
 
