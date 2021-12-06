@@ -24,10 +24,10 @@
               ></ion-input>
             </ion-item>
             <!-- Error messages -->
-            <span class="error ion-padding" *ngIf="isSubmitted && errorControl.email.errors?.required">
+            <span class="error ion-padding" *ngIf="errorControl.email.touched && errorControl.email.errors?.required">
               Email is required.
             </span>
-            <span class="error ion-padding" *ngIf="isSubmitted && errorControl.email.errors?.minlength">
+            <span class="error ion-padding" *ngIf="errorControl.email.touched && errorControl.email.errors?.minlength">
               Email should be min 2 chars long.
             </span>
 
@@ -40,10 +40,10 @@
               ></ion-input>
             </ion-item>
             <!-- Error messages -->
-            <span class="error ion-padding" *ngIf="isSubmitted && errorControl.password.errors?.required">
+            <span class="error ion-padding" *ngIf="errorControl.password.touched && errorControl.password.errors?.required">
               Password is required.
             </span>
-            <span class="error ion-padding" *ngIf="isSubmitted && errorControl.password.errors?.minlength">
+            <span class="error ion-padding" *ngIf="errorControl.password.touched && errorControl.password.errors?.minlength">
               Password should be min 2 chars long.
             </span>
            
