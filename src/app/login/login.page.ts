@@ -44,7 +44,11 @@ export class LoginPage implements OnInit {
       .then(loadingEl => {
         loadingEl.present();
 
-        this.authService.login(this.ionicForm.value);
+        if (!form.valid) { // if is false
+          return;
+        }
+
+        this.authService.login(form.value);
         
         setTimeout(() => {
           this.isLoading = false;

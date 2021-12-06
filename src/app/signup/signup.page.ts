@@ -53,8 +53,8 @@ export class SignupPage implements OnInit {
       return false;
     } else {
 
-      this.authService.signIn( 
-        this.ionicForm.value
+      this.authService.signUp( 
+        form.value
       );
 
       console.log(this.ionicForm.value)

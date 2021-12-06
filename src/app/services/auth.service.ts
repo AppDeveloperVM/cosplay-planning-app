@@ -50,7 +50,7 @@ export class AuthService {
     });
   }
 
-  signIn(data){ 
+  signUp(data){ 
     this._userIsAuthenticated = true;
 
     const newUser = new User(
