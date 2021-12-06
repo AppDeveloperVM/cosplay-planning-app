@@ -44,17 +44,19 @@ export class LoginPage implements OnInit {
       .then(loadingEl => {
         loadingEl.present();
 
-        if (!form.valid) { // if is false
+        if (!this.ionicForm.valid) { // if is false
           return;
         }
 
-        this.authService.login(form.value);
+        this.authService.login(this.ionicForm.value);
+        
         
         setTimeout(() => {
           this.isLoading = false;
           loadingEl.dismiss();
-          this.router.navigateByUrl('/profile');
-        } , 1000);
+          //this.router.navigateByUrl('/');
+        } , 500);
+        
         
        });
       
