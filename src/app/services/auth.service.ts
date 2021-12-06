@@ -41,6 +41,8 @@ export class AuthService {
     var email = data.email;
     var password = data.password;
    
+    //needs to search for user
+    
     /*return this.http
     .post<User>('https://cosplay-planning-app.firebaseio.com/users.json',{email,password})//.do(res => this.setSession);
     .subscribe(() => {
@@ -65,6 +67,7 @@ export class AuthService {
       false
     );
 
+    //creating user works
     return this.http
     .post<User>(
       'https://cosplay-planning-app.firebaseio.com/users.json',
