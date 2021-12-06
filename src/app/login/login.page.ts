@@ -44,7 +44,7 @@ export class LoginPage implements OnInit {
       .then(loadingEl => {
         loadingEl.present();
 
-        this.authService.login();
+        this.authService.login(this.ionicForm.value);
         
         setTimeout(() => {
           this.isLoading = false;

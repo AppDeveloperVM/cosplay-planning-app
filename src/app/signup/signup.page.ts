@@ -28,7 +28,7 @@ export class SignupPage implements OnInit {
 
   onLogin() {
     this.isLoading = true;
-    this.authService.login();
+    
     this.loadingCtrl
     .create({keyboardClose: true, message: 'Logging in..'})
     .then(loadingEl => {
@@ -46,11 +46,17 @@ export class SignupPage implements OnInit {
   }
 
   onSubmit(form: NgForm) {
+    
     this.isSubmitted = true;
     if (!this.ionicForm.valid) {
       console.log('Please provide all the required values!')
       return false;
     } else {
+
+      this.authService.signIn( 
+        this.ionicForm.value
+      );
+
       console.log(this.ionicForm.value)
     }
 
