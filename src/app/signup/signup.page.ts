@@ -26,21 +26,6 @@ export class SignupPage implements OnInit {
     })
    }
 
-  onLogin() {
-    this.isLoading = true;
-    
-    this.loadingCtrl
-    .create({keyboardClose: true, message: 'Logging in..'})
-    .then(loadingEl => {
-      loadingEl.present();
-      setTimeout(() => { 
-        this.isLoading = false;
-        loadingEl.dismiss();
-        this.router.navigateByUrl('/profile');
-      } , 1000);
-     });
-  }
-
   get errorControl() {
     return this.ionicForm.controls;
   }
@@ -54,7 +39,7 @@ export class SignupPage implements OnInit {
     } else {
 
       this.authService.signUp( 
-        form.value
+        this.ionicForm.value
       );
 
       console.log(this.ionicForm.value)
