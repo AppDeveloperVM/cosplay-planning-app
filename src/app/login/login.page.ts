@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
-import { LoadingController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
 import { Form, NgForm,FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 
@@ -16,12 +16,12 @@ export class LoginPage implements OnInit {
   isLoading = false;
   isSubmitted = false;
 
-  constructor(public formBuilder: FormBuilder,private authService: AuthService, private router: Router, private loadingCtrl: LoadingController) { }
+  constructor(public formBuilder: FormBuilder,private authService: AuthService, private router: Router, private loadingCtrl: LoadingController,private alertController: AlertController) { }
 
   ngOnInit() {
     this.ionicForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.minLength(2)]],
-      password: ['', [Validators.required, Validators.minLength(2)]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
     })
   }
 
@@ -29,9 +29,30 @@ export class LoginPage implements OnInit {
     return this.ionicForm.controls;
   }
 
-  onSubmit(form: NgForm) {
+  async onSubmit(form: NgForm) {
+    const loading = await this.loadingCtrl.create();
+    await loading.present();
+
     this.isSubmitted = true;
-    if (!this.ionicForm.valid) {
+
+    this.authService.login(this.ionicForm.value).subscribe(
+      async (res) => {
+        await loading.dismiss();        
+        this.router.navigateByUrl('/', { replaceUrl: true });
+      },
+      async (res) => {
+        await loading.dismiss();
+        const alert = await this.alertController.create({
+          header: 'Login failed',
+          message: res.error.error,
+          buttons: ['OK'],
+        });
+ 
+        await alert.present();
+      }
+    );
+
+    /*if (!this.ionicForm.valid) {
       //Show errors
       console.log('Please provide all the required values!')
       return false;
@@ -48,9 +69,14 @@ export class LoginPage implements OnInit {
           return;
         }
 
-        this.authService.login(this.ionicForm.value);
+        this.authService.login( this.ionicForm.value );
         
         
+        //localStorage.setItem('user' , resp.accessToken);
+        this.router.navigateByUrl(
+          '/'
+        )
+  
         setTimeout(() => {
           this.isLoading = false;
           loadingEl.dismiss();
@@ -60,8 +86,11 @@ export class LoginPage implements OnInit {
         
        });
       
-
     }
+    */
+    
+
+
 
   }
 
