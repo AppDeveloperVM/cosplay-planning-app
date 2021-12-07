@@ -11,8 +11,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { CosplayGroupSendRequestComponent } from './main/cosplays/cosplay-groups/cosplay-group-send-request/cosplay-group-send-request.component';
 import { ComponentsModule } from './components/components.module';
 import { PopinfoComponent } from './components/popinfo/popinfo.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HeaderComponent } from './components/header/header.component';
+import { AuthInterceptor } from './services/auth-interceptor.interceptor';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { HeaderComponent } from './components/header/header.component';
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    //{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })
