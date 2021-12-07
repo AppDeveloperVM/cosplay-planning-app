@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthGuard } from '../auth/auth.guard';
 
 import { MainPage } from './main.page';
 
@@ -114,14 +115,16 @@ const routes: Routes = [
       {
         path: '',
         redirectTo: '/main/tabs/cosplays/my-cosplays',
-        pathMatch: 'full'
+        pathMatch: 'full',
+        canLoad: [AuthGuard]
       }
     ]
   },
   {
     path: '',
     redirectTo: '/main/tabs/cosplays/my-cosplays',
-    pathMatch: 'full'
+    pathMatch: 'full',
+    canLoad: [AuthGuard]
   }
 ];
 

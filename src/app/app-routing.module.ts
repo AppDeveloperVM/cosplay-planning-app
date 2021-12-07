@@ -13,22 +13,6 @@ const routes: Routes = [
     loadChildren: () => import('./signup/signup.module').then( m => m.SignupPageModule)
   },
   {
-    path: 'cosplays',
-    loadChildren: () => import('./main/cosplays/cosplays.module').then( m => m.CosplaysPageModule)
-  },
-  {
-    path: 'cosplay-groups',
-    loadChildren: () => import('./main/cosplays/cosplays.module').then( m => m.CosplaysPageModule)
-  },
-  {
-    path: 'conventions',
-    loadChildren: () => import('./main/conventions/conventions.module').then( m => m.ConventionsPageModule)
-  },
-  {
-    path: 'planning',
-    loadChildren: () => import('./main/planning/planning.module').then( m => m.PlanningPageModule)
-  },
-  {
     path: 'profile',
     children : [
       {
