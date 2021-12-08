@@ -13,7 +13,7 @@ import { ComponentsModule } from './components/components.module';
 import { PopinfoComponent } from './components/popinfo/popinfo.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HeaderComponent } from './components/header/header.component';
-import { AuthInterceptor } from './services/auth-interceptor.interceptor';
+import { AuthInterceptor } from './services/auth-interceptor.service';
 
 
 @NgModule({
