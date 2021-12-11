@@ -7,8 +7,8 @@
   *ngIf="selectedImage"
   >
   </ion-img>
-  <ion-button id="btn_overlay" color="primary" (click)="onPickImage()" 
-  *ngIf="!selectedImage || !showPreview">
+  <ion-button id="btn_overlay" color="primary" (click)="onPickImage()">
+  <!--*ngIf="!selectedImage || !showPreview"-->
     <ion-icon class="icon_over" name="camera"></ion-icon>
     <ion-label class="label_over">Take picture</ion-label>
   </ion-button>
