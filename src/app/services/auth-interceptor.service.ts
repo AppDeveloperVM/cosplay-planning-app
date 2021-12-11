@@ -13,12 +13,9 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private router: Router,private authService: AuthService) { }
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    //localStorage.setItem('auth_token',"user1");
-    const token = localStorage.getItem('userId');
-
     const tokenizeReq = req.clone({
         setHeaders: {
-          authorization: `${ token }`,
+          authorization: `Bearer ${ this.authService.getToken() }`,
           contentType: 'application/json'
         },
         

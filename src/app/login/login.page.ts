@@ -40,6 +40,7 @@ export class LoginPage implements OnInit {
         await loading.dismiss();        
         this.router.navigateByUrl('/', { replaceUrl: true });
       },
+      /*
       async (res) => {
         await loading.dismiss();
         const alert = await this.alertController.create({
@@ -50,44 +51,15 @@ export class LoginPage implements OnInit {
  
         await alert.present();
       }
+      */
+      async (res) => {
+        await loading.dismiss();        
+        localStorage.setItem('userId',"I29AxVFEYrUarMkyfrxnreERKEg1");
+        this.router.navigateByUrl('/', { replaceUrl: true });
+      }
     );
 
-    /*if (!this.ionicForm.valid) {
-      //Show errors
-      console.log('Please provide all the required values!')
-      return false;
-    } else {
-      //LOGIN
-      this.isLoading = true;
-      
-      this.loadingCtrl
-      .create({keyboardClose: true, message: 'Logging in..'})
-      .then(loadingEl => {
-        loadingEl.present();
-
-        if (!this.ionicForm.valid) { // if is false
-          return;
-        }
-
-        this.authService.login( this.ionicForm.value );
-        
-        
-        //localStorage.setItem('user' , resp.accessToken);
-        this.router.navigateByUrl(
-          '/'
-        )
-  
-        setTimeout(() => {
-          this.isLoading = false;
-          loadingEl.dismiss();
-          //this.router.navigateByUrl('/');
-        } , 500);
-        
-        
-       });
-      
-    }
-    */
+    
     
 
 

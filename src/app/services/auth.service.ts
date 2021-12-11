@@ -5,6 +5,7 @@ import firebase from 'firebase';
 import { BehaviorSubject, from, Observable } from 'rxjs';
 import { map, switchMap, take, tap } from 'rxjs/operators';
 import { User } from '../models/user.model';
+//import { AngularFire } from "@angular/fire/auth";
 
 const TOKEN_KEY = 'my-token';
 
@@ -53,9 +54,11 @@ export class AuthService {
     this.isAuthenticated.next(true);
    
     //needs to search for user
-
-    return this.http.post('https://cosplay-planning-app.firebaseio.com/users.json', credentials).pipe(
-      map((data: any) => data.token),
+    //this.afAuth.auth.signInWithEmailAndPassword(this.loginForm.value.email, this.loginForm.value.password).then(() => {
+    
+    return this.http.get<UserData>('https://cosplay-planning-app.firebaseio.com/users.json',
+    {withCredentials: true}).pipe(//credentials
+      map((data: any) => data.uid),
       /*switchMap(token => {
         return from(localStorage.set({key: TOKEN_KEY, value: token}));
       }),*/
@@ -83,20 +86,15 @@ export class AuthService {
 
     //creating user works
     return this.http
-    .get<UserData>(
-      `https://cosplay-planning-app.firebaseio.com/users.json/${uid}.json`,
-      {...newUser})
-    .pipe(
-        switchMap(userData => {
-          generatedId = userData.uid;
-          return this.user;
-        }),
-        take(1),
-        tap(user => {
-          //newUser.uid = generatedId;
-          this._userData.next(user.concat(newUser));
-        })
-    );
+    .post<User>(
+      'https://cosplay-planning-app.firebaseio.com/users.json',
+      {...newUser, id: null}) 
+    .subscribe(() => {
+      this.router.navigateByUrl(
+        '/'
+      )
+    });
+    
   }
 
   
@@ -108,7 +106,7 @@ export class AuthService {
   }
 
   getToken() {
-  	return !!localStorage.get('auth_token')
+  	return !!localStorage.getItem('auth_token')
   }
 
 
