@@ -51,7 +51,7 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
         this.alertCtrl
         .create({
           header: 'An error ocurred!',
-          message: 'Could not load cosplay. Try again later.',
+          message: 'Could not load cosplay details. Try again later.',
           buttons: [{
             text: 'Okay',
             handler: () => {
