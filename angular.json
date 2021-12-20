@@ -39,7 +39,14 @@
                 "input": "src/global.scss"
               }
             ],
-            "scripts": []
+            "scripts": [],
+            "aot": false,
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -69,7 +76,8 @@
             "ci": {
               "progress": false
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -174,6 +182,7 @@
     }
   },
   "cli": {
+    "analytics": "2f7e9814-e3b9-4349-a567-69eed8f8d2e2",
     "defaultCollection": "@ionic/angular-toolkit"
   },
   "schematics": {

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormGroupDirective, FormControl, Validators } from '@angular/forms';
-import { ModalController, LoadingController } from '@ionic/angular';
+import { ModalController, LoadingController, AlertController } from '@ionic/angular';
 import { Cosplay } from '../../cosplay.model';
 import { CosplaysService } from '../../cosplays.service';
 import { Router } from '@angular/router';
@@ -41,7 +41,8 @@ export class NewCosplayPage implements OnInit {
     private modalController: ModalController,
     private cosplaysService: CosplaysService,
     private router: Router,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private alertCtrl: AlertController
   ) { }
 
   ngOnInit(): void {
@@ -54,6 +55,7 @@ export class NewCosplayPage implements OnInit {
   }
 
   onImagePicked(imageData: string | File) {
+    //image must be jpeg
     let imageFile;
     if (typeof imageData === 'string') {
       try {
@@ -62,12 +64,26 @@ export class NewCosplayPage implements OnInit {
           'image/jpeg');
       } catch (error) {
         console.log(error);
+
+        this.alertCtrl
+        .create({
+          header: 'An error ocurred!',
+          message: 'The image does not appear to be jpeg',
+          buttons: [{
+            text: 'Okay',
+            
+          }]
+        }).then(alertEl => {
+          alertEl.present();
+        });
+      
+
         return;
       }
     } else {
       imageFile = imageData;
     }
-    this.form.patchValue({image: imageFile});
+    this.form.patchValue({image: imageFile});// this line disables button for picking
   }
 
   onCreateCosplay() {

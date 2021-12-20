@@ -19,6 +19,7 @@ npm-debug.log*
 
 /.idea
 /.ionic
+/.angular/cache
 /.sass-cache
 /.sourcemaps
 /.versions
@@ -29,5 +30,9 @@ npm-debug.log*
 /platforms
 /plugins
 /www
+
+
+
 *.code-workspace
+
 

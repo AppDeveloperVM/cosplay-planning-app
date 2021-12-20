@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CosplayGroup } from './cosplay-group.model';
 import { Cosplay } from '../cosplay.model';
-import { AuthService } from 'src/app/auth/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { BehaviorSubject, of } from 'rxjs';
 import { take, map, delay, tap, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';

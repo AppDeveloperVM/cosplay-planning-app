@@ -14,7 +14,7 @@
         </div>
         <div text-center *ngIf="!isLoading && relevantCosplays.length <= 0">
           <p>No cosplays found! Please create one first</p>
-          <ion-button routerLink="/main/tabs/cosplays/my-cosplays/new-cosplay">New Cosplay</ion-button>
+          <ion-button routerLink="/main/tabs/cosplays/my-cosplays/new">New Cosplay</ion-button>
         </div>
         <ion-virtual-scroll [items]="listedLoadedCosplays" approxItemHeight="45px" >
           <ion-item 

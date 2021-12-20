@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CosplayGroup } from './cosplay-group.model';
 import { CosplayGroupService } from './cosplay-group.service';
 import { Subscription } from 'rxjs';
-import { AuthService } from 'src/app/auth/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { NoticesService } from 'src/app/services/notices.service';
 
 @Component(

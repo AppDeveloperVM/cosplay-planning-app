@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-
 import { Platform } from '@ionic/angular';
 import { Plugins, Capacitor } from '@capacitor/core';
-import { AuthService } from './auth/auth.service';
+import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -32,7 +31,7 @@ export class AppComponent {
 
   onLogout() {
     this.authService.logout();
-    this.router.navigateByUrl('/auth');
+    this.router.navigateByUrl('/login');
   }
 
 }

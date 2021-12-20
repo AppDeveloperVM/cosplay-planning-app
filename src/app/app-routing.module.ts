@@ -5,24 +5,12 @@ import { AuthGuard } from './auth/auth.guard';
 const routes: Routes = [
   { path: '', redirectTo: 'main', pathMatch: 'full' },
   {
-    path: 'auth',
-    loadChildren: () => import('./auth/auth.module').then( m => m.AuthPageModule)
+    path: 'login',
+    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
   },
   {
-    path: 'cosplays',
-    loadChildren: () => import('./main/cosplays/cosplays.module').then( m => m.CosplaysPageModule)
-  },
-  {
-    path: 'cosplay-groups',
-    loadChildren: () => import('./main/cosplays/cosplays.module').then( m => m.CosplaysPageModule)
-  },
-  {
-    path: 'conventions',
-    loadChildren: () => import('./main/conventions/conventions.module').then( m => m.ConventionsPageModule)
-  },
-  {
-    path: 'planning',
-    loadChildren: () => import('./main/planning/planning.module').then( m => m.PlanningPageModule)
+    path: 'signup',
+    loadChildren: () => import('./signup/signup.module').then( m => m.SignupPageModule)
   },
   {
     path: 'profile',
@@ -44,8 +32,19 @@ const routes: Routes = [
   },
   {
     path: 'main',
-    loadChildren: () => import('./main/main.module').then( m => m.MainPageModule)
+    loadChildren: () => import('./main/main.module').then( m => m.MainPageModule),
+    canLoad: [AuthGuard]
   },
+  {
+    path: 'signup',
+    loadChildren: () => import('./signup/signup.module').then( m => m.SignupPageModule)
+  },
+  {
+    path: 'logout',
+    loadChildren: () => import('./logout/logout.module').then( m => m.LogoutPageModule)
+  },
+
+
 ];
 
 @NgModule({

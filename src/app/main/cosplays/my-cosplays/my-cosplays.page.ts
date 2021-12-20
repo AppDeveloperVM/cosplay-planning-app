@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { CosplaysService } from '../cosplays.service';
 import { Cosplay } from '../cosplay.model';
 import { SegmentChangeEventDetail } from '@ionic/core';
-import { AuthService } from 'src/app/auth/auth.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { PopoverController } from '@ionic/angular';
 import { PopinfoComponent } from 'src/app/components/popinfo/popinfo.component';
 import { RouterModule } from '@angular/router';

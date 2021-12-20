@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/app/services/data.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { Observable } from 'rxjs';
 import { Componente } from 'src/app/interfaces/interfaces';
 
@@ -14,7 +15,7 @@ export class MenuComponent implements OnInit {
   menuOpts: Observable<Componente[]>;
 
   constructor(
-    private dataService: DataService,
+    private dataService: DataService,private authService: AuthService
     )
     {
     this.sideMenu();
@@ -55,10 +56,14 @@ export class MenuComponent implements OnInit {
       },
       {
         title : "Logout",
-        url   : "/",
+        url   : "/logout",
         icon  : "log-out-outline"
       },
     ]
+  }
+
+  onLogout() {
+    this.authService.logout();
   }
 
 }

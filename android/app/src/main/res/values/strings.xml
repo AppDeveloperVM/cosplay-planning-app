@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">cosplay-planning-app</string>
-    <string name="title_activity_main">cosplay-planning-app</string>
+    <string name="app_name">CosPlanningApp</string>
+    <string name="title_activity_main">CosPlanningApp</string>
     <string name="package_name">com.cosplay_planning.app</string>
     <string name="custom_url_scheme">com.cosplay_planning.app</string>
 </resources>
