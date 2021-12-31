@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Map modal leaflet</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="onCancel()">{{ closeButtonText }}</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div id="mapId" style="width: 100%; height: 100%"></div>
+  <div id="map_options" >
+    <div >
+      <ion-button >
+        Añadir nuevo lugar
+      </ion-button>
+      <ion-button >
+        Definir ruta
+      </ion-button>
+    </div>
+      <ion-label class="options_label">Select a Place by clicking on the map</ion-label>
+  </div>
+</ion-content>
