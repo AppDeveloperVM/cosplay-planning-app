@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title *ngIf="!isLoading">{{ planning.title }}</ion-title>
+    <ion-title >Planning Leaflet Test</ion-title>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/main/tabs/planning"></ion-back-button>
     </ion-buttons>
@@ -14,18 +14,18 @@
 </ion-header>
 
 <ion-content >
-  <div text-center *ngIf="isLoading">        
-    <ion-spinner color="primary" ></ion-spinner>
+  <div text-center >        
+    
   </div>
-  <ion-grid *ngIf="!isLoading">
+  <ion-grid >
     <ion-row>
       <ion-col size-sm="6" offset-sm="3" padding text-center>
-        <p>{{ planning.places['address'] }}</p>
+        <p>Address test</p>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col size-sm="6" offset-sm="3" no-padding>
-        <ion-img role="button" (click)="onShowFullMap()" class="location-image" [src]="planning.places['staticMapImageUrl']"></ion-img>
+        <ion-button (click)="onShowFullMap()" class="location-image" >Show map</ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>
