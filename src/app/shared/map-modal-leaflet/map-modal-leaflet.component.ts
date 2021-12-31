@@ -15,7 +15,7 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
   map: Leaflet.Map;
 
   @Input() center ; // initial route point
-  @Input() markers; // = []; // array of markers given
+  @Input() markers = []; // array of markers given
   @Input() selectable; // = true;
   @Input() multiple = false;
 
@@ -28,14 +28,20 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
     private toastCtrl: ToastController,
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    const coords = [
+      {'lat': 41.390205, 'long': 2.154007 , 'name': 'Marker A'},
+      {'lat': 41.56667, 'long': 2.01667 , 'name': 'Marker B'}
+    ];
+    this.markers = coords;
+  }
   ionViewDidEnter() { this.leafletMap(); }
 
 
   leafletMap() {
     // Creating map options
     var mapOptions = {
-      center: [-33.8688, 151.2093],
+      center: this.center,
       zoom: 10
     }
 
@@ -62,9 +68,16 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
       icon: customIcon
     }
 
-    const markPoint = L.marker([-33.8688, 151.2093], markerOptions);
-    markPoint.bindPopup('<p>Tashi Delek - Bangalore.</p>').openPopup();
-    markPoint.addTo(this.map);
+    var outerThis = this;
+    //add multiple markers
+   
+    for (let marker of this.markers) {
+      console.log( marker['lat'] );
+        let markPoint = L.marker( { lat: marker['lat'], lng: marker['long'] } , markerOptions );
+        markPoint.bindPopup(marker['name']);
+        markPoint.addTo(outerThis.map);
+    }
+ 
   }
 
   onCancel() {

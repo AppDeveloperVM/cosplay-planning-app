@@ -38,6 +38,7 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
 
   ngOnInit() {
       this.isLoading = false;
+      this.placesData.push();
   }
 
   ionViewWillEnter() {
@@ -50,10 +51,11 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
   onShowFullMap() {
     this.modalCtrl.create({component: MapModalLeafletComponent, 
       componentProps: {
+        center: [41.390205,2.154007 ],
         markers: this.placesData , // array of markers
         selectable: true,
         multiple: true,
-        closeButtonText: 'close',
+        closeButtonText: 'cerrar',
       } }).then(modalEl => {
       modalEl.present();
     });
