@@ -34,6 +34,8 @@
     "core-js": "^3.10.0",
     "firebase": "^8.10.0",
     "firebase-tools": "^9.9.0",
+    "leaflet": "^1.7.1",
+    "leaflet-ant-path": "^1.3.0",
     "lodash": "^4.17.21",
     "node": "^15.12.0",
     "node-js-marker-clusterer": "^1.0.0",
