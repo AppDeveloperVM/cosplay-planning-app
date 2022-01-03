@@ -1,16 +1,16 @@
 {
   "places": [
       {
-        "name": "OpenCor",
+        "name": "Barcelona",
         "state" : "Spain",
-        "latitude": 39.575136,
-        "longitude": 2.641592
+        "lat": 41.390205,
+        "long": 2.154007
       },
       {
-        "name": "Mercadona",
+        "name": "Terrasa",
         "state": "Spain",
-        "latitude": 39.575727,
-        "longitude": 2.640717
+        "lat": 41.56667,
+        "long": 2.01667
       }
   ]
 }
