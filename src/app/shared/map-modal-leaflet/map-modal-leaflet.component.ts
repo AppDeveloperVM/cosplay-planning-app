@@ -66,9 +66,11 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
       attribution: 'edupala.com'
     }).addTo(this.map);
 
+    /*
     vector.vectorTileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
       apiKey: this.apiKey
     }).addTo(this.map);
+    */
 
     //Custom icon
     var customIcon = L.icon({
@@ -87,6 +89,7 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
     var outerThis = this;
     //add multiple markers
    
+    
     for (let marker of this.markers) {
       console.log( marker['lat'] );
         let markPoint = L.marker( { lat: marker['lat'], lng: marker['long'] } , markerOptions );
@@ -94,10 +97,12 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
         markPoint.addTo(outerThis.map);
     }
 
+    /*
     this.startCoords = [{'lat': 41.390205, 'long': 2.154007}];
     this.endCoords = [{'lat': 41.56667, 'long': 2.01667 }];
     this.createRoute();
     this.updateRoute();
+    */
 
   }
 
