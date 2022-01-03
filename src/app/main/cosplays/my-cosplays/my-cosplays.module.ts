@@ -9,6 +9,7 @@ import { MyCosplaysPageRoutingModule } from './my-cosplays-routing.module';
 import { MyCosplaysPage } from './my-cosplays.page';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { RouterModule } from '@angular/router';
+import { CosplayItemComponent } from './cosplay-item/cosplay-item.component';
 
 @NgModule({
   imports: [
@@ -19,6 +20,6 @@ import { RouterModule } from '@angular/router';
     RouterModule,
     SharedModule,
   ],
-  declarations: [MyCosplaysPage]
+  declarations: [MyCosplaysPage, CosplayItemComponent]
 })
 export class MyCosplaysPageModule {}

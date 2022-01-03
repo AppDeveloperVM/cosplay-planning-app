@@ -1,4 +1,4 @@
-<app-header titulo="My Cosplay" [routeArray]="['/', 'main', 'tabs' , 'cosplays' , 'my-cosplays' , 'new' ]">
+ <app-header titulo="My Cosplay" [routeArray]="['/', 'main', 'tabs' , 'cosplays' , 'my-cosplays' , 'new' ]">
 </app-header>
 
 <ion-content padding>
@@ -16,22 +16,11 @@
           <p>No cosplays found! Please create one first</p>
           <ion-button routerLink="/main/tabs/cosplays/my-cosplays/new">New Cosplay</ion-button>
         </div>
-        <ion-virtual-scroll [items]="listedLoadedCosplays" approxItemHeight="45px" >
-          <ion-item 
-          routerDirection="forward"
-          [routerLink]="['/', 'main', 'tabs', 'cosplays', 'my-cosplays', cosplay.id ]"
-          detail 
-          *virtualItem="let cosplay"
-          >
-            <ion-thumbnail slot="start">
-              <ion-img [src]="cosplay.imageUrl"></ion-img>
-            </ion-thumbnail>
-            <ion-label>
-              <h2>{{ cosplay.characterName }}</h2>
-              <p>{{ cosplay.series }}</p>
-            </ion-label>
-          </ion-item>
-        </ion-virtual-scroll>
+
+        <ion-list *ngFor="let cosplay of listedLoadedCosplays" >
+          <app-cosplay-item [cosplay]="cosplay"></app-cosplay-item>
+        </ion-list>
+
       </ion-col>
     </ion-row>
   </ion-grid>
