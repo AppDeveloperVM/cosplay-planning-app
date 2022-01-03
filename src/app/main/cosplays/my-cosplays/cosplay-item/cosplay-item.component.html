@@ -1,0 +1,13 @@
+<ion-item 
+  routerDirection="forward"
+  [routerLink]="['/', 'main', 'tabs', 'cosplays', 'my-cosplays', cosplay.id ]"
+  detail
+>
+  <ion-thumbnail slot="start">
+    <ion-img [src]="cosplay.imageUrl"></ion-img>
+  </ion-thumbnail>
+  <ion-label>
+    <h2>{{ cosplay.characterName }}</h2>
+    <p>{{ cosplay.series }}</p>
+  </ion-label>
+</ion-item>
