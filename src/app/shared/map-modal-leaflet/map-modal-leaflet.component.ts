@@ -48,7 +48,7 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     //Getting markers data from JSON file
-    this.fetchPlacesData()
+    //this.fetchPlacesData()
   }
   ionViewDidEnter() { this.leafletMap(); }
 
@@ -91,9 +91,9 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
    
     
     for (let marker of this.markers) {
-      console.log( marker['lat'] );
-        let markPoint = L.marker( { lat: marker['lat'], lng: marker['long'] } , markerOptions );
-        markPoint.bindPopup(marker['name']);
+      console.log( marker );
+        let markPoint = L.marker( { lat: marker['lat'], lng: marker['lng'] } , markerOptions );
+        markPoint.bindPopup(marker['address']);
         markPoint.addTo(outerThis.map);
     }
 

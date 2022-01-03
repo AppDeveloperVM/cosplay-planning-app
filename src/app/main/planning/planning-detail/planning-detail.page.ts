@@ -37,7 +37,6 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
    }
 
   ngOnInit() {
-      this.placesData.push();
 
       this.route.paramMap.subscribe(paramMap => {
         if (!paramMap.has('planningId')) {
@@ -59,7 +58,28 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
         .subscribe(planning => {
           this.planning = planning;
           console.log(this.planning);
+
+          const planningProps = Object.entries(planning.places);
+          console.log("Get marker!: "+ planningProps);
+
+          var MarkerObject = [];
+          Object.entries(planning).forEach(([key,value]) => {
+            
+            if(key == 'places'){
+              console.log("Get marker!: "+ planning[key]);
+              MarkerObject.push(planning[key]);
+            }else if(key == 'address'){
+              console.log('name: '+planning[key]);
+              MarkerObject['name'] = planning[key];
+            }
+    
+          });
+
+          this.placesData = MarkerObject;
+          console.log("places data: "+ Object.keys(this.placesData[0]) );
+  
           this.isLoading = false;
+
         }, error => {
 
         });
