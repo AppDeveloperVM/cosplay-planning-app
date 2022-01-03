@@ -37,8 +37,34 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
    }
 
   ngOnInit() {
-      this.isLoading = false;
       this.placesData.push();
+
+      this.route.paramMap.subscribe(paramMap => {
+        if (!paramMap.has('planningId')) {
+          this.navCtrl.navigateBack('/planning');
+          console.log('cant get planningId');
+          return;
+        }
+  
+        this.isLoading = true;
+
+        this.planningId = paramMap.get('planningId');
+        console.log('id:' + paramMap.get('planningId'));
+        console.log(
+          this.planningService.getPlanning(paramMap.get('planningId'))
+        );
+  
+        this.planningSub = this.planningService
+        .getPlanning(paramMap.get('planningId'))
+        .subscribe(planning => {
+          this.planning = planning;
+          console.log(this.planning);
+          this.isLoading = false;
+        }, error => {
+
+        });
+
+      });
   }
 
   ionViewWillEnter() {

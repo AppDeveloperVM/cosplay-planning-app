@@ -1,12 +1,12 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title >Planning Leaflet Test</ion-title>
+    <ion-title >{{ isLoading ? 'Loading...' : planning.title }}</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/main/tabs/planning"></ion-back-button>
+      <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-button color="primary"  
-        [routerLink]="['/', 'main' , 'tabs' ,'planning' , 'edit' , planningId ]">
+        [routerLink]="['/', 'main' , 'tabs' , 'planning' , 'edit' , planningId ]">
         Edit
       </ion-button>
     </ion-buttons>
@@ -17,10 +17,10 @@
   <div text-center >        
     
   </div>
-  <ion-grid >
+  <ion-grid *ngIf="!isLoading">
     <ion-row>
       <ion-col size-sm="6" offset-sm="3" padding text-center>
-        <p>Address test</p>
+        <p>{{ planning.places['address'] }}</p>
       </ion-col>
     </ion-row>
     <ion-row>
