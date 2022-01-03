@@ -77,7 +77,7 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
   onShowFullMap() {
     this.modalCtrl.create({component: MapModalLeafletComponent, 
       componentProps: {
-        center: [41.390205,2.154007 ],
+        center: [41.390205,2.154007 ], //bcn
         markers: this.placesData , // array of markers
         selectable: true,
         multiple: true,
