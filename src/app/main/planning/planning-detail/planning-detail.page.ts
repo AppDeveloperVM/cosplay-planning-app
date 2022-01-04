@@ -100,7 +100,7 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
       componentProps: {
         center: [this.placesData[0].lat, this.placesData[0].lng], //bcn
         markers: this.placesData , // array of markers
-        selectable: true,
+        selectable: false,
         multiple: true,
         closeButtonText: 'cerrar',
       } }).then(modalEl => {

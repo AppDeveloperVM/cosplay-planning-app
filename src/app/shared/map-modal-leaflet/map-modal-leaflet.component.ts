@@ -105,8 +105,10 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
         markPoint.addTo(outerThis.map);
     }
 
-    //Enable Map OnClick
-    this.map.on('click', this.onMapClick, this);
+    if(this.selectable){
+      //Enable Map OnClick
+      this.map.on('click', this.onMapClick, this);
+    }
 
     /*
     this.startCoords = [{'lat': 41.390205, 'long': 2.154007}];
