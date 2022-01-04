@@ -1,12 +1,14 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { ModalController, ActionSheetController, AlertController } from '@ionic/angular';
-import { MapModalComponent } from '../../map-modal/map-modal.component';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
+import { MapModalLeafletComponent } from '../../map-modal-leaflet/map-modal-leaflet.component';
 import { map, switchMap } from 'rxjs/operators';
 import { PlaceLocation, Coordinates } from '../../../main/cosplays/cosplay-groups/location.model';
 import { of } from 'rxjs';
 import { Plugins, Capacitor } from '@capacitor/core';
+import * as L from "leaflet";
+import * as ELG from "esri-leaflet-geocoder";
 
 @Component({
   selector: 'app-location-picker',
@@ -14,10 +16,13 @@ import { Plugins, Capacitor } from '@capacitor/core';
   styleUrls: ['./location-picker.component.scss'],
 })
 export class LocationPickerComponent implements OnInit {
+  apiKey: 'AAPK80e3c05f540941038fc676d952b3d4dd4LfYwSmZOK8R8eaHkGd7zA3abSxbnaIUouru38-9EVrOyakBSsQ40oyMiuRcSrEw';
   @Output() locationPick = new EventEmitter<PlaceLocation>();
   @Input() showPreview = false;
+  @Input() multiple = false;
   @Input() selectedLocationImage: string;
-  center = {};
+  @Input() center = {};
+
   
   isLoading = false;
 
@@ -60,7 +65,7 @@ export class LocationPickerComponent implements OnInit {
       };
       this.center = coordinates;
       
-      this.createPlace(coordinates.lat, coordinates.lng);
+      this.createPlace([coordinates.lat, coordinates.lng]);
       this.isLoading = false;
     }).
     catch(err => {
@@ -81,52 +86,57 @@ export class LocationPickerComponent implements OnInit {
   private openMap() {
     this.modalCtrl.create(
       {
-        component: MapModalComponent,
+        component: MapModalLeafletComponent,
         componentProps: {
           center: this.center,
           //markers: this.placesData , // array of markers
           selectable: true,
-          multiple: true,
-          closeButtonText: 'close',
+          multiple: this.multiple,
+          closeButtonText: 'cerrar',
           //title: this.planning.title
         } 
       }).then(
       modalEl => {
         modalEl.onDidDismiss().then(modalData => {
+          console.log("data returned  :"+modalData.data[0]);
           if (!modalData.data) {
             return;
           }
           const coordinates: Coordinates = {
-            lat: modalData.data.lat,
-            lng: modalData.data.lng
+            lat: modalData.data[0].lat,
+            lng: modalData.data[0].lng
           };
-          this.createPlace(coordinates.lat, coordinates.lng);
+          
+          this.createPlace(modalData.data[0]);
         });
         modalEl.present();
       });
   }
 
-  private createPlace(lat: number, lng: number) {
+  private createPlace(latlng: any) {
+    console.log("coords: lat:"+latlng.lat+"lng: "+latlng.lng);
 
     const pickedLocation: PlaceLocation = {
-      lat,
-      lng,
+      lat: latlng.lat,
+      lng: latlng.lng,
       address: null,
       staticMapImageUrl: null
     };
 
     this.isLoading = true;
-    this.getAddress(lat, lng).pipe(
-      switchMap(address => {
-        pickedLocation.address = address;
-        return of(this.getMapImage(pickedLocation.lat, pickedLocation.lng, 14));
-    })
-    ).subscribe(staticMapImageUrl => {
-      pickedLocation.staticMapImageUrl = staticMapImageUrl;
-      this.selectedLocationImage = staticMapImageUrl;
-      this.isLoading = false;
-      this.locationPick.emit(pickedLocation);
-    });
+
+    const address = this.getAddress(latlng);
+    
+    pickedLocation.address = address;
+    console.log(address);
+    const staticMapImageUrl = this.getMapImage(pickedLocation.lat, pickedLocation.lng, 14)
+    pickedLocation.staticMapImageUrl = staticMapImageUrl;
+    this.selectedLocationImage = staticMapImageUrl;
+    this.isLoading = false;
+    this.locationPick.emit(pickedLocation);
+    console.log("updated selectedLocationImage");
+    
+
   }
 
   private getCurrentCoords(){
@@ -152,26 +162,44 @@ export class LocationPickerComponent implements OnInit {
     });
   }
 
-  private getAddress(lat: number, lng: number) {
-    return this.http.
-      get<any>(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${
-          environment.googleMapsAPIKey
-        }`
-      ).pipe(
-      map(geoData => {
-        console.log(geoData);
-        if (!geoData || !geoData.results || geoData.results.length === 0 ) {
-          return null;
-        }
-        console.log(geoData);
-        return geoData.results[0].formatted_address;
-    }));
+  private getAddress(latlng: any) {
+    console.log("coords: lat:"+latlng.lat+",lng: "+latlng.lng);
+
+    const geocodeService = ELG.geocodeService({
+      apikey: this.apiKey
+    });
+
+    const coordinates: Coordinates = {
+      lat: latlng.lat,
+      lng: latlng.lng
+    };
+
+    var resultData;
+    geocodeService.reverse().latlng(latlng).run(function (error, result) {
+      console.log("Address got: "+result);
+      if (error) {
+        console.log("error: "+error.message);
+        return;
+      }
+      var data = [result];
+      resultData = data;//result.address.Match_addr;
+      //L.marker(result.latlng).addTo(map).bindPopup(result.address.Match_addr).openPopup();
+    });
+
+    return resultData;
+    
+    
   }
 
   private getMapImage(lat: number, lng: number, zoom: number) {
-    return `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=${zoom}&size=500x300&maptype=roadmap
+    /*return `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=${zoom}&size=500x300&maptype=roadmap
     &markers=color:red%7Clabel:Place%7C${lat},${lng}
-    &key=${environment.googleMapsAPIKey}`;
+    &key=${environment.googleMapsAPIKey}`;*/
+    var KEY = 'hmAnp6GU6CtArMcnLn38nJS0Sb1orh9Q';
+    var token = 'NABNHp_s69NxKe4t1UDV3t3pACLyRh1jIUQvdMcRjWuCCZkFsk-IPT8ZAgnSh_a109v7rx_StyCfxtfsssItDLQqVYJoS-g77lqicFAi2rQ61lckUfKEd01jC4m6ChlGNlmA4EhtLIsWE984eXiwiw';
+
+    
+    return `https://open.mapquestapi.com/staticmap/v4/getplacemap?key=${KEY}&location=${lat},${lng}&size=600,400&zoom=9&showicon=red_1-1`;
+
   }
 }
