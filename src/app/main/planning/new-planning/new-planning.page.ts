@@ -107,7 +107,7 @@ export class NewPlanningPage implements OnInit {
       .subscribe(() => {
         loadingEl.dismiss();
         this.form.reset();
-        this.router.navigate(['main/planning']);
+        this.router.navigate(['/main/tabs/planning']);
       });
     });
   }

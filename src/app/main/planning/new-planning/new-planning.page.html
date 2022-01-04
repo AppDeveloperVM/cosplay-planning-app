@@ -36,6 +36,7 @@
         <ion-col size-sm="6" offset-sm="3">
           <app-location-picker
           [showPreview]="form.get('location').value"
+          [multiple]="false"
           (locationPick)="onLocationPicked($event)"></app-location-picker>
         </ion-col>
       </ion-row>
