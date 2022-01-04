@@ -25,7 +25,7 @@
     </ion-row>
     <ion-row>
       <ion-col size-sm="6" offset-sm="3" no-padding>
-        <ion-button (click)="onShowFullMap()" class="location-image" >Show map</ion-button>
+        <ion-img role="button" (click)="onShowFullMap()" class="location-image" [src]="planning.places['staticMapImageUrl']"></ion-img>
       </ion-col>
     </ion-row>
   </ion-grid>

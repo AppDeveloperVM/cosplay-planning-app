@@ -95,9 +95,10 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
   }
 
   onShowFullMap() {
+    console.log(this.placesData[0]);
     this.modalCtrl.create({component: MapModalLeafletComponent, 
       componentProps: {
-        center: [41.390205,2.154007 ], //bcn
+        center: [this.placesData[0].lat, this.placesData[0].lng], //bcn
         markers: this.placesData , // array of markers
         selectable: true,
         multiple: true,
