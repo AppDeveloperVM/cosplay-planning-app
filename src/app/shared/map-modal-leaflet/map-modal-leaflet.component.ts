@@ -33,6 +33,11 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
   endCoords;
   arcgisRest;
 
+  customIcon;
+  MarkerOptions;
+  markerLayer;
+  centerLatLng = [];
+
   @Input() center ; // initial route point
   @Input() markers = []; // array of markers given
   @Input() selectable; // = true;
@@ -43,6 +48,7 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
 
   constructor(
     private modalCtrl: ModalController,
+    private toastCtrl: ToastController,
     private placeDataService: PlaceDataService
   ) { }
 
@@ -77,6 +83,7 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
       iconUrl: 'marker-icon.png',
       iconSize:     [25, 40], // size of the icon
     });
+    this.customIcon = customIcon;
 
     // Options for the marker
     var markerOptions = {
@@ -85,6 +92,7 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
       draggable: false,
       icon: customIcon
     }
+    this.MarkerOptions = markerOptions;
 
     var outerThis = this;
     //add multiple markers
@@ -97,6 +105,9 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
         markPoint.addTo(outerThis.map);
     }
 
+    //Enable Map OnClick
+    this.map.on('click', this.onMapClick, this);
+
     /*
     this.startCoords = [{'lat': 41.390205, 'long': 2.154007}];
     this.endCoords = [{'lat': 41.56667, 'long': 2.01667 }];
@@ -104,6 +115,48 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
     this.updateRoute();
     */
 
+  }
+
+  onMapClick(e) {
+    var outerThis = this;
+
+    //Multiple markers?
+    if(this.multiple == false && this.markerLayer != null){
+      this.markerLayer.clearLayers();
+    }
+    this.markerLayer = L.layerGroup().addTo(this.map);
+    const markerLatLng = { lat: e.latlng.lat, lng:e.latlng.lng };
+
+    let markPoint = L.marker( markerLatLng , outerThis.MarkerOptions );
+    markPoint.bindPopup('Centro de la ciudad')
+    markPoint.addTo(this.markerLayer);
+    markPoint.openPopup();
+
+    // new Marker Object
+    const PlaceData = [
+      {
+        name : 'Centro de la ciudad',
+        state : 'Spain', // se deberia obtener, no hardcodear
+        latitude: e.latlng.lat,
+        longitude: e.latlng.lng
+      }
+    ];
+    this.markers.push(markerLatLng);
+    this.centerLatLng.push(e.latlng);
+    console.log(this.markers);
+    console.log(e.latlng);
+
+    this.placeDataService.setPlace(PlaceData);
+    this.showToast('Lugar añadido!');
+  }
+
+  async showToast(message: string) {
+    const toast = await this.toastCtrl.create({
+      message,
+      duration: 2000,
+      position: 'bottom',
+    });
+    toast.present();
   }
 
   createRoute(){
@@ -163,8 +216,11 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
   }
   
   onCancel() {
-    this.modalCtrl.dismiss();
-    // volver a crear la imagen del mapa
+    if(this.multiple){
+      this.modalCtrl.dismiss(this.markers);
+    }else{
+      this.modalCtrl.dismiss(this.centerLatLng);
+    }
   }
 
   /** Remove map when we have multiple map object */
