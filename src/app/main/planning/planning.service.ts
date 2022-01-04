@@ -102,8 +102,8 @@ export class PlanningService {
     title: string,
     description: string,
     imageUrl: string,
-    location: any,
-    places: any,
+    location: any,// Main City ( coords autocompleted by searchBox )
+    places: any, //Multiple Markers
 ) {
     let generatedId: string;
     const newPlanning = new Planning(
