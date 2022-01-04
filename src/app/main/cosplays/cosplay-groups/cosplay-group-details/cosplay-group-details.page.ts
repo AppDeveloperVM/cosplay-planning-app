@@ -34,7 +34,7 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.fetchPlacesData();
+    //this.fetchPlacesData();
 
     this.route.paramMap.subscribe(paramMap => {
       if (!paramMap.has('cosplayGroupId')) {
@@ -79,9 +79,15 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
     console.log('ionViewWillEnter');
   }
 
+  getMarkers(){
+    for (let marker in this.cosplayGroup.location) {
+      this.placesData.push(marker);
+    }
+  }
+
 
   onRequestCosplayGroup() {
-
+    
   }
 
   fetchPlacesData() {
