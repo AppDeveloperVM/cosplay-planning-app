@@ -5,7 +5,7 @@ import { environment } from '../../../../environments/environment';
 import { MapModalLeafletComponent } from '../../map-modal-leaflet/map-modal-leaflet.component';
 import { map, switchMap } from 'rxjs/operators';
 import { PlaceLocation, Coordinates } from '../../../main/cosplays/cosplay-groups/location.model';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Plugins, Capacitor } from '@capacitor/core';
 import * as L from "leaflet";
 import * as ELG from "esri-leaflet-geocoder";
@@ -22,13 +22,14 @@ export class LocationPickerComponent implements OnInit {
   @Input() multiple = false;
   @Input() selectedLocationImage: string;
   @Input() center = {};
+  streetObserv: Observable<any>;
+  streetData: any;
 
-  
   isLoading = false;
 
   constructor(
       private modalCtrl: ModalController,
-      private http: HttpClient,
+      private httpClient: HttpClient,
       private actionSheetCtrl: ActionSheetController,
       private alertCtrl: AlertController,
     ) { }
@@ -125,18 +126,29 @@ export class LocationPickerComponent implements OnInit {
 
     this.isLoading = true;
 
-    const address = this.getAddress(latlng);
-    
-    pickedLocation.address = address;
-    console.log(address);
+    let addressData;
+    var KEY = 'hmAnp6GU6CtArMcnLn38nJS0Sb1orh9Q';
+    const reversegeocodeurl = `http://open.mapquestapi.com/nominatim/v1/reverse.php?key=${KEY}&format=json&lat=${latlng.lat}&lon=${latlng.lng}`;
+ 
+    this.streetObserv = this.httpClient.get(reversegeocodeurl);
+    this.streetObserv
+    .subscribe(data => {
+      console.log('my data: ', data);
+      this.streetData = data;
+      const road = this.streetData['address']['road'] != undefined ? this.streetData['address']['road'] : '-';
+      const county = this.streetData['address']['county'] != undefined ? this.streetData['address']['county'] : '-';
+      const state = this.streetData['address']['state'] != undefined ? this.streetData['address']['state'] : '-';
+      addressData = road + " , " + county + " , " +state;
+      console.log(addressData);
+      pickedLocation.address = addressData;
+    });
+
     const staticMapImageUrl = this.getMapImage(pickedLocation.lat, pickedLocation.lng, 14)
     pickedLocation.staticMapImageUrl = staticMapImageUrl;
     this.selectedLocationImage = staticMapImageUrl;
     this.isLoading = false;
     this.locationPick.emit(pickedLocation);
     console.log("updated selectedLocationImage");
-    
-
   }
 
   private getCurrentCoords(){
@@ -162,44 +174,10 @@ export class LocationPickerComponent implements OnInit {
     });
   }
 
-  private getAddress(latlng: any) {
-    console.log("coords: lat:"+latlng.lat+",lng: "+latlng.lng);
-
-    const geocodeService = ELG.geocodeService({
-      apikey: this.apiKey
-    });
-
-    const coordinates: Coordinates = {
-      lat: latlng.lat,
-      lng: latlng.lng
-    };
-
-    var resultData;
-    geocodeService.reverse().latlng(latlng).run(function (error, result) {
-      console.log("Address got: "+result);
-      if (error) {
-        console.log("error: "+error.message);
-        return;
-      }
-      var data = [result];
-      resultData = data;//result.address.Match_addr;
-      //L.marker(result.latlng).addTo(map).bindPopup(result.address.Match_addr).openPopup();
-    });
-
-    return resultData;
-    
-    
-  }
-
   private getMapImage(lat: number, lng: number, zoom: number) {
-    /*return `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=${zoom}&size=500x300&maptype=roadmap
-    &markers=color:red%7Clabel:Place%7C${lat},${lng}
-    &key=${environment.googleMapsAPIKey}`;*/
     var KEY = 'hmAnp6GU6CtArMcnLn38nJS0Sb1orh9Q';
     var token = 'NABNHp_s69NxKe4t1UDV3t3pACLyRh1jIUQvdMcRjWuCCZkFsk-IPT8ZAgnSh_a109v7rx_StyCfxtfsssItDLQqVYJoS-g77lqicFAi2rQ61lckUfKEd01jC4m6ChlGNlmA4EhtLIsWE984eXiwiw';
-
-    
+  
     return `https://open.mapquestapi.com/staticmap/v4/getplacemap?key=${KEY}&location=${lat},${lng}&size=600,400&zoom=9&showicon=red_1-1`;
-
   }
 }
