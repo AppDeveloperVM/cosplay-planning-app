@@ -41,6 +41,8 @@ export class EditPlanningPage implements OnInit, OnDestroy {
   isLoading = false;
   private planningSub: Subscription;
   form: FormGroup;
+  actualImage = "";
+  actualMapImage = "";
   selectedLocationImage: string;
 
   constructor(
@@ -87,6 +89,9 @@ export class EditPlanningPage implements OnInit, OnDestroy {
           location: new FormControl(null, {validators: [Validators.required]}),
           image: new FormControl(null)
         });
+        this.actualImage = this.planning.imageUrl;
+        this.actualMapImage = this.planning.location.staticMapImageUrl;
+
         this.isLoading = false;
       }, error => {
         this.alertCtrl
@@ -105,7 +110,6 @@ export class EditPlanningPage implements OnInit, OnDestroy {
       }
       );
 
-      //console.log(' Planning id: ' + this.planning.id);
     });
   }
 
@@ -159,7 +163,7 @@ export class EditPlanningPage implements OnInit, OnDestroy {
         .subscribe(() => {
           loadingEl.dismiss();
           this.form.reset();
-          this.router.navigate(['/planning']);
+          this.router.navigate(['/main/tabs/planning']);
         });
     });
   }
