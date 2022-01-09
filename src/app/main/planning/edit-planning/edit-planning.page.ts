@@ -76,6 +76,14 @@ export class EditPlanningPage implements OnInit, OnDestroy {
             updateOn: 'blur',
             validators: [Validators.required]
           }),
+          startsAt: new FormControl(this.planning.startsAt, {
+            updateOn: 'blur',
+            validators: [ Validators.required]
+          }),
+          endsAt: new FormControl(this.planning.endsAt, {
+            updateOn: 'blur',
+            validators: [ Validators.required]
+          }),
           location: new FormControl(null, {validators: [Validators.required]}),
           image: new FormControl(null)
         });
@@ -143,6 +151,8 @@ export class EditPlanningPage implements OnInit, OnDestroy {
               uploadRes.imageUrl,
               this.form.value.location,
               '',
+              new Date(this.form.value.startsAt),
+              new Date(this.form.value.endsAt),
               this.planning.userId
             );
         }))
