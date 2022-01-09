@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { CosplayGroup } from './cosplay-group.model';
 import { Cosplay } from '../cosplay.model';
+import { CharacterMember } from 'src/app/models/characterMember.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { BehaviorSubject, of } from 'rxjs';
 import { take, map, delay, tap, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { PlaceLocation } from './location.model';
 import { stringify } from 'querystring';
+import { User } from 'src/app/models/user.model';
 
 
 interface CosplayGroupData {
@@ -18,6 +20,18 @@ interface CosplayGroupData {
     series: string;
     userId: string;
     location: PlaceLocation;
+    characters: any;
+}
+
+interface CosplayGroupMembersData {
+    member: CharacterMember;
+    cosplayGroupId: string;
+}
+
+interface CosplayGroupMemberData {
+    name: string;
+    cosplayerId: string;
+    asistanceConfirmed: boolean;
 }
 
 @Injectable({
@@ -27,10 +41,19 @@ export class CosplayGroupService {
     private _cosplaygroups = new BehaviorSubject<CosplayGroup[]>(
         []
     );
+    private _cosplaygroupmembers = new BehaviorSubject<CharacterMember[]>(
+        []
+    );
 
     get cosplaygroups() {
         return this._cosplaygroups.asObservable();
     }
+
+    get cosplaygroupmembers() {
+        return this._cosplaygroupmembers.asObservable();
+    }
+
+    public cosplayGroupMembers : CharacterMember[];
 
     constructor( private authService: AuthService, private http: HttpClient ) {}
 
@@ -39,17 +62,68 @@ export class CosplayGroupService {
             `https://cosplay-planning-app.firebaseio.com/cosplay-groups/${id}.json`
           ).pipe(
             map(cosplayGroupData => {
-              return new CosplayGroup(
-                  id,
-                  cosplayGroupData.title,
-                  cosplayGroupData.series,
-                  cosplayGroupData.imageUrl,
-                  cosplayGroupData.place,
-                  cosplayGroupData.availableFrom,
-                  cosplayGroupData.availableTo,
-                  this.authService.userId,
-                  cosplayGroupData.location
+                //cosplaygroupmembers for
+                const characters = cosplayGroupData.characters;
+                console.log("characters: "+ characters['name']);
+                const cosplayGroupMembers = [];
+
+                this.cosplayGroupMembers = characters;
+                console.log("characters data: "+ characters.name);
+
+                return new CosplayGroup(
+                    id,
+                    cosplayGroupData.title,
+                    cosplayGroupData.series,
+                    cosplayGroupData.imageUrl,
+                    cosplayGroupData.place,
+                    cosplayGroupData.availableFrom,
+                    cosplayGroupData.availableTo,
+                    this.authService.userId,
+                    cosplayGroupData.location
+                );
+                
+            })
+        );
+    }
+
+    getCosplayGroupMember(cosplaygroupid: string){
+        return this.http.get<CosplayGroupMemberData>(
+            `https://cosplay-planning-app.firebaseio.com/cosplay-groups/${cosplaygroupid}.json`
+          ).pipe(
+            map(cosplayGroupMemberData => {
+              return new CharacterMember(
+                cosplayGroupMemberData.name,
+                cosplayGroupMemberData.cosplayerId,
+                cosplayGroupMemberData.asistanceConfirmed
               );
+            })
+        );
+    }
+
+    fetchCosplayGroupMembers(){
+        return this.http
+        .get<{ [key: string]: CosplayGroupMemberData}>(
+            `https://cosplay-planning-app.firebaseio.com/cosplay-groups.json?orderBy="userId"&equalTo="${
+            this.authService.userId
+            }"`
+        )
+        .pipe(
+            map(CosplayGroupMemberData => {
+                const cosplayGroupMembers = [];
+                for (const key in CosplayGroupMemberData) {
+                    if (CosplayGroupMemberData.hasOwnProperty(key)) {
+                        cosplayGroupMembers.push(
+                            new CharacterMember(
+                                CosplayGroupMemberData[key].name,
+                                CosplayGroupMemberData[key].cosplayerId,
+                                CosplayGroupMemberData[key].asistanceConfirmed
+                            )
+                        );
+                    }
+                }
+                return cosplayGroupMembers;
+            }), tap(cosplaygroupmembers => {
+                this._cosplaygroupmembers.next(cosplaygroupmembers);
             })
         );
     }
@@ -64,6 +138,7 @@ export class CosplayGroupService {
         .pipe(
             map(CosplayGroupData => {
                 const cosplayGroups = [];
+                
                 for (const key in CosplayGroupData) {
                     if (CosplayGroupData.hasOwnProperty(key)) {
                         cosplayGroups.push(new CosplayGroup(
@@ -84,16 +159,6 @@ export class CosplayGroupService {
             }), tap(cosplaygroups => {
                 this._cosplaygroups.next(cosplaygroups);
             })
-        );
-    }
-
-    uploadImage(image: File) {
-        const uploadData = new FormData();
-        uploadData.append('image', image);
-
-        return this.http.post<{imageUrl: string, imagePath: string}>(
-            'https://us-central1-cosplay-planning-app.cloudfunctions.net/storeImage',
-            uploadData
         );
     }
 
@@ -131,6 +196,36 @@ export class CosplayGroupService {
             tap(cosplaygroups => {
                 newCosplayGroup.id = generatedId;
                 this._cosplaygroups.next(cosplaygroups.concat(newCosplayGroup));
+            }));
+
+    }
+
+    addCosplayGroupMember(
+        name: string,
+        cosplayerId: string,
+        asistanceConfirmed: boolean,
+        cosplayGroupId: string
+    ){
+        let generatedId: string;
+        const newCosplayGroupMember = new CharacterMember(
+            name,
+            cosplayerId,
+            asistanceConfirmed
+        );
+
+        return this.http
+        .post<{title: string}>(
+            'https://cosplay-planning-app.firebaseio.com/cosplay-groups.json',
+            { ...newCosplayGroupMember, id: null}
+        ).pipe(
+            switchMap(resData => {
+                //generatedId = resData.title;
+                return this.cosplaygroupmembers;
+            }),
+            take(1),
+            tap(cosplaygroupmembers => {
+                //newCosplayGroupMember.id = generatedId;
+                this._cosplaygroupmembers.next(cosplaygroupmembers.concat(newCosplayGroupMember));
             }));
 
     }
@@ -174,14 +269,62 @@ export class CosplayGroupService {
             location
             );
             return this.http.put(
-            `https://cosplay-planning-app.firebaseio.com/cosplay-groups/${cosplayGroupId}.json`,
-            { ...updatedCosplayGroups[updatedCosplayGroupIndex], id: null}
+                `https://cosplay-planning-app.firebaseio.com/cosplay-groups/${cosplayGroupId}.json`,
+                { ...updatedCosplayGroups[updatedCosplayGroupIndex], id: null}
             );
         })
         , tap(cosplaygroups  => {
             this._cosplaygroups.next(updatedCosplayGroups);
         }));
 
+    }
+
+    updateCosplayGroupMembers(
+        name: string,
+        cosplayerId: string,
+        asistanceConfirmed: boolean,
+        cosplayGroupId: string
+    ){
+        let updatedCosplayGroupMembers: CharacterMember[];
+
+        return this.cosplaygroupmembers.pipe(
+            take(1),
+            switchMap( cosplaygroupmembers => {
+                if (!cosplaygroupmembers || cosplaygroupmembers.length <= 0) {
+                return this.fetchCosplayGroupMembers();
+                } else {
+                return of(cosplaygroupmembers);
+                }
+    
+            }),
+            switchMap(cosplayGroupMembers => {
+                const updatedCosplayGroupMembersIndex = cosplayGroupMembers.findIndex(cosGroup => cosGroup.id === cosplayGroupId);
+                updatedCosplayGroupMembers = [...cosplayGroupMembers];
+                const oldCosplay = updatedCosplayGroupMembers[updatedCosplayGroupMembersIndex];
+    
+                updatedCosplayGroupMembers[updatedCosplayGroupMembersIndex] = new CharacterMember(
+                name,
+                cosplayerId,
+                asistanceConfirmed
+                );
+                return this.http.put(
+                    `https://cosplay-planning-app.firebaseio.com/cosplay-groups/${cosplayGroupId}.json`,
+                    { ...updatedCosplayGroupMembers[updatedCosplayGroupMembersIndex], id: null}
+                );
+            })
+            , tap(cosplayGroupMembers  => {
+                this._cosplaygroupmembers.next(updatedCosplayGroupMembers);
+            }));
+    }
+
+    uploadImage(image: File) {
+        const uploadData = new FormData();
+        uploadData.append('image', image);
+
+        return this.http.post<{imageUrl: string, imagePath: string}>(
+            'https://us-central1-cosplay-planning-app.cloudfunctions.net/storeImage',
+            uploadData
+        );
     }
 
 
