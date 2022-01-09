@@ -42,6 +42,10 @@
             <ion-icon name="create-outline"></ion-icon>
           </ion-button>
         </div>
+
+        <ion-list *ngFor="let cosplayMember of cosplayGroupMembers" >
+          <p>{{ cosplayMember.name }}</p>
+        </ion-list>
         
         <ion-list>
           <ion-item>
