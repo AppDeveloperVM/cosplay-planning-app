@@ -52,6 +52,14 @@ export class NewPlanningPage implements OnInit {
       description: new FormControl(null, {
         updateOn: 'blur'
       }),
+      startsAt: new FormControl(null, {
+        updateOn: 'blur',
+        validators: [ Validators.required]
+      }),
+      endsAt: new FormControl(null, {
+        updateOn: 'blur',
+        validators: [ Validators.required]
+      }),
       location: new FormControl(null, {
         validators: [Validators.required]
       }),
@@ -101,6 +109,9 @@ export class NewPlanningPage implements OnInit {
             this.form.value.description,
             uploadRes.imageUrl,
             this.form.value.location,
+            '',
+            new Date(this.form.value.startsAt),
+            new Date(this.form.value.endsAt),
             ''
           );
       }))
