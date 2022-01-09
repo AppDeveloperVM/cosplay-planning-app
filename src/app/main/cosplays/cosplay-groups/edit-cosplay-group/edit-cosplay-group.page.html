@@ -76,7 +76,8 @@
           <app-location-picker
           [selectedLocationImage]="actualMapImage"
           [showPreview]="form.get('location').value"
-          (locationPick)="onLocationPicked($event)"></app-location-picker>
+          (locationPick)="onLocationPicked($event)">
+        </app-location-picker>
         </ion-col>
       </ion-row>
       <ion-row>
@@ -84,7 +85,8 @@
           <app-image-picker
           [selectedImage]="actualImage"
           [showPreview]="form.get('image').value"
-          (imagePick)="onImagePicked($event)"></app-image-picker>
+          (imagePick)="onImagePicked($event)">
+        </app-image-picker>
         </ion-col>
       </ion-row>
 

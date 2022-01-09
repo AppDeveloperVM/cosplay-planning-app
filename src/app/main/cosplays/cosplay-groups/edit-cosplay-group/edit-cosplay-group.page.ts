@@ -89,8 +89,8 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
             updateOn: 'blur',
             validators: [ Validators.required]
           }),
-          location: new FormControl(), //this.cosplayGroup.location.staticMapImageUrl
-          image: new FormControl() //this.cosplayGroup.imageUrl
+          location: new FormControl(),
+          image: new FormControl()
         });
 
         this.actualImage = this.cosplayGroup.imageUrl;
