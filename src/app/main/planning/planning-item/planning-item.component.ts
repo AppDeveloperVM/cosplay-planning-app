@@ -15,8 +15,4 @@ export class PlanningItemComponent implements OnInit {
     console.log(this.planning);
   }
 
-  getDummyDate() {
-    return new Date();
-  }
-
 }

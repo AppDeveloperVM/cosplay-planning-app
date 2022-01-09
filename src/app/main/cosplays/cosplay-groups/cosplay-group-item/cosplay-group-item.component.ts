@@ -19,8 +19,4 @@ export class CosplayGroupItemComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
   }
 
-  getDummyDate() {
-    return new Date();
-  }
-
 }
