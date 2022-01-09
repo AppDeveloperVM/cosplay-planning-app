@@ -12,6 +12,8 @@ interface PlanningData {
   imageUrl: string;
   places: any;
   location: any;
+  startsAt: Date,
+  endsAt: Date,
   userId: string;
 }
 
@@ -42,6 +44,8 @@ export class PlanningService {
             planningData.imageUrl,
             planningData.places,
             planningData.location,
+            planningData.startsAt,
+            planningData.endsAt,
             this.authService.userId
         );
       })
@@ -74,6 +78,8 @@ export class PlanningService {
               resData[key].imageUrl,
               resData[key].location,
               resData[key].places,
+              resData[key].startsAt,
+              resData[key].endsAt,
               resData[key].userId
               ));
           }
@@ -104,6 +110,9 @@ export class PlanningService {
     imageUrl: string,
     location: any,// Main City ( coords autocompleted by searchBox )
     places: any, //Multiple Markers
+    startsAt: Date,
+    endsAt: Date,
+    userId: string,
 ) {
     let generatedId: string;
     const newPlanning = new Planning(
@@ -113,6 +122,8 @@ export class PlanningService {
         imageUrl,
         location,
         places,
+        startsAt,
+        endsAt,
         this.authService.userId
     );
     return this.http
@@ -139,6 +150,8 @@ export class PlanningService {
       imageUrl: string,
       location: PlaceLocation,
       places: any,
+      startsAt: Date,
+      endsAt: Date,
       userId: string,
   ) {
 
@@ -165,6 +178,8 @@ export class PlanningService {
             imageUrl,
             location,
             places,
+            startsAt,
+            endsAt,
             userId
           );
           return this.http.put(

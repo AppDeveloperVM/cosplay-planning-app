@@ -8,6 +8,8 @@ export class Planning {
     public imageUrl: string,
     public location: PlaceLocation,
     public places: any[],
+    public startsAt: Date,
+    public endsAt: Date,
     public userId: string
   ) {}
 }
