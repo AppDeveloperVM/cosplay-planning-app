@@ -176,7 +176,6 @@ export class LocationPickerComponent implements OnInit {
 
   private getMapImage(lat: number, lng: number, zoom: number) {
     var KEY = 'hmAnp6GU6CtArMcnLn38nJS0Sb1orh9Q';
-    var token = 'NABNHp_s69NxKe4t1UDV3t3pACLyRh1jIUQvdMcRjWuCCZkFsk-IPT8ZAgnSh_a109v7rx_StyCfxtfsssItDLQqVYJoS-g77lqicFAi2rQ61lckUfKEd01jC4m6ChlGNlmA4EhtLIsWE984eXiwiw';
   
     return `https://open.mapquestapi.com/staticmap/v4/getplacemap?key=${KEY}&location=${lat},${lng}&size=600,400&zoom=9&showicon=red_1-1`;
   }
