@@ -5,9 +5,14 @@ detail>
     </ion-thumbnail>
     <ion-label>
       <h1>{{ planning.title }}</h1>
-      <div class="cosplaygroup-details">
+      <div class="planning-details">
         <ion-icon name="location" color="secondary"></ion-icon>
         <span class="place space-left space-right">{{ planning.location['address']}}</span>
+        <ion-icon name="calendar" color="secondary"></ion-icon>
+        <ion-text  class="space-left">{{ getDummyDate() | date }}</ion-text>
+        <span class="space-left">to</span>
+        <ion-icon name="calendar" class="space-left" color="secondary"></ion-icon>
+        <ion-text  class="space-left">{{ getDummyDate() | date }}</ion-text>
       </div>
     </ion-label>
 </ion-item>
