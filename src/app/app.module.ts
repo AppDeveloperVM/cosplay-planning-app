@@ -15,6 +15,9 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HeaderComponent } from './components/header/header.component';
 import { AuthInterceptor } from './services/auth-interceptor.service';
 
+import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { firebaseConfig } from 'src/environments/environment';
 
 @NgModule({
   declarations: [AppComponent, CosplayGroupSendRequestComponent],
@@ -25,7 +28,10 @@ import { AuthInterceptor } from './services/auth-interceptor.service';
     IonicModule.forRoot(),
     AppRoutingModule,
     ComponentsModule,
-    IonicModule
+    IonicModule,
+
+    provideFirebaseApp(() => initializeApp(firebaseConfig)),
+    provideFirestore(() => getFirestore()),
   ],
   providers: [
     StatusBar,
