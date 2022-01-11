@@ -16,6 +16,7 @@ import { Subscription } from 'rxjs';
 export class CosplayGroupFormRequestPage implements OnInit, OnDestroy {
   subscription: Subscription;
   cosplayGroup: CosplayGroup;
+  cosplayGroupId;
   private cosplaygroupSub: Subscription;
   loadedCosplayRequest: string;
 
@@ -34,14 +35,14 @@ export class CosplayGroupFormRequestPage implements OnInit, OnDestroy {
         this.navCtrl.navigateBack('/main/tabs/cosplays/cosplay-groups');
         return;
       }
+      this.cosplayGroupId = paramMap.has('cosplayGroupId')
+
       this.cosplaygroupSub = this.cosplayGroupService
         .getCosplayGroup(paramMap.get('cosplayGroupId'))
         .subscribe(cosplayGroup => {
         this.cosplayGroup = cosplayGroup;
       });
-      // this.cosplay.characterName = this.cosplay.characterName;
-
-      // console.log('Cosplaygroup id: ' + this.cosplayGroup.id);
+      
     });
   }
 
@@ -83,22 +84,20 @@ export class CosplayGroupFormRequestPage implements OnInit, OnDestroy {
             loadingEl.present();
             const data = resultData.data; // get possible extra data from here
 
-            /* Aquí se crearía o enviaría la solicitud de personaje para la GRUPAL
-            this.cosplayGroupService.addCosplayGroup(
-              this.cosplayGroup.id,
-              this.cosplayGroup.title,
-              this.cosplayGroup.series,
-              this.cosplayGroup.place,
-              this.cosplayGroup.availableFrom,
-              this.cosplayGroup.availableTo
+            /* Aquí se crearía o enviaría la solicitud de personaje para la GRUPAL*/
+            this.cosplayGroupService.addCosplayGroupMember(
+              'new character',
+              '1',//cosplayerId
+              true, //asistanceConfirmed
+              this.cosplayGroupId //cosplayGroupId
             )
+            /*
             .subscribe(() => {
               loadingEl.dismiss();
             });
             */
-
             loadingEl.dismiss();
-
+            
             this.router.navigateByUrl('/main/tabs/cosplays/cosplay-groups');
           }
         );

@@ -30,7 +30,7 @@ export class CosplayGroupSendRequestComponent implements OnInit {
   }
 
   onSendCosplayGroupRequest() {
-    this.noticesService.addNotice( this.requestedCharacter.toString() , 'request', 'Cosplay group character request');
+    this.noticesService.addNotice( this.requestedCharacter.toString() , 'request', 'CosGroup character request');
     this.modalCtrl.dismiss({ message: 'Request send from cosplay-group-send-request !'}, 'confirm');
   }
 
