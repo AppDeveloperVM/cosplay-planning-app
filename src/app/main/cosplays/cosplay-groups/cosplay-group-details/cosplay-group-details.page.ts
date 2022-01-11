@@ -10,6 +10,10 @@ import { MapModalComponent } from 'src/app/shared/map-modal/map-modal.component'
 import { PlaceDataService } from 'src/app/services/place-data.service';
 import { MapModalLeafletComponent } from 'src/app/shared/map-modal-leaflet/map-modal-leaflet.component';
 
+import { CharacterMember } from 'src/app/models/characterMember.model';
+import { CosgroupEditModalComponent } from 'src/app/shared/cosgroup-edit-modal/cosgroup-edit-modal.component';
+
+
 @Component({
   selector: 'app-cosplay-group-details',
   templateUrl: './cosplay-group-details.page.html',
@@ -23,6 +27,9 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
   cosplayGroupId: string;
   isLoading = false;
   private cosplayGroupSub: Subscription;
+  cosplayGroupMembers:any[]=[];
+
+  arreglo1 = [10, 20, 30, 40, 50];
 
   constructor(
     private navCtrl: NavController,
@@ -73,6 +80,13 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
       }
       );
 
+      const members = this.cosplayGroupService.getCosplayGroupMembers(paramMap.get('cosplayGroupId'));
+      members.forEach(element => {
+        console.log(element);
+        this.cosplayGroupMembers =  Object.values(element);
+      });
+      
+
     });
   }
 
@@ -86,9 +100,18 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
     }
   }
 
-
   onRequestCosplayGroup() {
     
+  }
+
+  onEditCosGroupMembers() {
+    this.modalCtrl.create({
+      component: CosgroupEditModalComponent, componentProps: {
+      closeButtonText: 'close',
+      title: ' Cosplay Group Members'
+    } }).then(modalEl => {
+      modalEl.present();
+    });
   }
 
   fetchPlacesData() {

@@ -38,23 +38,15 @@
 
         <div class="list-header">
           <p>Actual Characters taken</p>
-          <ion-button size="small" color="secondary">
+          <ion-button size="small" color="secondary" (click)="onEditCosGroupMembers()">
             <ion-icon name="create-outline"></ion-icon>
           </ion-button>
         </div>
 
-        <ion-list *ngFor="let cosplayMember of cosplayGroupMembers" >
-          <p>{{ cosplayMember.name }}</p>
+        <ion-list *ngFor="let cosplayMember of cosplayGroupMembers;" >
+          <ion-item><p>{{ cosplayMember?.name }}</p></ion-item>
         </ion-list>
-        
-        <ion-list>
-          <ion-item>
-            <p>Tanjiro</p>
-          </ion-item>
-          <ion-item>
-            <p>Rengoku</p>
-          </ion-item>
-        </ion-list>
+
 
       </ion-col>
     </ion-row>
@@ -66,7 +58,7 @@
           [routerLink]="['/', 'main', 'tabs', 'cosplays', 'cosplay-groups' ,'cosplay-group-form-request', cosplayGroup.id ]" 
           expand="block"
           >
-          Send Request
+          Make Request
           </ion-button>
       </ion-col>
     </ion-row>
