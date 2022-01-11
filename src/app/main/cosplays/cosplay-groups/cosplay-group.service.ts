@@ -41,7 +41,7 @@ export class CosplayGroupService {
     private _cosplaygroups = new BehaviorSubject<CosplayGroup[]>(
         []
     );
-    private _cosplaygroupmembers = new BehaviorSubject<CharacterMember[]>(
+    private _cosplaygroupsmembers = new BehaviorSubject<CharacterMember[]>(
         []
     );
 
@@ -49,11 +49,12 @@ export class CosplayGroupService {
         return this._cosplaygroups.asObservable();
     }
 
-    get cosplaygroupmembers() {
-        return this._cosplaygroupmembers.asObservable();
+    get cosplaygroupsmembers() {
+        return this._cosplaygroupsmembers.asObservable();
     }
 
-    public cosplayGroupMembers : CharacterMember[];
+    public cosplayGroup = CosplayGroup;
+    cosplayGroupMembers:any[]=[];
 
     constructor( private authService: AuthService, private http: HttpClient ) {}
 
@@ -64,11 +65,8 @@ export class CosplayGroupService {
             map(cosplayGroupData => {
                 //cosplaygroupmembers for
                 const characters = cosplayGroupData.characters;
-                console.log("characters: "+ characters['name']);
-                const cosplayGroupMembers = [];
-
                 this.cosplayGroupMembers = characters;
-                console.log("characters data: "+ characters.name);
+                console.log("characters data: "+ characters[0].name );
 
                 return new CosplayGroup(
                     id,
@@ -86,18 +84,21 @@ export class CosplayGroupService {
         );
     }
 
-    getCosplayGroupMember(cosplaygroupid: string){
-        return this.http.get<CosplayGroupMemberData>(
-            `https://cosplay-planning-app.firebaseio.com/cosplay-groups/${cosplaygroupid}.json`
+    getCosplayGroupMembers(id: string){
+        
+        return this.http.get<CosplayGroupData>(
+            `https://cosplay-planning-app.firebaseio.com/cosplay-groups/${id}.json`
           ).pipe(
-            map(cosplayGroupMemberData => {
-              return new CharacterMember(
-                cosplayGroupMemberData.name,
-                cosplayGroupMemberData.cosplayerId,
-                cosplayGroupMemberData.asistanceConfirmed
-              );
+            map(cosplayGroupData => {
+                //cosplaygroupmembers for
+                const characters = cosplayGroupData.characters;
+                this.cosplayGroupMembers = characters;
+                console.log("characters data: "+ characters[0].name );
+
+                return this.cosplayGroupMembers;
+                
             })
-        );
+        ); 
     }
 
     fetchCosplayGroupMembers(){
@@ -123,7 +124,7 @@ export class CosplayGroupService {
                 }
                 return cosplayGroupMembers;
             }), tap(cosplaygroupmembers => {
-                this._cosplaygroupmembers.next(cosplaygroupmembers);
+                //this._cosplaygroupmembers.next(cosplaygroupmembers);
             })
         );
     }
@@ -220,13 +221,14 @@ export class CosplayGroupService {
         ).pipe(
             switchMap(resData => {
                 //generatedId = resData.title;
-                return this.cosplaygroupmembers;
+                return this.cosplayGroupMembers;
             }),
             take(1),
             tap(cosplaygroupmembers => {
                 //newCosplayGroupMember.id = generatedId;
-                this._cosplaygroupmembers.next(cosplaygroupmembers.concat(newCosplayGroupMember));
+                this._cosplaygroupsmembers.next(cosplaygroupmembers.concat(newCosplayGroupMember));
             }));
+            
 
     }
 
@@ -284,7 +286,8 @@ export class CosplayGroupService {
         cosplayerId: string,
         asistanceConfirmed: boolean,
         cosplayGroupId: string
-    ){
+    ){  
+        /*
         let updatedCosplayGroupMembers: CharacterMember[];
 
         return this.cosplaygroupmembers.pipe(
@@ -315,6 +318,7 @@ export class CosplayGroupService {
             , tap(cosplayGroupMembers  => {
                 this._cosplaygroupmembers.next(updatedCosplayGroupMembers);
             }));
+            */
     }
 
     uploadImage(image: File) {
