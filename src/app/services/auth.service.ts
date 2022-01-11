@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import firebase from 'firebase';
+//import firebase from 'firebase';
 import { BehaviorSubject, from, Observable } from 'rxjs';
 import { map, switchMap, take, tap } from 'rxjs/operators';
 import { User } from '../models/user.model';
@@ -45,10 +45,10 @@ export class AuthService {
     
   }
 
-  loginWithGoogle(){
+  /*loginWithGoogle(){
     var provider = new (firebase.auth as any)(AuthService).GoogleAuthProvider();
     firebase.auth().signInWithPopup(provider);
-  }
+  }*/
 
   login(credentials: {email, password}){ //:Observable<any>
     this.isAuthenticated.next(true);
