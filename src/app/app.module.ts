@@ -16,8 +16,6 @@ import { HeaderComponent } from './components/header/header.component';
 import { AuthInterceptor } from './services/auth-interceptor.service';
 
 import { firebaseConfig } from 'src/environments/environment';
-import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
@@ -37,7 +35,7 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
     IonicModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule,
-    AngularFirestoreModule.enablePersistence(),
+    //AngularFirestoreModule.enablePersistence(),
     AngularFireAuthModule
     
   ],
