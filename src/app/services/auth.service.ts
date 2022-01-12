@@ -5,7 +5,10 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, from, Observable } from 'rxjs';
 import { map, switchMap, take, tap } from 'rxjs/operators';
 import { User } from '../models/user.model';
-//import { AngularFire } from "@angular/fire/auth";
+
+import { initializeApp } from 'firebase/app';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+
 
 const TOKEN_KEY = 'my-token';
 
@@ -27,6 +30,7 @@ export class AuthService {
   private _userData = new BehaviorSubject<User[]>([]);
   private isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   private token = '';
+  
 
   get userIsAuthenticated() {
     return this._userIsAuthenticated;
@@ -44,6 +48,12 @@ export class AuthService {
   constructor(private http:HttpClient,private router: Router) {
     
   }
+
+  // const firebaseApp = initializeApp({ /* config */ });
+  // const auth = getAuth(firebaseApp);
+  // onAuthStateChanged(auth, user => {
+  //   // Check for user status
+  // });
 
   /*loginWithGoogle(){
     var provider = new (firebase.auth as any)(AuthService).GoogleAuthProvider();
