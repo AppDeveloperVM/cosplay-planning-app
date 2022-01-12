@@ -15,9 +15,15 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HeaderComponent } from './components/header/header.component';
 import { AuthInterceptor } from './services/auth-interceptor.service';
 
+import { firebaseConfig } from 'src/environments/environment';
 import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
-import { firebaseConfig } from 'src/environments/environment';
+
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AngularFireStorage, AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+
 
 @NgModule({
   declarations: [AppComponent, CosplayGroupSendRequestComponent],
@@ -29,13 +35,16 @@ import { firebaseConfig } from 'src/environments/environment';
     AppRoutingModule,
     ComponentsModule,
     IonicModule,
-
-    provideFirebaseApp(() => initializeApp(firebaseConfig)),
-    provideFirestore(() => getFirestore()),
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFirestoreModule,
+    AngularFirestoreModule.enablePersistence(),
+    AngularFireAuthModule
+    
   ],
   providers: [
     StatusBar,
     SplashScreen,
+    AngularFirestoreModule,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     //{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
