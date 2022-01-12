@@ -1,7 +1,7 @@
 <ion-item [routerLink]="['/','main','tabs','cosplays','cosplay-groups', cosplaygroup.id ]"
 detail>
     <ion-thumbnail slot="start">
-      <ion-img [src]="cosplaygroup.imageUrl"></ion-img>
+      <ion-img [src]="imgSrc"></ion-img>
     </ion-thumbnail>
     <ion-label>
       <h1>{{ cosplaygroup.title }}</h1>
@@ -9,10 +9,10 @@ detail>
         <ion-icon name="location" color="secondary"></ion-icon>
         <span class="place space-left space-right">{{ cosplaygroup.place }}</span>
         <ion-icon name="calendar" color="secondary"></ion-icon>
-        <ion-text  class="space-left">{{ cosplaygroup.availableFrom | date }}</ion-text>
+        <ion-text  class="space-left">{{ cosplaygroup.dateFrom | date }}</ion-text>
         <span class="space-left">to</span>
         <ion-icon name="calendar" class="space-left" color="secondary"></ion-icon>
-        <ion-text  class="space-left">{{ cosplaygroup.availableTo | date }}</ion-text>
+        <ion-text  class="space-left">{{ cosplaygroup.dateTo | date }}</ion-text>
       </div>
     </ion-label>
 </ion-item>
