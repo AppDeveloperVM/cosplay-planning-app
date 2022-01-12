@@ -18,7 +18,7 @@
 
       <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center" 
       *ngIf="!isLoading ">
-        <ion-list *ngFor="let planningitem of planings$ | async" >
+        <ion-list *ngFor="let planningitem of plannings$ | async" >
           <app-planning-item [planning]="planningitem"></app-planning-item>
         </ion-list>
       </ion-col>
