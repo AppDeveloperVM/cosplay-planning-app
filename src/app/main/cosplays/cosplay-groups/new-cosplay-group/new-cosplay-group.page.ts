@@ -9,6 +9,8 @@ import { LoadingController } from '@ionic/angular';
 import { CosGroup } from 'src/app/models/cosGroup.interface';
 
 import { UploadImageService } from '../../../../services/upload-img.service';
+import { FirebaseStorageService } from '../../../../services/firebase-storage.service';
+
 
 
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreCollectionGroup } from '@angular/fire/compat/firestore';
@@ -52,12 +54,14 @@ export class NewCosplayGroupPage implements OnInit {
   cosGroup: CosGroup;
 
   imgReference;
+  public URLPublica = '';
 
   constructor(
     private cosplayGroupService: CosplayGroupService,
     private router: Router,
     private loadingCtrl: LoadingController,
     private afs: AngularFireStorage,
+    private fbss: FirebaseStorageService,
     private uploadService: UploadImageService
   ) {
     const navigation = this.router.getCurrentNavigation();
@@ -105,7 +109,7 @@ export class NewCosplayGroupPage implements OnInit {
     this.form.patchValue({ location });
   }
 
-  onImagePicked(imageData: string | File) {
+  async onImagePicked(imageData: string | File) {
     let imageFile;
     if (typeof imageData === 'string') {
       try {
@@ -121,11 +125,16 @@ export class NewCosplayGroupPage implements OnInit {
     }
     //this.form.patchValue({image: imageFile});
     //UPLOAD IMAGE
-    const imageName = "/images/"+Math.random()+imageFile;
+    const imageName = "images/"+Math.random()+imageFile;
     const datos = imageFile;
-    this.uploadService.uploadCloudStorage(imageName,datos)
-    this.imgReference = this.uploadService.referenceCloudStorage(imageName);
-    this.form.patchValue({ image: imageName });
+
+    let tarea = await this.fbss.tareaCloudStorage(imageName,datos).then((r) => {
+
+      this.form.patchValue({ image: r.ref.getDownloadURL() });
+    })
+    
+
+    
   }
 
   onSaveCosGroup() {
