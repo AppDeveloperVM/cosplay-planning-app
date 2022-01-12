@@ -14,6 +14,8 @@ import { NoticesService } from 'src/app/services/notices.service';
 )
 
 export class CosplayGroupsPage implements OnInit, OnDestroy {
+  cosGroups$ = this.cosplaygroupService.cosGroups;
+
   cosplaygroups: CosplayGroup[];
   private cosplayGroupsSub: Subscription;
   all_notifications: any = []; // full list 
@@ -28,11 +30,15 @@ export class CosplayGroupsPage implements OnInit, OnDestroy {
   private filter = 'all';
   isLoading = false;
 
-  constructor(private cosplaygroupService: CosplayGroupService, private authService: AuthService,private noticesService: NoticesService,) { }
+  constructor(
+    private cosplaygroupService: CosplayGroupService,
+    private authService: AuthService,
+    private noticesService: NoticesService
+  ) {
+    
+  }
 
   ngOnInit() {
-
-    //this.noticesService.setNotices(this.all_notifications);
 
     this.cosplayGroupsSub = this.cosplaygroupService.cosplaygroups.subscribe(cosplaygroups => {
       this.cosplaygroups = cosplaygroups;
