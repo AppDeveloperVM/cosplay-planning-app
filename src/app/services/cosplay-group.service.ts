@@ -60,6 +60,7 @@ export class CosplayGroupService {
     cosGroups: Observable<CosplayGroupData[]>;
 
     private cosgroupsCollection: AngularFirestoreCollection<CosplayGroupData>;
+    private cosgroupCollection: AngularFirestoreCollection<CosplayGroupData>;
 
     constructor( 
         private authService: AuthService,
@@ -71,6 +72,12 @@ export class CosplayGroupService {
     }
 
     private getcosGroups(): void {
+        this.cosGroups = this.cosgroupsCollection.snapshotChanges().pipe(
+            map( actions => actions.map( a => a.payload.doc.data() as CosplayGroupData))
+        )
+    }
+
+    getcosGroupById(): void {
         this.cosGroups = this.cosgroupsCollection.snapshotChanges().pipe(
             map( actions => actions.map( a => a.payload.doc.data() as CosplayGroupData))
         )
