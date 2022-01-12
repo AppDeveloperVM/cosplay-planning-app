@@ -5,6 +5,11 @@ import { Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { PlaceLocation } from '../../cosplays/cosplay-groups/location.model';
 import { PlanningService } from '../../../services/planning.service';
+//FireBase
+import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { UploadImageService } from '../../../services/upload-img.service';
+import { FirebaseStorageService } from '../../../services/firebase-storage.service';
+import { PlanningInterface } from 'src/app/models/planning.interface';
 
 function base64toBlob(base64Data, contentType) {
   contentType = contentType || '';
@@ -33,15 +38,20 @@ function base64toBlob(base64Data, contentType) {
   styleUrls: ['./new-planning.page.scss'],
 })
 export class NewPlanningPage implements OnInit {
-
   form: FormGroup;
   @ViewChild('createForm', { static: false }) createForm: FormGroupDirective;
+
+  planning: PlanningInterface;
 
   constructor(
     private loadingCtrl: LoadingController,
     private planningService: PlanningService,
-    private router: Router
-  ) { }
+    private router: Router,
+    private fbss: FirebaseStorageService,
+  ) {
+    const navigation = this.router.getCurrentNavigation();
+    this.planning = navigation?.extras?.state?.value;
+  }
 
   ngOnInit() {
     this.form = new FormGroup({
@@ -72,7 +82,7 @@ export class NewPlanningPage implements OnInit {
     this.form.patchValue({ location });
   }
 
-  onImagePicked(imageData: string | File) {
+  async onImagePicked(imageData: string | File) {
     let imageFile;
     if (typeof imageData === 'string') {
       try {
@@ -86,7 +96,36 @@ export class NewPlanningPage implements OnInit {
     } else {
       imageFile = imageData;
     }
-    this.form.patchValue({image: imageFile});
+      //this.form.patchValue({image: imageFile});
+      //UPLOAD IMAGE
+      const imageName = "images/"+Math.random()+imageFile;
+      const datos = imageFile;
+
+      let tarea = await this.fbss.tareaCloudStorage(imageName,datos).then((r) => {
+
+      this.form.patchValue({ image: '' });
+    })
+  }
+
+  onSavePlanning() {
+    //this.cosplayGroupService.uploadImage(this.form.get('image').value)
+    //if (!this.form.valid) return
+
+    this.loadingCtrl
+    .create({
+      message: 'Creating Planning...'
+    })
+    .then(loadingEl => {
+      loadingEl.present();
+      const cosGroup = this.form.value;
+      const cosGroupId = this.planning?.id || null;
+      this.planningService.onSavePlanning(cosGroup, cosGroupId)
+
+      loadingEl.dismiss();
+      this.form.reset();
+      this.router.navigate(['main/tabs/planning']);
+    });
+    
   }
 
   onCreatePlanning() {
