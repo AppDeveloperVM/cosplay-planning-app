@@ -6,6 +6,15 @@ import { Router } from '@angular/router';
 import { PlaceLocation } from '../location.model';
 import { switchMap } from 'rxjs/operators';
 import { LoadingController } from '@ionic/angular';
+import { CosGroup } from 'src/app/models/cosGroup.interface';
+
+import { UploadImageService } from '../../../../services/upload-img.service';
+
+
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreCollectionGroup } from '@angular/fire/compat/firestore';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
+
 
 function base64toBlob(base64Data, contentType) {
   contentType = contentType || '';
@@ -40,8 +49,20 @@ export class NewCosplayGroupPage implements OnInit {
   @Input() selectedMode: 'select' | 'random';
   startDate: string;
   endDate: string;
+  cosGroup: CosGroup;
 
-  constructor(private cosplayGroupService: CosplayGroupService, private router: Router, private loadingCtrl: LoadingController) { }
+  imgReference;
+
+  constructor(
+    private cosplayGroupService: CosplayGroupService,
+    private router: Router,
+    private loadingCtrl: LoadingController,
+    private afs: AngularFireStorage,
+    private uploadService: UploadImageService
+  ) {
+    const navigation = this.router.getCurrentNavigation();
+    this.cosGroup = navigation?.extras?.state?.value;
+  }
 
   ngOnInit() {
     const availableFrom = new Date();
@@ -98,7 +119,34 @@ export class NewCosplayGroupPage implements OnInit {
     } else {
       imageFile = imageData;
     }
-    this.form.patchValue({image: imageFile});
+    //this.form.patchValue({image: imageFile});
+    //UPLOAD IMAGE
+    const imageName = "/images/"+Math.random()+imageFile;
+    const datos = imageFile;
+    this.uploadService.uploadCloudStorage(imageName,datos)
+    this.imgReference = this.uploadService.referenceCloudStorage(imageName);
+    this.form.patchValue({ image: imageName });
+  }
+
+  onSaveCosGroup() {
+    //this.cosplayGroupService.uploadImage(this.form.get('image').value)
+    if (!this.form.valid) return
+
+    this.loadingCtrl
+    .create({
+      message: 'Creating Cosplay Group...'
+    })
+    .then(loadingEl => {
+      loadingEl.present();
+      const cosGroup = this.form.value;
+      const cosGroupId = this.cosGroup?.id || null;
+      this.cosplayGroupService.onSaveCosGroup(cosGroup, cosGroupId)
+
+      loadingEl.dismiss();
+      this.form.reset();
+      this.router.navigate(['main/tabs/cosplays/cosplay-groups']);
+    });
+    
   }
 
   onCreateGroup() {
