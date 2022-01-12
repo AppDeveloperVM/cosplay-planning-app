@@ -3,7 +3,7 @@ import { Planning } from '../planning.model';
 import { Subscription } from 'rxjs';
 import { NavController, ModalController, AlertController } from '@ionic/angular';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PlanningService } from '../planning.service';
+import { PlanningService } from '../../../services/planning.service';
 import { MapModalComponent } from 'src/app/shared/map-modal/map-modal.component';
 
 import { MapModalLeafletComponent } from 'src/app/shared/map-modal-leaflet/map-modal-leaflet.component';

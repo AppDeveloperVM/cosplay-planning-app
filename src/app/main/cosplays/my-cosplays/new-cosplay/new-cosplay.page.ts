@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormGroupDirective, FormControl, Validators } from '@angular/forms';
 import { ModalController, LoadingController, AlertController } from '@ionic/angular';
 import { Cosplay } from '../../cosplay.model';
-import { CosplaysService } from '../../cosplays.service';
+import { CosplaysService } from '../../../../services/cosplays.service';
 import { Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 

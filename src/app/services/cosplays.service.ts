@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Cosplay } from './cosplay.model';
+import { Cosplay } from '../main/cosplays/cosplay.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { BehaviorSubject, of } from 'rxjs';
 import { take, map, tap, delay, switchMap } from 'rxjs/operators';

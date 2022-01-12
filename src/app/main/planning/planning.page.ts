@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Planning } from './planning.model';
 import { Subscription } from 'rxjs';
-import { PlanningService } from './planning.service';
+import { PlanningService } from '../../services/planning.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { PopoverController } from '@ionic/angular';
 import { RouterModule } from '@angular/router';

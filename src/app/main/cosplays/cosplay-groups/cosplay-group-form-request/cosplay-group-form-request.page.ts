@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NavController, ModalController, LoadingController } from '@ionic/angular';
-import { CosplayGroupService } from '../cosplay-group.service';
+import { CosplayGroupService } from '../../../../services/cosplay-group.service';
 import { CosplayGroup } from '../cosplay-group.model';
 import { NgForm } from '@angular/forms';
 import { CosplayGroupSendRequestComponent } from '../cosplay-group-send-request/cosplay-group-send-request.component';

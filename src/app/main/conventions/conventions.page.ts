@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Convention } from './conventions.model';
-import { ConventionsService } from './conventions.service';
+import { ConventionsService } from '../../services/conventions.service';
 
 @Component({
   selector: 'app-conventions',

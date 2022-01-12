@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CosplayGroup } from '../cosplay-group.model';
-import { CosplayGroupService } from '../cosplay-group.service';
+import { CosplayGroupService } from '../../../../services/cosplay-group.service';
 import { Router } from '@angular/router';
 import { PlaceLocation } from '../location.model';
 import { switchMap } from 'rxjs/operators';

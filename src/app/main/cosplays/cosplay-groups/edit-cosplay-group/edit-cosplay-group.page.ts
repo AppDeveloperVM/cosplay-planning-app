@@ -3,7 +3,7 @@ import { CosplayGroup } from '../cosplay-group.model';
 import { Subscription } from 'rxjs';
 import { NavController, ModalController, ToastController, AlertController, LoadingController } from '@ionic/angular';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CosplayGroupService } from '../cosplay-group.service';
+import { CosplayGroupService } from '../../../../services/cosplay-group.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { switchMap } from 'rxjs/operators';
 import { PlaceLocation } from '../location.model';

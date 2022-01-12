@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { CosplaysService } from '../cosplays.service';
+import { CosplaysService } from '../../../services/cosplays.service';
 import { Cosplay } from '../cosplay.model';
 import { SegmentChangeEventDetail } from '@ionic/core';
 import { AuthService } from 'src/app/services/auth.service';

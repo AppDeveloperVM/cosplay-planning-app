@@ -5,7 +5,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Route } from '@angular/compiler/src/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NavController, ModalController, LoadingController, AlertController } from '@ionic/angular';
-import { PlanningService } from '../planning.service';
+import { PlanningService } from '../../../services/planning.service';
 import { switchMap } from 'rxjs/operators';
 import { PlaceLocation } from '../location.model';
 

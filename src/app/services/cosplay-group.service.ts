@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { CosplayGroup } from './cosplay-group.model';
-import { Cosplay } from '../cosplay.model';
+import { CosplayGroup } from '../main/cosplays/cosplay-groups/cosplay-group.model';
+import { Cosplay } from '../main/cosplays/cosplay.model';
 import { CharacterMember } from 'src/app/models/characterMember.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { take, map, delay, tap, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { PlaceLocation } from './location.model';
+import { PlaceLocation } from '../main/cosplays/cosplay-groups/location.model';
 import { stringify } from 'querystring';
 import { User } from 'src/app/models/user.model';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreCollectionGroup } from '@angular/fire/compat/firestore';

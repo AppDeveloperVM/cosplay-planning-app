@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, of } from 'rxjs';
-import { Planning } from './planning.model';
+import { Planning } from '../main/planning/planning.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { switchMap, take, tap, map } from 'rxjs/operators';
-import { PlaceLocation } from '../cosplays/cosplay-groups/location.model';
+import { PlaceLocation } from '../main/cosplays/cosplay-groups/location.model';
 
 interface PlanningData {
   title: string;

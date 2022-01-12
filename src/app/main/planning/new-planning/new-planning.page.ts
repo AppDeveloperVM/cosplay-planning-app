@@ -4,7 +4,7 @@ import { LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { PlaceLocation } from '../../cosplays/cosplay-groups/location.model';
-import { PlanningService } from '../planning.service';
+import { PlanningService } from '../../../services/planning.service';
 
 function base64toBlob(base64Data, contentType) {
   contentType = contentType || '';

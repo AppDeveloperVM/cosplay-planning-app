@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CosplaysService } from '../../cosplays.service';
+import { CosplaysService } from '../../../../services/cosplays.service';
 import { NavController, LoadingController, AlertController } from '@ionic/angular';
 import { Cosplay } from '../../cosplay.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
