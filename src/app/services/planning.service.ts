@@ -7,6 +7,7 @@ import { switchMap, take, tap, map } from 'rxjs/operators';
 import { PlaceLocation } from '../main/cosplays/cosplay-groups/location.model';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { PlanningInterface } from '../models/planning.interface';
 
 interface PlanningData {
   title: string;
@@ -74,11 +75,19 @@ export class PlanningService {
   );
   }
 
-  //getCity
-  /*
-  https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452
-  &location_type=ROOFTOP&result_type=street_address&key=YOUR_API_KEY
-  */
+  onSavePlanning(planning: PlanningInterface, planningId: string): Promise<void> {
+    return new Promise( async (resolve, reject) => {
+        try {
+            const id = planningId || this.afs.createId();
+            const data = {id, ...planning};
+            const result = await this.planningsCollection.doc(id).set(data);
+            resolve(result);
+        } catch (err) {
+            reject(err.message)
+        }
+    })
+  }
+
 
   fetchPlannings() {
     return this.http
