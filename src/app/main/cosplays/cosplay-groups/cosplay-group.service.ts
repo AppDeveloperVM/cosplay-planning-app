@@ -3,12 +3,13 @@ import { CosplayGroup } from './cosplay-group.model';
 import { Cosplay } from '../cosplay.model';
 import { CharacterMember } from 'src/app/models/characterMember.model';
 import { AuthService } from 'src/app/services/auth.service';
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { take, map, delay, tap, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { PlaceLocation } from './location.model';
 import { stringify } from 'querystring';
 import { User } from 'src/app/models/user.model';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreCollectionGroup } from '@angular/fire/compat/firestore';
 
 
 interface CosplayGroupData {
@@ -56,7 +57,48 @@ export class CosplayGroupService {
     public cosplayGroup = CosplayGroup;
     cosplayGroupMembers:any[]=[];
 
-    constructor( private authService: AuthService, private http: HttpClient ) {}
+    cosGroups: Observable<CosplayGroupData[]>;
+
+    private cosgroupsCollection: AngularFirestoreCollection<CosplayGroupData>;
+
+    constructor( 
+        private authService: AuthService,
+        private http: HttpClient,private readonly afs: AngularFirestore
+    ) {
+        this.cosgroupsCollection = afs.collection<CosplayGroupData>('cosplay-groups');
+        this.getcosGroups();
+        console.log("cosGroups: "+this.cosGroups);
+    }
+
+    private getcosGroups(): void {
+        this.cosGroups = this.cosgroupsCollection.snapshotChanges().pipe(
+            map( actions => actions.map( a => a.payload.doc.data() as CosplayGroupData))
+        )
+    }
+
+    onSaveCosGroup(cosGroup: CosplayGroupData, cosGroupId: string): Promise<void> {
+        return new Promise( async (resolve, reject) => {
+            try {
+                const id = cosGroupId || this.afs.createId();
+                const data = {id, ... cosGroup};
+                const result = await this.cosgroupsCollection.doc(id).set(data);
+                resolve(result);
+            } catch (err) {
+                reject(err.message)
+            }
+        })
+    }
+
+    onDeleteCosGroup(cosGroupId: string): Promise<void> {
+        return new Promise (async (resolve, reject) => {
+            try {
+                const result = this.cosgroupsCollection.doc(cosGroupId).delete();
+                resolve(result);
+            } catch(err){
+                reject(err.message)
+            }
+        })
+    }
 
     getCosplayGroup(id: string) {
         return this.http.get<CosplayGroupData>(
