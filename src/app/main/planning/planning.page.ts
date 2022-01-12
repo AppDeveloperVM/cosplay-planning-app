@@ -12,6 +12,8 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./planning.page.scss'],
 })
 export class PlanningPage implements OnInit, OnDestroy {
+  plannings$ = this.planningService.planningsObs;
+
   loadedPlannings: Planning[];
   isLoading = false;
   listedLoadedPlannings: Planning[];

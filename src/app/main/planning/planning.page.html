@@ -11,13 +11,14 @@
       size-md="6"
       offset-md="3"
       text-center
-      *ngIf="!isLoading && ( !relevantPlannings || relevantPlannings.length <= 0 )">
-        <p text-center>No cosplay Groups found!</p>
+      *ngIf="!isLoading ">
+        <p text-center>No plannings found! Please create one first</p>
+        <ion-button routerLink="/main/tabs/planning/new-planning">New Planning</ion-button>
       </ion-col>
 
       <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center" 
-      *ngIf="!isLoading && relevantPlannings && relevantPlannings.length > 0">
-        <ion-list *ngFor="let planningitem of relevantPlannings" >
+      *ngIf="!isLoading ">
+        <ion-list *ngFor="let planningitem of planings$ | async" >
           <app-planning-item [planning]="planningitem"></app-planning-item>
         </ion-list>
       </ion-col>
