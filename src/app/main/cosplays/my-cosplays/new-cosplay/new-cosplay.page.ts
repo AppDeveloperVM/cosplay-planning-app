@@ -5,6 +5,7 @@ import { Cosplay } from '../../cosplay.model';
 import { CosplaysService } from '../../../../services/cosplays.service';
 import { Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
+import { FirebaseStorageService } from 'src/app/services/firebase-storage.service';
 
 function base64toBlob(base64Data, contentType) {
   contentType = contentType || '';
@@ -33,17 +34,25 @@ function base64toBlob(base64Data, contentType) {
   styleUrls: ['./new-cosplay.page.scss'],
 })
 export class NewCosplayPage implements OnInit {
-
   form: FormGroup;
   @ViewChild('createForm', { static: false }) createForm: FormGroupDirective;
+
+  cosplay: Cosplay;
+  imgReference;
+  public URLPublica = '';
 
   constructor(
     private modalController: ModalController,
     private cosplaysService: CosplaysService,
     private router: Router,
     private loadingCtrl: LoadingController,
-    private alertCtrl: AlertController
-  ) { }
+    private alertCtrl: AlertController,
+    private fbss: FirebaseStorageService,
+  ) {
+    const navigation = this.router.getCurrentNavigation();
+    //this.cosGroup = navigation?.extras?.state?.value;
+
+  }
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -54,8 +63,7 @@ export class NewCosplayPage implements OnInit {
     });
   }
 
-  onImagePicked(imageData: string | File) {
-    //image must be jpeg
+  async onImagePicked(imageData: string | File) {
     let imageFile;
     if (typeof imageData === 'string') {
       try {
@@ -64,26 +72,39 @@ export class NewCosplayPage implements OnInit {
           'image/jpeg');
       } catch (error) {
         console.log(error);
-
-        this.alertCtrl
-        .create({
-          header: 'An error ocurred!',
-          message: 'The image does not appear to be jpeg',
-          buttons: [{
-            text: 'Okay',
-            
-          }]
-        }).then(alertEl => {
-          alertEl.present();
-        });
-      
-
         return;
       }
     } else {
       imageFile = imageData;
     }
-    this.form.patchValue({image: imageFile});// this line disables button for picking
+    //this.form.patchValue({image: imageFile});
+    //UPLOAD IMAGE
+    const imageName = "images/"+Math.random()+imageFile;
+    const datos = imageFile;
+
+    let tarea = await this.fbss.tareaCloudStorage(imageName,datos).then((r) => {
+
+      this.form.patchValue({ image: '' });
+    })
+  }
+
+  onSubmitCosplay() {
+    if (!this.form.valid) return
+
+    this.loadingCtrl
+    .create({
+      message: 'Creating Cosplay ...'
+    })
+    .then(loadingEl => {
+      loadingEl.present();
+      const cosplay = this.form.value;
+      const cosplayId = this.cosplay?.id || null;
+      this.cosplaysService.onSaveCosplay(cosplay, cosplayId)
+
+      loadingEl.dismiss();
+      this.form.reset();
+      this.router.navigate(['main/tabs/cosplays/my-cosplays']);
+    });
   }
 
   onCreateCosplay() {
