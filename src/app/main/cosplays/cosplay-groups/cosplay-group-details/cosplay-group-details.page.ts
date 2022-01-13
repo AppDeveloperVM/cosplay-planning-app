@@ -20,7 +20,7 @@ import { CosgroupEditModalComponent } from 'src/app/shared/cosgroup-edit-modal/c
   styleUrls: ['./cosplay-group-details.page.scss'],
 })
 export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
-  cosplayGroup: CosplayGroup;
+  //cosplayGroup: CosplayGroup;
   newCosplayGroup: CosplayGroup;
   cosplay: Cosplay;
   placesData = [];
@@ -30,21 +30,26 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
   cosplayGroupMembers:any[]=[];
 
   arreglo1 = [10, 20, 30, 40, 50];
+  cosplayGroup = null;
 
   constructor(
     private navCtrl: NavController,
     private route: ActivatedRoute,
+    private router: Router,
     private cosplayGroupService: CosplayGroupService,
     private placeDataService: PlaceDataService,
     private modalCtrl: ModalController,
-    private router: Router,
     private alertCtrl: AlertController
-  ) { }
+  ) {
+    const navigation = this.router.getCurrentNavigation();
+    if(navigation.extras.state == undefined) { this.router.navigate(['main/tabs/cosplays/cosplay-groups']); }
+    this.cosplayGroup = navigation?.extras?.state.value;
+  }
 
   ngOnInit() {
     //this.fetchPlacesData();
 
-    this.route.paramMap.subscribe(paramMap => {
+    /*this.route.paramMap.subscribe(paramMap => {
       if (!paramMap.has('cosplayGroupId')) {
         this.navCtrl.navigateBack('/main/tabs/cosplays/cosplay-groups');
         console.log('cant get cosplaygroupId');
@@ -87,7 +92,7 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
       });
       
 
-    });
+    });*/
   }
 
   ionViewWillEnter() {
