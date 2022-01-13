@@ -44,6 +44,9 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
     const navigation = this.router.getCurrentNavigation();
     if(navigation.extras.state == undefined) { this.router.navigate(['main/tabs/cosplays/cosplay-groups']); }
     this.cosplayGroup = navigation?.extras?.state.value;
+
+    this.placesData.push(this.cosplayGroup.location);
+    console.log("location: "+this.cosplayGroup.location);
   }
 
   ngOnInit() {
