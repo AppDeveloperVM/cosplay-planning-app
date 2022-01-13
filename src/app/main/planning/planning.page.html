@@ -4,12 +4,14 @@
 <ion-content>
   <ion-grid>
     <ion-row>
-      <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center" *ngIf="isLoading">
+      <ion-col size="12" size-md="6" offset-md="3" class="ion-text-center" *ngIf="isLoading">
         <ion-spinner color="primary"></ion-spinner>
       </ion-col>
       <ion-col
       size-md="6"
       offset-md="3"
+      size-sm="6"
+      offset-sm="3"
       text-center
       *ngIf=" plannings$ | async as data">
       <div *ngIf="!isLoading && data.length == 0">
@@ -18,7 +20,7 @@
       </div>
       </ion-col>
 
-      <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center" 
+      <ion-col size="12" size-md="6" offset-md="3" class="ion-text-center" 
       *ngIf="!isLoading">
         <ion-list *ngFor="let planningitem of plannings$ | async" >
           <app-planning-item [planning]="planningitem"></app-planning-item>
