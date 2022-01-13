@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CosplayGroup } from '../cosplay-group.model';
 import { CosplayGroupService } from '../../../../services/cosplay-group.service';
 import { Router } from '@angular/router';
-import { PlaceLocation } from '../location.model';
+import { PlaceLocation } from '../../../../models/location.model';
 import { switchMap } from 'rxjs/operators';
 import { LoadingController } from '@ionic/angular';
 import { CosGroup } from 'src/app/models/cosGroup.interface';

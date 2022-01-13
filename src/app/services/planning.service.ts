@@ -4,7 +4,7 @@ import { Planning } from '../main/planning/planning.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { switchMap, take, tap, map } from 'rxjs/operators';
-import { PlaceLocation } from '../main/cosplays/cosplay-groups/location.model';
+import { PlaceLocation } from '../models/location.model';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { PlanningInterface } from '../models/planning.interface';

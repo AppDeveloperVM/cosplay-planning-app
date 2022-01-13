@@ -1,4 +1,4 @@
-import { PlaceLocation } from '../cosplays/cosplay-groups/location.model';
+import { PlaceLocation } from '../../models/location.model';
 
 export class Planning {
   constructor(

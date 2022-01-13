@@ -6,7 +6,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { take, map, delay, tap, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { PlaceLocation } from '../main/cosplays/cosplay-groups/location.model';
+import { PlaceLocation } from '../models/location.model';
 import { stringify } from 'querystring';
 import { User } from 'src/app/models/user.model';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreCollectionGroup } from '@angular/fire/compat/firestore';

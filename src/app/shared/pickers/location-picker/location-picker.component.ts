@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { MapModalLeafletComponent } from '../../map-modal-leaflet/map-modal-leaflet.component';
 import { map, switchMap } from 'rxjs/operators';
-import { PlaceLocation, Coordinates } from '../../../main/cosplays/cosplay-groups/location.model';
+import { PlaceLocation, Coordinates } from '../../../models/location.model';
 import { Observable, of } from 'rxjs';
 import { Plugins, Capacitor } from '@capacitor/core';
 import * as L from "leaflet";

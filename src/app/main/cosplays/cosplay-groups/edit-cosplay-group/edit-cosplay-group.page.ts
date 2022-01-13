@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CosplayGroupService } from '../../../../services/cosplay-group.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { switchMap } from 'rxjs/operators';
-import { PlaceLocation } from '../location.model';
+import { PlaceLocation } from '../../../../models/location.model';
 
 function base64toBlob(base64Data, contentType) {
   contentType = contentType || '';
