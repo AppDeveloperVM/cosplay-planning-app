@@ -72,12 +72,6 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
       attribution: 'edupala.com'
     }).addTo(this.map);
 
-    /*
-    vector.vectorTileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
-      apiKey: this.apiKey
-    }).addTo(this.map);
-    */
-
     //Custom icon
     var customIcon = L.icon({
       iconUrl: 'marker-icon.png',

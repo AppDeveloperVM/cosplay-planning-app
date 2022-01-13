@@ -71,8 +71,7 @@ export class PlanningService {
             this.authService.userId
         );
       })
-
-  );
+    );
   }
 
   onSavePlanning(planning: PlanningInterface, planningId: string): Promise<void> {
@@ -121,9 +120,7 @@ export class PlanningService {
     })
     );
   }
-
-
-
+  
   uploadImage(image: File) {
     const uploadData = new FormData();
     uploadData.append('image', image);
@@ -171,7 +168,7 @@ export class PlanningService {
             this._plannings.next(plannings.concat(newPlanning));
         }));
 
-    }
+  }
 
   updatePlanning(
       planningId: string,
