@@ -10,6 +10,8 @@ import { Plugins, Capacitor } from '@capacitor/core';
 import * as L from "leaflet";
 import * as ELG from "esri-leaflet-geocoder";
 
+import { AddressData } from 'src/app/models/addressData.model'
+
 @Component({
   selector: 'app-location-picker',
   templateUrl: './location-picker.component.html',
@@ -117,6 +119,8 @@ export class LocationPickerComponent implements OnInit {
   private createPlace(latlng: any) {
     console.log("coords: lat:"+latlng.lat+"lng: "+latlng.lng);
 
+    //const addressInfo
+
     const pickedLocation: PlaceLocation = {
       lat: latlng.lat,
       lng: latlng.lng,
@@ -124,9 +128,17 @@ export class LocationPickerComponent implements OnInit {
       staticMapImageUrl: null
     };
 
+    const addressInfo : AddressData = {
+      full_address: null,
+      road: null,
+      country: null,
+      state: null,
+      postal_code: null
+    }
+
     this.isLoading = true;
 
-    let addressData;
+    let fullAddress;
     var KEY = 'hmAnp6GU6CtArMcnLn38nJS0Sb1orh9Q';
     const reversegeocodeurl = `https://open.mapquestapi.com/nominatim/v1/reverse.php?key=${KEY}&format=json&lat=${latlng.lat}&lon=${latlng.lng}`;
  
@@ -138,9 +150,14 @@ export class LocationPickerComponent implements OnInit {
       const road = this.streetData['address']['road'] != undefined ? this.streetData['address']['road'] : '-';
       const county = this.streetData['address']['county'] != undefined ? this.streetData['address']['county'] : '-';
       const state = this.streetData['address']['state'] != undefined ? this.streetData['address']['state'] : '-';
-      addressData = road + " , " + county + " , " +state;
-      console.log(addressData);
-      pickedLocation.address = addressData;
+      fullAddress = road + " , " + county + " , " +state;
+      console.log(fullAddress);
+      //Address Data
+      addressInfo.full_address = fullAddress;
+      addressInfo.road = road;
+      addressInfo.state = state;
+      addressInfo.country = county;
+      pickedLocation.address = addressInfo;
     });
 
     const staticMapImageUrl = this.getMapImage(pickedLocation.lat, pickedLocation.lng, 14)
