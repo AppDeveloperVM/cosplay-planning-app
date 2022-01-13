@@ -20,25 +20,30 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
   isLoading = false;
   private cosplaySub: Subscription;
   default: string = "elements"; // default segment
+
   //array para los tipos de segment y sus datos
   tasks_segment: string = "tasks"; 
   tasks: any = [{name : "Coser traje de tienda china",image: "photo",type:"buy"},{name : "Imprimar goma Eva",type:"make"},{name : "Planear piezas collar",type:"make"}];
   cosElements: any = [{name : "Hat",image: "photo",type:"buy",store:"amazon.es",store_url:"amazon.es"},{name : "Suit",type:"buy",store:"la tienda de la pepa"},{name : "Shoes",type:"make"}];
   toBuy: boolean;
 
-
   // seria necesario ordenar los arrays por 'a comprar' y 'a hacer'
-
   constructor(
     private router: Router,
-    private navCtrl: NavController,
     private route: ActivatedRoute,
+    private navCtrl: NavController,
     private cosplaysService: CosplaysService,
     private alertCtrl: AlertController,
     private modalCtrl: ModalController
-  ) { }
+  ) {
+    const navigation = this.router.getCurrentNavigation();
+    if(navigation.extras.state == undefined) { this.router.navigate(['main/tabs/cosplays/my-cosplays']); }
+    this.cosplay = navigation?.extras?.state.value;
+  }
 
   ngOnInit() {
+
+    /*
     this.route.paramMap.subscribe(paramMap => {
       if (!paramMap.has('cosplayId')) {
         this.navCtrl.navigateBack('/main/tabs/cosplays/my-cosplays');
@@ -71,14 +76,10 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
       //check buy lists for header
       this.toBuyList();
     });
-
-    
+    */
+  
   }
 
-  onEditCosplay() {
-    // this.router.navigateByUrl('/main/tabs/cosplays/my-cosplays');
-    this.navCtrl.navigateBack('/main/tabs/cosplays/my-cosplays');
-  }
 
   toBuyList() {
     for (let i = 0; i < this.tasks.length; i++) {

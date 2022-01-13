@@ -128,7 +128,7 @@ export class LocationPickerComponent implements OnInit {
 
     let addressData;
     var KEY = 'hmAnp6GU6CtArMcnLn38nJS0Sb1orh9Q';
-    const reversegeocodeurl = `http://open.mapquestapi.com/nominatim/v1/reverse.php?key=${KEY}&format=json&lat=${latlng.lat}&lon=${latlng.lng}`;
+    const reversegeocodeurl = `https://open.mapquestapi.com/nominatim/v1/reverse.php?key=${KEY}&format=json&lat=${latlng.lat}&lon=${latlng.lng}`;
  
     this.streetObserv = this.httpClient.get(reversegeocodeurl);
     this.streetObserv

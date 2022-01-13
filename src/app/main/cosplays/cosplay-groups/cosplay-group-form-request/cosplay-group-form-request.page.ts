@@ -30,6 +30,8 @@ export class CosplayGroupFormRequestPage implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+
+    /*
     this.route.paramMap.subscribe(paramMap => {
       if (!paramMap.has('cosplayGroupId')) {
         this.navCtrl.navigateBack('/main/tabs/cosplays/cosplay-groups');
@@ -44,6 +46,7 @@ export class CosplayGroupFormRequestPage implements OnInit, OnDestroy {
       });
       
     });
+    */
   }
 
   onSubmit(form: NgForm) {
@@ -65,11 +68,11 @@ export class CosplayGroupFormRequestPage implements OnInit, OnDestroy {
     this.modalCtrl
     .create(
       {
-      component: CosplayGroupSendRequestComponent,
-      componentProps: {
-        selectedCosplayGroup: this.cosplayGroup,
-        requestedCharacter: this.loadedCosplayRequest // ?
-      }
+        component: CosplayGroupSendRequestComponent,
+          componentProps: {
+            selectedCosplayGroup: this.cosplayGroup,
+            requestedCharacter: this.loadedCosplayRequest // ?
+          }
       }
     ).then(modalEl => {
       modalEl.present();

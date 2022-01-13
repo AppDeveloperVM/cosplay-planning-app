@@ -4,17 +4,19 @@ import { CosplayGroupService } from '../../../services/cosplay-group.service';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { NoticesService } from 'src/app/services/notices.service';
+import { NavigationExtras, Router } from '@angular/router';
 
 @Component(
   {
   selector: 'app-cosplay-groups',
   templateUrl: './cosplay-groups.page.html',
   styleUrls: ['./cosplay-groups.page.scss'],
-}
+  }
 )
 
 export class CosplayGroupsPage implements OnInit, OnDestroy {
   cosGroups$ = this.cosplaygroupService.cosGroups;
+
 
   cosplaygroups: CosplayGroup[];
   private cosplayGroupsSub: Subscription;
@@ -31,9 +33,10 @@ export class CosplayGroupsPage implements OnInit, OnDestroy {
   isLoading = false;
 
   constructor(
+    private router: Router,
     private cosplaygroupService: CosplayGroupService,
     private authService: AuthService,
-    private noticesService: NoticesService
+    private noticesService: NoticesService,
   ) {
     
   }

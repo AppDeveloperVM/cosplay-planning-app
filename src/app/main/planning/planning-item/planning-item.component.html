@@ -1,4 +1,4 @@
-<ion-item [routerLink]="['/', 'main', 'tabs' , 'planning', planning.id ]"
+<ion-item (click)="onGoToSee(planning)"
 detail>
     <ion-thumbnail slot="start">
       <ion-img [src]="planning.imageUrl"></ion-img>

@@ -65,7 +65,7 @@ export class NewCosplayGroupPage implements OnInit {
     private uploadService: UploadImageService
   ) {
     const navigation = this.router.getCurrentNavigation();
-    this.cosGroup = navigation?.extras?.state?.value;
+    //this.cosGroup = navigation?.extras?.state?.value;
   }
 
   ngOnInit() {

@@ -10,6 +10,16 @@ import { MapModalLeafletComponent } from 'src/app/shared/map-modal-leaflet/map-m
 
 import { NgForm } from '@angular/forms';
 import { PlaceDataService } from 'src/app/services/place-data.service';
+import { Coordinates } from '../location.model';
+
+interface PlaceLocation extends Coordinates {
+  placeId: string;
+  name: string;
+  lat: number;
+  lng: number;
+  address: string;  
+  staticMapImageUrl: string;
+}
 
 @Component({
   selector: 'app-planning-detail',
@@ -24,6 +34,8 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
   isLoading = false;
   private planningSub: Subscription;
 
+  
+
   constructor(
     private modalCtrl: ModalController,
     private alertCtrl: AlertController,
@@ -33,12 +45,17 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
     private planningService: PlanningService,
     private placeDataService: PlaceDataService
   ) {
+    const navigation = this.router.getCurrentNavigation();
+    if(navigation.extras.state == undefined) { this.router.navigate(['main/tabs/planning']); }
+    this.planning = navigation?.extras?.state.value;
 
+    this.placesData.push(this.planning.location);
+    console.log("location: "+this.planning.location);
    }
 
   ngOnInit() {
 
-      this.route.paramMap.subscribe(paramMap => {
+      /*this.route.paramMap.subscribe(paramMap => {
         if (!paramMap.has('planningId')) {
           this.navCtrl.navigateBack('/planning');
           console.log('cant get planningId');
@@ -85,6 +102,7 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
         });
 
       });
+      */
   }
 
   ionViewWillEnter() {

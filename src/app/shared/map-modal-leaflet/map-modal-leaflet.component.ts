@@ -68,7 +68,7 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
 
     this.map = new L.Map('mapId', mapOptions);
 
-    L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
       attribution: 'edupala.com'
     }).addTo(this.map);
 

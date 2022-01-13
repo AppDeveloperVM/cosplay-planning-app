@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Cosplay } from '../main/cosplays/cosplay.model';
 import { AuthService } from 'src/app/services/auth.service';
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { take, map, tap, delay, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-
+//Firebase 
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreCollectionGroup } from '@angular/fire/compat/firestore';
 
 /*
 new Cosplay('c1', 'Samatoki', 'MTC rapper', 'https://pbs.twimg.com/media/DluGJLAUYAEdcIT?format=jpg&name=small', 'Hypmic', 0, '0', true,'user1'),
@@ -28,7 +29,6 @@ interface CosplayData {
 })
 export class CosplaysService {
   private _cosplays = new BehaviorSubject<Cosplay[]>([]);
-
   private _cosplay_character_requested: Cosplay[] = [
   ];
 
@@ -36,7 +36,40 @@ export class CosplaysService {
     return this._cosplays.asObservable();
   }
 
-  constructor(private authService: AuthService, private http: HttpClient) { }
+  //Collections
+  cosplaysObsv: Observable<CosplayData[]>;
+  private cosplaysCollection: AngularFirestoreCollection<CosplayData>;
+
+
+  constructor(
+    private authService: AuthService,
+    private http: HttpClient,
+    private readonly afs: AngularFirestore
+
+  ) {
+      this.cosplaysCollection = afs.collection<CosplayData>('cosplays');
+      this.getCosplays();
+      console.log("cosGroups: "+this.cosplaysObsv);
+  }
+
+  private getCosplays(): void {
+    this.cosplaysObsv = this.cosplaysCollection.snapshotChanges().pipe(
+        map( actions => actions.map( a => a.payload.doc.data() as CosplayData))
+    )
+  }
+
+  onSaveCosplay(cosplay: CosplayData, cosplayId: string): Promise<void> {
+    return new Promise( async (resolve, reject) => {
+        try {
+            const id = cosplayId || this.afs.createId();
+            const data = {id, ... cosplay};
+            const result = await this.cosplaysCollection.doc(id).set(data);
+            resolve(result);
+        } catch (err) {
+            reject(err.message)
+        }
+    })
+}
 
   fetchCosplays() {
     return this.http

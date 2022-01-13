@@ -57,14 +57,15 @@ export class CosplayGroupService {
     public cosplayGroup = CosplayGroup;
     cosplayGroupMembers:any[]=[];
 
+    //Collections
     cosGroups: Observable<CosplayGroupData[]>;
-
     private cosgroupsCollection: AngularFirestoreCollection<CosplayGroupData>;
     private cosgroupCollection: AngularFirestoreCollection<CosplayGroupData>;
 
     constructor( 
         private authService: AuthService,
-        private http: HttpClient,private readonly afs: AngularFirestore
+        private http: HttpClient,
+        private readonly afs: AngularFirestore
     ) {
         this.cosgroupsCollection = afs.collection<CosplayGroupData>('cosplay-groups');
         this.getcosGroups();
