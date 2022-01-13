@@ -3,7 +3,7 @@ import { FormGroup, FormGroupDirective, FormControl, Validators } from '@angular
 import { LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
-import { PlaceLocation } from '../../cosplays/cosplay-groups/location.model';
+import { PlaceLocation } from '../../../models/location.model';
 import { PlanningService } from '../../../services/planning.service';
 //FireBase
 import { AngularFireStorage } from '@angular/fire/compat/storage';

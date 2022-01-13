@@ -1,4 +1,4 @@
-import { Coordinates } from "./location.model";
+import { Coordinates } from "../../models/location.model";
 
 export class Place {
   constructor(

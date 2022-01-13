@@ -10,7 +10,7 @@ import { MapModalLeafletComponent } from 'src/app/shared/map-modal-leaflet/map-m
 
 import { NgForm } from '@angular/forms';
 import { PlaceDataService } from 'src/app/services/place-data.service';
-import { Coordinates } from '../location.model';
+import { Coordinates } from '../../../models/location.model';
 
 interface PlaceLocation extends Coordinates {
   placeId: string;

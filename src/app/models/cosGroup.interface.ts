@@ -1,4 +1,4 @@
-import { PlaceLocation } from "../main/planning/location.model";
+import { PlaceLocation } from "./location.model";
 
 export interface CosGroup {
     id?: string,

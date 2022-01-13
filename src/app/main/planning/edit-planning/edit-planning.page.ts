@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NavController, ModalController, LoadingController, AlertController } from '@ionic/angular';
 import { PlanningService } from '../../../services/planning.service';
 import { switchMap } from 'rxjs/operators';
-import { PlaceLocation } from '../location.model';
+import { PlaceLocation } from '../../../models/location.model';
 
 function base64toBlob(base64Data, contentType) {
   contentType = contentType || '';
