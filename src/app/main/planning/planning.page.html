@@ -11,13 +11,15 @@
       size-md="6"
       offset-md="3"
       text-center
-      *ngIf="!isLoading ">
-        <p text-center>No plannings found! Please create one first</p>
+      *ngIf=" plannings$ | async as data">
+      <div *ngIf="!isLoading && data.length == 0">
+        <p text-center >No plannings found! Please create one first</p>
         <ion-button routerLink="/main/tabs/planning/new-planning">New Planning</ion-button>
+      </div>
       </ion-col>
 
       <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center" 
-      *ngIf="!isLoading ">
+      *ngIf="!isLoading">
         <ion-list *ngFor="let planningitem of plannings$ | async" >
           <app-planning-item [planning]="planningitem"></app-planning-item>
         </ion-list>
