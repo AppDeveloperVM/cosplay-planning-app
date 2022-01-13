@@ -16,6 +16,8 @@ import { NoticesService } from 'src/app/services/notices.service';
   styleUrls: ['./my-cosplays.page.scss'],
 })
 export class MyCosplaysPage implements OnInit, OnDestroy {
+  cosplays$ = this.cosplaysService.cosplaysObsv;
+  
   loadedCosplays: Cosplay[];
   isLoading = false;
   listedLoadedCosplays: Cosplay[];
