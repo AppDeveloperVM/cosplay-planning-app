@@ -1,4 +1,4 @@
-<ion-item [routerLink]="['/','main','tabs','cosplays','cosplay-groups', cosplaygroup.id ]"
+<ion-item (click)="onGoToSee(cosplaygroup)"
 detail>
     <ion-thumbnail slot="start">
       <ion-img [src]="imgSrc"></ion-img>
