@@ -7,7 +7,7 @@ detail>
       <h1>{{ planning.title }}</h1>
       <div class="planning-details">
         <ion-icon name="location" color="secondary"></ion-icon>
-        <span class="place space-left space-right">{{ planning.location['address']}}</span>
+        <span class="place space-left space-right">{{ planning.location.address.state}}</span>
         <ion-icon name="calendar" color="secondary"></ion-icon>
         <ion-text  class="space-left">{{ planning.startsAt | date }}</ion-text>
         <span class="space-left">to</span>
