@@ -20,12 +20,12 @@
   <ion-grid *ngIf="!isLoading">
     <ion-row>
       <ion-col size-sm="6" offset-sm="3" padding text-center>
-        <p>{{ planning.places['address'] }}</p>
+        <p>{{ planning.location.address }}</p>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col size-sm="6" offset-sm="3" no-padding>
-        <ion-img role="button" (click)="onShowFullMap()" class="location-image" [src]="planning.places['staticMapImageUrl']"></ion-img>
+        <ion-img role="button" (click)="onShowFullMap()" class="location-image" [src]="planning.location.staticMapImageUrl"></ion-img>
       </ion-col>
     </ion-row>
   </ion-grid>
