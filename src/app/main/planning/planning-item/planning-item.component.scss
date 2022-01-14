@@ -7,8 +7,13 @@ h1 {
 }
 
 .planning-details {
+    
     display: flex;
     align-items: center;
+
+    ion-icon {
+        flex-shrink: 0;
+    }
 
     .place{
         color: rgba(201, 201, 201, 0.904);
