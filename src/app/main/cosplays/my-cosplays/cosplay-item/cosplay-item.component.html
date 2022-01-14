@@ -3,9 +3,10 @@
   routerDirection="forward"
   detail
 >
-  <ion-thumbnail slot="start">
+  <ion-thumbnail *ngIf="cosplay.imageUrl != null" slot="start">
     <ion-img [src]="cosplay.imageUrl"></ion-img>
   </ion-thumbnail>
+  <ion-icon *ngIf="cosplay.imageUrl == null" slot="start" name="image"></ion-icon>
   <ion-label>
     <h2>{{ cosplay.characterName }}</h2>
     <p>{{ cosplay.series }}</p>
