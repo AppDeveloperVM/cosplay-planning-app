@@ -7,12 +7,12 @@ detail>
       <h1>{{ planning.title }}</h1>
       <div class="planning-details">
         <ion-icon name="location" color="secondary"></ion-icon>
-        <span class="place space-left space-right">{{ planning.location.address.state}}</span>
+        <span class="place space-left space-right truncate">{{ planning.location.address.state}}</span>
         <ion-icon name="calendar" color="secondary"></ion-icon>
-        <ion-text  class="space-left">{{ planning.startsAt | date }}</ion-text>
+        <ion-text  class="space-left">{{ isMobile == false ? ( planning.startsAt | date: 'MMM d' ) : ( planning.startsAt | date ) }}</ion-text>
         <span class="space-left">to</span>
         <ion-icon name="calendar" class="space-left" color="secondary"></ion-icon>
-        <ion-text  class="space-left">{{ planning.endsAt | date }}</ion-text>
+        <ion-text  class="space-left">{{ isMobile == false ? ( planning.endsAt | date: 'MMM d' ) : ( planning.endsAt | date ) }}</ion-text>
       </div>
     </ion-label>
 </ion-item>
