@@ -76,6 +76,9 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
     var customIcon = L.icon({
       iconUrl: 'marker-icon.png',
       iconSize:     [25, 40], // size of the icon
+      iconAnchor: [15, 51], // point of the icon which will correspond to marker's location
+      popupAnchor: [-2 ,-51] // point from which the popup should open relative to the iconAnchor                                 
+
     });
     this.customIcon = customIcon;
 
