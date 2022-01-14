@@ -25,20 +25,16 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    let notif_count = this.noticesService.getNotices().length;
-    console.log(notif_count);
-    if( notif_count <= 0){
-      this.fetchFileData(); // get notifs from file - this.file_notifications
-    }
-
-    this.notifications = this.noticesService.getNotices();
+    this.fetchFileData(); // get notifs from file - this.file_notifications
+    
   }
 
   fetchFileData() {
 
-    fetch('../../assets/data/notifications.json').then(res => res.json())
+    fetch('../../assets/data/notifications.json')
+    .then(res => res.json())
     .then(data => {
-      console.log("Fetching from json..");
+      console.log("Fetching Notifications from json..");
       
         for(var i in data.notifications){
           this.noticesService.addNotice( 
@@ -48,7 +44,8 @@ export class HeaderComponent implements OnInit {
           )
         }
 
-        console.log( this.notifications);
+        let notif_count = this.noticesService.getNotices().length;
+        console.log("Notifications : " + notif_count);
     });
   }
 
