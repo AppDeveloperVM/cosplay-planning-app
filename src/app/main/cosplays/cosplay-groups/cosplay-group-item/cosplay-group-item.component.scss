@@ -10,6 +10,17 @@ h1 {
     display: flex;
     align-items: center;
 
+    ion-icon {
+        flex-shrink: 0;
+    }
+
+    .truncate {
+        width: 110px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
     .place{
         color: rgba(201, 201, 201, 0.904);
         

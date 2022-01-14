@@ -3,6 +3,8 @@ import { CosplayGroup } from '../cosplay-group.model';
 import { UploadImageService } from 'src/app/services/upload-img.service';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { NavigationExtras, Router } from '@angular/router';
+import { Platform } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-cosplay-group-item',
@@ -12,6 +14,7 @@ import { NavigationExtras, Router } from '@angular/router';
 export class CosplayGroupItemComponent implements OnInit, AfterViewInit {
   @Input() cosplaygroup: CosplayGroup;
   public imgSrc: any;
+  isMobile: boolean;
 
   navigationExtras: NavigationExtras = {
     state : {
@@ -22,13 +25,19 @@ export class CosplayGroupItemComponent implements OnInit, AfterViewInit {
   constructor(
     private st: AngularFireStorage,
     private uploadService: UploadImageService,
-    private router: Router
+    private router: Router,
+    private platform: Platform
   ) {
     
   }
 
   ngOnInit() {
     console.log(this.cosplaygroup);
+    this.checkPlatform();
+  }
+
+  checkPlatform() {
+    this.isMobile = this.platform.is('mobile');
   }
 
   ngAfterViewInit() {

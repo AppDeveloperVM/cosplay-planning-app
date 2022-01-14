@@ -7,12 +7,12 @@ detail>
       <h1>{{ cosplaygroup.title }}</h1>
       <div class="cosplaygroup-details">
         <ion-icon name="location" color="secondary"></ion-icon>
-        <span class="place space-left space-right">{{ cosplaygroup.place }}</span>
+        <span class="place space-left space-right truncate">{{ cosplaygroup.place }}</span>
         <ion-icon name="calendar" color="secondary"></ion-icon>
-        <ion-text  class="space-left">{{ cosplaygroup.dateFrom | date }}</ion-text>
+        <ion-text  class="space-left">{{ isMobile == false ? (  cosplaygroup.dateFrom | date: 'MMM d' ) : (  cosplaygroup.dateFrom | date ) }}</ion-text>
         <span class="space-left">to</span>
         <ion-icon name="calendar" class="space-left" color="secondary"></ion-icon>
-        <ion-text  class="space-left">{{ cosplaygroup.dateTo | date }}</ion-text>
+        <ion-text  class="space-left">{{ isMobile == false ? ( cosplaygroup.dateTo | date: 'MMM d' ) : ( cosplaygroup.dateTo | date ) }}</ion-text>
       </div>
     </ion-label>
 </ion-item>
