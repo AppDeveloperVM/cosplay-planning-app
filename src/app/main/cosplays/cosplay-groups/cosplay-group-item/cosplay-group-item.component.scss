@@ -20,10 +20,17 @@ h1 {
         overflow: hidden;
         text-overflow: ellipsis;
     }
-
+    
     .place{
         color: rgba(201, 201, 201, 0.904);
         
+    }
+
+    .dates {
+        width:170px;
+        margin-left: auto; 
+        margin-right: 0;
+        text-align: right;
     }
 
     .space-left{
@@ -32,6 +39,10 @@ h1 {
     
     .space-right{
         margin-right: 20px;
+    }
+
+    .days-long{
+        margin-left: 10px;
     }
 
     ion-text {
