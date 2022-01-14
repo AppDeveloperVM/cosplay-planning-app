@@ -26,7 +26,11 @@ import { MapModalLeafletComponent } from './shared/map-modal-leaflet/map-modal-l
 
 
 @NgModule({
-  declarations: [AppComponent, CosplayGroupSendRequestComponent,MapModalLeafletComponent],
+  declarations: [
+    AppComponent, 
+    CosplayGroupSendRequestComponent,
+    MapModalLeafletComponent,
+  ],
   entryComponents: [CosplayGroupSendRequestComponent,PopinfoComponent],
   imports: [
     BrowserModule,
