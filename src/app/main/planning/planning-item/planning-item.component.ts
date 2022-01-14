@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
+import { Platform } from '@ionic/angular';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { Planning } from '../planning.model';
 
 @Component({
@@ -10,6 +12,7 @@ import { Planning } from '../planning.model';
 export class PlanningItemComponent implements OnInit {
   @Input() planning: Planning;
   public imgSrc: any;
+  isMobile: boolean;
 
   navigationExtras: NavigationExtras = {
     state : {
@@ -18,11 +21,17 @@ export class PlanningItemComponent implements OnInit {
   }
 
   constructor(
-    private router: Router
+    private router: Router, 
+    private platform: Platform
   ) { }
 
   ngOnInit() {
     //console.log(this.planning);
+    this.checkPlatform();
+  }
+
+  checkPlatform() {
+    this.isMobile = this.platform.is('mobile');
   }
 
   onGoToSee(item: any): void {
