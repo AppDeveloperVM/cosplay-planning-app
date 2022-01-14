@@ -55,7 +55,7 @@
         
           <ion-button color="primary" margin 
           routerDirection="forward"
-          [routerLink]="['/', 'main', 'tabs', 'cosplays', 'cosplay-groups' ,'cosplay-group-form-request', cosplayGroup.id ]" 
+          (click)="onGoToRequestForm(cosplayGroup)"
           expand="block"
           >
           Make Request

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ModalController, NavController, ToastController, AlertController } from '@ionic/angular';
 import { CosplayGroup } from '../cosplay-group.model';
 import { CosplayGroupService } from '../../../../services/cosplay-group.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { Cosplay } from '../../cosplay.model';
 import { Subscription } from 'rxjs';
@@ -31,6 +31,12 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
 
   arreglo1 = [10, 20, 30, 40, 50];
   cosplayGroup = null;
+
+  navigationExtras: NavigationExtras = {
+    state : {
+      cosplaygroup: null
+    }
+  }
 
   constructor(
     private navCtrl: NavController,
@@ -108,6 +114,12 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
     }
   }
 
+  onGoToRequestForm(item: any): void {
+    this.navigationExtras.state.value = item;
+    this.router.navigate(['main/tabs/cosplays/cosplay-groups/cosplay-group-form-request'], this.navigationExtras );
+  }
+
+  
   onRequestCosplayGroup() {
     
   }

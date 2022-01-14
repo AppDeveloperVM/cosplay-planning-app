@@ -15,7 +15,7 @@ import { Subscription } from 'rxjs';
 })
 export class CosplayGroupFormRequestPage implements OnInit, OnDestroy {
   subscription: Subscription;
-  cosplayGroup: CosplayGroup;
+  cosplayGroup = null;
   cosplayGroupId;
   private cosplaygroupSub: Subscription;
   loadedCosplayRequest: string;
@@ -27,7 +27,13 @@ export class CosplayGroupFormRequestPage implements OnInit, OnDestroy {
     private router: Router,
     private cosplayGroupService: CosplayGroupService,
     private loadingCtrl: LoadingController
-  ) { }
+  ) {
+    const navigation = this.router.getCurrentNavigation();
+    if(navigation.extras.state == undefined) { this.router.navigate(['main/tabs/cosplays/cosplay-groups']); }
+    this.cosplayGroup = navigation?.extras?.state.value;
+
+    console.log("location: "+this.cosplayGroup.location);
+  }
 
   ngOnInit() {
 
