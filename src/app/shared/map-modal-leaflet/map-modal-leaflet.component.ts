@@ -93,9 +93,9 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
    
     
     for (let marker of this.markers) {
-      console.log( marker );
+      console.log("marker: "+ marker );
         let markPoint = L.marker( { lat: marker['lat'], lng: marker['lng'] } , markerOptions );
-        markPoint.bindPopup(marker['address']);
+        markPoint.bindPopup(marker.address.full_address);
         markPoint.addTo(outerThis.map);
     }
 
