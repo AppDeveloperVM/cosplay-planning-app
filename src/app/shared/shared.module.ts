@@ -9,11 +9,12 @@ import { IonicModule } from '@ionic/angular';
 import { ImagePickerComponent } from './pickers/image-picker/image-picker.component';
 import { HeaderComponent } from '../components/header/header.component';
 import { RouterModule } from '@angular/router';
+import { PlanningItemComponent } from '../main/planning/planning-item/planning-item.component';
 
 @NgModule({
-  declarations: [LocationPickerComponent, MapModalComponent, ImagePickerComponent,HeaderComponent],
+  declarations: [LocationPickerComponent, MapModalComponent, ImagePickerComponent,HeaderComponent, ],
   imports: [ CommonModule, IonicModule,RouterModule ],
-  exports: [ LocationPickerComponent, MapModalComponent, ImagePickerComponent,HeaderComponent ],
+  exports: [ LocationPickerComponent, MapModalComponent, ImagePickerComponent,HeaderComponent],
   entryComponents: [ MapModalComponent]
 })
 
