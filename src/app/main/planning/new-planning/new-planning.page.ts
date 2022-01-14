@@ -111,7 +111,14 @@ export class NewPlanningPage implements OnInit {
     //this.cosplayGroupService.uploadImage(this.form.get('image').value)
     //if (!this.form.valid) return
 
-    this.loadingCtrl
+    if (!this.form.valid) {
+      console.log('Please provide all the required values!')
+      return false;
+    } else {
+      console.log(this.form.value)
+    }
+
+    /*this.loadingCtrl
     .create({
       message: 'Creating Planning...'
     })
@@ -125,7 +132,19 @@ export class NewPlanningPage implements OnInit {
       this.form.reset();
       this.router.navigate(['main/tabs/planning']);
     });
+    */
     
+  }
+
+  getDate(e) {
+    let date = new Date(e.target.value).toISOString().substring(0, 10);
+    this.form.get('dob').setValue(date, {
+      onlyself: true
+    })
+  }
+
+  get errorControl() {
+    return this.form.controls;
   }
 
   onCreatePlanning() {
