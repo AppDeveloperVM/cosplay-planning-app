@@ -119,15 +119,12 @@ export class LocationPickerComponent implements OnInit {
   private createPlace(latlng: any) {
     console.log("coords: lat:"+latlng.lat+"lng: "+latlng.lng);
 
-    //const addressInfo
-
     const pickedLocation: PlaceLocation = {
       lat: latlng.lat,
       lng: latlng.lng,
       address: null,
       staticMapImageUrl: null
     };
-
     const addressInfo : AddressData = {
       full_address: null,
       road: null,
@@ -137,8 +134,8 @@ export class LocationPickerComponent implements OnInit {
     }
 
     this.isLoading = true;
-
-    let fullAddress;
+    
+    //OpenMapQuest key and url
     var KEY = 'hmAnp6GU6CtArMcnLn38nJS0Sb1orh9Q';
     const reversegeocodeurl = `https://open.mapquestapi.com/nominatim/v1/reverse.php?key=${KEY}&format=json&lat=${latlng.lat}&lon=${latlng.lng}`;
  
@@ -147,25 +144,30 @@ export class LocationPickerComponent implements OnInit {
     .subscribe(data => {
       console.log('my data: ', data);
       this.streetData = data;
-      const road = this.streetData['address']['road'] != undefined ? this.streetData['address']['road'] : '-';
-      const county = this.streetData['address']['county'] != undefined ? this.streetData['address']['county'] : '-';
-      const state = this.streetData['address']['state'] != undefined ? this.streetData['address']['state'] : '-';
-      fullAddress = road + " , " + county + " , " +state;
-      console.log(fullAddress);
-      //Address Data
+      const road = this.streetData['address']['road'] != undefined ? this.streetData['address']['road'] : null;
+      const county = this.streetData['address']['county'] != undefined ? this.streetData['address']['county'] : null;
+      const state = this.streetData['address']['state'] != undefined ? this.streetData['address']['state'] : null;
+      //save info if not null
+      let fullAddress;
+      let fullAddressNotEmpty = [ road, county, state ].filter(function (val) {return val;}).join(', ');
+      fullAddress = fullAddressNotEmpty
+      console.log("fulladdress: " +fullAddress);
+      //Address Info
       addressInfo.full_address = fullAddress;
       addressInfo.road = road;
       addressInfo.state = state;
       addressInfo.country = county;
       pickedLocation.address = addressInfo;
+
+      const staticMapImageUrl = this.getMapImage(pickedLocation.lat, pickedLocation.lng, 14)
+      pickedLocation.staticMapImageUrl = staticMapImageUrl;
+      this.selectedLocationImage = staticMapImageUrl;
+      this.isLoading = false;
+
+      this.locationPick.emit(pickedLocation);
+      console.log("updated selectedLocationImage");
     });
 
-    const staticMapImageUrl = this.getMapImage(pickedLocation.lat, pickedLocation.lng, 14)
-    pickedLocation.staticMapImageUrl = staticMapImageUrl;
-    this.selectedLocationImage = staticMapImageUrl;
-    this.isLoading = false;
-    this.locationPick.emit(pickedLocation);
-    console.log("updated selectedLocationImage");
   }
 
   private getCurrentCoords(){
