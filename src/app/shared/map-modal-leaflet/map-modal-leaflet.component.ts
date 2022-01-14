@@ -102,6 +102,7 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
     if(this.selectable){
       //Enable Map OnClick
       this.map.on('click', this.onMapClick, this);
+      //Enable options menu ( buttons )
     }
 
     /*

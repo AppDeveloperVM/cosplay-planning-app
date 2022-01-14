@@ -21,10 +21,12 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireStorage, AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { MapModalLeafletComponent } from './shared/map-modal-leaflet/map-modal-leaflet.component';
+
 
 
 @NgModule({
-  declarations: [AppComponent, CosplayGroupSendRequestComponent],
+  declarations: [AppComponent, CosplayGroupSendRequestComponent,MapModalLeafletComponent],
   entryComponents: [CosplayGroupSendRequestComponent,PopinfoComponent],
   imports: [
     BrowserModule,
@@ -37,7 +39,6 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
     AngularFirestoreModule,
     //AngularFirestoreModule.enablePersistence(),
     AngularFireAuthModule
-    
   ],
   providers: [
     StatusBar,
