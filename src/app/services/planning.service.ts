@@ -44,7 +44,6 @@ export class PlanningService {
   ) {
     this.planningsCollection = afs.collection<PlanningData>('plannings');
     this.getPlannings();
-    console.log("Plannings: "+ this.planningsObs);
   }
 
   private getPlannings() : void {

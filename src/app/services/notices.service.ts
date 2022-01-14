@@ -62,7 +62,6 @@ export class NoticesService {
   }
 
   // Notif Badges
-
   setNotifBadges(badgeNumber: number) {
 
   }

@@ -22,7 +22,7 @@ export class PlanningItemComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.planning);
+    //console.log(this.planning);
   }
 
   onGoToSee(item: any): void {
