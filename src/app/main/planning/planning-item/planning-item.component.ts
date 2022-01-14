@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { Platform } from '@ionic/angular';
-import { SharedModule } from 'src/app/shared/shared.module';
 import { Planning } from '../planning.model';
 
 @Component({
