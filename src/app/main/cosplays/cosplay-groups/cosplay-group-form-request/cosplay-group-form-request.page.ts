@@ -64,7 +64,6 @@ export class CosplayGroupFormRequestPage implements OnInit, OnDestroy {
 
     this.loadedCosplayRequest = characterName;
     console.log(this.loadedCosplayRequest);
-     // this.loadedCosplayRequest.push(characterName);
 
     this.onRequestCosplayGroup();
 
@@ -94,12 +93,12 @@ export class CosplayGroupFormRequestPage implements OnInit, OnDestroy {
             const data = resultData.data; // get possible extra data from here
 
             /* Aquí se crearía o enviaría la solicitud de personaje para la GRUPAL*/
-            this.cosplayGroupService.addCosplayGroupMember(
+            /* this.cosplayGroupService.addCosplayGroupMember(
               'new character',
               '1',//cosplayerId
               true, //asistanceConfirmed
               this.cosplayGroupId //cosplayGroupId
-            )
+            ) */
             /*
             .subscribe(() => {
               loadingEl.dismiss();
