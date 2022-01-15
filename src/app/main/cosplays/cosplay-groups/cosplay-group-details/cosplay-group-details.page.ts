@@ -128,7 +128,6 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
         component: CosplayGroupSendRequestComponent,
           componentProps: {
             selectedCosplayGroup: this.cosplayGroup,
-            requestedCharacter: this.cosplayGroup.requestedCharacter // ?
           }
       }
     ).then(modalEl => {
