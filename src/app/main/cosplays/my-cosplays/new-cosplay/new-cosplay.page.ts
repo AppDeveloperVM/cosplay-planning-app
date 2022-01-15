@@ -99,7 +99,7 @@ export class NewCosplayPage implements OnInit {
       loadingEl.present();
       const cosplay = this.form.value;
       const cosplayId = this.cosplay?.id || null;
-      this.cosplaysService.onSaveCosplay(cosplay, cosplayId)
+      this.cosplaysService.onSaveCosplay(cosplay, cosplayId);
 
       loadingEl.dismiss();
       this.form.reset();
