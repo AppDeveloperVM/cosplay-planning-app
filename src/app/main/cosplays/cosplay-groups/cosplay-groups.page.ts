@@ -43,20 +43,16 @@ export class CosplayGroupsPage implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.cosplayGroupsSub = this.cosplaygroupService.cosplaygroups.subscribe(cosplaygroups => {
+    /* this.cosplayGroupsSub = this.cosplaygroupService.cosplaygroups.subscribe(cosplaygroups => {
       this.cosplaygroups = cosplaygroups;
       this.loadedCosplayGroups = cosplaygroups;
       this.listedLoadedCosplays = this.loadedCosplayGroups;
       this.onFilterUpdate(this.filter);
-    });
+    }) */
   }
 
   ionViewWillEnter() {
-    this.isLoading = true;
-    let userId = this.authService.userId
-    this.cosplaygroupService.fetchCosplayGroups(userId).subscribe(() => {
-      this.isLoading = false;
-    });
+
   }
 
   onFilterUpdate(filter: string) {

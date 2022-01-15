@@ -42,19 +42,18 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.notifications = this.noticesService.getNotices();
     
+    /*
     this.cosplaysSub = this.cosplaysService.cosplays.subscribe(cosplays => {
       this.loadedCosplays = cosplays;
       this.listedLoadedCosplays = this.loadedCosplays;
       this.onFilterUpdate(this.filter);
     });
+    */
 
   }
 
   ionViewWillEnter() {
-    this.isLoading = true;
-    this.cosplaysService.fetchCosplays().subscribe(() => {
-      this.isLoading = false;
-    });
+
   }
 
   onFilterUpdate(filter: string) {

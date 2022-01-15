@@ -62,7 +62,8 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
       }
       this.isLoading = true;
       this.cosplayGroupId = paramMap.get('cosplayGroupId');
-      this.cosplayGroupSub = this.cosplayGroupService
+
+      /* this.cosplayGroupSub = this.cosplayGroupService
       .getCosplayGroup(paramMap.get('cosplayGroupId'))
       .subscribe(cosplayGroup => {
         this.cosplayGroup = cosplayGroup;
@@ -112,7 +113,7 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
           alertEl.present();
         });
       }
-      );
+      ); */
 
     });
   }
@@ -138,7 +139,7 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
     this.form.patchValue({image: imageFile});
   }
 
-  onUpdateCosplayGroup() {
+  /* onUpdateCosplayGroup() {
     if (!this.form.valid) {
       return;
     }
@@ -170,7 +171,7 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
           this.router.navigate(['main/tabs/cosplays/cosplay-groups']);
         });
     });
-  }
+  } */
 
   ngOnDestroy() {
     if (this.cosplayGroupSub) {
