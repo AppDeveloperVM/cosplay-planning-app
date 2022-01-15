@@ -10,6 +10,7 @@ import { PlaceLocation } from '../models/location.model';
 import { stringify } from 'querystring';
 import { User } from 'src/app/models/user.model';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreCollectionGroup } from '@angular/fire/compat/firestore';
+import { CosGroupMember } from '../models/cosGroupMember.interface';
 
 
 interface CosplayGroupData {
@@ -22,11 +23,6 @@ interface CosplayGroupData {
     userId: string;
     location: PlaceLocation;
     characters: any;
-}
-
-interface CosplayGroupMembersData {
-    member: CharacterMember;
-    cosplayGroupId: string;
 }
 
 interface CosplayGroupMemberData {
@@ -56,11 +52,13 @@ export class CosplayGroupService {
 
     public cosplayGroup = CosplayGroup;
     cosplayGroupMembers:any[]=[];
+    
 
     //Collections
     cosGroups: Observable<CosplayGroupData[]>;
+    cosGroupMemberRequest: Observable<CosGroupMember>[];
     private cosgroupsCollection: AngularFirestoreCollection<CosplayGroupData>;
-    private cosgroupCollection: AngularFirestoreCollection<CosplayGroupData>;
+    private cosGroupRequestCollection: AngularFirestoreCollection<CosGroupMember>;
 
     constructor( 
         private authService: AuthService,
@@ -68,6 +66,7 @@ export class CosplayGroupService {
         private readonly afs: AngularFirestore
     ) {
         this.cosgroupsCollection = afs.collection<CosplayGroupData>('cosplay-groups');
+        this.cosGroupRequestCollection = afs.collection<CosGroupMember>('cosMembers');
         this.getcosGroups();
         console.log("cosGroups: "+this.cosGroups);
     }
@@ -97,6 +96,20 @@ export class CosplayGroupService {
         })
     }
 
+    //CosGroup Request
+    onSaveCosGroupRequest(cosGroupMember: CosGroupMember, cosGroupMemberId: string): Promise<void> {
+        return new Promise( async (resolve, reject) => {
+            try {
+                const id = cosGroupMemberId || this.afs.createId();
+                const data = {id, ... cosGroupMember};
+                const result = await this.cosgroupsCollection.doc(id).collection('cosMembers').doc(id).set(data);
+                resolve(result);
+            } catch (err) {
+                reject(err.message)
+            }
+        })
+    }
+
     onDeleteCosGroup(cosGroupId: string): Promise<void> {
         return new Promise (async (resolve, reject) => {
             try {
@@ -108,7 +121,8 @@ export class CosplayGroupService {
         })
     }
 
-    getCosplayGroup(id: string) {
+
+   /*  getCosplayGroup(id: string) {
         return this.http.get<CosplayGroupData>(
             `https://cosplay-planning-app.firebaseio.com/cosplay-groups/${id}.json`
           ).pipe(
@@ -132,9 +146,9 @@ export class CosplayGroupService {
                 
             })
         );
-    }
+    } */
 
-    getCosplayGroupMembers(id: string){
+   /*  getCosplayGroupMembers(id: string){
         
         return this.http.get<CosplayGroupData>(
             `https://cosplay-planning-app.firebaseio.com/cosplay-groups/${id}.json`
@@ -149,9 +163,9 @@ export class CosplayGroupService {
                 
             })
         ); 
-    }
+    } */
 
-    fetchCosplayGroupMembers(){
+   /*  fetchCosplayGroupMembers(){
         return this.http
         .get<{ [key: string]: CosplayGroupMemberData}>(
             `https://cosplay-planning-app.firebaseio.com/cosplay-groups.json?orderBy="userId"&equalTo="${
@@ -177,9 +191,9 @@ export class CosplayGroupService {
                 //this._cosplaygroupmembers.next(cosplaygroupmembers);
             })
         );
-    }
+    } */
 
-    fetchCosplayGroups(userId: String) {
+    /* fetchCosplayGroups(userId: String) {
         return this.http
         .get<{ [key: string]: CosplayGroupData}>(
             `https://cosplay-planning-app.firebaseio.com/cosplay-groups.json?orderBy="userId"&equalTo="${
@@ -211,8 +225,8 @@ export class CosplayGroupService {
                 this._cosplaygroups.next(cosplaygroups);
             })
         );
-    }
-
+    } */
+    /* 
     addCosplayGroup(
         title: string,
         series: string,
@@ -249,9 +263,9 @@ export class CosplayGroupService {
                 this._cosplaygroups.next(cosplaygroups.concat(newCosplayGroup));
             }));
 
-    }
+    } */
 
-    addCosplayGroupMember(
+   /*  addCosplayGroupMember(
         name: string,
         cosplayerId: string,
         asistanceConfirmed: boolean,
@@ -280,9 +294,9 @@ export class CosplayGroupService {
             }));
             
 
-    }
+    } */
 
-    updateCosplayGroup(
+    /* updateCosplayGroup(
         cosplayGroupId: string,
         title: string,
         series: string,
@@ -329,9 +343,9 @@ export class CosplayGroupService {
             this._cosplaygroups.next(updatedCosplayGroups);
         }));
 
-    }
+    } */
 
-    updateCosplayGroupMembers(
+    /* updateCosplayGroupMembers(
         name: string,
         cosplayerId: string,
         asistanceConfirmed: boolean,
@@ -368,8 +382,9 @@ export class CosplayGroupService {
             , tap(cosplayGroupMembers  => {
                 this._cosplaygroupmembers.next(updatedCosplayGroupMembers);
             }));
-            */
-    }
+            
+    } 
+    */
 
     uploadImage(image: File) {
         const uploadData = new FormData();
