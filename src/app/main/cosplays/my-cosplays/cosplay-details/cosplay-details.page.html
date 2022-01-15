@@ -25,9 +25,10 @@
   <ion-grid *ngIf="!isLoading">
   <ion-row>
     <ion-col class="content-col" >
-      <ion-thumbnail class="user-image">
+      <ion-thumbnail *ngIf="cosplay.imageUrl != null" class="user-image">
         <img src="{{ cosplay.imageUrl }}">
       </ion-thumbnail>
+      <ion-icon *ngIf="cosplay.imageUrl == null" slot="start" name="image"></ion-icon>
 
       <ion-list class="ion-no-padding">
         <ion-item>
