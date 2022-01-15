@@ -1,3 +1,4 @@
+import { CosGroupMember } from "./cosGroupMember.interface";
 import { PlaceLocation } from "./location.model";
 
 export interface CosGroup {
@@ -10,4 +11,5 @@ export interface CosGroup {
     availableTo: Date,
     userId: string,
     location: PlaceLocation
+    cosMembers: CosGroupMember
 }
