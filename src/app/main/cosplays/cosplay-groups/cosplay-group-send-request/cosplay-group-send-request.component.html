@@ -12,32 +12,55 @@
 </ion-header>
 
 <ion-content text-center padding>
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-        <p>Check information</p>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col size-sm="3">
+  <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
+    <ion-grid>
+      <ion-row>
+      <ion-col size-sm="6" offset-sm="3">
         <ion-item>
-          <p>Character requested: </p>
+          <ion-label class="grey" position="floating">Character Name</ion-label>
+          <ion-input type="text" formControlName="characterName" placeholder="name"></ion-input>
         </ion-item>
       </ion-col>
-      <ion-col size-sm="3">
-        <ion-list>
-          
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
           <ion-item>
-             <p>{{ requestedCharacter }}</p>
+            <ion-label class="grey" position="floating">Version</ion-label>
+            <ion-select [compareWith]="compareWith" value="{{DefaultVersionValue}}" 
+            name="version" multiple="false" interface="popover" placeholder="Select One"
+            (ionChange)="onSelectChange($event)"
+            >
+              <ion-select-option *ngFor="let option of selectOptions" value="{{option.id}}"> {{option.name}} </ion-select-option>
+            </ion-select>
           </ion-item>
-        </ion-list>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        
-        <ion-button color="primary" (click)="onSendCosplayGroupRequest()">Send Request!</ion-button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3" [hidden]="versionInputHidden">
+        <ion-item>
+            <ion-label class="grey" position="floating">Version name</ion-label>
+            <ion-input 
+            type="text" formControlName="versionName" placeholder="Version name"></ion-input>
+        </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <app-image-picker
+          [showPreview]="form.get('image').value"
+          (imagePick)="onImagePicked($event)"></app-image-picker>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-button color="primary" margin type="submit" expand="block"
+          
+          [disabled]="!form.valid"
+          >
+          Send Request
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
   </ion-content>

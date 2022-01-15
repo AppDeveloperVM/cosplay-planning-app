@@ -1,10 +1,36 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Placeholder } from '@angular/compiler/src/i18n/i18n_ast';
 import { CosplayGroup } from '../cosplay-group.model';
-import { ModalController, NavController } from '@ionic/angular';
+import { LoadingController, ModalController, NavController } from '@ionic/angular';
 import { Cosplay } from '../../cosplay.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NoticesService } from 'src/app/services/notices.service';
+import { FormControl, ReactiveFormsModule, FormGroup, NgForm, Validators, FormBuilder } from '@angular/forms';
+import { FirebaseStorageService } from 'src/app/services/firebase-storage.service';
+import { CharacterMember } from 'src/app/models/characterMember.model';
+import { CosGroupMember } from 'src/app/models/cosGroupMember.interface';
+import { CosplayGroupService } from 'src/app/services/cosplay-group.service';
+
+function base64toBlob(base64Data, contentType) {
+  contentType = contentType || '';
+  const sliceSize = 1024;
+  const byteCharacters = atob(base64Data);
+  const bytesLength = byteCharacters.length;
+  const slicesCount = Math.ceil(bytesLength / sliceSize);
+  const byteArrays = new Array(slicesCount);
+
+  for (let sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
+    const begin = sliceIndex * sliceSize;
+    const end = Math.min(begin + sliceSize, bytesLength);
+
+    const bytes = new Array(end - begin);
+    for (let offset = begin, i = 0; offset < end; ++i, ++offset) {
+      bytes[i] = byteCharacters[offset].charCodeAt(0);
+    }
+    byteArrays[sliceIndex] = new Uint8Array(bytes);
+  }
+  return new Blob(byteArrays, { type: contentType });
+}
 
 @Component({
   selector: 'app-cosplay-group-send-request',
@@ -15,23 +41,131 @@ export class CosplayGroupSendRequestComponent implements OnInit {
   @Input() selectedCosplayGroup: CosplayGroup;
   @Input() requestedCharacter: Cosplay;
 
+  form: FormGroup;
+  version: string;
+  selectOptions: any = [
+    {id : 'original', name: 'Original'},
+    {id : 'alternative', name: 'Alternative'}
+  ];
+  DefaultVersionValue = "original";
+  compareWith : any ;
+  versionInputHidden: boolean = true;
+  cosGroupMemberRequest: CosGroupMember;
+
+  //Select options - Compare values for default
+  compareWithFn(o1, o2) {
+    return o1 === o2;
+  };
+
   constructor(
     private modalCtrl: ModalController,
+    private loadingCtrl: LoadingController,
     private navCtrl: NavController,
     private route: ActivatedRoute,
     private router: Router,
-    private noticesService: NoticesService
+    private noticesService: NoticesService,
+    private cosplayGroupService: CosplayGroupService,
+    private fbss: FirebaseStorageService
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.DefaultVersionValue= "2" ;
+    this.compareWith = this.compareWithFn;
+    
+
+    this.form = new FormGroup({
+      characterName: new FormControl(null, {
+        updateOn: 'blur',
+        validators: [Validators.required]
+      }),
+      version: new FormControl(null, {
+        updateOn: 'blur',
+        validators: [Validators.required, Validators.maxLength(180)]
+      }),
+      versionName: new FormControl(null, {
+        updateOn: 'blur',
+        validators: [Validators.maxLength(180)]
+      }),
+      image: new FormControl(null)
+
+    });
+    this.onSetOriginalVersion();
+  }
+
+  onSetOriginalVersion() {
+    this.form.controls['version'].setValue('original');
+  }
+
+  onSelectChange($event) {
+    console.log($event.target.value);
+    //this.SelectedYearIdValue = selectedValue.detail.value ;
+    if($event.target.value == 'alternative'){
+      this.versionInputHidden = false;
+    }else{
+      this.versionInputHidden = true;
+    }
+    
+  }
+
+  async onImagePicked(imageData: string | File) {
+    let imageFile;
+    if (typeof imageData === 'string') {
+      try {
+        imageFile = base64toBlob(
+          imageData.replace('data:image/jpeg;base64,', ''),
+          'image/jpeg');
+      } catch (error) {
+        console.log(error);
+        return;
+      }
+    } else {
+      imageFile = imageData;
+    }
+    //this.form.patchValue({image: imageFile});
+    //UPLOAD IMAGE
+    const imageName = "images/"+Math.random()+imageFile;
+    const datos = imageFile;
+
+    let tarea = await this.fbss.tareaCloudStorage(imageName,datos).then((r) => {
+      this.form.patchValue({ image: r.ref.getDownloadURL() });
+    })
+
+  }
+  
 
   onCancel() {
     this.modalCtrl.dismiss(null, 'cancel');
   }
+  
+  onSubmit(form: NgForm) {
+    if (!form.valid) { // if is false
+      return;
+    }
+    const characterName = form.value.character;
+
+    console.log(form.value)
+    this.onSendCosplayGroupRequest();
+  }
 
   onSendCosplayGroupRequest() {
-    this.noticesService.addNotice( this.requestedCharacter.toString() , 'request', 'CosGroup character request');
-    this.modalCtrl.dismiss({ message: 'Request send from cosplay-group-send-request !'}, 'confirm');
+    //this.noticesService.addNotice( this.requestedCharacter.toString() , 'request', 'CosGroup character request');
+    
+    this.loadingCtrl
+    .create({
+      message: 'Creating Cosplay Group...'
+    })
+    .then(loadingEl => {
+      loadingEl.present();
+      const cosGroup = this.form.value;
+      const cosGroupId = this.cosGroupMemberRequest?.id || null;
+      this.cosplayGroupService.onSaveCosGroup(cosGroup, cosGroupId)
+
+      loadingEl.dismiss();
+      this.form.reset();
+      this.modalCtrl.dismiss({ message: 'Request Send !'}, 'confirm');
+    });
+    
+    
   }
 
 }
