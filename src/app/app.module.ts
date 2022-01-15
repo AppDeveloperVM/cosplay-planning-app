@@ -22,6 +22,8 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireStorage, AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { MapModalLeafletComponent } from './shared/map-modal-leaflet/map-modal-leaflet.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from './shared/shared.module';
 
 
 
@@ -39,10 +41,12 @@ import { MapModalLeafletComponent } from './shared/map-modal-leaflet/map-modal-l
     AppRoutingModule,
     ComponentsModule,
     IonicModule,
+    ReactiveFormsModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule,
     //AngularFirestoreModule.enablePersistence(),
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    SharedModule
   ],
   providers: [
     StatusBar,
