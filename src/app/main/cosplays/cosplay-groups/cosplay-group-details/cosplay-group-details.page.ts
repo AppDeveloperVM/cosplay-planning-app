@@ -5,7 +5,7 @@ import { CosplayGroupService } from '../../../../services/cosplay-group.service'
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { Cosplay } from '../../cosplay.model';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { MapModalComponent } from 'src/app/shared/map-modal/map-modal.component';
 import { PlaceDataService } from 'src/app/services/place-data.service';
 import { MapModalLeafletComponent } from 'src/app/shared/map-modal-leaflet/map-modal-leaflet.component';
@@ -13,7 +13,9 @@ import { MapModalLeafletComponent } from 'src/app/shared/map-modal-leaflet/map-m
 import { CharacterMember } from 'src/app/models/characterMember.model';
 import { CosgroupEditModalComponent } from 'src/app/shared/cosgroup-edit-modal/cosgroup-edit-modal.component';
 import { CosplayGroupSendRequestComponent } from '../cosplay-group-send-request/cosplay-group-send-request.component';
-import { delay } from 'rxjs/operators';
+import { delay, map } from 'rxjs/operators';
+import { CosGroupMember } from 'src/app/models/cosGroupMember.interface';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 
 
 @Component({
@@ -30,6 +32,11 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
   isLoading = false;
   private cosplayGroupSub: Subscription;
   cosplayGroupMembers:any[]=[];
+
+  //Collections
+  cosGroupMembers: Observable<CosGroupMember[]>;
+  private cosgroupsmembersCollection: AngularFirestoreCollection<CosGroupMember>;
+  cosGroupMembers$;
 
   arreglo1 = [10, 20, 30, 40, 50];
   cosplayGroup = null;
@@ -48,6 +55,7 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
     private router: Router,
     private cosplayGroupService: CosplayGroupService,
     private placeDataService: PlaceDataService,
+    private readonly afs: AngularFirestore,
     private modalCtrl: ModalController,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController
@@ -58,6 +66,9 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
 
     this.placesData.push(this.cosplayGroup.location);
     console.log("location: "+this.cosplayGroup.location);
+    
+    this.cosgroupsmembersCollection = afs.collection<CosGroupMember>(`cosplay-groups/${this.cosplayGroup.id}/cosMembers`);
+    this.getcosGroupMembers();
   }
 
   ngOnInit() {
@@ -107,6 +118,9 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
       
 
     });*/
+    
+    //get cosGroup members
+
   }
 
   ionViewWillEnter() {
@@ -118,6 +132,13 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
       this.placesData.push(marker);
     }
   }
+
+  private getcosGroupMembers(): void {
+    this.cosGroupMembers = this.cosgroupsmembersCollection.snapshotChanges().pipe(
+        map( actions => actions.map( a => a.payload.doc.data() as CosGroupMember))
+    )
+    this.cosGroupMembers$ = this.cosGroupMembers;
+}
 
   onGoToRequestForm(item: any): void {
     //this.navigationExtras.state.value = item;
@@ -168,9 +189,6 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
   }
 
   
-  onRequestCosplayGroup() {
-    
-  }
 
   onEditCosGroupMembers() {
     this.modalCtrl.create({
@@ -182,13 +200,7 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
     });
   }
 
-  fetchPlacesData() {
-    fetch('../../assets/data/places_1.json').then(res => res.json()) // json file depends on planning id
-      .then(data => {
-        this.placesData = data.places;
-        this.placeDataService.setPlaces(this.placesData);
-      });
-  }
+ 
 
   onSubmit(form: NgForm) {
     if (!form.valid) { // if is false
@@ -211,6 +223,14 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
       modalEl.present();
     });
   }
+
+   /*fetchPlacesData() {
+    fetch('../../assets/data/places_1.json').then(res => res.json()) // json file depends on planning id
+      .then(data => {
+        this.placesData = data.places;
+        this.placeDataService.setPlaces(this.placesData);
+      });
+  }*/
 
   ngOnDestroy() {
     if (this.cosplayGroupSub) {

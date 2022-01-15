@@ -43,8 +43,8 @@
           </ion-button>
         </div>
 
-        <ion-list *ngFor="let cosplayMember of cosplayGroupMembers;" >
-          <ion-item><p>{{ cosplayMember?.name }}</p></ion-item>
+        <ion-list *ngFor="let cosplayMember of cosGroupMembers$ | async" >
+          <ion-item><p>{{ cosplayMember.characterName }}</p></ion-item>
         </ion-list>
 
 
