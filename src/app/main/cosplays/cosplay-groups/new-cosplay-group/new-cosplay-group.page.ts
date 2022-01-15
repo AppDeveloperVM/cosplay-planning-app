@@ -11,8 +11,6 @@ import { CosGroup } from 'src/app/models/cosGroup.interface';
 import { UploadImageService } from '../../../../services/upload-img.service';
 import { FirebaseStorageService } from '../../../../services/firebase-storage.service';
 
-
-
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreCollectionGroup } from '@angular/fire/compat/firestore';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
@@ -52,6 +50,7 @@ export class NewCosplayGroupPage implements OnInit {
   startDate: string;
   endDate: string;
   cosGroup: CosGroup;
+  isLoading: boolean = false;
 
   imgReference;
   public URLPublica = '';
@@ -101,7 +100,8 @@ export class NewCosplayGroupPage implements OnInit {
         validators: [ Validators.required]
       }),
       location: new FormControl(null, {validators: [Validators.required]}),
-      image: new FormControl(null)
+      image: new FormControl(null),
+      cosMembers: new FormControl(null),
     });
   }
 
@@ -129,17 +129,17 @@ export class NewCosplayGroupPage implements OnInit {
     const datos = imageFile;
 
     let tarea = await this.fbss.tareaCloudStorage(imageName,datos).then((r) => {
-
       this.form.patchValue({ image: r.ref.getDownloadURL() });
     })
-    
 
-    
   }
 
   onSaveCosGroup() {
     //this.cosplayGroupService.uploadImage(this.form.get('image').value)
-    if (!this.form.valid) return
+    if (!this.form.valid) {
+      console.log('Form invalid');
+      return
+    }
 
     this.loadingCtrl
     .create({
@@ -149,16 +149,17 @@ export class NewCosplayGroupPage implements OnInit {
       loadingEl.present();
       const cosGroup = this.form.value;
       const cosGroupId = this.cosGroup?.id || null;
-      this.cosplayGroupService.onSaveCosGroup(cosGroup, cosGroupId)
-
-      loadingEl.dismiss();
+      this.cosplayGroupService.onSaveCosGroup(cosGroup, cosGroupId);
+      console.log(this.form.value);
       this.form.reset();
+      loadingEl.dismiss();
+      
       this.router.navigate(['main/tabs/cosplays/cosplay-groups']);
     });
     
   }
 
-  onCreateGroup() {
+  /* onCreateGroup() {
     if (!this.form.valid || !this.form.get('image').value ) {
       return;
     }
@@ -190,6 +191,6 @@ export class NewCosplayGroupPage implements OnInit {
       });
     });
 
-  }
+  } */
 
 }
