@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ModalController, NavController, ToastController, AlertController } from '@ionic/angular';
+import { ModalController, NavController, ToastController, AlertController, LoadingController } from '@ionic/angular';
 import { CosplayGroup } from '../cosplay-group.model';
 import { CosplayGroupService } from '../../../../services/cosplay-group.service';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
@@ -12,6 +12,8 @@ import { MapModalLeafletComponent } from 'src/app/shared/map-modal-leaflet/map-m
 
 import { CharacterMember } from 'src/app/models/characterMember.model';
 import { CosgroupEditModalComponent } from 'src/app/shared/cosgroup-edit-modal/cosgroup-edit-modal.component';
+import { CosplayGroupSendRequestComponent } from '../cosplay-group-send-request/cosplay-group-send-request.component';
+import { delay } from 'rxjs/operators';
 
 
 @Component({
@@ -38,6 +40,8 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
     }
   }
 
+  dataReturned;
+
   constructor(
     private navCtrl: NavController,
     private route: ActivatedRoute,
@@ -45,7 +49,8 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
     private cosplayGroupService: CosplayGroupService,
     private placeDataService: PlaceDataService,
     private modalCtrl: ModalController,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private loadingCtrl: LoadingController
   ) {
     const navigation = this.router.getCurrentNavigation();
     if(navigation.extras.state == undefined) { this.router.navigate(['main/tabs/cosplays/cosplay-groups']); }
@@ -115,8 +120,52 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
   }
 
   onGoToRequestForm(item: any): void {
-    this.navigationExtras.state.value = item;
-    this.router.navigate(['main/tabs/cosplays/cosplay-groups/cosplay-group-form-request'], this.navigationExtras );
+    //this.navigationExtras.state.value = item;
+   
+    this.modalCtrl
+    .create(
+      {
+        component: CosplayGroupSendRequestComponent,
+          componentProps: {
+            selectedCosplayGroup: this.cosplayGroup,
+            requestedCharacter: this.cosplayGroup.requestedCharacter // ?
+          }
+      }
+    ).then(modalEl => {
+      modalEl.present();
+      return modalEl.onDidDismiss();
+    })
+    .then(resultData => {
+      if (resultData.role === 'confirm') {
+
+        this.loadingCtrl.create({message: resultData.data.message })
+        .then(
+          loadingEl => {
+            loadingEl.present();
+            const data = resultData.data; // get possible extra data from here
+
+            /* Aquí se crearía o enviaría la solicitud de personaje para la GRUPAL
+            this.cosplayGroupService.addCosplayGroupMember(
+              'new character',
+              '1',//cosplayerId
+              true, //asistanceConfirmed
+              this.cosplayGroupId //cosplayGroupId
+            )
+            */
+            /*
+            .subscribe(() => {
+              loadingEl.dismiss();
+            });
+            */
+           
+            setTimeout(() => {
+              loadingEl.dismiss();
+            }, 1000);
+          }
+        );
+      }
+
+    });
   }
 
   
