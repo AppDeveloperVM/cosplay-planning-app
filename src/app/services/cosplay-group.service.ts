@@ -102,8 +102,8 @@ export class CosplayGroupService {
             try {
                 const id = cosGroupMemberId || this.afs.createId();
                 const data = {id, ... cosGroupMember};
-                const result = await this.cosgroupsCollection.doc(id).collection('cosMembers').doc(id).set(data);
-                resolve(result);
+                const result = await this.cosgroupsCollection.doc(id).collection('cosMembers').doc().set(data);
+                //resolve(result);
             } catch (err) {
                 reject(err.message)
             }

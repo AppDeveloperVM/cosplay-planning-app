@@ -157,8 +157,8 @@ export class CosplayGroupSendRequestComponent implements OnInit {
     .then(loadingEl => {
       loadingEl.present();
       const cosGroup = this.form.value;
-      const cosGroupId = this.cosGroupMemberRequest?.id || null;
-      this.cosplayGroupService.onSaveCosGroup(cosGroup, cosGroupId)
+      const cosGroupId = this.selectedCosplayGroup?.id || null;
+      this.cosplayGroupService.onSaveCosGroupRequest(cosGroup, cosGroupId)
 
       loadingEl.dismiss();
       this.form.reset();
