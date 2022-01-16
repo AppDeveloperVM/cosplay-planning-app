@@ -85,10 +85,13 @@
 
         </ion-item>
 
-        <ion-item no-lines class="ion-no-padding bottom-border  list-item" detail
-        routerDirection="forward"
-        [routerLink]=""
-        *ngFor="let el of cosElements" (click)="OpenItemDetails( el.name, el.store, el.status )">
+        <ion-item
+          *ngFor="let el of cosElements"
+          (click)="OpenItemDetails( el.name, el.store, el.status )"
+          class="ion-no-padding bottom-border list-item" 
+          no-lines
+          detail
+        >
           
           <ion-grid class="ion-no-padding">
 
@@ -125,7 +128,7 @@
 
         <ion-list class="ion-no-padding" lines="full">
 
-          <ion-item no-lines class="ion-no-padding bottom-border  header-item">
+          <ion-item no-lines class="ion-no-padding bottom-border header-item">
             <ion-grid class="ion-no-padding">
 
               <ion-row class="list-header-row">
@@ -140,7 +143,13 @@
             </ion-grid>
           </ion-item>
 
-          <ion-item no-lines class="ion-no-padding bottom-border list-item" *ngFor="let task of tasks" detail>
+          <ion-item 
+            *ngFor="let task of tasks"
+            (click)="OpenItemDetails( task.name, task.store, task.status )"
+            class="ion-no-padding bottom-border list-item" 
+            no-lines
+            detail
+          >
             
             <ion-grid class="ion-no-padding">
 
