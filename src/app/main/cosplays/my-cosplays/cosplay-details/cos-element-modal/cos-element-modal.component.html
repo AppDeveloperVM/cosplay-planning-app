@@ -8,32 +8,32 @@
 </ion-header>
 
 <ion-content>
-  <form>
+  <form class="cos_element" >
 
     <ion-item lines="full">
       <ion-label position="floating">Name</ion-label>
       <ion-input placeholder="{{title}}" autofocus="true" type="text" required></ion-input>
     </ion-item>
     <ion-row>
-      <ion-col>
-        <ion-item>
-          <ion-label position="floating">Cost</ion-label>
-          <ion-input placeholder="0,00" autofocus="true" type="text" required></ion-input>
+      <ion-col class="ion-no-padding">
+        <ion-item class="ion-no-margin">
+          <ion-label position="floating">Store</ion-label>
+          <ion-input placeholder="Amazon" autofocus="true" type="text" required></ion-input>
         </ion-item>
       </ion-col>
-      <ion-col>
-        <ion-item>
-          <ion-label>Done?</ion-label>
-          <ion-radio slot="start" value="buford"></ion-radio>
+      <ion-col class="ion-no-padding">
+        <ion-item class="ion-no-margin">
+          <ion-label position="floating">Cost</ion-label>
+          <ion-input placeholder="0,00€" autofocus="true" type="text" required></ion-input>
         </ion-item>
       </ion-col>
     </ion-row>
-    <ion-row>
+    
       <ion-item>
         <ion-label position="floating">Comment</ion-label>
-        <ion-textarea clearOnEdit="true"></ion-textarea>
+        <ion-textarea placeholder="Notes.." clearOnEdit="true"></ion-textarea>
       </ion-item>
-    </ion-row>
+    
 
   </form>
 
