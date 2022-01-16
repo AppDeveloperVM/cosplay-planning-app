@@ -59,6 +59,7 @@ export class CosplayGroupService {
     cosGroupMemberRequest: Observable<CosGroupMember>[];
     private cosgroupsCollection: AngularFirestoreCollection<CosplayGroupData>;
     private cosGroupRequestCollection: AngularFirestoreCollection<CosGroupMember>;
+    private actualCollection
 
     constructor( 
         private authService: AuthService,
@@ -103,17 +104,18 @@ export class CosplayGroupService {
                 const id = cosGroupMemberId || this.afs.createId();
                 const data = {id, ... cosGroupMember};
                 const result = await this.cosgroupsCollection.doc(id).collection('cosMembers').doc().set(data);
-                //resolve(result);
+                resolve(result);
             } catch (err) {
                 reject(err.message)
             }
         })
     }
 
-    onDeleteCosGroup(cosGroupId: string): Promise<void> {
+    onDeleteCosGroupMember(cosGroupId: string,cosGroupMemberId: string): Promise<void> {
         return new Promise (async (resolve, reject) => {
             try {
-                const result = this.cosgroupsCollection.doc(cosGroupId).delete();
+                const result = this.cosgroupsCollection.doc(cosGroupId).collection('cosMembers').doc(cosGroupMemberId).delete();
+                ///cosplay-groups/ cosGroupMemberId/ cosMembers/ DT4bTYixHKLgCQNxdm3S
                 resolve(result);
             } catch(err){
                 reject(err.message)

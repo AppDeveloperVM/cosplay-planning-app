@@ -141,8 +141,16 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
   }
 
   private getcosGroupMembers(): void {
-    this.cosGroupMembers = this.cosgroupsmembersCollection.snapshotChanges().pipe(
-        map( actions => actions.map( a => a.payload.doc.data() as CosGroupMember))
+    const ref = this.cosgroupsmembersCollection;
+    this.cosGroupMembers = ref.snapshotChanges().pipe(
+        map( actions => actions.map(
+            a => {
+              const data = a.payload.doc.data() as CosGroupMember;
+              const memberId = a.payload.doc.id;
+              return { memberId, ...data };
+            }
+           )
+        )
     )
     this.cosGroupMembers$ = this.cosGroupMembers;
 }
@@ -198,8 +206,10 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
   
 
   onEditCosGroupMembers() {
+    this.navigationExtras.state.value = this.cosGroupMembers;
     this.modalCtrl.create({
       component: CosgroupEditModalComponent, componentProps: {
+      ember: this.navigationExtras.state.value,
       closeButtonText: 'close',
       title: ' Cosplay Group Members'
     } }).then(modalEl => {
@@ -207,7 +217,27 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
     });
   }
 
- 
+  async onDeleteMember(cosGroupMemberId: string): Promise<void> {
+
+    await this.loadingCtrl
+    .create({
+      message: 'Deleting Group Member...'
+    })
+    .then(loadingEl => {
+      loadingEl.present();
+        try {
+          this.cosplayGroupService.onDeleteCosGroupMember(this.cosplayGroup.id,cosGroupMemberId);
+        }catch (err) {
+          console.log(err);
+        }
+
+        setTimeout(() => {
+          loadingEl.dismiss();
+        }, 500);
+
+      //this.router.navigate(['main/tabs/cosplays/cosplay-groups']);
+    });
+  }
 
   onSubmit(form: NgForm) {
     if (!form.valid) { // if is false
