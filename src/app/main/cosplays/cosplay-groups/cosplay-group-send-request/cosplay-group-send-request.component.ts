@@ -148,7 +148,6 @@ export class CosplayGroupSendRequestComponent implements OnInit {
   }
 
   onSendCosplayGroupRequest() {
-    //this.noticesService.addNotice( this.requestedCharacter.toString() , 'request', 'CosGroup character request');
     
     this.loadingCtrl
     .create({
@@ -159,6 +158,10 @@ export class CosplayGroupSendRequestComponent implements OnInit {
       const cosGroup = this.form.value;
       const cosGroupId = this.selectedCosplayGroup?.id || null;
       this.cosplayGroupService.onSaveCosGroupRequest(cosGroup, cosGroupId)
+
+      //add actual User name (this session)
+      this.noticesService.addNotice( 'User1' , 'request', 'CosGroup character request');
+      this.noticesService.getNotices();
 
       loadingEl.dismiss();
       this.form.reset();
