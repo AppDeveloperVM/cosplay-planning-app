@@ -11,6 +11,10 @@ h1 {
     display: flex;
     align-items: center;
 
+    .location_info {
+        flex-flow: row;
+    }
+
     ion-icon {
         flex-shrink: 0;
     }
