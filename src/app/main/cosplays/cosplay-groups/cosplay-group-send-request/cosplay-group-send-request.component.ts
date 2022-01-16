@@ -45,7 +45,7 @@ export class CosplayGroupSendRequestComponent implements OnInit {
   version: string;
   selectOptions: any = [
     {id : 'original', name: 'Original'},
-    {id : 'alternative', name: 'Alternative'}
+    {id : 'version', name: 'Version Especifica'}
   ];
   DefaultVersionValue = "original";
   compareWith : any ;
@@ -86,8 +86,9 @@ export class CosplayGroupSendRequestComponent implements OnInit {
         updateOn: 'blur',
         validators: [Validators.maxLength(180)]
       }),
-      image: new FormControl(null)
-
+      image: new FormControl(null),
+      asistanceConfirmed: new FormControl(false),
+      requestConfirmed: new FormControl(false)
     });
     this.onSetOriginalVersion();
   }
@@ -99,7 +100,7 @@ export class CosplayGroupSendRequestComponent implements OnInit {
   onSelectChange($event) {
     console.log($event.target.value);
     //this.SelectedYearIdValue = selectedValue.detail.value ;
-    if($event.target.value == 'alternative'){
+    if($event.target.value == 'version'){
       this.versionInputHidden = false;
     }else{
       this.versionInputHidden = true;
