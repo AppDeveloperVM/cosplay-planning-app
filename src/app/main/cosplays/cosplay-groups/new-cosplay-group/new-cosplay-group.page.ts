@@ -100,8 +100,7 @@ export class NewCosplayGroupPage implements OnInit {
         validators: [ Validators.required]
       }),
       location: new FormControl(null, {validators: [Validators.required]}),
-      image: new FormControl(null),
-      cosMembers: new FormControl(null),
+      image: new FormControl(null)
     });
   }
 
@@ -153,6 +152,7 @@ export class NewCosplayGroupPage implements OnInit {
       console.log(this.form.value);
       this.form.reset();
       loadingEl.dismiss();
+
       
       this.router.navigate(['main/tabs/cosplays/cosplay-groups']);
     });
