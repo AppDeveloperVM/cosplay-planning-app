@@ -1,9 +1,25 @@
-h1 {
-    font-size: 18px;
+.cosgroup_item .header{
     border: 1px solid var(--ion-color-primary);
     padding: 8px;
+    margin: 4px;
     border-radius: 5px;
     color: lightgrey;
+}
+
+.cosgroup_item .thumbnail_icon {
+    margin-top:0;
+    text-align: center;
+    width: 70px;
+    height: 50px;
+}
+
+h1 {
+    font-size: 18px;
+}
+
+.cosgroup_series .title{
+    font-size: 15px;
+    color: rgb(146, 146, 146);
 }
 
 .cosplaygroup-details {
