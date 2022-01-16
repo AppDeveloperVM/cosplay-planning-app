@@ -1,5 +1,7 @@
-<ion-item (click)="onGoToSee(planning)"
-detail>
+<ion-item 
+  (click)="onGoToSee(planning)"
+  detail
+>
     <ion-thumbnail slot="start" *ngIf="planning.imageUrl != null">
       <ion-img [src]="planning.imageUrl"></ion-img>
     </ion-thumbnail>
