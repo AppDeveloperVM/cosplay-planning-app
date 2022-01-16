@@ -12,9 +12,11 @@ detail>
         <span class="place space-left space-right truncate">{{ cosplaygroup.place }}</span>
         <div class="dates">
           <ion-icon name="calendar" color="secondary"></ion-icon>
-          <ion-text  class="space-left">{{ isMobile == true ? (  cosplaygroup.dateFrom | date: 'MMM d' ) : (  cosplaygroup.dateFrom | date ) }}</ion-text> 
+          <ion-text  class="space-left">{{ isMobile == true ? (  cosplaygroup.dateFrom | date: 'MMM d' ) : (  cosplaygroup.dateFrom | date: 'MMM d' ) }}</ion-text> 
           <span class="space-left">to</span>
-          <ion-text  class="space-left">{{ isMobile == true ? ( cosplaygroup.dateTo | date: 'MMM d' ) : ( cosplaygroup.dateTo | date ) }}</ion-text>
+          <ion-text  class="space-left">{{ isMobile == true ? ( cosplaygroup.dateTo | date: 'd' ) : ( cosplaygroup.dateTo | date: 'd' ) }}</ion-text>
+          <span class="space-left">|</span>
+          <ion-text  class="space-left">{{ isMobile == true ? ( cosplaygroup.dateFrom | date: 'y' ) : ( cosplaygroup.dateFrom | date: 'y' ) }}</ion-text>
         </div>
       </div>
     </ion-label>
