@@ -13,3 +13,29 @@ p {
   display: flex;
   justify-content: space-between;
 }
+
+.cosgroup_members {
+ 
+  ion-item {
+
+  }
+
+  ion-row {
+    width: 100%;
+  }
+
+  ion-col {
+    width: 150px;;
+  }
+
+  .subtext_version {
+    font-size: 12px;
+    color:rgb(149, 147, 147);
+  }
+
+  .to_right{
+    text-align: right;
+  }
+
+}
+

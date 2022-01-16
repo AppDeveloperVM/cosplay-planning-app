@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ModalController, NavController, ToastController, AlertController, LoadingController } from '@ionic/angular';
+import { ModalController, NavController, ToastController, AlertController, LoadingController, Platform } from '@ionic/angular';
 import { CosplayGroup } from '../cosplay-group.model';
 import { CosplayGroupService } from '../../../../services/cosplay-group.service';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
@@ -33,6 +33,8 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
   private cosplayGroupSub: Subscription;
   cosplayGroupMembers:any[]=[];
 
+  isMobile: boolean;
+
   //Collections
   cosGroupMembers: Observable<CosGroupMember[]>;
   private cosgroupsmembersCollection: AngularFirestoreCollection<CosGroupMember>;
@@ -58,7 +60,8 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
     private readonly afs: AngularFirestore,
     private modalCtrl: ModalController,
     private alertCtrl: AlertController,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private platform: Platform
   ) {
     const navigation = this.router.getCurrentNavigation();
     if(navigation.extras.state == undefined) { this.router.navigate(['main/tabs/cosplays/cosplay-groups']); }
@@ -121,6 +124,10 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
     
     //get cosGroup members
 
+  }
+
+  checkPlatform() {
+    this.isMobile = this.platform.is('mobile');
   }
 
   ionViewWillEnter() {
