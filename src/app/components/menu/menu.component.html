@@ -8,7 +8,7 @@
   </ion-header>
 
   <ion-content>
-    <ion-list *ngFor="let pages of navigate">
+    <ion-list *ngFor="let pages of navigate" lines="none">
       <ion-menu-toggle menu="m1">
       <ion-item [routerLink]="pages.url">
         <ion-icon [name]="pages.icon" slot="start"></ion-icon>
