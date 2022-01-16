@@ -8,14 +8,15 @@
   </ion-segment>
   <ion-grid>
     <ion-row>
-      <ion-col size-md="6" offset-md="3" text-center
-        *ngIf="cosplays$ | async as data"
+      <ion-col
+      size="12"
+       text-center
+      *ngIf="cosplays$ | async as data"
       >
         <div *ngIf="isLoading" 
-        size-md="6"
-        offset-md="3"
-        size-sm="6"
-        offset-sm="3" 
+        size="12" size-md="8" 
+        offset-md="2" size-lg="6" offset-lg="3"
+        size-xl="4" offset-xl="4"
         text-center>        
           <ion-spinner color="primary" ></ion-spinner>
         </div>
@@ -25,7 +26,11 @@
         </div>
       </ion-col>
 
-      <ion-col size="12" size-md="6" offset-md="3" class="ion-text-center" 
+      <ion-col size="12" 
+      size-md="10" offset-md="1" 
+      size-lg="6" offset-lg="3"
+      size-xl="6" offset-xl="3"
+      class="ion-text-center" 
       *ngIf="!isLoading ">
         <ion-list *ngFor="let cosplay of cosplays$ | async" lines="none">
           <app-cosplay-item [cosplay]="cosplay"></app-cosplay-item>

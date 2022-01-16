@@ -8,10 +8,9 @@
         <ion-spinner color="primary"></ion-spinner>
       </ion-col>
       <ion-col
-      size-md="6"
-      offset-md="3"
-      size-sm="6"
-      offset-sm="3"
+      size="12" size-md="8" 
+      offset-md="2" size-lg="6" offset-lg="3"
+      size-xl="4" offset-xl="4"
       text-center
       *ngIf=" plannings$ | async as data">
       <div *ngIf="!isLoading && data.length == 0">
@@ -20,7 +19,12 @@
       </div>
       </ion-col>
 
-      <ion-col size="12" size-md="8" offset-md="2" class="ion-text-center" 
+      <ion-col 
+      size="12" 
+      size-md="10" offset-md="1" 
+      size-lg="6" offset-lg="3"
+      size-xl="6" offset-xl="3"
+      class="ion-text-center" 
       *ngIf="!isLoading">
         <ion-list *ngFor="let planningitem of plannings$ | async" lines="none">
           <app-planning-item [planning]="planningitem"></app-planning-item>
