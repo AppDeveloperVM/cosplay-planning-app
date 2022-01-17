@@ -56,61 +56,30 @@ export class EditPlanningPage implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.route.paramMap.subscribe(paramMap => {
-      if (!paramMap.has('planningId')) {
-        this.navCtrl.navigateBack('/planning');
-        return;
-      }
-      this.isLoading = true;
-      this.planningId = paramMap.get('planningId');
-      this.planningSub = this.planningService
-      .getPlanning(paramMap.get('planningId'))
-      .subscribe(planning => {
-        this.planning = planning;
-        // this.selectedLocationImage = new Plac this.planning.location;
+    
 
-        this.form = new FormGroup({
-          title: new FormControl(this.planning.title, {
-            updateOn: 'blur',
-            validators: [Validators.required]
-          }),
-          description: new FormControl(this.planning.description, {
-            updateOn: 'blur',
-            validators: [Validators.required]
-          }),
-          startsAt: new FormControl(this.planning.startsAt, {
-            updateOn: 'blur',
-            validators: [ Validators.required]
-          }),
-          endsAt: new FormControl(this.planning.endsAt, {
-            updateOn: 'blur',
-            validators: [ Validators.required]
-          }),
-          location: new FormControl(null, {validators: [Validators.required]}),
-          image: new FormControl(null)
-        });
-        this.actualImage = this.planning.imageUrl;
-        this.actualMapImage = this.planning.location.staticMapImageUrl;
-
-        this.isLoading = false;
-      }, error => {
-        this.alertCtrl
-        .create({
-          header: 'An error ocurred!',
-          message: 'Could not load Planning. Try again later.',
-          buttons: [{
-            text: 'Okay',
-            handler: () => {
-              this.router.navigate(['/planning']);
-            }
-          }]
-        }).then(alertEl => {
-          alertEl.present();
-        });
-      }
-      );
-
+    this.form = new FormGroup({
+      title: new FormControl(this.planning.title, {
+        updateOn: 'blur',
+        validators: [Validators.required]
+      }),
+      description: new FormControl(this.planning.description, {
+        updateOn: 'blur',
+        validators: [Validators.required]
+      }),
+      startsAt: new FormControl(this.planning.startsAt, {
+        updateOn: 'blur',
+        validators: [ Validators.required]
+      }),
+      endsAt: new FormControl(this.planning.endsAt, {
+        updateOn: 'blur',
+        validators: [ Validators.required]
+      }),
+      location: new FormControl(null, {validators: [Validators.required]}),
+      image: new FormControl(null)
     });
+    this.actualImage = this.planning.imageUrl;
+    this.actualMapImage = this.planning.location.staticMapImageUrl;
   }
 
   onLocationPicked(location: PlaceLocation) {
@@ -134,7 +103,7 @@ export class EditPlanningPage implements OnInit, OnDestroy {
     this.form.patchValue({image: imageFile});
   }
 
-  onUpdatePlanning() {
+  /* onUpdatePlanning() {
     if (!this.form.valid) {
       return;
     }
@@ -166,7 +135,7 @@ export class EditPlanningPage implements OnInit, OnDestroy {
           this.router.navigate(['/main/tabs/planning']);
         });
     });
-  }
+  } */
 
   ngOnDestroy() {
     if (this.planningSub) {
