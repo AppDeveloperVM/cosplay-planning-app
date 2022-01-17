@@ -99,7 +99,7 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
       console.log("marker: "+ marker );
         let markPoint = L.marker( { lat: marker['lat'], lng: marker['lng'] } , markerOptions );
         markPoint.bindPopup(marker.address.full_address);
-        markPoint.addTo(outerThis.map);
+        markPoint.addTo(outerThis.map).on('click', this.onMarkerClick);
     }
 
     if(this.selectable){
@@ -148,6 +148,10 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
 
     this.placeDataService.setPlace(PlaceData);
     this.showToast('Lugar añadido!');
+  }
+
+  onMarkerClick(e){
+    this.map.flyTo(e.latlng);
   }
 
   async showToast(message: string) {
