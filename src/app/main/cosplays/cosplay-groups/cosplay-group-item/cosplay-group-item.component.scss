@@ -1,16 +1,31 @@
+ion-item {
+    margin: 0;
+}
+
 .cosgroup_item .header{
-    border: 1px solid var(--ion-color-primary);
-    padding: 8px;
+    border: 1px solid rgb(48, 82, 141);
+    padding: 0 8px 0 8px;
     margin: 4px;
     border-radius: 5px;
     color: lightgrey;
 }
 
 .cosgroup_item .thumbnail_icon {
-    margin-top:0;
-    text-align: center;
-    width: 70px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
+
+    ion-icon {
+        color: rgb(136, 133, 133);
+      }
+
+}
+
+
+
+.planning_item .header ion-item {
+    --padding-end: 0px;
+    --inner-padding-end: 0px;
+    // here other custom CSS from documentation
 }
 
 h1 {
