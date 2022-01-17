@@ -147,7 +147,7 @@ export class NewPlanningPage implements OnInit {
     return this.form.controls;
   }
 
-  onCreatePlanning() {
+  /* onCreatePlanning() {
     if (!this.form.valid || !this.form.get('image').value ) {
       return;
     }
@@ -179,6 +179,6 @@ export class NewPlanningPage implements OnInit {
         this.router.navigate(['/main/tabs/planning']);
       });
     });
-  }
+  } */
 
 }
