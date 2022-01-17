@@ -52,7 +52,7 @@ export class PlanningService {
     )
   }
 
-  getPlanning(id: string) {
+  /* getPlanning(id: string) {
 
     return this.http.get<PlanningData>(
       `https://cosplay-planning-app.firebaseio.com/plannings/${id}.json`
@@ -71,7 +71,7 @@ export class PlanningService {
         );
       })
     );
-  }
+  } */
 
   onSavePlanning(planning: PlanningInterface, planningId: string): Promise<void> {
     return new Promise( async (resolve, reject) => {
@@ -87,7 +87,28 @@ export class PlanningService {
   }
 
 
-  fetchPlannings() {
+  onDeletePlanning(planningId: string): Promise<void> {
+    return new Promise (async (resolve, reject) => {
+        try {
+            const result = this.planningsCollection.doc(planningId).delete();
+            resolve(result);
+        } catch(err){
+            reject(err.message)
+        }
+    })
+  }
+
+  uploadImage(image: File) {
+    const uploadData = new FormData();
+    uploadData.append('image', image);
+
+    return this.http.post<{imageUrl: string, imagePath: string}>(
+        'https://us-central1-cosplay-planning-app.cloudfunctions.net/storeImage',
+        uploadData
+    );
+  }
+
+  /* fetchPlannings() {
     return this.http
     .get<{[key: string]: PlanningData}>(
       `https://cosplay-planning-app.firebaseio.com/plannings.json?orderBy="userId"&equalTo="${
@@ -118,19 +139,9 @@ export class PlanningService {
       this._plannings.next(plannings);
     })
     );
-  }
-  
-  uploadImage(image: File) {
-    const uploadData = new FormData();
-    uploadData.append('image', image);
+  } */
 
-    return this.http.post<{imageUrl: string, imagePath: string}>(
-        'https://us-central1-cosplay-planning-app.cloudfunctions.net/storeImage',
-        uploadData
-    );
-  }
-
-  addPlanning(
+ /*  addPlanning(
     title: string,
     description: string,
     imageUrl: string,
@@ -167,9 +178,9 @@ export class PlanningService {
             this._plannings.next(plannings.concat(newPlanning));
         }));
 
-  }
+  } */
 
-  updatePlanning(
+  /* updatePlanning(
       planningId: string,
       title: string,
       description: string,
@@ -217,6 +228,6 @@ export class PlanningService {
           this._plannings.next(updatedPlannings);
       }));
 
-  }
+  } */
 
 }
