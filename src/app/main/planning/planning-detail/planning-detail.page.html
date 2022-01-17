@@ -20,7 +20,27 @@
   <ion-grid *ngIf="!isLoading">
     <ion-row>
       <ion-col size-sm="6" offset-sm="3" padding text-center>
-        <p>{{ planning.location.address.full_address }}</p>
+      <div class="planning-details">
+        <div class="dates">
+          <p>
+            <ion-icon name="calendar" color="secondary"></ion-icon>
+            <ion-text  class="space-left strong">{{ isMobile == true ? ( planning.startsAt | date: 'MMM d' ) : ( planning.startsAt | date: 'MMM d' ) }}</ion-text>
+            <span class="space-left">to</span>
+            <ion-text  class="space-left strong">{{ isMobile == true ? ( planning.endsAt | date: 'MMM d' ) : ( planning.endsAt | date: 'MMM d' ) }}</ion-text>
+            <span class="space-left">|</span>
+            <ion-text  class="space-left">{{ isMobile == true ? ( planning.startsAt | date: 'y' ) : ( planning.startsAt | date: 'y' ) }}</ion-text>
+          </p>
+        </div>
+        <div>
+          <ion-text>
+            <p><ion-icon name="location" color="secondary"></ion-icon><ion-text class="space-left strong">{{ planning.location.address.state}}</ion-text></p>
+            </ion-text>
+        </div>
+        <div>
+          <p>{{ planning.location.address.full_address }}</p>
+        </div>
+      
+      </div>
       </ion-col>
     </ion-row>
     <ion-row>

@@ -1,0 +1,40 @@
+.planning-details {
+    
+   
+
+    .location_info {
+        flex-flow: row;
+    }
+
+    ion-icon {
+        flex-shrink: 0;
+    }
+
+    .truncate {
+        width: 110px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .place{
+        color: rgba(201, 201, 201, 0.904);
+        
+    }
+
+    .dates {
+       
+    }
+
+    .space-left{
+        margin-left: 5px;
+    }
+    
+    .space-right{
+        margin-right: 20px;
+    }
+
+    .strong {
+        color: rgba(224, 91, 13, 0.904);
+    }
+}
