@@ -2,13 +2,22 @@
   (click)="onGoToSee(cosplay)"
   routerDirection="forward"
   detail
+  class="cosplay_item"
 >
   <ion-thumbnail *ngIf="cosplay.imageUrl != null" slot="start">
     <ion-img [src]="cosplay.imageUrl"></ion-img>
   </ion-thumbnail>
-  <ion-icon *ngIf="cosplay.imageUrl == null" slot="start" name="image"></ion-icon>
+  <div class="thumbnail_icon" *ngIf="cosplay.imageUrl == null">
+    <ion-icon *ngIf="cosplay.imageUrl == null" slot="start" name="image" size="large"></ion-icon>
+  </div>
+
   <ion-label>
-    <h2>{{ cosplay.characterName }}</h2>
-    <p>{{ cosplay.series }}</p>
+    <div class="header">
+      <h2>{{ cosplay.characterName }}</h2>
+      <p>{{ cosplay.series }}</p>
+    </div>  
   </ion-label>
+  <ion-button slot="end" size="small" color="danger" (click)="onDeleteCosplay(cosplay.id);$event.stopPropagation();">
+    <ion-icon  name="close" ></ion-icon>
+  </ion-button>
 </ion-item>

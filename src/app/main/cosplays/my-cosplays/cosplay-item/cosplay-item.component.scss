@@ -1,0 +1,20 @@
+.cosplay_item .header{
+    padding: 0 8px 0 8px;
+}
+
+
+.planning_item .header ion-item {
+    --padding-end: 0px;
+    --inner-padding-end: 0px;
+    // here other custom CSS from documentation
+}
+
+.cosplay_item .thumbnail_icon {
+    width: 40px;
+    height: 40px;
+
+    ion-icon {
+        color: rgb(136, 133, 133);
+      }
+
+}
