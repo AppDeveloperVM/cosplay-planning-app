@@ -69,9 +69,20 @@ export class CosplaysService {
             reject(err.message)
         }
     })
+  }
+
+  onDeleteCosplay(cosplayId: string): Promise<void> {
+    return new Promise (async (resolve, reject) => {
+        try {
+            const result = this.cosplaysCollection.doc(cosplayId).delete();
+            resolve(result);
+        } catch(err){
+            reject(err.message)
+        }
+    })
 }
 
-  fetchCosplays() {
+  /* fetchCosplays() {
     return this.http
     .get<{[key: string]: CosplayData}>(
       'https://cosplay-planning-app.firebaseio.com/my-cosplays.json'
@@ -98,9 +109,9 @@ export class CosplaysService {
       this._cosplays.next(cosplays);
     })
     );
-  }
+  } */
 
-  getCosplay(id: string) {
+  /* getCosplay(id: string) {
     return this.http.get<CosplayData>(
       `https://cosplay-planning-app.firebaseio.com/my-cosplays/${id}.json`
     ).pipe(
@@ -118,7 +129,7 @@ export class CosplaysService {
           );
       })
     );
-  }
+  } */
 
   getCosplayById(cosplayId: string) {
     return this.cosplays.pipe(take(1), map(cosplays => {
@@ -138,7 +149,7 @@ export class CosplaysService {
     );
   }
 
-  addCosplay(
+  /* addCosplay(
     characterName: string,
     description: string,
     imageUrl: string,
@@ -177,35 +188,11 @@ export class CosplaysService {
     );
     /*return this.cosplays.pipe(take(1)).subscribe((cosplays) => {
       this._cosplays.next(cosplays.concat(newCosplay));
-    });**/
-  }
+    });
+  } */
 
-  // Pero yo necesito un nuevo cosplay Group character request
-  setCosplayGroupRequest(
-    id: string,
-    characterName: string,
-    description: string,
-    imageUrl: string,
-    series: string,
-    funds: number,
-    percentComplete: string,
-    status: boolean,
-    userId: string
-  ) {
-    const newCosplayRequest = new Cosplay(
-        Math.random().toString(),
-        characterName,
-        description,
-        imageUrl,
-        series,
-        funds,
-        percentComplete,
-        status,
-        this.authService.userId
-    );
-  }
 
-  updateCosplay(
+  /* updateCosplay(
     cosplayId: string,
     characterName: string,
     description: string,
@@ -251,6 +238,6 @@ export class CosplaysService {
       , tap(cosplays  => {
         this._cosplays.next(updatedCosplays);
       }));
-  }
+  } */
 
 }
