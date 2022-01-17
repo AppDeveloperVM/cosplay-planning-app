@@ -118,7 +118,7 @@ export class NewPlanningPage implements OnInit {
       console.log(this.form.value)
     }
 
-    /*this.loadingCtrl
+    this.loadingCtrl
     .create({
       message: 'Creating Planning...'
     })
@@ -132,7 +132,7 @@ export class NewPlanningPage implements OnInit {
       this.form.reset();
       this.router.navigate(['main/tabs/planning']);
     });
-    */
+    
     
   }
 
