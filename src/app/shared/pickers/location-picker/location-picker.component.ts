@@ -6,11 +6,12 @@ import { MapModalLeafletComponent } from '../../map-modal-leaflet/map-modal-leaf
 import { map, switchMap } from 'rxjs/operators';
 import { PlaceLocation, Coordinates } from '../../../models/location.model';
 import { Observable, of } from 'rxjs';
-import { Plugins, Capacitor } from '@capacitor/core';
+import { Plugins, Capacitor, CallbackID } from '@capacitor/core';
 import * as L from "leaflet";
 import * as ELG from "esri-leaflet-geocoder";
 
 import { AddressData } from 'src/app/models/addressData.model'
+import { LocationService } from 'src/app/services/location.service';
 
 @Component({
   selector: 'app-location-picker',
@@ -27,6 +28,8 @@ export class LocationPickerComponent implements OnInit {
   streetObserv: Observable<any>;
   streetData: any;
 
+  watchId: CallbackID = '';
+  state: any;
   isLoading = false;
 
   constructor(
@@ -34,6 +37,7 @@ export class LocationPickerComponent implements OnInit {
       private httpClient: HttpClient,
       private actionSheetCtrl: ActionSheetController,
       private alertCtrl: AlertController,
+      private locationService: LocationService
     ) { }
 
   ngOnInit() {
@@ -41,6 +45,7 @@ export class LocationPickerComponent implements OnInit {
   }
 
   onPickLocation() {
+    
     this.actionSheetCtrl.create({header: 'Please Choose', buttons: [
       {text: 'Auto-Locate', handler: () => {
         this.locateUser();
@@ -56,6 +61,7 @@ export class LocationPickerComponent implements OnInit {
 
   private locateUser() {
     if (!Capacitor.isPluginAvailable('Geolocation')) {
+      
       this.showErrorAlert();
       return;
     }
@@ -73,8 +79,71 @@ export class LocationPickerComponent implements OnInit {
     }).
     catch(err => {
       this.isLoading = false;
-      this.showErrorAlert();
+      //this.showErrorAlert();
     });
+  }
+
+  checkPermissions = async () => {
+    const hasPermission = await this.locationService.checkGPSPermission();
+    if (hasPermission) {
+      if (Capacitor.isNative) {
+          const canUseGPS = await this.locationService.askToTurnOnGPS();
+          this.postGPSPermission(canUseGPS);
+      }
+      else {
+          this.postGPSPermission(true);
+      }
+    }
+  }
+
+  postGPSPermission = async (canUseGPS: boolean) => {
+    if (canUseGPS) {
+        this.watchPosition();
+    }
+    else {
+        await this.alertCtrl.create({
+          message: 'Please turn on GPS to get location'
+        })
+    }
+  }
+
+  watchPosition = async () => {
+    try {
+        this.isLoading = true;
+        this.getCurrentCoords();
+    }
+    catch (err) { console.log('err', err) }
+  }
+
+  clearWatch() {
+    if (this.watchId != null) {
+      Plugins.Geolocation.clearWatch({ id: this.watchId });
+    }
+    this.isLoading = false
+  }
+
+  private getCurrentCoords(){ 
+    if (!Capacitor.isPluginAvailable('Geolocation')) {
+      this.showErrorAlert();
+      return;
+    }
+    this.isLoading = true;
+    Plugins.Geolocation.getCurrentPosition().
+      then(geoPosition => {
+        const coordinates: Coordinates = {
+          lat: geoPosition.coords.latitude,
+          lng: geoPosition.coords.longitude
+        };
+        this.center = coordinates;
+        
+        console.log('Coords Obtained');
+        this.isLoading = false;
+      }).
+      catch(err => {
+        this.isLoading = false;
+        this.showErrorAlert();
+        //this.checkPermissions();
+      });
   }
 
 
@@ -170,28 +239,7 @@ export class LocationPickerComponent implements OnInit {
 
   }
 
-  private getCurrentCoords(){
-    if (!Capacitor.isPluginAvailable('Geolocation')) {
-      this.showErrorAlert();
-      return;
-    }
-    this.isLoading = true;
-    Plugins.Geolocation.getCurrentPosition().
-    then(geoPosition => {
-      const coordinates: Coordinates = {
-        lat: geoPosition.coords.latitude,
-        lng: geoPosition.coords.longitude
-      };
-      this.center = coordinates;
-      
-      console.log('Coords Obtained');
-      this.isLoading = false;
-    }).
-    catch(err => {
-      this.isLoading = false;
-      this.showErrorAlert();
-    });
-  }
+  
 
   private getMapImage(lat: number, lng: number, zoom: number) {
     var KEY = 'hmAnp6GU6CtArMcnLn38nJS0Sb1orh9Q';
