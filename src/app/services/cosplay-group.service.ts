@@ -97,6 +97,17 @@ export class CosplayGroupService {
         })
     }
 
+    onDeleteCosGroup(cosGroupId: string): Promise<void> {
+        return new Promise (async (resolve, reject) => {
+            try {
+                const result = this.cosgroupsCollection.doc(cosGroupId).delete();
+                resolve(result);
+            } catch(err){
+                reject(err.message)
+            }
+        })
+    }
+
     //CosGroup Request
     onSaveCosGroupRequest(cosGroupMember: CosGroupMember, cosGroupMemberId: string): Promise<void> {
         return new Promise( async (resolve, reject) => {
