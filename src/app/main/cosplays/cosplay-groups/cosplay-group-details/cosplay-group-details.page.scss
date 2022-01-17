@@ -14,6 +14,26 @@ p {
   justify-content: space-between;
 }
 
+.cosgroup-details {
+
+    ion-icon {
+      flex-shrink: 0;
+    }
+
+    .space-left{
+      margin-left: 5px;
+    }
+
+    .space-right{
+      margin-right: 20px;
+    }
+
+    .strong {
+      color: rgba(224, 91, 13, 0.904);
+    }
+
+}
+
 .cosgroup_members {
 
   .confirm_assistance ion-icon {
@@ -36,6 +56,8 @@ p {
   .to_right{
     text-align: right;
   }
+
+  
 
 }
 

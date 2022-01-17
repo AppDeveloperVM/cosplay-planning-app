@@ -22,19 +22,38 @@
   <div text-center *ngIf="isLoading">        
     <ion-spinner color="primary" ></ion-spinner>
   </div>
+
   <ion-grid *ngIf="!isLoading">
     <ion-row>
-      <ion-col size-md="6" offset-md="3" padding text-center>
-        <p>{{ cosplayGroup.location.address.full_address }}</p>
+      <ion-col size-sm="8" offset-sm="2" size-md="8" offset-md="2" padding text-center>
+        <div class="cosgroup-details">
+          <div class="dates">
+            <ion-icon name="calendar" color="secondary"></ion-icon>
+            <ion-text  class="strong space-left">{{ isMobile == true ? (  cosplayGroup.dateFrom | date: 'MMM d' ) : (  cosplayGroup.dateFrom | date: 'MMM d' ) }}</ion-text> 
+            <span class="space-left">to</span>
+            <ion-text  class="strong space-left">{{ isMobile == true ? ( cosplayGroup.dateTo | date: 'd' ) : ( cosplayGroup.dateTo | date: 'd' ) }}</ion-text>
+            <span class="space-left">|</span>
+            <ion-text  class="space-left">{{ isMobile == true ? ( cosplayGroup.dateFrom | date: 'y' ) : ( cosplayGroup.dateFrom | date: 'y' ) }}</ion-text>
+          </div>
+          <div>
+            <ion-text>
+              <p><ion-icon name="location" color="secondary"></ion-icon><ion-text class="space-left strong">{{ cosplayGroup.location.address.state}}</ion-text></p>
+              </ion-text>
+          </div>
+          <div>
+            <p>{{ cosplayGroup.location.address.full_address }}</p>
+          </div>
+
+        </div>
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col size-md="6" offset-md="3" no-padding>
+      <ion-col size-sm="8" offset-sm="2" size-md="8" offset-md="2" padding>
         <ion-img role="button" (click)="onShowFullMap()" class="location-image" [src]="cosplayGroup.location.staticMapImageUrl"></ion-img>
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col size-md="6" offset-md="3">
+      <ion-col size-sm="8" offset-sm="2" size-md="8" offset-md="2">
 
         <div class="list-header">
           <p>Actual Characters taken</p>
@@ -67,7 +86,7 @@
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col size-md="6" offset-md="3">
+      <ion-col size-sm="8" offset-sm="2" size-md="8" offset-md="2">
         
           <ion-button color="primary" margin 
           routerDirection="forward"
