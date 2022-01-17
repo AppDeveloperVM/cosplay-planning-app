@@ -107,7 +107,7 @@ export class NewCosplayPage implements OnInit {
     });
   }
 
-  onCreateCosplay() {
+  /* onCreateCosplay() {
     if (!this.form.valid) {
       return;
     }
@@ -139,6 +139,6 @@ export class NewCosplayPage implements OnInit {
       });
     });
 
-  }
+  } */
 
 }
