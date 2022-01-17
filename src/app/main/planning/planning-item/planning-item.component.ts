@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
-import { Platform } from '@ionic/angular';
+import { LoadingController, Platform } from '@ionic/angular';
+import { PlanningService } from 'src/app/services/planning.service';
 import { Planning } from '../planning.model';
 
 @Component({
@@ -21,7 +22,9 @@ export class PlanningItemComponent implements OnInit {
 
   constructor(
     private router: Router, 
-    private platform: Platform
+    private platform: Platform,
+    private loadingCtrl: LoadingController,
+    private planningService: PlanningService,
   ) { }
 
   ngOnInit() {
@@ -41,6 +44,28 @@ export class PlanningItemComponent implements OnInit {
   onGoToEdit(item: any): void {
     this.navigationExtras.state.value = item;
     this.router.navigate(['main/tabs/planning/edit-planning'], this.navigationExtras );
+  }
+
+  async onDeletePlanning(planningId: string): Promise<void> {
+
+    await this.loadingCtrl
+    .create({
+      message: 'Deleting Planning...'
+    })
+    .then(loadingEl => {
+      loadingEl.present();
+        try {
+          this.planningService.onDeletePlanning(planningId);
+        }catch (err) {
+          console.log(err);
+        }
+
+        setTimeout(() => {
+          loadingEl.dismiss();
+        }, 500);
+
+      //this.router.navigate(['main/tabs/cosplays/cosplay-groups']);
+    });
   }
 
 }

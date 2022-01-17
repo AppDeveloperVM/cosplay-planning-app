@@ -1,9 +1,29 @@
 h1 {
     font-size: 18px;
-    border: 1px solid var(--ion-color-primary);
-    padding: 8px;
+}
+
+.planning_item .header{
+    border: 1px solid rgb(48, 82, 141);;
+    padding: 0 8px 0 8px;
+    margin: 4px;
     border-radius: 5px;
     color: lightgrey;
+}
+
+.planning_item .header ion-item {
+    --padding-end: 0px;
+    --inner-padding-end: 0px;
+    // here other custom CSS from documentation
+}
+
+.planning_item .thumbnail_icon {
+    width: 40px;
+    height: 40px;
+
+    ion-icon {
+        color: rgb(136, 133, 133);
+      }
+
 }
 
 .planning-details {

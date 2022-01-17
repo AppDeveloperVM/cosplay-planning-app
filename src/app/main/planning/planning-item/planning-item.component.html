@@ -1,14 +1,25 @@
 <ion-item 
-  (click)="onGoToSee(planning)"
+button
+(click)="onGoToSee(planning)"
   detail
+  class="planning_item"
 >
-    <ion-thumbnail slot="start" *ngIf="planning.imageUrl != null">
+    <ion-thumbnail *ngIf="planning.imageUrl != null" slot="start" >
       <ion-img [src]="planning.imageUrl"></ion-img>
     </ion-thumbnail>
-    <ion-icon *ngIf="planning.imageUrl == null" slot="start" name="image"></ion-icon>
+    <div class="thumbnail_icon" *ngIf="planning.imageUrl == null">
+      <ion-icon slot="start" name="image" size="large"></ion-icon>
+    </div>
 
     <ion-label>
-      <h1>{{ planning.title }}</h1>
+      <div class="header">
+        <ion-item class="ion-no-padding" lines="none">
+          <h1 slot="start">{{ planning.title }}</h1>
+          <ion-button slot="end" size="small" color="danger" (click)="onDeletePlanning(planning.id);$event.stopPropagation();">
+            <ion-icon  name="close" ></ion-icon>
+          </ion-button>
+        </ion-item>
+      </div>
       <div class="planning-details">
         <div class="location_info">
           <ion-icon name="location" color="secondary"></ion-icon>
