@@ -83,44 +83,7 @@ export class LocationPickerComponent implements OnInit {
     });
   }
 
-  checkPermissions = async () => {
-    const hasPermission = await this.locationService.checkGPSPermission();
-    if (hasPermission) {
-      if (Capacitor.isNative) {
-          const canUseGPS = await this.locationService.askToTurnOnGPS();
-          this.postGPSPermission(canUseGPS);
-      }
-      else {
-          this.postGPSPermission(true);
-      }
-    }
-  }
 
-  postGPSPermission = async (canUseGPS: boolean) => {
-    if (canUseGPS) {
-        this.watchPosition();
-    }
-    else {
-        await this.alertCtrl.create({
-          message: 'Please turn on GPS to get location'
-        })
-    }
-  }
-
-  watchPosition = async () => {
-    try {
-        this.isLoading = true;
-        this.getCurrentCoords();
-    }
-    catch (err) { console.log('err', err) }
-  }
-
-  clearWatch() {
-    if (this.watchId != null) {
-      Plugins.Geolocation.clearWatch({ id: this.watchId });
-    }
-    this.isLoading = false
-  }
 
   private getCurrentCoords(){ 
     if (!Capacitor.isPluginAvailable('Geolocation')) {
