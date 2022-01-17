@@ -51,48 +51,23 @@ export class EditCosplayPage implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.route.paramMap.subscribe(paramMap => {
-      if (!paramMap.has('cosplayId')) {
-        this.navCtrl.navigateBack('main/tabs/cosplays/my-cosplays');
-        return;
-      }
-      this.cosplayId = paramMap.get('cosplayId');
-      this.isLoading = true;
-      this.cosplaySub = this.cosplayService
-      .getCosplay(paramMap.get('cosplayId'))
-      .subscribe(cosplay => {
-        this.cosplay = cosplay;
-        this.form = new FormGroup({
-          characterName: new FormControl(this.cosplay.characterName , {
-            updateOn: 'blur',
-            validators: [Validators.required]
-          }),
-          series: new FormControl(this.cosplay.series, {
-            updateOn: 'blur',
-            validators: [Validators.required, Validators.maxLength(180)]
-          }),
-          description: new FormControl(this.cosplay.description, {
-            updateOn: 'blur',
-            validators: [Validators.required, Validators.maxLength(180)]
-          }),
-          image: new FormControl(null)
-        });
-        this.actualImage = this.cosplay.imageUrl;
-        this.isLoading = false;
-      }, error => {
-        this.alertCtrl.create({
-          header: 'An error ocurred!',
-          message: 'Cosplay could not be fetched. Try again later',
-          buttons:  [{text: 'Okay',
-          handler: () => {
-            this.router.navigate(['/main/tabs/cosplays/my-cosplays']);
-          }}] })
-      .then(alertEl => {
-        alertEl.present();
-      });
-      });
-
+    this.form = new FormGroup({
+      characterName: new FormControl(this.cosplay.characterName , {
+        updateOn: 'blur',
+        validators: [Validators.required]
+      }),
+      series: new FormControl(this.cosplay.series, {
+        updateOn: 'blur',
+        validators: [Validators.required, Validators.maxLength(180)]
+      }),
+      description: new FormControl(this.cosplay.description, {
+        updateOn: 'blur',
+        validators: [Validators.required, Validators.maxLength(180)]
+      }),
+      image: new FormControl(null)
     });
+    this.actualImage = this.cosplay.imageUrl;
+    this.isLoading = false;
   }
 
   onImagePicked(imageData: string | File) {
@@ -113,7 +88,7 @@ export class EditCosplayPage implements OnInit, OnDestroy {
     this.form.get('image').value;
   }
 
-  onUpdateCosplay() {
+ /*  onUpdateCosplay() {
     if (!this.form.valid) {
       return;
     }
@@ -147,7 +122,7 @@ export class EditCosplayPage implements OnInit, OnDestroy {
         });
     });
 
-  }
+  } */
 
   ngOnDestroy() {
     if (this.cosplaySub) {
