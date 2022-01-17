@@ -3,7 +3,7 @@ import { Planning } from './planning.model';
 import { Subscription } from 'rxjs';
 import { PlanningService } from '../../services/planning.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { PopoverController } from '@ionic/angular';
+import { LoadingController, PopoverController } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -13,11 +13,14 @@ import { RouterModule } from '@angular/router';
 })
 export class PlanningPage implements OnInit, OnDestroy {
   plannings$ = this.planningService.planningsObs;
+  planning = null;
+  planningId: string;
 
-  loadedPlannings: Planning[];
-  isLoading = false;
+  /* loadedPlannings: Planning[];
   listedLoadedPlannings: Planning[];
   relevantPlannings: Planning[];
+ */
+  isLoading = false;
   private planningSub: Subscription;
   private filter = 'all';
 
@@ -25,22 +28,25 @@ export class PlanningPage implements OnInit, OnDestroy {
     private planningService: PlanningService,
     private authService: AuthService,
     private popoverCtrl: PopoverController,
-    private routermodule: RouterModule
+    private routermodule: RouterModule,
+    private loadingCtrl: LoadingController
   ) { }
 
   ngOnInit() {
-    this.planningSub = this.planningService.plannings.subscribe(
+    /* this.planningSub = this.planningService.plannings.subscribe(
     plannings => {
       this.loadedPlannings = plannings;
       this.listedLoadedPlannings = this.loadedPlannings;
       this.onFilterUpdate(this.filter);
-    });
+    }); */
     // this.relevantCosplays = this.loadedCosplays;
 
   }
 
+  
+
   onFilterUpdate(filter: string) {
-    if (filter === 'all') {
+    /* if (filter === 'all') {
       this.relevantPlannings = this.loadedPlannings; // show everything (?)
     } else {
       // filtro - a mostrar tras elegir segundo segmented button on main
@@ -48,14 +54,14 @@ export class PlanningPage implements OnInit, OnDestroy {
         planning => planning// .status !== true // checking status
       );
     }
-    this.listedLoadedPlannings = this.relevantPlannings;
+    this.listedLoadedPlannings = this.relevantPlannings; */
   }
 
   ionViewWillEnter() {
-    this.isLoading = true;
-    this.planningService.fetchPlannings().subscribe(() => {
+    //this.isLoading = true;
+    /* this.planningService.fetchPlannings().subscribe(() => {
       this.isLoading = false;
-    });
+    }); */
   }
 
   ngOnDestroy() {
