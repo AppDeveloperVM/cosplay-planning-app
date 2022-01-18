@@ -3,18 +3,40 @@
 }
 
 
-.planning_item .header ion-item {
-    --padding-end: 0px;
-    --inner-padding-end: 0px;
-    // here other custom CSS from documentation
+.cosplay_item {
+
+    .thumbnail_icon {
+        width: 40px;
+        height: 40px;
+    
+        ion-icon {
+            color: rgb(136, 133, 133);
+          }
+    }
+
+    .header {
+        min-width:120px;
+    
+        ion-item {
+            --padding-end: 0px;
+            --inner-padding-end: 0px;
+            // here other custom CSS from documentation
+        }
+
+        .header-info h2, .header-info p{
+            max-width:210px!important;
+        }
+
+        ion-button {
+            margin-inline-start:4px;
+        }
+
+    }
+
 }
 
-.cosplay_item .thumbnail_icon {
-    width: 40px;
-    height: 40px;
-
-    ion-icon {
-        color: rgb(136, 133, 133);
-      }
-
+.truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

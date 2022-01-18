@@ -13,11 +13,15 @@
 
   <ion-label>
     <div class="header">
-      <h2>{{ cosplay.characterName }}</h2>
-      <p>{{ cosplay.series }}</p>
+      <ion-item>
+      <div class="header-info truncate">
+        <h2>{{ cosplay.characterName }}</h2>
+        <p>{{ cosplay.series }}</p>
+      </div>
+      <ion-button slot="end" size="small" color="danger" (click)="onDeleteCosplay(cosplay.id);$event.stopPropagation();">
+        <ion-icon  name="close" ></ion-icon>
+      </ion-button>
+    </ion-item>
     </div>  
   </ion-label>
-  <ion-button slot="end" size="small" color="danger" (click)="onDeleteCosplay(cosplay.id);$event.stopPropagation();">
-    <ion-icon  name="close" ></ion-icon>
-  </ion-button>
 </ion-item>
