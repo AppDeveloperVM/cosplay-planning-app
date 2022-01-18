@@ -12,16 +12,23 @@ class="cosgroup_item">
   
   <ion-label>
     <div class="header">
-      <ion-item class="ion-no-padding" lines="none">
-        <h1 slot="start">{{ cosplaygroup.title }}</h1>
+      <ion-item class="inner_item_info ion-no-padding" lines="none">
+        <div class="title truncate">
+          <h1 slot="start">{{ cosplaygroup.title }}</h1>
+          <p>
+            <span class="place space-left space-right truncate">{{ cosplaygroup.series }}</span>
+          </p>
+        </div>
         <ion-button slot="end" size="small" color="danger" (click)="onDeleteCosGroup(cosplaygroup.id);$event.stopPropagation();">
           <ion-icon  name="close" ></ion-icon>
         </ion-button>
       </ion-item>
     </div>
     <div class="cosplaygroup-details">
-      <ion-icon name="location" color="secondary"></ion-icon>
-      <span class="place space-left space-right truncate">{{ cosplaygroup.place }}</span>
+      <p class="location_info">
+        <ion-icon name="location" color="secondary"></ion-icon>
+        <span class="place space-left space-right truncate">{{ cosplaygroup.location.address.state }}</span>
+      </p>
       <div class="dates">
         <ion-icon name="calendar" color="secondary"></ion-icon>
         <ion-text  class="space-left">{{ isMobile == true ? (  cosplaygroup.dateFrom | date: 'MMM d' ) : (  cosplaygroup.dateFrom | date: 'MMM d' ) }}</ion-text> 

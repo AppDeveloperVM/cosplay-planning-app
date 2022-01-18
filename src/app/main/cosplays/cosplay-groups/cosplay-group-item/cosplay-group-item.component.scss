@@ -1,32 +1,10 @@
 ion-item {
     margin: 0;
-}
-
-.cosgroup_item .header{
-    border: 1px solid rgb(48, 82, 141);
-    padding: 0 8px 0 8px;
-    margin: 4px;
-    border-radius: 5px;
-    color: lightgrey;
-}
-
-.cosgroup_item .thumbnail_icon {
-    width: 40px;
-    height: 40px;
-
-    ion-icon {
-        color: rgb(136, 133, 133);
-      }
-
-}
-
-
-
-.planning_item .header ion-item {
     --padding-end: 0px;
-    --inner-padding-end: 0px;
-    // here other custom CSS from documentation
+    --inner-padding-end: 5px;
+    // here other custom CSS from documentation 
 }
+
 
 h1 {
     font-size: 18px;
@@ -37,32 +15,72 @@ h1 {
     color: rgb(146, 146, 146);
 }
 
-.cosplaygroup-details {
-    display: flex;
-    align-items: center;
+.cosgroup_item {
 
-    .location_info {
-        flex-flow: row;
+    .thumbnail_icon {
+        width: 40px;
+        height: 40px;
+    
+        ion-icon {
+            color: rgb(136, 133, 133);
+          }
     }
+
+    .header{
+        min-width:120px;
+        border: 1px solid rgb(48, 82, 141);;
+        padding: 0 8px 0 8px;
+        margin: 4px;
+        border-radius: 5px;
+        color: lightgrey;
+
+        ion-item {
+            --padding-end: 0px;
+            --inner-padding-end: 0px;
+            // here other custom CSS from documentation  
+        }
+
+        .title h1{
+            max-width:210px!important;
+        }
+
+        
+
+        ion-button {
+            margin-inline-start:4px;
+        }
+
+        
+    }
+
+    
 
     ion-icon {
         flex-shrink: 0;
     }
 
-    .truncate {
-        width: 110px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+}
+
+.truncate , ion-text , p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cosplaygroup-details {
+    display: flex;
+    align-items: center;
+
+    .location_info {
+        min-width:90px;
     }
-    
+
     .place{
         color: rgba(201, 201, 201, 0.904);
-        
     }
 
     .dates {
-        width:170px;
+        min-width:115px;
         margin-left: auto; 
         margin-right: 0;
         text-align: right;
@@ -73,7 +91,7 @@ h1 {
     }
     
     .space-right{
-        margin-right: 20px;
+        margin-right: 5px;
     }
 
     .days-long{
