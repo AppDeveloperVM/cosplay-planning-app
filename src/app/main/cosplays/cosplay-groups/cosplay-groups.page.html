@@ -1,7 +1,7 @@
 <app-header titulo="Cosplay Groups" [routeArray]="['/', 'main', 'tabs' , 'cosplays', 'cosplay-groups', 'new' ]">
 </app-header>
 
-<ion-content class="ion-padding">
+<ion-content>
   <ion-segment (ionChange)="onFilterUpdate($event.detail.value)">
     <ion-segment-button value="all" checked>All Groups</ion-segment-button>
     <ion-segment-button value="requested">My Requested </ion-segment-button>
@@ -19,6 +19,7 @@
       </ion-col>
 
       <ion-col
+      size="12"
       size-md="6" 
       offset-md="3"
       size="8" offset="2"
