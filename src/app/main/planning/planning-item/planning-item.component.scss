@@ -2,28 +2,48 @@ h1 {
     font-size: 18px;
 }
 
-.planning_item .header{
-    border: 1px solid rgb(48, 82, 141);;
-    padding: 0 8px 0 8px;
-    margin: 4px;
-    border-radius: 5px;
-    color: lightgrey;
+.planning_item {
+
+    .thumbnail_icon {
+        width: 40px;
+        height: 40px;
+    
+        ion-icon {
+            color: rgb(136, 133, 133);
+          }
+    }
+
+    .header{
+        min-width:120px;
+        border: 1px solid rgb(48, 82, 141);;
+        padding: 0 8px 0 8px;
+        margin: 4px;
+        border-radius: 5px;
+        color: lightgrey;
+
+        ion-item {
+            --padding-end: 0px;
+            --inner-padding-end: 0px;
+            // here other custom CSS from documentation  
+        }
+
+        .title h1, .location_info p{
+            max-width:210px!important;
+        }
+
+        
+    }
+
+    ion-button {
+        margin-inline-start:4px;
+    }
+
 }
 
-.planning_item .header ion-item {
-    --padding-end: 0px;
-    --inner-padding-end: 0px;
-    // here other custom CSS from documentation
-}
-
-.planning_item .thumbnail_icon {
-    width: 40px;
-    height: 40px;
-
-    ion-icon {
-        color: rgb(136, 133, 133);
-      }
-
+.truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .planning-details {

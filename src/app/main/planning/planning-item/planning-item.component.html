@@ -13,18 +13,23 @@ button
 
     <ion-label>
       <div class="header">
-        <ion-item class="ion-no-padding" lines="none">
-          <h1 slot="start">{{ planning.title }}</h1>
-          <ion-button slot="end" size="small" color="danger" (click)="onDeletePlanning(planning.id);$event.stopPropagation();">
-            <ion-icon  name="close" ></ion-icon>
+        <ion-item class="inner_item_info ion-no-padding" lines="none">
+          <div class="title truncate">
+            <h1 slot="start">{{ planning.title }}</h1>
+            <div class="location_info">
+            <p>
+              <ion-icon name="location" color="secondary"></ion-icon>
+              <span class="place space-left space-right truncate">{{ planning.location.address.state}}</span>
+            </p>
+            </div>
+          </div>
+          <ion-button class="delete_button" slot="end" type="buton" size="small" color="danger" (click)="onDeletePlanning(planning.id);$event.stopPropagation();">
+            <ion-icon name="close" ></ion-icon>
           </ion-button>
         </ion-item>
       </div>
+
       <div class="planning-details">
-        <div class="location_info">
-          <ion-icon name="location" color="secondary"></ion-icon>
-          <span class="place space-left space-right truncate">{{ planning.location.address.state}}</span>
-        </div>
         <div class="dates">
           <ion-icon name="calendar" color="secondary"></ion-icon>
           <ion-text  class="space-left">{{ isMobile == true ? ( planning.startsAt | date: 'MMM d' ) : ( planning.startsAt | date: 'MMM d' ) }}</ion-text>
