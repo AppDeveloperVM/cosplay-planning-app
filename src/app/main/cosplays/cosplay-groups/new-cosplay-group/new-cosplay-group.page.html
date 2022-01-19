@@ -5,7 +5,9 @@
     </ion-buttons>
     <ion-title>New Cosplay Group</ion-title>
     <ion-buttons slot="primary">
-      <ion-button (click)="onSaveCosGroup()" >
+      <ion-button 
+      [disabled]="!form.valid || !isFormReady" 
+      (click)="onSaveCosGroup()" >
         <ion-icon name="checkmark" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -86,7 +88,7 @@
     <ion-row>
       <ion-col size-sm="6" offset-sm="3">
         <app-image-picker
-        [showPreview]="form.get('image').value"
+        [showPreview]="form.get('imageUrl').value"
         (imagePick)="onImagePicked($event)"></app-image-picker>
       </ion-col>
     </ion-row>

@@ -4,16 +4,19 @@ import { CosplayGroup } from '../cosplay-group.model';
 import { CosplayGroupService } from '../../../../services/cosplay-group.service';
 import { Router } from '@angular/router';
 import { PlaceLocation } from '../../../../models/location.model';
-import { switchMap } from 'rxjs/operators';
+import { finalize, switchMap } from 'rxjs/operators';
 import { LoadingController } from '@ionic/angular';
 import { CosGroup } from 'src/app/models/cosGroup.interface';
 
 import { UploadImageService } from '../../../../services/upload-img.service';
 import { FirebaseStorageService } from '../../../../services/firebase-storage.service';
+import { getStorage, ref, uploadBytes,getDownloadURL } from "firebase/storage";
+
 
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreCollectionGroup } from '@angular/fire/compat/firestore';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { Observable } from 'rxjs';
 
 
 function base64toBlob(base64Data, contentType) {
@@ -51,9 +54,10 @@ export class NewCosplayGroupPage implements OnInit {
   endDate: string;
   cosGroup: CosGroup;
   isLoading: boolean = false;
-
-  imgReference;
-  public URLPublica = '';
+  isFormReady = false;
+  uploadPercent: Observable<number>;
+  ImageObs: Observable<string>;
+  urlImage: String;
 
   constructor(
     private cosplayGroupService: CosplayGroupService,
@@ -61,7 +65,8 @@ export class NewCosplayGroupPage implements OnInit {
     private loadingCtrl: LoadingController,
     private afs: AngularFireStorage,
     private fbss: FirebaseStorageService,
-    private uploadService: UploadImageService
+    private uploadService: UploadImageService,
+    private storage: AngularFireStorage
   ) {
     const navigation = this.router.getCurrentNavigation();
     //this.cosGroup = navigation?.extras?.state?.value;
@@ -100,7 +105,7 @@ export class NewCosplayGroupPage implements OnInit {
         validators: [ Validators.required]
       }),
       location: new FormControl(null, {validators: [Validators.required]}),
-      image: new FormControl(null)
+      imageUrl: new FormControl(null)
     });
   }
 
@@ -109,6 +114,7 @@ export class NewCosplayGroupPage implements OnInit {
   }
 
   async onImagePicked(imageData: string | File) {
+    this.isFormReady = false;
     let imageFile;
     if (typeof imageData === 'string') {
       try {
@@ -122,16 +128,36 @@ export class NewCosplayGroupPage implements OnInit {
     } else {
       imageFile = imageData;
     }
-    //this.form.patchValue({image: imageFile});
-    //UPLOAD IMAGE
-    const imageName = "images/"+Math.random()+imageFile;
-    const datos = imageFile;
 
-    let tarea = await this.fbss.tareaCloudStorage(imageName,datos).then((r) => {
-      this.form.patchValue({ image: r.ref.getDownloadURL() });
-    })
+    //UPLOAD IMAGE
+    const id = Math.random().toString(36).substring(2);
+    const file = imageFile;
+    const filePath = `images/${id}`;// Image path + fileName  ||  can add profile_${id}
+    const ref = this.storage.ref(filePath);
+    const task = this.storage.upload(filePath, file);
+    this.uploadPercent = task.percentageChanges();
+    task.snapshotChanges().pipe( 
+      finalize(() => {
+        this.ImageObs = ref.getDownloadURL()
+        this.ImageObs.subscribe(
+          url=>{
+            this.urlImage = url
+            console.log('Value:' + this.urlImage);
+            this.form.patchValue({ imageUrl: this.urlImage })
+            this.isFormReady = true;
+          }
+        );
+      })
+    ).subscribe(
+      value => {},
+      error => console.log('Error:'+ error),
+      () => { 
+      }
+    );
 
   }
+
+
 
   onSaveCosGroup() {
     //this.cosplayGroupService.uploadImage(this.form.get('image').value)
@@ -153,44 +179,10 @@ export class NewCosplayGroupPage implements OnInit {
       this.form.reset();
       loadingEl.dismiss();
 
-      
       this.router.navigate(['main/tabs/cosplays/cosplay-groups']);
     });
     
   }
 
-  /* onCreateGroup() {
-    if (!this.form.valid || !this.form.get('image').value ) {
-      return;
-    }
-
-    this.loadingCtrl
-    .create({
-      message: 'Creating Cosplay Group...'
-    })
-    .then(loadingEl => {
-      loadingEl.present();
-      this.cosplayGroupService.uploadImage(this.form.get('image').value)
-      .pipe(
-        switchMap(uploadRes => {
-          return this.cosplayGroupService.
-            addCosplayGroup(
-              this.form.value.title,
-              this.form.value.series,
-              uploadRes.imageUrl,
-              this.form.value.place,
-              new Date(this.form.value.dateFrom),
-              new Date(this.form.value.dateTo),
-              this.form.value.location
-            );
-      }))
-      .subscribe(() => {
-        loadingEl.dismiss();
-        this.form.reset();
-        this.router.navigate(['main/tabs/cosplays/cosplay-groups']);
-      });
-    });
-
-  } */
 
 }
