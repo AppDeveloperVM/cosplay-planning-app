@@ -72,6 +72,12 @@ export class CosplaysService {
   }
 
   onDeleteCosplay(cosplayId: string): Promise<void> {
+    //should delete img of FireStorage
+    /*
+    db : AngularFireDatabase
+    const storageRef = db.storage().ref();
+    storageRef.child('photo/' + photoId).delete();
+    */ 
     return new Promise (async (resolve, reject) => {
         try {
             const result = this.cosplaysCollection.doc(cosplayId).delete();
