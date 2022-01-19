@@ -2,14 +2,16 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormGroupDirective, FormControl, Validators } from '@angular/forms';
 import { LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
+import { finalize, switchMap } from 'rxjs/operators';
 import { PlaceLocation } from '../../../models/location.model';
 import { PlanningService } from '../../../services/planning.service';
 //FireBase
+import { getStorage, ref, uploadBytes,getDownloadURL } from "firebase/storage";
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { UploadImageService } from '../../../services/upload-img.service';
 import { FirebaseStorageService } from '../../../services/firebase-storage.service';
 import { PlanningInterface } from 'src/app/models/planning.interface';
+import { Observable } from 'rxjs';
 
 function base64toBlob(base64Data, contentType) {
   contentType = contentType || '';
@@ -42,12 +44,16 @@ export class NewPlanningPage implements OnInit {
   @ViewChild('createForm', { static: false }) createForm: FormGroupDirective;
 
   planning: PlanningInterface;
+  isFormReady = false;
+  uploadPercent: Observable<number>;
+  ImageObs: Observable<string>;
+  urlImage: String;
 
   constructor(
     private loadingCtrl: LoadingController,
     private planningService: PlanningService,
     private router: Router,
-    private fbss: FirebaseStorageService,
+    private storage: AngularFireStorage
   ) {
     const navigation = this.router.getCurrentNavigation();
     this.planning = navigation?.extras?.state?.value;
@@ -73,7 +79,7 @@ export class NewPlanningPage implements OnInit {
       location: new FormControl(null, {
         validators: [Validators.required]
       }),
-      image: new FormControl(null)
+      imageUrl: new FormControl(null)
     });
 
   }
@@ -83,6 +89,7 @@ export class NewPlanningPage implements OnInit {
   }
 
   async onImagePicked(imageData: string | File) {
+    this.isFormReady = false;
     let imageFile;
     if (typeof imageData === 'string') {
       try {
@@ -96,15 +103,33 @@ export class NewPlanningPage implements OnInit {
     } else {
       imageFile = imageData;
     }
-      //this.form.patchValue({image: imageFile});
-      //UPLOAD IMAGE
-      const imageName = "images/"+Math.random()+imageFile;
-      const datos = imageFile;
 
-      let tarea = await this.fbss.tareaCloudStorage(imageName,datos).then((r) => {
+    //UPLOAD IMAGE
+    const id = Math.random().toString(36).substring(2);
+    const file = imageFile;
+    const filePath = `images/${id}`;// Image path + fileName  ||  can add profile_${id}
+    const ref = this.storage.ref(filePath);
+    const task = this.storage.upload(filePath, file);
+    this.uploadPercent = task.percentageChanges();
+    task.snapshotChanges().pipe( 
+      finalize(() => {
+        this.ImageObs = ref.getDownloadURL()
+        this.ImageObs.subscribe(
+          url=>{
+            this.urlImage = url
+            console.log('Value:' + this.urlImage);
+            this.form.patchValue({ imageUrl: this.urlImage })
+            this.isFormReady = true;
+          }
+        );
+      })
+    ).subscribe(
+      value => {},
+      error => console.log('Error:'+ error),
+      () => { 
+      }
+    );
 
-      this.form.patchValue({ image: '' });
-    })
   }
 
   onSavePlanning() {
