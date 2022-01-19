@@ -7,7 +7,9 @@
       </ion-back-button>
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-button color="primary" [disabled]="!form.valid || !isFormReady" (click)="onSubmitCosplay()">
+      <ion-button color="primary" 
+      [disabled]="!form.valid || !isFormReady" 
+      (click)="onSubmitCosplay()">
         Done
       </ion-button>
     </ion-buttons>
@@ -15,10 +17,6 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-
-  <!--<ion-thumbnail class="user-image">
-    <img src="/assets/avatar.png">
-  </ion-thumbnail>-->
 
   <form [formGroup]="form">
     <ion-grid>

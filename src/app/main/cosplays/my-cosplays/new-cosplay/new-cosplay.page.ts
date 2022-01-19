@@ -11,6 +11,8 @@ import { getStorage, ref, uploadBytes,getDownloadURL } from "firebase/storage";
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { ImageUploaderComponent } from 'src/app/shared/uploaders/image-uploader/image-uploader.component';
 import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
+import { map } from 'leaflet';
 
 
 function base64toBlob(base64Data, contentType) {
@@ -48,7 +50,8 @@ export class NewCosplayPage implements OnInit {
   public URLPublica = '';
   isFormReady = false;
   uploadPercent: Observable<number>;
-  urlImage: Observable<string>;
+  ImageObs: Observable<string>;
+  urlImage: String;
 
   constructor(
     private modalController: ModalController,
@@ -89,31 +92,35 @@ export class NewCosplayPage implements OnInit {
     } else {
       imageFile = imageData;
     }
-    //this.form.patchValue({image: imageFile});
+
     //UPLOAD IMAGE
-    const imageName = Math.random()+imageFile;
-
-    // Create a root reference
-    const storage = getStorage();
-    const storageRef = ref(storage, encodeURIComponent("images/"+imageName) );// imageName can be whatever name to image
-
     const id = Math.random().toString(36).substring(2);
     const file = imageFile;
-    const filePath = `images`;// can add profile_${id}
-    //const ref = this.storage.ref(filePath);
+    const filePath = `images/${id}`;// Image path + fileName  ||  can add profile_${id}
+    const ref = this.storage.ref(filePath);
     const task = this.storage.upload(filePath, file);
-    //this.uploadPercent = task.percentageChanges();
+    this.uploadPercent = task.percentageChanges();
+    task.snapshotChanges().pipe( 
+      finalize(() => {
+        this.ImageObs = ref.getDownloadURL()
+        this.ImageObs.subscribe(
+          url=>{
+            this.urlImage = url
+            console.log('Value:' + this.urlImage);
+            this.form.patchValue({ imageUrl: this.urlImage })
+            this.isFormReady = true;
+          }
+        );
+      })
+    ).subscribe(
+      value => {},
+      error => console.log('Error:'+ error),
+      () => { 
+      }
+    );
 
-    //UPLOAD IMAGE
-    uploadBytes(storageRef, imageFile).then((snapshot) => {
-      getDownloadURL(storageRef).then((url) => {
-        this.isFormReady = true;
-        console.log(url);
-        this.form.patchValue({ imageUrl: url });
-      });
-      
-    })
   }
+
 
   onSubmitCosplay() {
     if (!this.form.valid) return
@@ -132,49 +139,11 @@ export class NewCosplayPage implements OnInit {
       setTimeout(() => {
         loadingEl.dismiss();
         this.form.reset();
-      this.router.navigate(['main/tabs/cosplays/my-cosplays']);
+        this.router.navigate(['main/tabs/cosplays/my-cosplays']);
       }, 500);
 
       
     });
   }
 
-  /* onCreateCosplay() {
-    if (!this.form.valid) {
-      return;
-    }
-    this.loadingCtrl
-    .create({
-      message: 'Creating Cosplay...'
-    })
-    .then(loadingEl => {
-      loadingEl.present();
-      this.cosplaysService.
-      uploadImage(this.form.get('image').value)
-      .pipe(
-        switchMap(uploadRes => {
-          return this.cosplaysService
-          .addCosplay(
-            this.form.value.characterName,
-            this.form.value.description,
-            uploadRes.imageUrl,
-            this.form.value.series,
-            0,
-            '0',
-            false
-          );
-        }))
-      .subscribe(() => {
-        loadingEl.dismiss();
-        this.form.reset();
-        this.router.navigate(['/main/tabs/cosplays/my-cosplays']);
-      });
-    });
-
-  } */
-
 }
-  function uploadFile(event: Event) {
-    throw new Error('Function not implemented.');
-  }
-
