@@ -145,17 +145,10 @@ export class CosplaysService {
     }));
   }
 
-  uploadImage(image: File) {
-    const uploadData = new FormData();
-    uploadData.append('image', image);
+  /*
 
-    return this.http.post<{imageUrl: string, imagePath: string}>(
-        'https://us-central1-cosplay-planning-app.cloudfunctions.net/storeImage',
-        uploadData
-    );
-  }
 
-  /* addCosplay(
+   addCosplay(
     characterName: string,
     description: string,
     imageUrl: string,
@@ -196,7 +189,6 @@ export class CosplaysService {
       this._cosplays.next(cosplays.concat(newCosplay));
     });
   } */
-
 
   /* updateCosplay(
     cosplayId: string,
