@@ -35,6 +35,11 @@
           <app-image-picker
           [showPreview]="form.get('imageUrl').value"
           (imagePick)="onImagePicked($event)"></app-image-picker>
+          <div class="progress">
+            <div class="progress-bar progress-bar-stripped bg-success" role="progressbar" 
+            [style.width]="(uploadPercent | async) + '%'">
+            </div>
+          </div>
         </ion-col>
       </ion-row>
       <ion-row>

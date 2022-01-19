@@ -8,7 +8,9 @@ import { switchMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment.prod';
 import { FirebaseStorageService } from 'src/app/services/firebase-storage.service';
 import { getStorage, ref, uploadBytes,getDownloadURL } from "firebase/storage";
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { ImageUploaderComponent } from 'src/app/shared/uploaders/image-uploader/image-uploader.component';
+import { Observable } from 'rxjs';
 
 
 function base64toBlob(base64Data, contentType) {
@@ -45,6 +47,8 @@ export class NewCosplayPage implements OnInit {
   imgReference;
   public URLPublica = '';
   isFormReady = false;
+  uploadPercent: Observable<number>;
+  urlImage: Observable<string>;
 
   constructor(
     private modalController: ModalController,
@@ -53,6 +57,7 @@ export class NewCosplayPage implements OnInit {
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     private fbss: FirebaseStorageService,
+    private storage: AngularFireStorage
   ) {
     const navigation = this.router.getCurrentNavigation();
     //this.cosGroup = navigation?.extras?.state?.value;
@@ -87,13 +92,19 @@ export class NewCosplayPage implements OnInit {
     //this.form.patchValue({image: imageFile});
     //UPLOAD IMAGE
     const imageName = Math.random()+imageFile;
-    const datos = imageFile;
 
     // Create a root reference
     const storage = getStorage();
     const storageRef = ref(storage, encodeURIComponent("images/"+imageName) );// imageName can be whatever name to image
 
-    //let tarea = await this.fbss.tareaCloudStorage(imageName,datos).then((r) => {
+    const id = Math.random().toString(36).substring(2);
+    const file = imageFile;
+    const filePath = `images`;// can add profile_${id}
+    //const ref = this.storage.ref(filePath);
+    const task = this.storage.upload(filePath, file);
+    //this.uploadPercent = task.percentageChanges();
+
+    //UPLOAD IMAGE
     uploadBytes(storageRef, imageFile).then((snapshot) => {
       getDownloadURL(storageRef).then((url) => {
         this.isFormReady = true;
