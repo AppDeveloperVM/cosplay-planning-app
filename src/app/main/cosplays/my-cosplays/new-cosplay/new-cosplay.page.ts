@@ -6,6 +6,10 @@ import { CosplaysService } from '../../../../services/cosplays.service';
 import { Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { FirebaseStorageService } from 'src/app/services/firebase-storage.service';
+import { getStorage, ref, uploadBytes,getDownloadURL } from "firebase/storage";
+import { environment } from 'src/environments/environment.prod';
+import { UploadImageService } from 'src/app/services/upload-img.service';
+
 
 function base64toBlob(base64Data, contentType) {
   contentType = contentType || '';
@@ -48,6 +52,7 @@ export class NewCosplayPage implements OnInit {
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     private fbss: FirebaseStorageService,
+    private uploadImgService : UploadImageService
   ) {
     const navigation = this.router.getCurrentNavigation();
     //this.cosGroup = navigation?.extras?.state?.value;
@@ -59,8 +64,9 @@ export class NewCosplayPage implements OnInit {
       characterName: new FormControl('', Validators.required),
       series: new FormControl('', Validators.required),
       description: new FormControl(''),
-      image: new FormControl(null)
+      imageUrl: new FormControl(null)
     });
+    
   }
 
   async onImagePicked(imageData: string | File) {
@@ -82,9 +88,17 @@ export class NewCosplayPage implements OnInit {
     const imageName = "images/"+Math.random()+imageFile;
     const datos = imageFile;
 
-    let tarea = await this.fbss.tareaCloudStorage(imageName,datos).then((r) => {
+    // Create a root reference
+    const storage = getStorage();
+    const storageRef = ref(storage, imageName);// imageName can be whatever name to image
 
-      this.form.patchValue({ image: '' });
+    //let tarea = await this.fbss.tareaCloudStorage(imageName,datos).then((r) => {
+    uploadBytes(storageRef, imageFile).then((snapshot) => {
+      getDownloadURL(storageRef).then((url) => {
+        console.log(url);
+        this.form.patchValue({ imageUrl: url });
+      });
+      
     })
   }
 
@@ -100,6 +114,7 @@ export class NewCosplayPage implements OnInit {
       const cosplay = this.form.value;
       const cosplayId = this.cosplay?.id || null;
       this.cosplaysService.onSaveCosplay(cosplay, cosplayId);
+      console.log(cosplay);
 
       loadingEl.dismiss();
       this.form.reset();
@@ -142,3 +157,7 @@ export class NewCosplayPage implements OnInit {
   } */
 
 }
+  function uploadFile(event: Event) {
+    throw new Error('Function not implemented.');
+  }
+
