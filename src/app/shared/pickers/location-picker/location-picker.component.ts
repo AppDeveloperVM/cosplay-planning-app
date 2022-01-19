@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
-import { ModalController, ActionSheetController, AlertController } from '@ionic/angular';
+import { ModalController, ActionSheetController, AlertController, Platform } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { MapModalLeafletComponent } from '../../map-modal-leaflet/map-modal-leaflet.component';
@@ -37,11 +37,14 @@ export class LocationPickerComponent implements OnInit {
       private httpClient: HttpClient,
       private actionSheetCtrl: ActionSheetController,
       private alertCtrl: AlertController,
-      private locationService: LocationService
+      private locationService: LocationService,
+      private platform: Platform
     ) { }
 
   ngOnInit() {
-    this.getCurrentCoords();
+    this.platform.ready().then(() => {
+      this.getCurrentCoords();
+    });
   }
 
   onPickLocation() {
