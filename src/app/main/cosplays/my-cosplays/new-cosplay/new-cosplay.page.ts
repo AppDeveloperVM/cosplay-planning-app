@@ -5,10 +5,10 @@ import { Cosplay } from '../../cosplay.model';
 import { CosplaysService } from '../../../../services/cosplays.service';
 import { Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment.prod';
 import { FirebaseStorageService } from 'src/app/services/firebase-storage.service';
 import { getStorage, ref, uploadBytes,getDownloadURL } from "firebase/storage";
-import { environment } from 'src/environments/environment.prod';
-import { UploadImageService } from 'src/app/services/upload-img.service';
+import { ImageUploaderComponent } from 'src/app/shared/uploaders/image-uploader/image-uploader.component';
 
 
 function base64toBlob(base64Data, contentType) {
@@ -44,6 +44,7 @@ export class NewCosplayPage implements OnInit {
   cosplay: Cosplay;
   imgReference;
   public URLPublica = '';
+  isFormReady = false;
 
   constructor(
     private modalController: ModalController,
@@ -52,7 +53,6 @@ export class NewCosplayPage implements OnInit {
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     private fbss: FirebaseStorageService,
-    private uploadImgService : UploadImageService
   ) {
     const navigation = this.router.getCurrentNavigation();
     //this.cosGroup = navigation?.extras?.state?.value;
@@ -70,6 +70,7 @@ export class NewCosplayPage implements OnInit {
   }
 
   async onImagePicked(imageData: string | File) {
+    this.isFormReady = false;
     let imageFile;
     if (typeof imageData === 'string') {
       try {
@@ -85,16 +86,17 @@ export class NewCosplayPage implements OnInit {
     }
     //this.form.patchValue({image: imageFile});
     //UPLOAD IMAGE
-    const imageName = "images/"+Math.random()+imageFile;
+    const imageName = Math.random()+imageFile;
     const datos = imageFile;
 
     // Create a root reference
     const storage = getStorage();
-    const storageRef = ref(storage, imageName);// imageName can be whatever name to image
+    const storageRef = ref(storage, encodeURIComponent("images/"+imageName) );// imageName can be whatever name to image
 
     //let tarea = await this.fbss.tareaCloudStorage(imageName,datos).then((r) => {
     uploadBytes(storageRef, imageFile).then((snapshot) => {
       getDownloadURL(storageRef).then((url) => {
+        this.isFormReady = true;
         console.log(url);
         this.form.patchValue({ imageUrl: url });
       });
@@ -116,9 +118,13 @@ export class NewCosplayPage implements OnInit {
       this.cosplaysService.onSaveCosplay(cosplay, cosplayId);
       console.log(cosplay);
 
-      loadingEl.dismiss();
-      this.form.reset();
+      setTimeout(() => {
+        loadingEl.dismiss();
+        this.form.reset();
       this.router.navigate(['main/tabs/cosplays/my-cosplays']);
+      }, 500);
+
+      
     });
   }
 
