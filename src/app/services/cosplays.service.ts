@@ -86,9 +86,18 @@ export class CosplaysService {
             reject(err.message)
         }
     })
-}
+  }
 
-  /* fetchCosplays() {
+
+  getCosplayById(cosplayId: string) {
+    return this.cosplays.pipe(take(1), map(cosplays => {
+      return cosplays.find((cos) => {
+        return cos.id === cosplayId;
+      });
+    }));
+  }
+
+    /* fetchCosplays() {
     return this.http
     .get<{[key: string]: CosplayData}>(
       'https://cosplay-planning-app.firebaseio.com/my-cosplays.json'
@@ -137,13 +146,6 @@ export class CosplaysService {
     );
   } */
 
-  getCosplayById(cosplayId: string) {
-    return this.cosplays.pipe(take(1), map(cosplays => {
-      return cosplays.find((cos) => {
-        return cos.id === cosplayId;
-      });
-    }));
-  }
 
   /*
 
