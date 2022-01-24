@@ -13,6 +13,8 @@ import { ImageUploaderComponent } from 'src/app/shared/uploaders/image-uploader/
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { map } from 'leaflet';
+import imageCompression from 'browser-image-compression';
+import { UploadImageService } from 'src/app/services/upload-img.service';
 
 
 function base64toBlob(base64Data, contentType) {
@@ -60,7 +62,8 @@ export class NewCosplayPage implements OnInit {
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     private fbss: FirebaseStorageService,
-    private storage: AngularFireStorage
+    private storage: AngularFireStorage,
+    private uploadService: UploadImageService
   ) {
     const navigation = this.router.getCurrentNavigation();
     //this.cosGroup = navigation?.extras?.state?.value;
@@ -93,6 +96,38 @@ export class NewCosplayPage implements OnInit {
       imageFile = imageData;
     }
 
+    //Compress File
+    const maxWidth = 320;
+
+    //const compressedFile = await this.uploadService.compressFile(imageFile,maxWidth);
+    //await this.uploadService.uploadToServer(compressedFile,this.form);
+    const compressedFile = await this.compressFile(imageFile,maxWidth);
+    //Upload compress Img to FireStorage
+    await this.uploadToServer(compressedFile);
+  }
+
+
+  async compressFile(imageFile,maxWidth = 1920){
+    console.log('originalFile instanceof Blob', imageFile instanceof Blob); // true
+    console.log(`originalFile size ${imageFile.size / 1024 / 1024} MB`);
+
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: maxWidth,//1920
+      useWebWorker: true
+    }
+
+    const compressedFile = await imageCompression(imageFile, options);
+    console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
+    console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
+
+    return compressedFile;
+  }
+
+  //storage
+
+
+  uploadToServer(imageFile) {
     //UPLOAD IMAGE
     const id = Math.random().toString(36).substring(2);
     const file = imageFile;
@@ -118,7 +153,6 @@ export class NewCosplayPage implements OnInit {
       () => { 
       }
     );
-
   }
 
 
