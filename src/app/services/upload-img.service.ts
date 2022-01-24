@@ -5,6 +5,10 @@ import { firebaseConfig } from 'src/environments/environment';
 import { FirebaseStorageService } from './firebase-storage.service';
 import firebase from 'firebase/compat/app';
 import { getStorage, ref, uploadBytes,getDownloadURL } from "firebase/storage";
+import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
+import imageCompression from 'browser-image-compression';
+
 
 function base64toBlob(base64Data, contentType) {
     contentType = contentType || '';
@@ -27,98 +31,75 @@ function base64toBlob(base64Data, contentType) {
     return new Blob(byteArrays, { type: contentType });
 }
   
-
 @Injectable({
     providedIn: 'root'
 })
 export class UploadImageService {
-//Upload Img to FireStore
-
 
     constructor(
         private storage: AngularFireStorage,
         private firebaseStorageServ: FirebaseStorageService
     ) { }
 
-    public mensajeArchivo = 'No hay un archivo seleccionado';
-    public datosFormulario = new FormData();
-    public nombreArchivo = '';
-    public URLPublica = '';
-    public porcentaje = 0;
-    public finalizado = false;
     form: FormGroup;
-
-    storageref;
+    imgReference;
+    public URLPublica = '';
+    isFormReady = false;
+    uploadPercent: Observable<number>;
+    ImageObs: Observable<string>;
+    urlImage: String;
 
     //create Form component for the Image Upload
     public archivoForm = new FormGroup({
         archivo: new FormControl(null, Validators.required),
     });
 
-    async onImagePicked(imageData: string | File) {
-        let imageFile;
-        if (typeof imageData === 'string') {
-          try {
-            imageFile = base64toBlob(
-              imageData.replace('data:image/jpeg;base64,', ''),
-              'image/jpeg');
-          } catch (error) {
-            console.log(error);
-            return;
-          }
-        } else {
-          imageFile = imageData;
-        }
-        //this.form.patchValue({image: imageFile});
-        //UPLOAD IMAGE
-        const imageName = "images/"+Math.random()+imageFile;
-        const datos = imageFile;
-    
-        // Create a root reference
-        const storage = getStorage();
-        const storageRef = ref(storage, imageName);// imageName can be whatever name to image
-    
-        //let tarea = await this.fbss.tareaCloudStorage(imageName,datos).then((r) => {
-        uploadBytes(storageRef, imageFile).then((snapshot) => {
-          getDownloadURL(storageRef).then((url) => {
-            console.log(url);
-            this.form.patchValue({ image: url });
-          });
-          
-        })
+
+    async compressFile(imageFile,maxWidth = 1920){
+      console.log('originalFile instanceof Blob', imageFile instanceof Blob); // true
+      console.log(`originalFile size ${imageFile.size / 1024 / 1024} MB`);
+  
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: maxWidth,//1920
+        useWebWorker: true
       }
-
-   /*  //Evento que se gatilla cuando el input de tipo archivo cambia
-    public cambioArchivo(event) {
-        
-        if (event.target.files.length > 0) {
-        for (let i = 0; i < event.target.files.length; i++) {
-            this.mensajeArchivo = `Archivo preparado: ${event.target.files[i].name}`;
-            this.nombreArchivo = event.target.files[i].name;
-            this.datosFormulario.delete('archivo');
-            this.datosFormulario.append('archivo', event.target.files[i], event.target.files[i].name)
-        }
-        } else {
-        this.mensajeArchivo = 'No hay un archivo seleccionado';
-        }
+  
+      const compressedFile = await imageCompression(imageFile, options);
+      console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
+      console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
+  
+      return compressedFile;
     }
-
-    //Tarea para subir archivo
-    public uploadCloudStorage(nombreArchivo: string, datos: any) {
-        let referencia = this.firebaseStorageServ.referenciaCloudStorage(nombreArchivo);
-        referencia.getDownloadURL().subscribe((URL) => {
-            //this.URLPublica = URL;
-        });
-
-        //Cambia el porcentaje de subida
-        let tarea = this.firebaseStorageServ.tareaCloudStorage(this.nombreArchivo, datos);
-        tarea.percentageChanges().subscribe((porcentaje) => {
-            this.porcentaje = Math.round(porcentaje);
-            if (this.porcentaje == 100) {
-                this.finalizado = true;
+  
+    uploadToServer(imageFile,form : FormGroup) {
+      //UPLOAD IMAGE
+      const id = Math.random().toString(36).substring(2);
+      const file = imageFile;
+      const filePath = `images/${id}`;// Image path + fileName  ||  can add profile_${id}
+      const ref = this.storage.ref(filePath);
+      const task = this.storage.upload(filePath, file);
+      this.uploadPercent = task.percentageChanges();
+      task.snapshotChanges().pipe( 
+        finalize(() => {
+          this.ImageObs = ref.getDownloadURL()
+          this.ImageObs.subscribe(
+            url=>{
+              this.urlImage = url
+              console.log('Value:' + this.urlImage);
+              this.form.patchValue({ imageUrl: this.urlImage })
+              this.isFormReady = true;
             }
-        });
-        return this.storage.upload(nombreArchivo, datos);
-     }*/
+          );
+        })
+      ).subscribe(
+        value => {},
+        error => console.log('Error:'+ error),
+        () => { 
+        }
+      );
+    }
+  
+  
 
 }
