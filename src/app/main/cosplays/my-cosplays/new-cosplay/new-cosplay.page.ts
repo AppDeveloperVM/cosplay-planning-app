@@ -115,7 +115,6 @@ export class NewCosplayPage implements OnInit {
       console.log(err);
     });
 
-    
   }
 
 

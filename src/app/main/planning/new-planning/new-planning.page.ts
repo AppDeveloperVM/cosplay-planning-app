@@ -53,7 +53,8 @@ export class NewPlanningPage implements OnInit {
     private loadingCtrl: LoadingController,
     private planningService: PlanningService,
     private router: Router,
-    private storage: AngularFireStorage
+    private storage: AngularFireStorage,
+    private uploadService: UploadImageService
   ) {
     const navigation = this.router.getCurrentNavigation();
     this.planning = navigation?.extras?.state?.value;
@@ -90,51 +91,41 @@ export class NewPlanningPage implements OnInit {
 
   async onImagePicked(imageData: string | File) {
     this.isFormReady = false;
-    let imageFile;
-    if (typeof imageData === 'string') {
-      try {
-        imageFile = base64toBlob(
-          imageData.replace('data:image/jpeg;base64,', ''),
-          'image/jpeg');
-      } catch (error) {
-        console.log(error);
-        return;
-      }
-    } else {
-      imageFile = imageData;
-    }
 
-    //UPLOAD IMAGE
-    const id = Math.random().toString(36).substring(2);
-    const file = imageFile;
-    const filePath = `images/${id}`;// Image path + fileName  ||  can add profile_${id}
-    const ref = this.storage.ref(filePath);
-    const task = this.storage.upload(filePath, file);
-    this.uploadPercent = task.percentageChanges();
-    task.snapshotChanges().pipe( 
-      finalize(() => {
-        this.ImageObs = ref.getDownloadURL()
-        this.ImageObs.subscribe(
-          url=>{
-            this.urlImage = url
-            console.log('Value:' + this.urlImage);
-            this.form.patchValue({ imageUrl: this.urlImage })
-            this.isFormReady = true;
-          }
-        );
-      })
-    ).subscribe(
-      value => {},
-      error => console.log('Error:'+ error),
-      () => { 
-      }
-    );
+    await this.uploadService.decodeFile(imageData)
+    .then(
+      //Decoded
+      async (val) => {
+        const maxWidth = 320;
+        await this.uploadService.compressFile(val,maxWidth).then(
+          async (val) => {
+            await this.uploadService.uploadToServer(val,this.form)
+            .then(
+              //Compressed and Uploaded Img to FireStorage
+              (val) => {
+                this.form.patchValue({ imageUrl: val })
+                console.log("Img Compressed and Uploaded Successfully.")
+                this.isFormReady = true;
+              },
+              (err) => console.error("Uploading error : "+err)
+            ).catch(err => {
+              console.log(err);
+            });
+          },
+          (err) => console.log("Compressing error : "+err)
+        ).catch(err => {
+          console.log(err);
+        });
+      },
+      (err) => console.log("Decoding Error: "+err)
+    ).catch(err => {
+      console.log(err);
+    });
 
   }
 
+  
   onSavePlanning() {
-    //this.cosplayGroupService.uploadImage(this.form.get('image').value)
-    //if (!this.form.valid) return
 
     if (!this.form.valid) {
       console.log('Please provide all the required values!')
@@ -158,7 +149,6 @@ export class NewPlanningPage implements OnInit {
       this.router.navigate(['main/tabs/planning']);
     });
     
-    
   }
 
   getDate(e) {
@@ -171,39 +161,5 @@ export class NewPlanningPage implements OnInit {
   get errorControl() {
     return this.form.controls;
   }
-
-  /* onCreatePlanning() {
-    if (!this.form.valid || !this.form.get('image').value ) {
-      return;
-    }
-
-    this.loadingCtrl
-    .create({
-      message: 'Creating Planning...'
-    })
-    .then(loadingEl => {
-      loadingEl.present();
-      this.planningService.uploadImage(this.form.get('image').value)
-      .pipe(
-        switchMap(uploadRes => {
-          return this.planningService.
-          addPlanning(
-            this.form.value.title,
-            this.form.value.description,
-            uploadRes.imageUrl,
-            this.form.value.location,
-            '',
-            new Date(this.form.value.startsAt),
-            new Date(this.form.value.endsAt),
-            ''
-          );
-      }))
-      .subscribe(() => {
-        loadingEl.dismiss();
-        this.form.reset();
-        this.router.navigate(['/main/tabs/planning']);
-      });
-    });
-  } */
 
 }
