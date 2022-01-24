@@ -85,25 +85,32 @@ export class NewCosplayPage implements OnInit {
   async onImagePicked(imageData: string | File) {
     this.isFormReady = false;
 
-    await this.uploadService.decodeFile(imageData).then(
+    await this.uploadService.decodeFile(imageData)
+    .then(
+      //Decoded
       async (val) => {
         const maxWidth = 320;
-        //Upload compress Img to FireStorage
-        const compressedFile = await this.uploadService.compressFile(val,maxWidth);
-        await this.uploadService.uploadToServer(compressedFile,this.form)
-        .then(
-          (val) => {
-            this.form.patchValue({ imageUrl: val })
-            console.log("Img Compressed and Uploaded Successfully.")
-            this.isFormReady = true;
+        await this.uploadService.compressFile(val,maxWidth).then(
+          async (val) => {
+            await this.uploadService.uploadToServer(val,this.form)
+            .then(
+              //Compressed and Uploaded Img to FireStorage
+              (val) => {
+                this.form.patchValue({ imageUrl: val })
+                console.log("Img Compressed and Uploaded Successfully.")
+                this.isFormReady = true;
+              },
+              (err) => console.error("Uploading error : "+err)
+            ).catch(err => {
+              console.log(err);
+            });
           },
-          (err) => console.error("Promise Error: "+err)
+          (err) => console.log("Compressing error : "+err)
         ).catch(err => {
           console.log(err);
         });
-
       },
-      (err) => console.log("Promise Error: "+err)
+      (err) => console.log("Decoding Error: "+err)
     ).catch(err => {
       console.log(err);
     });

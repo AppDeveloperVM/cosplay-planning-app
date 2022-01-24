@@ -94,21 +94,29 @@ export class UploadImageService {
 
     }
 
-    async compressFile(imageFile : File,maxWidth = 1920){
-      //console.log('originalFile instanceof Blob', imageFile instanceof Blob); // true
+    async compressFile(imageFile : File,maxWidth = 1920) : Promise<any> {
       await console.log(`originalFile size ${imageFile.size / 1024 / 1024} MB`);
   
-      const options = {
-        maxSizeMB: 1,
-        maxWidthOrHeight: maxWidth,//1920
-        useWebWorker: true
-      }
-  
-      const compressedFile = await imageCompression(imageFile, options);
-      //console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
-      await console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
-  
-      return compressedFile;
+      var promise = new Promise(async (resolve, reject) => {
+
+        const options = {
+          maxSizeMB: 1,
+          maxWidthOrHeight: maxWidth,//1920
+          useWebWorker: true
+        }
+
+        try {
+          const compressedFile = await imageCompression(imageFile, options);
+          await console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
+          resolve(compressedFile);
+        } catch (error) {
+          reject(error);
+        }
+        
+        
+      });
+
+      return promise;
     }
   
     uploadToServer(imageFile,form : FormGroup) : Promise<any> {
