@@ -18,7 +18,7 @@ import { UploadImageService } from 'src/app/services/upload-img.service';
 import { Toast } from '@capacitor/core';
 
 
-function base64toBlob(base64Data, contentType) {
+/* function base64toBlob(base64Data, contentType) {
   contentType = contentType || '';
   const sliceSize = 1024;
   const byteCharacters = atob(base64Data);
@@ -37,7 +37,7 @@ function base64toBlob(base64Data, contentType) {
     byteArrays[sliceIndex] = new Uint8Array(bytes);
   }
   return new Blob(byteArrays, { type: contentType });
-}
+} */
 
 @Component({
   selector: 'app-new-cosplay',
@@ -54,6 +54,7 @@ export class NewCosplayPage implements OnInit {
   isFormReady = false;
   uploadPercent: Observable<number>;
   ImageObs: Observable<string>;
+  uploadReady : Observable<boolean>;
   urlImage: String;
 
   constructor(
@@ -83,42 +84,33 @@ export class NewCosplayPage implements OnInit {
 
   async onImagePicked(imageData: string | File) {
     this.isFormReady = false;
-    let imageFile;
-    if (typeof imageData === 'string') {
-      try {
-        imageFile = base64toBlob(
-          imageData.replace('data:image/jpeg;base64,', ''),
-          'image/jpeg');
-      } catch (error) {
-        //console.log(error);
-        console.log("Base64toBlob Error.");
-        console.log("> DOMException: The string to be decoded is not correctly encoded.");
 
-        let alert = this.alertCtrl.create({
-          header: 'Error',
-          message: 'Extensión de archivo no admitida.',
-          buttons: ['Ok']
+    await this.uploadService.decodeFile(imageData).then(
+      async (val) => {
+        const maxWidth = 320;
+        //Upload compress Img to FireStorage
+        const compressedFile = await this.uploadService.compressFile(val,maxWidth);
+        await this.uploadService.uploadToServer(compressedFile,this.form)
+        .then(
+          (val) => {
+            this.form.patchValue({ imageUrl: val })
+            console.log("Img Compressed and Uploaded Successfully.")
+            this.isFormReady = true;
+          },
+          (err) => console.error("Promise Error: "+err)
+        ).catch(err => {
+          console.log(err);
         });
-        (await alert).present();
-        
-        return;
-      }
-    } else {
-      imageFile = imageData;
-    }
 
-    const maxWidth = 320;
-    //Upload compress Img to FireStorage
-    this.compressAndUpload(imageFile,maxWidth);
-  }
+      },
+      (err) => console.log("Promise Error: "+err)
+    ).catch(err => {
+      console.log(err);
+    });
 
-  async compressAndUpload(imageFile,maxWidth) {
-    const compressedFile = await this.uploadService.compressFile(imageFile,maxWidth);
-    const imgUrl = await this.uploadService.uploadToServer(compressedFile,this.form);
     
-    this.form.patchValue({ imageUrl: imgUrl })
-    this.isFormReady = true;
   }
+
 
   //Submit form data ( Cosplay ) when ready
   onSubmitCosplay() {
