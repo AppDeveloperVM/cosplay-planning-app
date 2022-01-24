@@ -54,9 +54,8 @@ export class UploadImageService {
         archivo: new FormControl(null, Validators.required),
     });
 
-
     async compressFile(imageFile,maxWidth = 1920){
-      console.log('originalFile instanceof Blob', imageFile instanceof Blob); // true
+      //console.log('originalFile instanceof Blob', imageFile instanceof Blob); // true
       console.log(`originalFile size ${imageFile.size / 1024 / 1024} MB`);
   
       const options = {
@@ -66,19 +65,21 @@ export class UploadImageService {
       }
   
       const compressedFile = await imageCompression(imageFile, options);
-      console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
+      //console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
       console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
   
       return compressedFile;
     }
   
     uploadToServer(imageFile,form : FormGroup) {
+      
       //UPLOAD IMAGE
       const id = Math.random().toString(36).substring(2);
       const file = imageFile;
       const filePath = `images/${id}`;// Image path + fileName  ||  can add profile_${id}
       const ref = this.storage.ref(filePath);
       const task = this.storage.upload(filePath, file);
+      const imageUrl = "";
       this.uploadPercent = task.percentageChanges();
       task.snapshotChanges().pipe( 
         finalize(() => {
@@ -87,19 +88,18 @@ export class UploadImageService {
             url=>{
               this.urlImage = url
               console.log('Value:' + this.urlImage);
-              this.form.patchValue({ imageUrl: this.urlImage })
-              this.isFormReady = true;
+              return url;
             }
           );
         })
       ).subscribe(
-        value => {},
+        //percentage Changes..
+        value => {console.log("Upload. Transferred: "+value.bytesTransferred + " of total :"+ value.totalBytes)},
         error => console.log('Error:'+ error),
         () => { 
         }
       );
+      
     }
-  
-  
 
 }

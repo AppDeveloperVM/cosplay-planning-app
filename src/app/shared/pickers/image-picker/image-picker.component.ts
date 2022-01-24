@@ -22,9 +22,7 @@ export class ImagePickerComponent implements OnInit {
     console.log('Hybrid : ' + this.platform.is('hybrid'));
     console.log('Android : ' + this.platform.is('android'));
     console.log('Desktop : ' + this.platform.is('desktop'));
-    console.log('------------------');
-
-    console.log('selectedImage: ' + this.selectedImage);
+    console.log('------------------');    
 
     if ((this.platform.is('mobile') && !this.platform.is('hybrid')) ||
      this.platform.is('desktop') ) {
@@ -45,6 +43,7 @@ export class ImagePickerComponent implements OnInit {
       width: 600,
       resultType: CameraResultType.DataUrl
     }).then(image => {
+      //selectedImage => src de campo <img>
       this.selectedImage = image.dataUrl;
       this.imagePick.emit(image.dataUrl);
     }).catch(error => {
@@ -63,6 +62,7 @@ export class ImagePickerComponent implements OnInit {
     }
     const fr = new FileReader();
     fr.onload = () => {
+      //selectedImage => src de campo <img>
       const dataUrl = fr.result.toString();
       this.selectedImage = dataUrl;
       this.imagePick.emit(pickedFile);
