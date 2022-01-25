@@ -55,10 +55,15 @@
         <ion-item>
           <ion-label position="floating">Starts</ion-label>
           <ion-datetime
-          display-format="MMM DD YYYY"
-          picker-format="YY MMM DD"
-          [min]=""
+          #startdate
+          monthShortNames="En, Feb, Mar, Abr, Mayo, Jun, Jul, Ago, Sept, Oct, Nov, Dic"
+          display-format="DD MMM YYYY HH:mm"
+          picker-format="DD MMM YYYY HH:mm"
+          [(ngModel)]="startDate"
+          [min]="minDate"
           [max]=""
+          [value]="minDate"
+          (ionChange)="changedFromDate($event)"
           formControlName="dateFrom"
           required
           ></ion-datetime>
@@ -68,9 +73,12 @@
         <ion-item>
           <ion-label position="floating">Ends</ion-label>
           <ion-datetime 
-          display-format="MMM DD YYYY"
-          picker-format="YY MMM DD"
-          [min]=""
+          #enddate
+          monthShortNames="En, Feb, Mar, Abr, Mayo, Jun, Jul, Ago, Sept, Oct, Nov, Dic"
+          display-format="DD MMM YYYY HH:mm"
+          picker-format="DD MMM YYYY HH:mm"
+          [(ngModel)]="endDate"
+          [min]="minDate"
           [max]=""
           formControlName="dateTo"
           required

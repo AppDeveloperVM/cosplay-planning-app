@@ -27,6 +27,8 @@ export class NewCosplayGroupPage implements OnInit {
   form: FormGroup;
   @Input() selectedCosplayGroup: CosplayGroup;
   @Input() selectedMode: 'select' | 'random';
+  //  modes = ['date','datetime','month-year','time-date'];
+  minDate: string;
   startDate: string;
   endDate: string;
   cosGroup: CosGroup;
@@ -47,14 +49,16 @@ export class NewCosplayGroupPage implements OnInit {
   ) {
     const navigation = this.router.getCurrentNavigation();
     //this.cosGroup = navigation?.extras?.state?.value;
+    
+
+    this.minDate = new Date().toISOString();
+    this.startDate = new Date().toISOString();
+    this.endDate = new Date(new Date(this.startDate).getTime()).toISOString();
   }
 
   ngOnInit() {
     const availableFrom = new Date();
     const availableTo = new Date();
-
-    this.startDate = new Date().toISOString();
-    this.endDate = new Date(new Date(this.startDate).getTime()).toISOString();
 
     this.form = new FormGroup({
       title: new FormControl(null, {
@@ -84,6 +88,18 @@ export class NewCosplayGroupPage implements OnInit {
       location: new FormControl(null, {validators: [Validators.required]}),
       imageUrl: new FormControl(null)
     });
+  }
+
+  changedFromDate(startDate){
+    //startDATE.detail.value
+    console.log(startDate.detail.value);
+    this.endDate = startDate.detail.value
+    //console.log(new Date(startDate).toISOString());
+    //this.endDate = new Date(startDate).toISOString();
+  }
+
+  modelChangeToDate(){
+    
   }
 
   onLocationPicked(location: PlaceLocation) {
