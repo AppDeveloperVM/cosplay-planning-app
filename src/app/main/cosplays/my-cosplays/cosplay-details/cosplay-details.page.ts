@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { NavController, ModalController, AlertController } from '@ionic/angular';
 import { Cosplay } from '../../cosplay.model';
 import { CosplaysService } from '../../../../services/cosplays.service';
@@ -27,6 +27,12 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
   cosElements: any = [{name : "Hat",image: "photo",type:"buy",store:"amazon.es",store_url:"amazon.es"},{name : "Suit",type:"buy",store:"la tienda de la pepa"},{name : "Shoes",type:"make"}];
   toBuy: boolean;
 
+  navigationExtras: NavigationExtras = {
+    state : {
+      cosplay: null
+    }
+  }
+
   // seria necesario ordenar los arrays por 'a comprar' y 'a hacer'
   constructor(
     private router: Router,
@@ -42,44 +48,15 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
-    /*
-    this.route.paramMap.subscribe(paramMap => {
-      if (!paramMap.has('cosplayId')) {
-        this.navCtrl.navigateBack('/main/tabs/cosplays/my-cosplays');
-        return;
-      }
-      this.isLoading = true;
-      this.cosplayId = paramMap.get('cosplayId');
-      this.cosplaySub = this.cosplaysService
-      .getCosplay(paramMap.get('cosplayId'))
-      .subscribe(cosplay => {
-        this.cosplay = cosplay;
-        this.isLoading = false;
-      }, error => {
-        this.alertCtrl
-        .create({
-          header: 'An error ocurred!',
-          message: 'Could not load cosplay details. Try again later.',
-          buttons: [{
-            text: 'Okay',
-            handler: () => {
-              this.router.navigate(['/main/tabs/cosplays/my-cosplays']);
-            }
-          }]
-        }).then(alertEl => {
-          alertEl.present();
-        });
-      });
-      // load the cosplay
-
       //check buy lists for header
-      this.toBuyList();
-    });
-    */
-  
+      //this.toBuyList();
   }
 
+  onGoToEdit(item: any) {
+    this.navigationExtras.state.value = item;
+    this.router.navigate(['main/tabs/cosplays/my-cosplays/edit'], this.navigationExtras );
+    return false;
+  }
 
   toBuyList() {
     for (let i = 0; i < this.tasks.length; i++) {
@@ -100,7 +77,6 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
       modalEl.present();
     });
   }
-
 
   ngOnDestroy() {
     if (this.cosplaySub) {

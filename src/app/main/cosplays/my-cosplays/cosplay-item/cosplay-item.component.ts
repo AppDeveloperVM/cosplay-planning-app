@@ -34,10 +34,7 @@ export class CosplayItemComponent implements OnInit {
     this.router.navigate(['main/tabs/cosplays/my-cosplays/cosplay-details'], this.navigationExtras );
   }
 
-  onGoToEdit(item: any): void {
-    this.navigationExtras.state.value = item;
-    this.router.navigate(['main/tabs/cosplays/my-cosplays/edit/'], this.navigationExtras );
-  }
+  
 
   async onDeleteCosplay(cosplayId: string): Promise<void> {
 

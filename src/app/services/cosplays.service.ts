@@ -49,7 +49,7 @@ export class CosplaysService {
   ) {
       this.cosplaysCollection = afs.collection<CosplayData>('cosplays');
       this.getCosplays();
-      console.log("cosGroups: "+this.cosplaysObsv);
+      console.log("cosplays: "+this.cosplaysObsv);
   }
 
   private getCosplays(): void {
@@ -70,6 +70,8 @@ export class CosplaysService {
         }
     })
   }
+
+  
 
   onDeleteCosplay(cosplayId: string): Promise<void> {
     //should delete img of FireStorage
@@ -97,147 +99,5 @@ export class CosplaysService {
     }));
   }
 
-    /* fetchCosplays() {
-    return this.http
-    .get<{[key: string]: CosplayData}>(
-      'https://cosplay-planning-app.firebaseio.com/my-cosplays.json'
-      )
-    .pipe(map(resData => {
-      const cosplays = [];
-      for (const key in resData) {
-        if (resData.hasOwnProperty(key)) {
-          cosplays.push(new Cosplay(
-            key,
-            resData[key].characterName,
-            resData[key].description,
-            resData[key].imageUrl,
-            resData[key].series,
-            resData[key].funds,
-            resData[key].percentComplete,
-            resData[key].status,
-            resData[key].userId));
-        }
-      }
-      return cosplays;
-    }),
-    tap(cosplays => {
-      this._cosplays.next(cosplays);
-    })
-    );
-  } */
-
-  /* getCosplay(id: string) {
-    return this.http.get<CosplayData>(
-      `https://cosplay-planning-app.firebaseio.com/my-cosplays/${id}.json`
-    ).pipe(
-      map(cosplayData => {
-        return new Cosplay(
-          id,
-          cosplayData.characterName,
-          cosplayData.description,
-          cosplayData.imageUrl,
-          cosplayData.series,
-          cosplayData.funds,
-          cosplayData.percentComplete,
-          cosplayData.status,
-          cosplayData.userId
-          );
-      })
-    );
-  } */
-
-
-  /*
-
-
-   addCosplay(
-    characterName: string,
-    description: string,
-    imageUrl: string,
-    series: string,
-    funds: number,
-    percentComplete: string,
-    status: boolean
-  ) {
-    let generatedId: string;
-    const newCosplay = new Cosplay(
-      Math.random().toString(),
-      characterName,
-      description,
-      imageUrl,
-      series,
-      funds,
-      percentComplete,
-      status,
-      this.authService.userId
-    );
-
-    return this.http
-    .post<{name: string}>(
-      'https://cosplay-planning-app.firebaseio.com/my-cosplays.json',
-      { ...newCosplay, id: null})
-    .pipe(
-      switchMap(resData => {
-        generatedId = resData.name;
-        return this.cosplays;
-      }),
-      take(1),
-      tap(cosplays => {
-        newCosplay.id = generatedId;
-        this._cosplays.next(cosplays.concat(newCosplay));
-      })
-    );
-    /*return this.cosplays.pipe(take(1)).subscribe((cosplays) => {
-      this._cosplays.next(cosplays.concat(newCosplay));
-    });
-  } */
-
-  /* updateCosplay(
-    cosplayId: string,
-    characterName: string,
-    description: string,
-    imageUrl: string,
-    series: string,
-    funds: number,
-    percentComplete: string,
-    status: boolean,
-    userId: string
-  ) {
-    let updatedCosplays: Cosplay[];
-    return this.cosplays.pipe(
-      take(1),
-      switchMap( cosplays => {
-        if (!cosplays || cosplays.length <= 0) {
-          return this.fetchCosplays();
-        } else {
-          return of(cosplays);
-        }
-
-      }),
-      switchMap(cosplays => {
-        const updatedCosplayIndex = cosplays.findIndex(cos => cos.id === cosplayId);
-        updatedCosplays = [...cosplays];
-        const oldCosplay = updatedCosplays[updatedCosplayIndex];
-
-        updatedCosplays[updatedCosplayIndex] = new Cosplay(
-          oldCosplay.id,
-          characterName,
-          description,
-          imageUrl,
-          series,
-          oldCosplay.funds,
-          oldCosplay.percentComplete,
-          oldCosplay.status,
-          oldCosplay.userId
-        );
-        return this.http.put(
-          `https://cosplay-planning-app.firebaseio.com/my-cosplays/${cosplayId}.json`,
-          { ...updatedCosplays[updatedCosplayIndex], id: null}
-        );
-      })
-      , tap(cosplays  => {
-        this._cosplays.next(updatedCosplays);
-      }));
-  } */
 
 }

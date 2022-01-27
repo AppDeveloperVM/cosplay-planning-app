@@ -2,11 +2,11 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button
-      [defaultHref]="'main/tabs/cosplays/my-cosplays/' + cosplayId"></ion-back-button>
+      [defaultHref]="'main/tabs/cosplays/my-cosplays/'"></ion-back-button>
     </ion-buttons>
     <ion-title>Edit Cosplay</ion-title>
     <ion-buttons slot="primary">
-      <ion-button (click)="onUpdateCosplay()" [disabled]="!form?.valid || !form.get('image').value">
+      <ion-button (click)="onUpdateCosplay()" [disabled]="!form?.valid ">
         <ion-icon name="checkmark" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
