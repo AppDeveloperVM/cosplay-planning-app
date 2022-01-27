@@ -1,33 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CosplayGroup } from '../cosplay-group.model';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { NavController, ModalController, ToastController, AlertController, LoadingController } from '@ionic/angular';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { CosplayGroupService } from '../../../../services/cosplay-group.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { switchMap } from 'rxjs/operators';
 import { PlaceLocation } from '../../../../models/location.model';
+import { UploadImageService } from 'src/app/services/upload-img.service';
 
-function base64toBlob(base64Data, contentType) {
-  contentType = contentType || '';
-  const sliceSize = 1024;
-  const byteCharacters = atob(base64Data);
-  const bytesLength = byteCharacters.length;
-  const slicesCount = Math.ceil(bytesLength / sliceSize);
-  const byteArrays = new Array(slicesCount);
-
-  for (let sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
-    const begin = sliceIndex * sliceSize;
-    const end = Math.min(begin + sliceSize, bytesLength);
-
-    const bytes = new Array(end - begin);
-    for (let offset = begin, i = 0; offset < end; ++i, ++offset) {
-      bytes[i] = byteCharacters[offset].charCodeAt(0);
-    }
-    byteArrays[sliceIndex] = new Uint8Array(bytes);
-  }
-  return new Blob(byteArrays, { type: contentType });
-}
 
 @Component({
   selector: 'app-edit-cosplay-group',
@@ -37,12 +18,16 @@ function base64toBlob(base64Data, contentType) {
 export class EditCosplayGroupPage implements OnInit, OnDestroy {
   cosplayGroup: CosplayGroup;
   cosplayGroupId: string;
-  isLoading = false;
+  isLoading = true;
   private cosplayGroupSub: Subscription;
   form: FormGroup;
   actualImage = "";
   actualMapImage = "";
   selectedLocationImage: string;
+  uploadPercent: Observable<number>;
+  ImageObs: Observable<string>;
+  uploadReady : Observable<boolean>;
+  isFormReady = false;
 
   constructor(
     private navCtrl: NavController,
@@ -52,126 +37,86 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
     private toastCtrl: ToastController,
     private loadingCtrl: LoadingController,
     private router: Router,
-    private alertCtrl: AlertController) { }
+    private alertCtrl: AlertController,
+    private uploadService: UploadImageService
+    ) {
+      const navigation = this.router.getCurrentNavigation();
+      if(navigation.extras.state == undefined) { this.router.navigate(['main/tabs/cosplays/cosplay-groups']); }
+      this.cosplayGroup = navigation?.extras?.state.value;
+    }
 
   ngOnInit() {
-    this.route.paramMap.subscribe(paramMap => {
-      if (!paramMap.has('cosplayGroupId')) {
-        this.navCtrl.navigateBack('/main/tabs/cosplays/cosplay-groups');
-        return;
-      }
-      this.isLoading = true;
-      this.cosplayGroupId = paramMap.get('cosplayGroupId');
+    //this.cosplayGroupId = paramMap.get('cosplayGroupId');
 
-      /* this.cosplayGroupSub = this.cosplayGroupService
-      .getCosplayGroup(paramMap.get('cosplayGroupId'))
-      .subscribe(cosplayGroup => {
-        this.cosplayGroup = cosplayGroup;
-        // this.selectedLocationImage = new Plac this.cosplayGroup.location;
-
-        this.form = new FormGroup({
-          title: new FormControl(this.cosplayGroup.title, {
-            updateOn: 'blur',
-            validators: [Validators.required]
-          }),
-          series: new FormControl(this.cosplayGroup.series, {
-            updateOn: 'blur',
-            validators: [Validators.required, Validators.maxLength(180)]
-          }),
-          place: new FormControl(this.cosplayGroup.place, {
-            updateOn: 'blur',
-            validators: [Validators.required, Validators.maxLength(180)]
-          }),
-          dateFrom: new FormControl(this.cosplayGroup.availableFrom, {
-            updateOn: 'blur',
-            validators: [ Validators.required]
-          }),
-          dateTo: new FormControl(this.cosplayGroup.availableTo, {
-            updateOn: 'blur',
-            validators: [ Validators.required]
-          }),
-          location: new FormControl(),
-          image: new FormControl()
-        });
-
-        this.actualImage = this.cosplayGroup.imageUrl;
-        this.actualMapImage = this.cosplayGroup.location.staticMapImageUrl;
-        
-        this.isLoading = false;
-      }, error => {
-        this.alertCtrl
-        .create({
-          header: 'An error ocurred!',
-          message: 'Could not load cosplay Group. Try again later.',
-          buttons: [{
-            text: 'Okay',
-            handler: () => {
-              this.router.navigate(['/main/tabs/cosplays/cosplay-groups']);
-            }
-          }]
-        }).then(alertEl => {
-          alertEl.present();
-        });
-      }
-      ); */
-
+    this.form = new FormGroup({
+      title: new FormControl(this.cosplayGroup.title, {
+        updateOn: 'blur',
+        validators: [Validators.required]
+      }),
+      series: new FormControl(this.cosplayGroup.series, {
+        updateOn: 'blur',
+        validators: [Validators.required, Validators.maxLength(180)]
+      }),
+      place: new FormControl(this.cosplayGroup.place, {
+        updateOn: 'blur',
+        validators: [Validators.required, Validators.maxLength(180)]
+      }),
+      dateFrom: new FormControl(this.cosplayGroup.availableFrom, {
+        updateOn: 'blur',
+        validators: [ Validators.required]
+      }),
+      dateTo: new FormControl(this.cosplayGroup.availableTo, {
+        updateOn: 'blur',
+        validators: [ Validators.required]
+      }),
+      location: new FormControl(),
+      image: new FormControl()
     });
+    this.actualImage = this.cosplayGroup.imageUrl;
+    this.actualMapImage = this.cosplayGroup.location.staticMapImageUrl;
+    this.isLoading = false;
+    
+ 
   }
 
   onLocationPicked(location: PlaceLocation) {
     this.form.patchValue({ location });
   }
 
-  onImagePicked(imageData: string | File) {
-    let imageFile;
-    if (typeof imageData === 'string') {
-      try {
-        imageFile = base64toBlob(
-          imageData.replace('data:image/jpeg;base64,', ''),
-          'image/jpeg');
-      } catch (error) {
-        console.log(error);
-        return;
-      }
-    } else {
-      imageFile = imageData;
-    }
-    this.form.patchValue({image: imageFile});
-  }
+  async onImagePicked(imageData: string | File) {
+    this.isFormReady = false;
 
-  /* onUpdateCosplayGroup() {
-    if (!this.form.valid) {
-      return;
-    }
-
-    this.loadingCtrl
-    .create({
-      message: 'Updating Cosplay...'
-    }).then(loadingEl => {
-      loadingEl.present();
-      this.cosplayGroupService.uploadImage(this.form.get('image').value)
-      .pipe(
-        switchMap(uploadRes => {
-          return this.cosplayGroupService.
-            updateCosplayGroup(
-              this.cosplayGroup.id,
-              this.form.value.title,
-              this.form.value.series,
-              uploadRes.imageUrl,
-              this.form.value.place,
-              new Date(this.form.value.dateFrom),
-              new Date(this.form.value.dateTo),
-              this.cosplayGroup.userId,
-              this.form.value.location
-            );
-        }))
-        .subscribe(() => {
-          loadingEl.dismiss();
-          this.form.reset();
-          this.router.navigate(['main/tabs/cosplays/cosplay-groups']);
+    await this.uploadService.decodeFile(imageData)
+    .then(
+      //Decoded
+      async (val) => {
+        const maxWidth = 320;
+        await this.uploadService.compressFile(val,maxWidth).then(
+          async (val) => {
+            await this.uploadService.uploadToServer(val,this.form)
+            .then(
+              //Compressed and Uploaded Img to FireStorage
+              (val) => {
+                this.form.patchValue({ imageUrl: val })
+                console.log("Img Compressed and Uploaded Successfully.")
+                this.isFormReady = true;
+              },
+              (err) => console.error("Uploading error : "+err)
+            ).catch(err => {
+              console.log(err);
+            });
+          },
+          (err) => console.log("Compressing error : "+err)
+        ).catch(err => {
+          console.log(err);
         });
+      },
+      (err) => console.log("Decoding Error: "+err)
+    ).catch(err => {
+      console.log(err);
     });
-  } */
+
+  }
 
   ngOnDestroy() {
     if (this.cosplayGroupSub) {

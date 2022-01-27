@@ -75,55 +75,6 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    //this.fetchPlacesData();
-
-    /*this.route.paramMap.subscribe(paramMap => {
-      if (!paramMap.has('cosplayGroupId')) {
-        this.navCtrl.navigateBack('/main/tabs/cosplays/cosplay-groups');
-        console.log('cant get cosplaygroupId');
-        return;
-      }
-      this.isLoading = true;
-      this.cosplayGroupId = paramMap.get('cosplayGroupId');
-      console.log('id:' + paramMap.get('cosplayGroupId'));
-      console.log(
-        this.cosplayGroupService.getCosplayGroup(paramMap.get('cosplayGroupId'))
-      );
-
-      this.cosplayGroupSub = this.cosplayGroupService
-      .getCosplayGroup(paramMap.get('cosplayGroupId'))
-      .subscribe(cosplayGroup => {
-        this.cosplayGroup = cosplayGroup;
-        this.isLoading = false;
-      }, error => {
-        this.alertCtrl
-        .create({
-          header: 'An error ocurred!',
-          message: 'Could not load cosplay. Try again later.',
-          buttons: [{
-            text: 'Okay',
-            handler: () => {
-              console.log(error);
-              this.router.navigate(['/main/tabs/cosplays/cosplay-groups']);
-            }
-          }]
-        }).then(alertEl => {
-          alertEl.present();
-        });
-      }
-      );
-
-      const members = this.cosplayGroupService.getCosplayGroupMembers(paramMap.get('cosplayGroupId'));
-      members.forEach(element => {
-        console.log(element);
-        this.cosplayGroupMembers =  Object.values(element);
-      });
-      
-
-    });*/
-    
-    //get cosGroup members
-
   }
 
   checkPlatform() {
@@ -140,20 +91,11 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
     }
   }
 
-  private getcosGroupMembers(): void {
-    const ref = this.cosgroupsmembersCollection;
-    this.cosGroupMembers = ref.snapshotChanges().pipe(
-        map( actions => actions.map(
-            a => {
-              const data = a.payload.doc.data() as CosGroupMember;
-              const memberId = a.payload.doc.id;
-              return { memberId, ...data };
-            }
-           )
-        )
-    )
-    this.cosGroupMembers$ = this.cosGroupMembers;
-}
+  onGoToEdit(item:any){
+    this.navigationExtras.state.value = item;
+    this.router.navigate(['main/tabs/cosplays/cosplay-groups/edit'], this.navigationExtras );
+    return false;
+  }
 
   onGoToRequestForm(item: any): void {
     //this.navigationExtras.state.value = item;
@@ -179,20 +121,6 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
             loadingEl.present();
             const data = resultData.data; // get possible extra data from here
 
-            /* Aquí se crearía o enviaría la solicitud de personaje para la GRUPAL
-            this.cosplayGroupService.addCosplayGroupMember(
-              'new character',
-              '1',//cosplayerId
-              true, //asistanceConfirmed
-              this.cosplayGroupId //cosplayGroupId
-            )
-            */
-            /*
-            .subscribe(() => {
-              loadingEl.dismiss();
-            });
-            */
-           
             setTimeout(() => {
               loadingEl.dismiss();
             }, 1000);
@@ -203,7 +131,20 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
     });
   }
 
-  
+  private getcosGroupMembers(): void {
+    const ref = this.cosgroupsmembersCollection;
+    this.cosGroupMembers = ref.snapshotChanges().pipe(
+        map( actions => actions.map(
+            a => {
+              const data = a.payload.doc.data() as CosGroupMember;
+              const memberId = a.payload.doc.id;
+              return { memberId, ...data };
+            }
+           )
+        )
+    )
+    this.cosGroupMembers$ = this.cosGroupMembers;
+  }
 
   onEditCosGroupMembers() {
     this.navigationExtras.state.value = this.cosGroupMembers;
@@ -239,6 +180,7 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
     });
   }
 
+
   onSubmit(form: NgForm) {
     if (!form.valid) { // if is false
       return;
@@ -260,14 +202,6 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
       modalEl.present();
     });
   }
-
-   /*fetchPlacesData() {
-    fetch('../../assets/data/places_1.json').then(res => res.json()) // json file depends on planning id
-      .then(data => {
-        this.placesData = data.places;
-        this.placeDataService.setPlaces(this.placesData);
-      });
-  }*/
 
   ngOnDestroy() {
     if (this.cosplayGroupSub) {

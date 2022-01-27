@@ -10,7 +10,7 @@
         <ion-icon #favIcon name="heart"></ion-icon>
       </ion-button>
       <ion-button *ngIf="!isLoading" color="primary"  
-        [routerLink]="['/', 'main', 'tabs' , 'cosplays', 'cosplay-groups' , 'edit' , cosplayGroupId ]"
+        (click)="onGoToEdit(cosplayGroup)"
       >
         Edit
       </ion-button>

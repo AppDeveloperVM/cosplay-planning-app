@@ -53,7 +53,7 @@ export class CosplayGroupItemComponent implements OnInit, AfterViewInit {
 
   onGoToEdit(item: any): void {
     this.navigationExtras.state.value = item;
-    this.router.navigate(['main/tabs/cosplays/cosplay-groups/edit/'], this.navigationExtras );
+    this.router.navigate(['main/tabs/cosplays/cosplay-groups/edit'], this.navigationExtras );
   }
 
   async onDeleteCosGroup(cosGroupId: string): Promise<void> {

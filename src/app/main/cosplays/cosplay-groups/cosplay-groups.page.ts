@@ -55,7 +55,7 @@ export class CosplayGroupsPage implements OnInit, OnDestroy {
 
   }
 
-  onFilterUpdate(filter: string) {
+  /* onFilterUpdate(filter: string) {
     if (filter === 'all') {
       this.relevantCosplayGroups = this.loadedCosplayGroups; // show everything (?)
 
@@ -70,8 +70,7 @@ export class CosplayGroupsPage implements OnInit, OnDestroy {
     }
     this.listedLoadedCosplays = this.relevantCosplayGroups;
     console.log(filter);
-  }
-
+  } */
 
   ngOnDestroy() {
     if (this.cosplayGroupsSub) {
