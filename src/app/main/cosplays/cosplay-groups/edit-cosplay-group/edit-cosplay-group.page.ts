@@ -79,6 +79,30 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
  
   }
 
+  //Submit form data ( Cosplay ) when ready
+  onUpdateCosplay() {
+    if (!this.form.valid) return
+
+    this.loadingCtrl
+    .create({
+      message: 'Updating Cos Group ...'
+    })
+    .then(loadingEl => {
+      loadingEl.present();
+      const cosplay = this.form.value;
+      const cosplayId = this.cosplayGroup?.id || null;
+      this.cosplayGroupService.onSaveCosGroup(cosplay, cosplayId);
+      console.log(cosplay);
+
+      setTimeout(() => {
+        loadingEl.dismiss();
+        //this.form.reset();
+        //this.router.navigate(['main/tabs/cosplays/my-cosplays']);
+      }, 500);
+
+    });
+  }
+
   onLocationPicked(location: PlaceLocation) {
     this.form.patchValue({ location });
   }

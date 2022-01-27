@@ -81,11 +81,38 @@ export class EditPlanningPage implements OnInit, OnDestroy {
         updateOn: 'blur',
         validators: [ Validators.required]
       }),
-      location: new FormControl(null, {validators: [Validators.required]}),
-      image: new FormControl(null)
+      location: new FormControl(this.planning.location, {validators: [Validators.required]}),
+      image: new FormControl(this.planning.imageUrl)
     });
     this.actualImage = this.planning.imageUrl;
     this.actualMapImage = this.planning.location.staticMapImageUrl;
+    this.form.patchValue({ image : this.planning.imageUrl });
+
+  }
+
+  //Submit form data ( Planning ) when ready
+  onUpdatePlanning() {
+    if (!this.form.valid) return
+
+    this.loadingCtrl
+    .create({
+      message: 'Updating Planning ...'
+    })
+    .then(loadingEl => {
+      loadingEl.present();
+      const planning = this.form.value;
+      const planningId = this.planning?.id || null;
+      this.planningService.onSavePlanning(planning, planningId);
+      console.log(planning);
+
+      setTimeout(() => {
+        loadingEl.dismiss();
+        console.log("Form values: " + this.form);
+        //this.form.reset();
+        //this.router.navigate(['main/tabs/planning']);
+      }, 500);
+
+    });
   }
 
   onLocationPicked(location: PlaceLocation) {
