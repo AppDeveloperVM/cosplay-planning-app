@@ -5,8 +5,6 @@ import { MenuComponent } from './menu/menu.component';
 import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 
-
-
 @NgModule({
   declarations: [
     PopinfoComponent,

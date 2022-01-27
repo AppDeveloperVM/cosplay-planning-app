@@ -1,5 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Pipe, PipeTransform } from '@angular/core';
+import { Component, OnInit, Input,Pipe, PipeTransform } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 
 @Component({
@@ -10,16 +9,13 @@ import { PopoverController } from '@ionic/angular';
 @Pipe({ name: 'reverse' })
 
 export class PopinfoComponent implements OnInit,PipeTransform {
-
   // items = this.notif_count;
 
   @Input() notifications;
 
   constructor( private popoverCtrl: PopoverController) { }
-  
-  ngOnInit() {
-    
-  }
+
+  ngOnInit() {};
 
   transform(value) {
     return value.slice().reverse();

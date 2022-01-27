@@ -13,26 +13,6 @@ import { FirebaseStorageService } from '../../../services/firebase-storage.servi
 import { PlanningInterface } from 'src/app/models/planning.interface';
 import { Observable } from 'rxjs';
 
-function base64toBlob(base64Data, contentType) {
-  contentType = contentType || '';
-  const sliceSize = 1024;
-  const byteCharacters = atob(base64Data);
-  const bytesLength = byteCharacters.length;
-  const slicesCount = Math.ceil(bytesLength / sliceSize);
-  const byteArrays = new Array(slicesCount);
-
-  for (let sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
-    const begin = sliceIndex * sliceSize;
-    const end = Math.min(begin + sliceSize, bytesLength);
-
-    const bytes = new Array(end - begin);
-    for (let offset = begin, i = 0; offset < end; ++i, ++offset) {
-      bytes[i] = byteCharacters[offset].charCodeAt(0);
-    }
-    byteArrays[sliceIndex] = new Uint8Array(bytes);
-  }
-  return new Blob(byteArrays, { type: contentType });
-}
 
 @Component({
   selector: 'app-new-planning',
@@ -48,6 +28,7 @@ export class NewPlanningPage implements OnInit {
   uploadPercent: Observable<number>;
   ImageObs: Observable<string>;
   urlImage: String;
+  isSubmitted= false;
 
   constructor(
     private loadingCtrl: LoadingController,
@@ -126,6 +107,7 @@ export class NewPlanningPage implements OnInit {
 
   
   onSavePlanning() {
+    this.isSubmitted = true;
 
     if (!this.form.valid) {
       console.log('Please provide all the required values!')

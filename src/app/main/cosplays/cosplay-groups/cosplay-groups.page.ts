@@ -72,6 +72,10 @@ export class CosplayGroupsPage implements OnInit, OnDestroy {
     console.log(filter);
   } */
 
+  onFilterUpdate($event) {
+    
+  }
+
   ngOnDestroy() {
     if (this.cosplayGroupsSub) {
       this.cosplayGroupsSub.unsubscribe();

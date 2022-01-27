@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Planning } from '../planning.model';
 import { Subscription } from 'rxjs';
-import { NavController, ModalController, AlertController } from '@ionic/angular';
+import { NavController, ModalController, AlertController, Platform } from '@ionic/angular';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { PlanningService } from '../../../services/planning.service';
 import { MapModalComponent } from 'src/app/shared/map-modal/map-modal.component';
@@ -33,6 +33,7 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
   planningId: string;
   isLoading = false;
   private planningSub: Subscription;
+  isMobile = false;
 
   navigationExtras: NavigationExtras = {
     state : {
@@ -47,7 +48,8 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
     private router: Router,
     private navCtrl: NavController,
     private planningService: PlanningService,
-    private placeDataService: PlaceDataService
+    private placeDataService: PlaceDataService,
+    private platform: Platform
   ) {
     const navigation = this.router.getCurrentNavigation();
     if(navigation.extras.state == undefined) { this.router.navigate(['main/tabs/planning']); }
@@ -58,6 +60,9 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
    }
 
   ngOnInit() {
+    if(this.platform.is("mobile")){
+      this.isMobile = true;
+    }
 
   }
 

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NavigationExtras, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
+import { IonicModule } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-cosgroup-edit-modal',
@@ -22,9 +24,7 @@ export class CosgroupEditModalComponent implements OnInit {
     private modalCtrl: ModalController,
     private router: Router
   ) {
-    const navigation = this.router.getCurrentNavigation();
-    if(navigation?.extras?.state == undefined) { this.router.navigate(['main/tabs/cosplays/cosplay-groups']); }
-    this.cosplayGroupMember = navigation?.extras?.state.value;
+
   }
 
   ngOnInit() {}

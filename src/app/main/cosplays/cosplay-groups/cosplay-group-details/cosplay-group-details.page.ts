@@ -147,12 +147,13 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
   }
 
   onEditCosGroupMembers() {
-    this.navigationExtras.state.value = this.cosGroupMembers;
+    //this.navigationExtras.state.value = this.cosGroupMembers;
     this.modalCtrl.create({
-      component: CosgroupEditModalComponent, componentProps: {
-      ember: this.navigationExtras.state.value,
-      closeButtonText: 'close',
-      title: ' Cosplay Group Members'
+      component: CosgroupEditModalComponent, 
+      componentProps: {
+        ember: this.cosGroupMembers,
+        closeButtonText: 'close',
+        title: ' Cosplay Group Members'
     } }).then(modalEl => {
       modalEl.present();
     });

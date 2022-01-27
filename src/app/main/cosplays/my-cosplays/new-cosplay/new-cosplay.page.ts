@@ -9,7 +9,6 @@ import { environment } from 'src/environments/environment.prod';
 import { FirebaseStorageService } from 'src/app/services/firebase-storage.service';
 import { getStorage, ref, uploadBytes,getDownloadURL } from "firebase/storage";
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { ImageUploaderComponent } from 'src/app/shared/uploaders/image-uploader/image-uploader.component';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { map } from 'leaflet';

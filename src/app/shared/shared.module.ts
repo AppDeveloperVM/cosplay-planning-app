@@ -10,11 +10,12 @@ import { ImagePickerComponent } from './pickers/image-picker/image-picker.compon
 import { HeaderComponent } from '../components/header/header.component';
 import { RouterModule } from '@angular/router';
 import { PlanningItemComponent } from '../main/planning/planning-item/planning-item.component';
+import { CosgroupEditModalComponent } from './cosgroup-edit-modal/cosgroup-edit-modal.component';
 
 @NgModule({
-  declarations: [LocationPickerComponent, MapModalComponent, ImagePickerComponent,HeaderComponent, ],
+  declarations: [LocationPickerComponent, MapModalComponent, ImagePickerComponent,HeaderComponent,CosgroupEditModalComponent ],
   imports: [ CommonModule, IonicModule,RouterModule ],
-  exports: [ LocationPickerComponent, MapModalComponent, ImagePickerComponent,HeaderComponent],
+  exports: [ LocationPickerComponent, MapModalComponent, ImagePickerComponent,HeaderComponent,CosgroupEditModalComponent],
   entryComponents: [ MapModalComponent]
 })
 
