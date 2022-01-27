@@ -49,8 +49,7 @@ export class NewCosplayGroupPage implements OnInit {
   ) {
     const navigation = this.router.getCurrentNavigation();
     //this.cosGroup = navigation?.extras?.state?.value;
-    
-
+ 
     this.minDate = new Date().toISOString();
     this.startDate = new Date().toISOString();
     this.endDate = new Date(new Date(this.startDate).getTime()).toISOString();
@@ -98,10 +97,6 @@ export class NewCosplayGroupPage implements OnInit {
     //this.endDate = new Date(startDate).toISOString();
   }
 
-  modelChangeToDate(){
-    
-  }
-
   onLocationPicked(location: PlaceLocation) {
     this.form.patchValue({ location });
   }
@@ -141,7 +136,6 @@ export class NewCosplayGroupPage implements OnInit {
 
   }
 
-
   onSaveCosGroup() {
     //this.cosplayGroupService.uploadImage(this.form.get('image').value)
     if (!this.form.valid) {
@@ -166,6 +160,5 @@ export class NewCosplayGroupPage implements OnInit {
     });
     
   }
-
 
 }
