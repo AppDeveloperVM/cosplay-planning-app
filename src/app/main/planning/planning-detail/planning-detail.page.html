@@ -6,7 +6,8 @@
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-button color="primary"  
-        [routerLink]="['/', 'main' , 'tabs' , 'planning' , 'edit' , planningId ]">
+        (click)="onGoToEdit(planning)"
+      >
         Edit
       </ion-button>
     </ion-buttons>

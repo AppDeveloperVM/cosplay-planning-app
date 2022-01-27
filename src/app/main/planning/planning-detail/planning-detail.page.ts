@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Planning } from '../planning.model';
 import { Subscription } from 'rxjs';
 import { NavController, ModalController, AlertController } from '@ionic/angular';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { PlanningService } from '../../../services/planning.service';
 import { MapModalComponent } from 'src/app/shared/map-modal/map-modal.component';
 
@@ -34,7 +34,11 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
   isLoading = false;
   private planningSub: Subscription;
 
-  
+  navigationExtras: NavigationExtras = {
+    state : {
+      planning: null
+    }
+  }
 
   constructor(
     private modalCtrl: ModalController,
@@ -49,64 +53,23 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
     if(navigation.extras.state == undefined) { this.router.navigate(['main/tabs/planning']); }
     this.planning = navigation?.extras?.state.value;
 
-    this.placesData.push(this.planning.location);
-    console.log("location: "+this.planning.location);
+    //this.placesData.push(this.planning.location);
+    //console.log("location: "+this.planning.location);
    }
 
   ngOnInit() {
 
-      /*this.route.paramMap.subscribe(paramMap => {
-        if (!paramMap.has('planningId')) {
-          this.navCtrl.navigateBack('/planning');
-          console.log('cant get planningId');
-          return;
-        }
-  
-        this.isLoading = true;
-
-        this.planningId = paramMap.get('planningId');
-        console.log('id:' + paramMap.get('planningId'));
-        console.log(
-          this.planningService.getPlanning(paramMap.get('planningId'))
-        );
-  
-        this.planningSub = this.planningService
-        .getPlanning(paramMap.get('planningId'))
-        .subscribe(planning => {
-          this.planning = planning;
-          console.log(this.planning);
-
-          const planningProps = Object.entries(planning.places);
-          console.log("Get marker!: "+ planningProps);
-
-          var MarkerObject = [];
-          Object.entries(planning).forEach(([key,value]) => {
-            
-            if(key == 'places'){
-              console.log("Get marker!: "+ planning[key]);
-              MarkerObject.push(planning[key]);
-            }else if(key == 'address'){
-              console.log('name: '+planning[key]);
-              MarkerObject['name'] = planning[key];
-            }
-    
-          });
-
-          this.placesData = MarkerObject;
-          console.log("places data: "+ Object.keys(this.placesData[0]) );
-  
-          this.isLoading = false;
-
-        }, error => {
-
-        });
-
-      });
-      */
   }
 
   ionViewWillEnter() {
     console.log('ionViewWillEnter');
+  }
+
+  onGoToEdit(item: any) {
+    this.navigationExtras.state.value = item;
+    this.router.navigate(['main/tabs/planning/edit'], this.navigationExtras );
+    //main/tabs/cosplays/my-cosplays/cosplay-details
+    return false;
   }
 
   onSubmit(form: NgForm) {

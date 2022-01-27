@@ -53,7 +53,13 @@ export class EditPlanningPage implements OnInit, OnDestroy {
     private loadingCtrl: LoadingController,
     private router: Router,
     private alertCtrl: AlertController
-  ) { }
+  ) { 
+    console.log("Entrando en edit planning");
+    const navigation = this.router.getCurrentNavigation();
+    if(navigation.extras.state == undefined) { this.router.navigate(['main/tabs/planning']); }
+    this.planning = navigation?.extras?.state.value;
+ 
+  }
 
   ngOnInit() {
     
@@ -102,40 +108,6 @@ export class EditPlanningPage implements OnInit, OnDestroy {
     }
     this.form.patchValue({image: imageFile});
   }
-
-  /* onUpdatePlanning() {
-    if (!this.form.valid) {
-      return;
-    }
-
-    this.loadingCtrl
-    .create({
-      message: 'Updating Planning...'
-    }).then(loadingEl => {
-      loadingEl.present();
-      this.planningService.uploadImage(this.form.get('image').value)
-      .pipe(
-        switchMap(uploadRes => {
-          return this.planningService.
-            updatePlanning(
-              this.planning.id,
-              this.form.value.title,
-              this.form.value.description,
-              uploadRes.imageUrl,
-              this.form.value.location,
-              '',
-              new Date(this.form.value.startsAt),
-              new Date(this.form.value.endsAt),
-              this.planning.userId
-            );
-        }))
-        .subscribe(() => {
-          loadingEl.dismiss();
-          this.form.reset();
-          this.router.navigate(['/main/tabs/planning']);
-        });
-    });
-  } */
 
   ngOnDestroy() {
     if (this.planningSub) {
