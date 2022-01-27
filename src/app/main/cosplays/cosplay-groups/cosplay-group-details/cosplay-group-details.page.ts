@@ -123,7 +123,7 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
 
             setTimeout(() => {
               loadingEl.dismiss();
-            }, 1000);
+            }, 500);
           }
         );
       }
