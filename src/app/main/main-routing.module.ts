@@ -18,76 +18,17 @@ const routes: Routes = [
           },
           {
             path: 'my-cosplays',
-            children : [
-              {
-                path: '',
-                loadChildren: () => import('./cosplays/my-cosplays/my-cosplays.module').then( m => m.MyCosplaysPageModule)
-              },
-              {
-                path: 'new',
-                loadChildren: () => import('./cosplays/my-cosplays/new-cosplay/new-cosplay.module').then( m => m.NewCosplayPageModule)
-              },
-              {
-                path: ':cosplayId',
-                loadChildren: () => import('./cosplays/my-cosplays/cosplay-details/cosplay-details.module').
-                  then( m => m.CosplayDetailsPageModule)
-              },
-              {
-                path: 'edit/:cosplayId',
-                loadChildren: () => import('./cosplays/my-cosplays/edit-cosplay/edit-cosplay.module').then( m => m.EditCosplayPageModule)
-              }
-            ]
+              loadChildren: () => import('./cosplays/my-cosplays/my-cosplays.module').then( m => m.MyCosplaysPageModule)
           },
           {
             path: 'cosplay-groups',
-            children: [
-              {
-                path: '',
-                loadChildren: () => import('./cosplays/cosplay-groups/cosplay-groups.module').then( m => m.CosplayGroupsPageModule)
-              },
-              {
-                path: 'new',
-                loadChildren: () =>
-                  import('./cosplays/cosplay-groups/new-cosplay-group/new-cosplay-group.module').then( m => m.NewCosplayGroupPageModule)
-              },
-              {
-                path: ':cosplayGroupId',
-                loadChildren: () =>
-                  import('./cosplays/cosplay-groups/cosplay-group-details/cosplay-group-details.module').then( m => m.CosplayGroupDetailsPageModule)
-
-              },
-              {
-                path: 'edit/:cosplayGroupId',
-                loadChildren: () =>
-                import('./cosplays/cosplay-groups/edit-cosplay-group/edit-cosplay-group.module').then( m => m.EditCosplayGroupPageModule)
-              },
-              
-            ]
+            loadChildren: () => import('./cosplays/cosplay-groups/cosplay-groups.module').then( m => m.CosplayGroupsPageModule)
           }
         ]
       },
       {
         path: 'planning',
-        children:
-        [
-          {
-            path: '',
-            loadChildren: () => import('./planning/planning.module').then( m => m.PlanningPageModule)
-          },
-          {
-            path: 'new-planning',
-            loadChildren: () => import('./planning/new-planning/new-planning.module').then( m => m.NewPlanningPageModule)
-          },
-          {
-            path: ':planningId',
-            loadChildren: () => import('./planning/planning-detail/planning-detail.module').then( m => m.PlanningDetailPageModule)
-          },
-          {
-            path: 'edit/:planningId',
-            loadChildren: () => import('./planning/edit-planning/edit-planning.module').
-            then( m => m.EditPlanningPageModule)
-          }
-        ]
+        loadChildren: () => import('./planning/planning.module').then( m => m.PlanningPageModule)
       },
       {
         path: '',

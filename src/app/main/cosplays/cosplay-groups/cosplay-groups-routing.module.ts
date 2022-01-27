@@ -7,6 +7,21 @@ const routes: Routes = [
   {
     path: '',
     component: CosplayGroupsPage
+  },
+  {
+    path: 'new',
+    loadChildren: () =>
+      import('./new-cosplay-group/new-cosplay-group.module').then( m => m.NewCosplayGroupPageModule)
+  },
+  {
+    path: 'edit',
+    loadChildren: () =>
+    import('./edit-cosplay-group/edit-cosplay-group.module').then( m => m.EditCosplayGroupPageModule)
+  },
+  {
+    path: ':cosplayGroupId',
+    loadChildren: () =>
+      import('./cosplay-group-details/cosplay-group-details.module').then( m => m.CosplayGroupDetailsPageModule)
   }
 ];
 
