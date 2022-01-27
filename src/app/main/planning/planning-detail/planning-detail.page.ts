@@ -55,7 +55,7 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
     if(navigation.extras.state == undefined) { this.router.navigate(['main/tabs/planning']); }
     this.planning = navigation?.extras?.state.value;
 
-    //this.placesData.push(this.planning.location);
+    this.placesData.push(this.planning.location);
     //console.log("location: "+this.planning.location);
    }
 
@@ -84,7 +84,8 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
     console.log(this.placesData[0]);
     this.modalCtrl.create({component: MapModalLeafletComponent, 
       componentProps: {
-        center: [this.placesData[0].lat, this.placesData[0].lng], //bcn
+        center: { lat: this.planning.location.lat, lng: this.planning.location.lng }, //bcn
+        //{ lat: this.cosplayGroup.location.lat, lng: this.cosplayGroup.location.lng },
         markers: this.placesData , // array of markers
         selectable: false,
         multiple: true,
