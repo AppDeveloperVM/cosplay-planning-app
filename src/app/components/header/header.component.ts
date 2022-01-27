@@ -16,6 +16,7 @@ export class HeaderComponent implements OnInit {
   notifications: any = [];
   checked_notif = false;
   obj : any;
+  notif_count: number = 0
 
   constructor(
     private route: ActivatedRoute,
@@ -44,14 +45,15 @@ export class HeaderComponent implements OnInit {
           )
         }
 
-        let notif_count = this.noticesService.getNotices().length;
-        console.log("Notifications : " + notif_count);
+        this.notif_count = this.noticesService.getNotices().length;
+        this.notifications = this.noticesService.getNotices();
+        console.log("Notifications : " + this.notif_count);
     });
   }
 
   async mostrarPop( event ) {
-    
-    if (this.notifications.length > 0) { 
+
+    if (this.notif_count) { 
       console.log(this.notifications);
 
       this.checked_notif = true;
