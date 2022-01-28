@@ -64,7 +64,7 @@ export class PlanningItemComponent implements OnInit {
           loadingEl.dismiss();
         }, 500);
 
-      //this.router.navigate(['main/tabs/cosplays/cosplay-groups']);
+      //this.router.navigate(['main/tabs/cosplay-groups']);
     });
   }
 

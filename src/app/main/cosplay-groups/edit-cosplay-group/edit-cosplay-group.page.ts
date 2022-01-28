@@ -3,10 +3,10 @@ import { CosplayGroup } from '../cosplay-group.model';
 import { Observable, Subscription } from 'rxjs';
 import { NavController, ModalController, ToastController, AlertController, LoadingController } from '@ionic/angular';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { CosplayGroupService } from '../../../../services/cosplay-group.service';
+import { CosplayGroupService } from '../../../services/cosplay-group.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { switchMap } from 'rxjs/operators';
-import { PlaceLocation } from '../../../../models/location.model';
+import { PlaceLocation } from '../../../models/location.model';
 import { UploadImageService } from 'src/app/services/upload-img.service';
 
 
@@ -41,7 +41,7 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
     private uploadService: UploadImageService
     ) {
       const navigation = this.router.getCurrentNavigation();
-      if(navigation.extras.state == undefined) { this.router.navigate(['main/tabs/cosplays/cosplay-groups']); }
+      if(navigation.extras.state == undefined) { this.router.navigate(['main/tabs/cosplay-groups']); }
       this.cosplayGroup = navigation?.extras?.state.value;
     }
 

@@ -8,7 +8,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { CosplayGroupSendRequestComponent } from './main/cosplays/cosplay-groups/cosplay-group-send-request/cosplay-group-send-request.component';
+import { CosplayGroupSendRequestComponent } from './main/cosplay-groups/cosplay-group-send-request/cosplay-group-send-request.component';
 import { ComponentsModule } from './components/components.module';
 import { PopinfoComponent } from './components/popinfo/popinfo.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';

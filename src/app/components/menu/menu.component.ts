@@ -46,7 +46,7 @@ export class MenuComponent implements OnInit {
       },
       {
         title : "Cosplay Groups",
-        url   : "/main/tabs/cosplays/cosplay-groups",
+        url   : "/main/tabs/cosplay-groups",
         icon  : "people-outline"
       },
       {

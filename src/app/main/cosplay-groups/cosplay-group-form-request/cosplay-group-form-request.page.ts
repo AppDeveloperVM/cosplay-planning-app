@@ -1,11 +1,11 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NavController, ModalController, LoadingController } from '@ionic/angular';
-import { CosplayGroupService } from '../../../../services/cosplay-group.service';
+import { CosplayGroupService } from '../../../services/cosplay-group.service';
 import { CosplayGroup } from '../cosplay-group.model';
 import { NgForm } from '@angular/forms';
 import { CosplayGroupSendRequestComponent } from '../cosplay-group-send-request/cosplay-group-send-request.component';
-import { Cosplay } from '../../cosplay.model';
+import { Cosplay } from '../../cosplays/cosplay.model';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -29,7 +29,7 @@ export class CosplayGroupFormRequestPage implements OnInit, OnDestroy {
     private loadingCtrl: LoadingController
   ) {
     const navigation = this.router.getCurrentNavigation();
-    if(navigation.extras.state == undefined) { this.router.navigate(['main/tabs/cosplays/cosplay-groups']); }
+    if(navigation.extras.state == undefined) { this.router.navigate(['main/tabs/cosplay-groups']); }
     this.cosplayGroup = navigation?.extras?.state.value;
 
     console.log("location: "+this.cosplayGroup.location);
@@ -40,7 +40,7 @@ export class CosplayGroupFormRequestPage implements OnInit, OnDestroy {
     /*
     this.route.paramMap.subscribe(paramMap => {
       if (!paramMap.has('cosplayGroupId')) {
-        this.navCtrl.navigateBack('/main/tabs/cosplays/cosplay-groups');
+        this.navCtrl.navigateBack('/main/tabs/cosplay-groups');
         return;
       }
       this.cosplayGroupId = paramMap.has('cosplayGroupId')
@@ -106,7 +106,7 @@ export class CosplayGroupFormRequestPage implements OnInit, OnDestroy {
             */
             loadingEl.dismiss();
             
-            this.router.navigateByUrl('/main/tabs/cosplays/cosplay-groups');
+            this.router.navigateByUrl('/main/tabs/cosplay-groups');
           }
         );
       }

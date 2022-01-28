@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Placeholder } from '@angular/compiler/src/i18n/i18n_ast';
 import { CosplayGroup } from '../cosplay-group.model';
 import { LoadingController, ModalController, NavController } from '@ionic/angular';
-import { Cosplay } from '../../cosplay.model';
+import { Cosplay } from '../../cosplays/cosplay.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NoticesService } from 'src/app/services/notices.service';
 import { FormControl, ReactiveFormsModule, FormGroup, NgForm, Validators, FormBuilder } from '@angular/forms';

@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ModalController, NavController, ToastController, AlertController, LoadingController, Platform } from '@ionic/angular';
 import { CosplayGroup } from '../cosplay-group.model';
-import { CosplayGroupService } from '../../../../services/cosplay-group.service';
+import { CosplayGroupService } from '../../../services/cosplay-group.service';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
-import { Cosplay } from '../../cosplay.model';
+import { Cosplay } from '../../cosplays/cosplay.model';
 import { Observable, Subscription } from 'rxjs';
 import { MapModalComponent } from 'src/app/shared/map-modal/map-modal.component';
 import { PlaceDataService } from 'src/app/services/place-data.service';
@@ -64,7 +64,7 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
     private platform: Platform
   ) {
     const navigation = this.router.getCurrentNavigation();
-    if(navigation.extras.state == undefined) { this.router.navigate(['main/tabs/cosplays/cosplay-groups']); }
+    if(navigation.extras.state == undefined) { this.router.navigate(['main/tabs/cosplay-groups']); }
     this.cosplayGroup = navigation?.extras?.state.value;
 
     this.placesData.push(this.cosplayGroup.location);
@@ -93,7 +93,7 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
 
   onGoToEdit(item:any){
     this.navigationExtras.state.value = item;
-    this.router.navigate(['main/tabs/cosplays/cosplay-groups/edit'], this.navigationExtras );
+    this.router.navigate(['main/tabs/cosplay-groups/edit'], this.navigationExtras );
     return false;
   }
 
@@ -177,7 +177,7 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
           loadingEl.dismiss();
         }, 500);
 
-      //this.router.navigate(['main/tabs/cosplays/cosplay-groups']);
+      //this.router.navigate(['main/tabs/cosplay-groups']);
     });
   }
 

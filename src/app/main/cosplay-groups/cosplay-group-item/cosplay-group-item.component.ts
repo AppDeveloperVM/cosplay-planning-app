@@ -48,12 +48,12 @@ export class CosplayGroupItemComponent implements OnInit, AfterViewInit {
 
   onGoToSee(item: any): void {
     this.navigationExtras.state.value = item;
-    this.router.navigate(['main/tabs/cosplays/cosplay-groups/cosplay-group-details/'], this.navigationExtras );
+    this.router.navigate(['main/tabs/cosplay-groups/cosplay-group-details/'], this.navigationExtras );
   }
 
   onGoToEdit(item: any): void {
     this.navigationExtras.state.value = item;
-    this.router.navigate(['main/tabs/cosplays/cosplay-groups/edit'], this.navigationExtras );
+    this.router.navigate(['main/tabs/cosplay-groups/edit'], this.navigationExtras );
   }
 
   async onDeleteCosGroup(cosGroupId: string): Promise<void> {
@@ -74,7 +74,7 @@ export class CosplayGroupItemComponent implements OnInit, AfterViewInit {
           loadingEl.dismiss();
         }, 500);
 
-      //this.router.navigate(['main/tabs/cosplays/cosplay-groups']);
+      //this.router.navigate(['main/tabs/cosplay-groups']);
     });
   }
 

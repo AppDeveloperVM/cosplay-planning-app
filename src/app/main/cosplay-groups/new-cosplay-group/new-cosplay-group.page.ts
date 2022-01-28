@@ -1,15 +1,15 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CosplayGroup } from '../cosplay-group.model';
-import { CosplayGroupService } from '../../../../services/cosplay-group.service';
+import { CosplayGroupService } from '../../../services/cosplay-group.service';
 import { Router } from '@angular/router';
-import { PlaceLocation } from '../../../../models/location.model';
+import { PlaceLocation } from '../../../models/location.model';
 import { finalize, switchMap } from 'rxjs/operators';
 import { LoadingController } from '@ionic/angular';
 import { CosGroup } from 'src/app/models/cosGroup.interface';
 
-import { UploadImageService } from '../../../../services/upload-img.service';
-import { FirebaseStorageService } from '../../../../services/firebase-storage.service';
+import { UploadImageService } from '../../../services/upload-img.service';
+import { FirebaseStorageService } from '../../../services/firebase-storage.service';
 import { getStorage, ref, uploadBytes,getDownloadURL } from "firebase/storage";
 
 
@@ -156,7 +156,7 @@ export class NewCosplayGroupPage implements OnInit {
       this.form.reset();
       loadingEl.dismiss();
 
-      this.router.navigate(['main/tabs/cosplays/cosplay-groups']);
+      this.router.navigate(['main/tabs/cosplay-groups']);
     });
     
   }

@@ -12,7 +12,7 @@
     {
         "icon": "people-outline",
         "name": "Cosplay Groups",
-        "redirectTo": "/main/tabs/cosplays/cosplay-groups"
+        "redirectTo": "/main/tabs/cosplay-groups"
     },
     {
         "icon": "settings-outline",

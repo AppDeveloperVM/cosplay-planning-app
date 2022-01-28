@@ -2,7 +2,7 @@
   <ion-toolbar >
     <ion-title *ngIf="!isLoading">{{ cosplayGroup.title }}</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/main/tabs/cosplays/cosplay-groups"></ion-back-button>
+      <ion-back-button defaultHref="/main/tabs/cosplay-groups"></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-title text-center>{{ isLoading ? 'Loading...' : '' }}</ion-title>
