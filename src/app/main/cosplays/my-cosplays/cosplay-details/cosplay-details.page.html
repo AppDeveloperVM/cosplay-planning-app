@@ -3,9 +3,10 @@
     <ion-title *ngIf="!isLoading">{{ cosplay.title }}</ion-title>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/"></ion-back-button>
+      <ion-title text-center>{{ isLoading ? 'Loading...' : cosplay.characterName}}</ion-title>
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-title text-center>{{ isLoading ? 'Loading...' : cosplay.characterName}}</ion-title>
+      
       <ion-button >
         <ion-icon #favIcon name="heart"></ion-icon>
       </ion-button>
