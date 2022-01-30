@@ -161,8 +161,7 @@ export class CosplayGroupSendRequestComponent implements OnInit {
       this.cosplayGroupService.onSaveCosGroupRequest(cosGroup, cosGroupId)
 
       //add actual User name (this session)
-      this.noticesService.addNotice( 'User1' , 'request', 'CosGroup character request');
-      this.noticesService.getNotices();
+      this.noticesService.addNotice( "Requested: " + this.form.get('characterName').value , 'request', this.selectedCosplayGroup.title );      this.noticesService.getNotices();
 
       loadingEl.dismiss();
       this.form.reset();
