@@ -1,6 +1,7 @@
 <ion-item 
   (click)="onGoToSee(cosplay)"
   routerDirection="forward"
+  button
   detail
   class="cosplay_item"
 >
@@ -18,7 +19,7 @@
         <h2>{{ cosplay.characterName }}</h2>
         <p>{{ cosplay.series }}</p>
       </div>
-      <ion-button slot="end" size="small" color="danger" (click)="onDeleteCosplay(cosplay.id);$event.stopPropagation();">
+      <ion-button slot="end" size="medium" color="danger" (click)="onDeleteCosplay(cosplay.id);$event.stopPropagation();">
         <ion-icon  name="close" ></ion-icon>
       </ion-button>
     </ion-item>

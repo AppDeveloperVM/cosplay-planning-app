@@ -1,5 +1,5 @@
 .cosplay_item .header{
-    padding: 0 8px 0 8px;
+    padding: 0 0px 0 0px;
 }
 
 
@@ -18,8 +18,10 @@
         min-width:120px;
     
         ion-item {
-            --padding-end: 0px;
+            --padding-end: 8px;
+            --padding-start: 8px;
             --inner-padding-end: 0px;
+            border-radius: 5px;
             // here other custom CSS from documentation
         }
 
