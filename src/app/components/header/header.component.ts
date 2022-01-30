@@ -17,6 +17,7 @@ export class HeaderComponent implements OnInit {
   checked_notif = false;
   obj : any;
   notif_count: number = 0
+  edit_enabled = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -26,7 +27,9 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.fetchFileData(); // get notifs from file - this.file_notifications
+    //if(!this.noticesService.fetchJson()){
+      this.fetchFileData(); // get notifs from file - this.file_notifications
+    //}
     
   }
 
@@ -71,6 +74,12 @@ export class HeaderComponent implements OnInit {
     } else {
       console.log('No notifications - no popup');
     }
+
+  }
+
+  async enableEdit( event ){
+    this.edit_enabled = !this.edit_enabled;
+    console.log("edit mode:"+this.edit_enabled);
 
   }
 

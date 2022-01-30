@@ -15,6 +15,8 @@ export class NoticesService {
   notice: Notice;
   noticesUpdated: any;
 
+  jsonFetched : boolean = false;
+
   constructor() { }
 
   addNotice(
@@ -94,7 +96,19 @@ export class NoticesService {
     }
 
     return false;
-}
+  }
+
+  fetchJson(){
+    var fetch : Boolean = true;
+    if(this.jsonFetched == false){
+      fetch = true;
+      this.jsonFetched = true;
+    }else{
+      fetch = false;
+    }
+
+    return fetch;
+  }
    
 
 }

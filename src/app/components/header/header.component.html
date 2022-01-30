@@ -5,6 +5,9 @@
     </ion-buttons>
     <ion-title>{{ titulo }}</ion-title>
     <ion-buttons slot="primary">
+      <ion-button size="small" shape="round" color="medium"  (click)="enableEdit($event)">
+        <ion-icon name="create-outline"></ion-icon>
+      </ion-button>
       <ion-button size="small" shape="round" color="medium" (click)="mostrarPop($event)">
         <ion-icon name="notifications-outline"></ion-icon>
         <ion-badge color="dark" slot="end" *ngIf="notifications.length > 0 ">{{notifications.length}}</ion-badge>
