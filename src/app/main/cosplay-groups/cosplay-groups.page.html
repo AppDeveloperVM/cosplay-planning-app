@@ -39,7 +39,7 @@
       size-xl="6" offset-xl="3"
       class="ion-text-center" 
       *ngIf="!isLoading ">
-        <ion-list *ngFor="let cosplaygroupitem of cosGroups$ | async" lines="none">
+        <ion-list *ngFor="let cosplaygroupitem of cosGroups$ | async" lines="none" class="ion-no-padding">
           <app-cosplay-group-item [cosplaygroup]="cosplaygroupitem"></app-cosplay-group-item>
         </ion-list>
       </ion-col>

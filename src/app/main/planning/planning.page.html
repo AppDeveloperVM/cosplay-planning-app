@@ -26,7 +26,7 @@
       size-xl="6" offset-xl="3"
       class="ion-text-center" 
       *ngIf="!isLoading">
-        <ion-list *ngFor="let planningitem of plannings$ | async" lines="none">
+        <ion-list *ngFor="let planningitem of plannings$ | async" lines="none" class="ion-no-padding">
           <app-planning-item [planning]="planningitem"></app-planning-item>
         </ion-list>
       </ion-col>

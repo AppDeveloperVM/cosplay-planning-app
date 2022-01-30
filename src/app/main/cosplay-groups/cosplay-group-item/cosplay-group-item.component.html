@@ -12,6 +12,7 @@ class="cosgroup_item">
   
   <ion-label>
     <div class="header">
+
       <ion-item class="inner_item_info ion-no-padding" lines="none">
         <div class="title truncate">
           <h1 slot="start">{{ cosplaygroup.title }}</h1>
@@ -19,10 +20,11 @@ class="cosgroup_item">
             <span class="place space-left space-right truncate">{{ cosplaygroup.series }}</span>
           </p>
         </div>
-        <ion-button slot="end" size="small" color="danger" (click)="onDeleteCosGroup(cosplaygroup.id);$event.stopPropagation();">
+        <ion-button slot="end" size="medium" color="danger" (click)="onDeleteCosGroup(cosplaygroup.id);$event.stopPropagation();">
           <ion-icon  name="close" ></ion-icon>
         </ion-button>
       </ion-item>
+      
     </div>
     <div class="cosplaygroup-details">
       <p class="location_info">
