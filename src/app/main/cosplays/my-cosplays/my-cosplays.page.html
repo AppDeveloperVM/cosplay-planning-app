@@ -16,7 +16,6 @@
         *ngIf="cosplays$ | async as data"
       >
         <div *ngIf="isLoading" 
-       
         >        
           <ion-spinner color="primary" ></ion-spinner>
         </div>
@@ -32,10 +31,34 @@
       size-lg="6" offset-lg="3"
       size-xl="6" offset-xl="3"
       class="ion-text-center" 
-      *ngIf="!isLoading ">
-        <ion-list *ngFor="let cosplay of cosplays$ | async" lines="none" class="ion-no-padding">
-          <app-cosplay-item [cosplay]="cosplay"></app-cosplay-item>
-        </ion-list>
+      >
+        <div *ngIf="isLoading">
+          <ion-list *ngFor="let number of [0,1,2]" lines="none" class="ion-no-padding">
+            <ion-item>
+              <ion-thumbnail slot="start">
+                <ion-skeleton-text></ion-skeleton-text>
+              </ion-thumbnail>
+              <ion-label>
+                <h3>
+                  <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+                </h3>
+                <p>
+                  <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+                </p>
+                <p>
+                  <ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+                </p>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+        </div>
+
+        <div *ngIf="!isLoading">
+          <ion-list *ngFor="let cosplay of cosplays$ | async" lines="none" class="ion-no-padding">
+            <app-cosplay-item [cosplay]="cosplay"></app-cosplay-item>
+          </ion-list>
+        </div>
+
       </ion-col>
     </ion-row>
   </ion-grid>

@@ -41,6 +41,11 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.notifications = this.noticesService.getNotices();
+
+    this.isLoading = true;
+    this.cosplays$.subscribe(cos => {
+      this.isLoading = false;
+    });
     
     /*
     this.cosplaysSub = this.cosplaysService.cosplays.subscribe(cosplays => {

@@ -33,6 +33,11 @@ export class PlanningPage implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+
+    this.isLoading = true;
+    this.plannings$.subscribe(planning => {
+      this.isLoading = false;
+    });
     /* this.planningSub = this.planningService.plannings.subscribe(
     plannings => {
       this.loadedPlannings = plannings;
