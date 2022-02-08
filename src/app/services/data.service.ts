@@ -6,8 +6,14 @@ import { Componente } from '../interfaces/interfaces';
   providedIn: 'root'
 })
 export class DataService {
+  editMode: Boolean = false;
 
   constructor( ) { }
+
+  changeEditMode(){
+    var editMode = !this.editMode;
+    return editMode;
+  }
 
   getUsers() {
     return; // ...

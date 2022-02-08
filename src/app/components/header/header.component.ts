@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PopoverController } from '@ionic/angular';
+import { DataService } from 'src/app/services/data.service';
 import { NoticesService } from 'src/app/services/notices.service';
 import { PopinfoComponent } from '../popinfo/popinfo.component';
 
@@ -24,6 +25,7 @@ export class HeaderComponent implements OnInit {
     private router: Router,
     private popoverCtrl: PopoverController,
     private noticesService: NoticesService,
+    private dataService: DataService
   ) { }
 
   ngOnInit() {
@@ -78,7 +80,7 @@ export class HeaderComponent implements OnInit {
   }
 
   async enableEdit( event ){
-    this.edit_enabled = !this.edit_enabled;
+    this.edit_enabled = this.dataService.changeEditMode();
     console.log("edit mode:"+this.edit_enabled);
 
   }

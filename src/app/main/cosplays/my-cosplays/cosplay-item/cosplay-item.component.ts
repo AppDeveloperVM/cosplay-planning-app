@@ -12,6 +12,7 @@ import { Cosplay } from '../../cosplay.model';
 export class CosplayItemComponent implements OnInit {
   @Input() cosplay: Cosplay;
   public imgSrc: any;
+  editMode : Boolean = false;
 
   navigationExtras: NavigationExtras = {
     state : {

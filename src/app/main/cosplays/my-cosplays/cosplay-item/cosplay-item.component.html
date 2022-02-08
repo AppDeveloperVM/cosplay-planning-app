@@ -19,7 +19,9 @@
         <h1>{{ cosplay.characterName }}</h1>
         <p>{{ cosplay.series }}</p>
       </div>
-      <ion-button slot="end" size="medium" color="danger" (click)="onDeleteCosplay(cosplay.id);$event.stopPropagation();">
+      <ion-button 
+      slot="end" size="medium" color="danger" 
+      (click)="onDeleteCosplay(cosplay.id);$event.stopPropagation();">
         <ion-icon  name="close" ></ion-icon>
       </ion-button>
     </ion-item>
