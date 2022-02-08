@@ -43,6 +43,11 @@ export class CosplayGroupsPage implements OnInit, OnDestroy {
 
   ngOnInit() {
 
+    this.isLoading = true;
+    this.cosGroups$.subscribe(cosGroup => {
+      this.isLoading = false;
+    });
+
     /* this.cosplayGroupsSub = this.cosplaygroupService.cosplaygroups.subscribe(cosplaygroups => {
       this.cosplaygroups = cosplaygroups;
       this.loadedCosplayGroups = cosplaygroups;
