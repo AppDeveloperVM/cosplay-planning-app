@@ -35,19 +35,21 @@
             <span class="space-left">|</span>
             <ion-text  class="space-left">{{ isMobile == true ? ( cosplayGroup.dateFrom | date: 'y' ) : ( cosplayGroup.dateFrom | date: 'y' ) }}</ion-text>
           </div>
-          <div>
-            <ion-text>
-              <p><ion-icon name="location" color="secondary"></ion-icon><ion-text class="space-left strong">{{ cosplayGroup.location.address.state}}</ion-text></p>
-              </ion-text>
-          </div>
-          <div>
-            <p>{{ cosplayGroup.location.address.full_address }}</p>
+          <div *ngIf="cosplayGroup.location != null">
+            <div>
+              <ion-text>
+                <p><ion-icon name="location" color="secondary"></ion-icon><ion-text class="space-left strong">{{ cosplayGroup.location.address.state}}</ion-text></p>
+                </ion-text>
+            </div>
+            <div >
+              <p>{{ cosplayGroup.location.address.full_address }}</p>
+            </div>
           </div>
 
         </div>
       </ion-col>
     </ion-row>
-    <ion-row>
+    <ion-row *ngIf="cosplayGroup.location != null">
       <ion-col size-sm="8" offset-sm="2" size-md="8" offset-md="2" padding>
         <ion-img role="button" (click)="onShowFullMap()" class="location-image" [src]="cosplayGroup.location.staticMapImageUrl"></ion-img>
       </ion-col>
@@ -55,12 +57,20 @@
     <ion-row>
       <ion-col size-sm="8" offset-sm="2" size-md="8" offset-md="2">
 
-        <div class="list-header">
+        <div 
+        *ngIf="(cosGroupMembers$ | async)?.length > 0; else loading"
+        class="list-header" >
           <p>Actual Characters taken</p>
-          <ion-button size="small" color="secondary" (click)="enableEdit()">
+          <ion-button
+            size="small" color="medium" (click)="enableEdit()">
             <ion-icon name="create-outline"></ion-icon>
           </ion-button>
         </div>
+        <ng-template #loading>
+          
+            <p>No characters taken yet</p>
+           
+        </ng-template>
 
         <ion-list *ngFor="let cosplayMember of cosGroupMembers$ | async" 
         lines="none" class="cosgroup_members" >
