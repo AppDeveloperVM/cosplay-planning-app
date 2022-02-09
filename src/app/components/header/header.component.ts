@@ -36,7 +36,6 @@ export class HeaderComponent implements OnInit {
     this.fetchFileData(); // get notifs from file - this.file_notifications
     //}
     this.subscription = this.dataService.editMode$.subscribe(r => this.editMode = r)
-    
   }
 
   fetchFileData() {
@@ -86,7 +85,6 @@ export class HeaderComponent implements OnInit {
   async enableEdit(): Promise<void>{
     this.dataService.modeChanged(!this.editMode);
     console.log("edit mode:"+this.editMode);
-
   }
 
 }
