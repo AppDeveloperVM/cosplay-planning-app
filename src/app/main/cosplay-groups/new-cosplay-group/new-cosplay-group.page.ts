@@ -33,7 +33,7 @@ export class NewCosplayGroupPage implements OnInit {
   endDate: string;
   cosGroup: CosGroup;
   isLoading: boolean = false;
-  isFormReady = false;
+  isFormReady = true;
   uploadPercent: Observable<number>;
   ImageObs: Observable<string>;
   urlImage: String;
@@ -77,14 +77,12 @@ export class NewCosplayGroupPage implements OnInit {
         validators: [Validators.required, Validators.maxLength(180)]
       }),
       dateFrom: new FormControl(null, {
-        updateOn: 'blur',
-        validators: [ Validators.required]
+        updateOn: 'blur'
       }),
       dateTo: new FormControl(null, {
-        updateOn: 'blur',
-        validators: [ Validators.required]
+        updateOn: 'blur'
       }),
-      location: new FormControl(null, {validators: [Validators.required]}),
+      location: new FormControl(null),
       imageUrl: new FormControl(null)
     });
   }
@@ -95,6 +93,10 @@ export class NewCosplayGroupPage implements OnInit {
     this.endDate = startDate.detail.value
     //console.log(new Date(startDate).toISOString());
     //this.endDate = new Date(startDate).toISOString();
+  }
+
+  clearDates(){
+    this.form.patchValue({ dateFrom : '',dateTo : ''});
   }
 
   onLocationPicked(location: PlaceLocation) {
