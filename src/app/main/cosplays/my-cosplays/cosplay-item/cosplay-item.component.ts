@@ -1,7 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 import { CosplaysService } from 'src/app/services/cosplays.service';
+import { DataService } from 'src/app/services/data.service';
 import { Cosplay } from '../../cosplay.model';
 
 @Component({
@@ -12,7 +14,8 @@ import { Cosplay } from '../../cosplay.model';
 export class CosplayItemComponent implements OnInit {
   @Input() cosplay: Cosplay;
   public imgSrc: any;
-  editMode : Boolean = false;
+  editMode : boolean;
+  subscription: Subscription;
 
   navigationExtras: NavigationExtras = {
     state : {
@@ -24,6 +27,7 @@ export class CosplayItemComponent implements OnInit {
     private router: Router,
     private loadingCtrl: LoadingController,
     private cosplaysService: CosplaysService,
+    private dataService: DataService
   ) { }
 
   ngOnInit() {

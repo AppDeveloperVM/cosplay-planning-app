@@ -24,6 +24,7 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
   relevantCosplays: Cosplay[];
   private cosplaysSub: Subscription;
   private filter = 'all';
+
   file_notifications: any = []; // past ones from file
   all_notifications: any = []; // full list 
   notifications: any = []; // last ones

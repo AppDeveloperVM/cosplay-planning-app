@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PopoverController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
 import { NoticesService } from 'src/app/services/notices.service';
 import { PopinfoComponent } from '../popinfo/popinfo.component';
@@ -18,7 +19,9 @@ export class HeaderComponent implements OnInit {
   checked_notif = false;
   obj : any;
   notif_count: number = 0
-  edit_enabled = false;
+
+  editMode: boolean;
+  subscription: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -30,8 +33,9 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     //if(!this.noticesService.fetchJson()){
-      this.fetchFileData(); // get notifs from file - this.file_notifications
+    this.fetchFileData(); // get notifs from file - this.file_notifications
     //}
+    this.subscription = this.dataService.editMode$.subscribe(r => this.editMode = r)
     
   }
 
@@ -79,9 +83,9 @@ export class HeaderComponent implements OnInit {
 
   }
 
-  async enableEdit( event ){
-    this.edit_enabled = this.dataService.changeEditMode();
-    console.log("edit mode:"+this.edit_enabled);
+  async enableEdit(): Promise<void>{
+    this.dataService.modeChanged(!this.editMode);
+    console.log("edit mode:"+this.editMode);
 
   }
 

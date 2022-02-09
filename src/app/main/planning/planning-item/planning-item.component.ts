@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { LoadingController, Platform } from '@ionic/angular';
+import { DataService } from 'src/app/services/data.service';
 import { PlanningService } from 'src/app/services/planning.service';
 import { Planning } from '../planning.model';
 
@@ -25,6 +26,7 @@ export class PlanningItemComponent implements OnInit {
     private platform: Platform,
     private loadingCtrl: LoadingController,
     private planningService: PlanningService,
+    private dataService: DataService
   ) { }
 
   ngOnInit() {

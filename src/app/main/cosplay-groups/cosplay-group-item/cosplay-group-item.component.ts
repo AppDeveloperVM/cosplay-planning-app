@@ -5,6 +5,7 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { NavigationExtras, Router } from '@angular/router';
 import { LoadingController, Platform } from '@ionic/angular';
 import { CosplayGroupService } from 'src/app/services/cosplay-group.service';
+import { DataService } from 'src/app/services/data.service';
 
 
 @Component({
@@ -30,6 +31,7 @@ export class CosplayGroupItemComponent implements OnInit, AfterViewInit {
     private platform: Platform,
     private loadingCtrl: LoadingController,
     private cosplayGroupService: CosplayGroupService,
+    private dataService: DataService
   ) {
     
   }
