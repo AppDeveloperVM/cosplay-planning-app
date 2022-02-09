@@ -16,6 +16,7 @@ import { CosplayGroupSendRequestComponent } from '../cosplay-group-send-request/
 import { delay, map } from 'rxjs/operators';
 import { CosGroupMember } from 'src/app/models/cosGroupMember.interface';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
+import { DataService } from 'src/app/services/data.service';
 
 
 @Component({
@@ -49,6 +50,8 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
     }
   }
 
+  editMode: boolean;
+  subscription: Subscription;
   dataReturned;
 
   constructor(
@@ -56,6 +59,7 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private cosplayGroupService: CosplayGroupService,
+    private dataService: DataService,
     private placeDataService: PlaceDataService,
     private readonly afs: AngularFirestore,
     private modalCtrl: ModalController,
@@ -75,6 +79,7 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.subscription = this.dataService.editMode$.subscribe(r => this.editMode = r)
   }
 
   checkPlatform() {
@@ -144,6 +149,11 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
         )
     )
     this.cosGroupMembers$ = this.cosGroupMembers;
+  }
+
+  async enableEdit(): Promise<void>{
+    this.dataService.modeChanged(!this.editMode);
+    console.log("edit mode:"+this.editMode);
   }
 
   onEditCosGroupMembers() {

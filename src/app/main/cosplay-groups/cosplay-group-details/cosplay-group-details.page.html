@@ -57,7 +57,7 @@
 
         <div class="list-header">
           <p>Actual Characters taken</p>
-          <ion-button size="small" color="secondary" (click)="onEditCosGroupMembers()">
+          <ion-button size="small" color="secondary" (click)="enableEdit()">
             <ion-icon name="create-outline"></ion-icon>
           </ion-button>
         </div>
@@ -73,7 +73,9 @@
               <ion-col class="confirm_assistance to_right " size="1">
                 <ion-icon name="checkmark-outline" *ngIf="cosplayMember.asistanceConfirmed != null ? true : cosplayMember.asistanceConfirmed"></ion-icon>
               </ion-col>
-              <ion-col class="delete_col to_right " size="2">
+              <ion-col 
+              *ngIf="dataService.editMode$ | async"
+              class="delete_col to_right " size="2">
                 <ion-button color="danger" (click)="onDeleteMember(cosplayMember.memberId)">
                   <ion-icon name="close" ></ion-icon>
                 </ion-button>
