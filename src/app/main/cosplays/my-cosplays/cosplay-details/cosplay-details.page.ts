@@ -69,7 +69,7 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
   OpenItemDetails(title : String, store: String, status: boolean){
     this.modalCtrl.create({component: CosElementModalComponent, 
     componentProps: {
-      closeButtonText: 'close',
+      closeButtonText: 'X',
       title,
       store,
       status
