@@ -15,7 +15,7 @@
 
 <ion-content padding>
   <div text-center *ngIf="isLoading">
-    <ion-spinner color="primary"></ion-spinner>
+    <ion-progress-bar type="indeterminate"></ion-progress-bar>
   </div>
   <form [formGroup]="form" *ngIf="!isLoading">
     <ion-grid>

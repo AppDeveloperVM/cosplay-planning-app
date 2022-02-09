@@ -17,7 +17,7 @@
       >
         <div *ngIf="isLoading" 
         >        
-          <ion-spinner color="primary" ></ion-spinner>
+        <ion-progress-bar type="indeterminate"></ion-progress-bar>
         </div>
         <div class="ion-text-center"
         *ngIf="!isLoading && data.length == 0">
