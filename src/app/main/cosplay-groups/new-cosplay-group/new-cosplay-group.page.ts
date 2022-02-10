@@ -96,7 +96,7 @@ export class NewCosplayGroupPage implements OnInit {
   }
 
   clearDates(){
-    this.form.patchValue({ dateFrom : '',dateTo : ''});
+    this.form.patchValue({ dateFrom : null,dateTo : null});
   }
 
   onLocationPicked(location: PlaceLocation) {
