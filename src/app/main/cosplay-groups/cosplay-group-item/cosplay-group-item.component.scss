@@ -17,13 +17,26 @@ h1 {
 
 .cosgroup_item {
 
+    ion-thumbnail{
+        margin-top: 0;
+        margin-bottom: 0px;
+        --border-radius: 10px;
+    }
+
     .thumbnail_icon {
-        width: 40px;
-        height: 40px;
+        
+        width: 60px;
+        height: 60px;
+        margin-right: 12px;
+        
     
         ion-icon {
             color: rgb(136, 133, 133);
-          }
+            width: 60px;
+            height: 60px;
+            margin-left: 0px;
+            
+        }
     }
 
     .header{
