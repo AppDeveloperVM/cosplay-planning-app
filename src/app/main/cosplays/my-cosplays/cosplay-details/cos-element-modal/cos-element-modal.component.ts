@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
 //import { ReactiveFormsModule, ... } from '@angular/forms';
@@ -9,7 +9,12 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['./cos-element-modal.component.scss'],
 })
 export class CosElementModalComponent implements OnInit {
-
+  @Input() title = 'Detalles';
+  @Input() name = 'New Item';
+  @Input() store = 'Amazon';
+  @Input() cost = '0.00€';
+  @Input() comment = 'Notes...';
+  
   constructor(
     private modalCtrl: ModalController
   ) { }

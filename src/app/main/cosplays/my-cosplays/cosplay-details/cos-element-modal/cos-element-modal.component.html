@@ -1,37 +1,37 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Detalles</ion-title>
+    <ion-title>{{title}}</ion-title>
     <ion-buttons slot="primary">
-      <ion-button (click)="onCancel()">Close</ion-button>
+      <ion-button size="large" (click)="onCancel()">{{closeButtonText}}</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<div class="inner-content">
   <form class="cos_element" >
 
     <ion-item lines="full">
-      <ion-label position="floating">Name</ion-label>
-      <ion-input placeholder="" autofocus="true" type="text" required></ion-input>
+      <ion-label position="floating" class="grey">Name</ion-label>
+      <ion-input placeholder="{{name}}" value="{{name}}" autofocus="true" type="text" required></ion-input>
     </ion-item>
     <ion-row>
       <ion-col class="ion-no-padding">
         <ion-item class="ion-no-margin">
-          <ion-label position="floating">Store</ion-label>
-          <ion-input placeholder="Amazon" autofocus="true" type="text" required></ion-input>
+          <ion-label position="floating" class="grey">Store</ion-label>
+          <ion-input placeholder="{{store}}" value="{{store}}" autofocus="true" type="text" required></ion-input>
         </ion-item>
       </ion-col>
       <ion-col class="ion-no-padding">
         <ion-item class="ion-no-margin">
-          <ion-label position="floating">Cost</ion-label>
-          <ion-input placeholder="0,00€" autofocus="true" type="text" required></ion-input>
+          <ion-label position="floating" class="grey">Cost</ion-label>
+          <ion-input placeholder="{{cost}}" value="{{cost}}" autofocus="true" type="text" required></ion-input>
         </ion-item>
       </ion-col>
     </ion-row>
     
       <ion-item>
-        <ion-label position="floating">Comment</ion-label>
-        <ion-textarea placeholder="Notes.." clearOnEdit="true"></ion-textarea>
+        <ion-label position="floating" class="grey">Comment</ion-label>
+        <ion-textarea placeholder="{{comment}}" value="{{comment}}" clearOnEdit="true"></ion-textarea>
       </ion-item>
     
 
@@ -50,4 +50,4 @@
     </div>
   
   
-</ion-content>
+</div>

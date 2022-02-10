@@ -64,9 +64,14 @@
   <div [ngSwitch]="default">
     <div *ngSwitchCase="'elements'">
 
-      <ion-title class="ion-text-center">
+      <ion-item color="transparent" lines="none">
+      <ion-title class="ion-text-center title">
         <h3>Elementos del Cosplay</h3>
       </ion-title>
+      <ion-button color="medium" size="medium" (click)="OpenItemDetails( )">
+        <ion-icon name="add-outline"></ion-icon>
+      </ion-button>
+      </ion-item>
 
       <ion-list class="ion-no-padding" lines="full">
 

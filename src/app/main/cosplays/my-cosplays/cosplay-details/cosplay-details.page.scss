@@ -35,15 +35,15 @@ ion-content {
     --ion-item-background:#18181860;
 }
 
-ion-item {
-    --min-height: 20px;
-}
 
 // eliminar padding final
 ion-item {
+  --min-height: 20px;
   --padding-end: 0px;
   --inner-padding-end: 0px;
 }
+
+
 
 ion-item.list-item {
   --min-height: 40px;
