@@ -37,7 +37,7 @@ class="cosgroup_item">
           {{ cosplaygroup.location.address.state }}
         </span>
       </p>
-      <div class="dates" *ngIf="cosplayGroup.dateFrom != null">
+      <div class="dates" *ngIf="cosplaygroup.dateFrom != null && cosplaygroup.dateFrom != ''">
         <ion-icon name="calendar" color="secondary"></ion-icon>
         <ion-text  class="space-left">{{ isMobile == true ? (  cosplaygroup.dateFrom | date: 'MMM d' ) : (  cosplaygroup.dateFrom | date: 'MMM d' ) }}</ion-text> 
         <span class="space-left">to</span>
