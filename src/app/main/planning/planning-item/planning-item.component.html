@@ -16,7 +16,9 @@ button
         <ion-item class="inner_item_info ion-no-padding" lines="none">
           <div class="title truncate">
             <h1 slot="start">{{ planning.title }}</h1>
-            <div class="location_info">
+            <div 
+            *ngIf="planning.location != null"
+            class="location_info">
             <p>
               <ion-icon name="location" color="secondary"></ion-icon>
               <span class="place space-left space-right truncate">{{ planning.location.address.state}}</span>
@@ -33,7 +35,9 @@ button
       </div>
 
       <div class="planning-details">
-        <div class="dates">
+        <div 
+        *ngIf="planning.startsAt != null"
+        class="dates">
           <ion-icon name="calendar" color="secondary"></ion-icon>
           <ion-text  class="space-left">{{ isMobile == true ? ( planning.startsAt | date: 'MMM d' ) : ( planning.startsAt | date: 'MMM d' ) }}</ion-text>
           <span class="space-left">to</span>
