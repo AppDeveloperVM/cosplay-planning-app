@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { NavigationExtras, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 
 //import { ReactiveFormsModule, ... } from '@angular/forms';
@@ -9,6 +10,7 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['./cos-element-modal.component.scss'],
 })
 export class CosElementModalComponent implements OnInit {
+
   @Input() title = 'Detalles';
   @Input() name = 'New Item';
   @Input() store = 'Amazon';
@@ -16,12 +18,12 @@ export class CosElementModalComponent implements OnInit {
   @Input() comment = 'Notes...';
   
   constructor(
+    private router: Router,
     private modalCtrl: ModalController
-  ) { }
+  ) {
+  }
 
   ngOnInit() {}
-
-  
 
   onCancel() {
     this.modalCtrl.dismiss();

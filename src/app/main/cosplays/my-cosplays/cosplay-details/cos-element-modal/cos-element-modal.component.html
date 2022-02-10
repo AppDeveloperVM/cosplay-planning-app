@@ -2,40 +2,30 @@
   <ion-toolbar>
     <ion-title>{{title}}</ion-title>
     <ion-buttons slot="primary">
-      <ion-button size="large" (click)="onCancel()">{{closeButtonText}}</ion-button>
+      <ion-button color="p" (click)="onCancel()">{{ closeButtonText }}</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<div class="inner-content">
-  <form class="cos_element" >
+<ion-content>
 
-    <ion-item lines="full">
-      <ion-label position="floating" class="grey">Name</ion-label>
-      <ion-input placeholder="{{name}}" value="{{name}}" autofocus="true" type="text" required></ion-input>
+  <ion-accordion value="colors">
+    <ion-item slot="header">
+      <ion-label>Colors</ion-label>
     </ion-item>
-    <ion-row>
-      <ion-col class="ion-no-padding">
-        <ion-item class="ion-no-margin">
-          <ion-label position="floating" class="grey">Store</ion-label>
-          <ion-input placeholder="{{store}}" value="{{store}}" autofocus="true" type="text" required></ion-input>
-        </ion-item>
-      </ion-col>
-      <ion-col class="ion-no-padding">
-        <ion-item class="ion-no-margin">
-          <ion-label position="floating" class="grey">Cost</ion-label>
-          <ion-input placeholder="{{cost}}" value="{{cost}}" autofocus="true" type="text" required></ion-input>
-        </ion-item>
-      </ion-col>
-    </ion-row>
-    
-      <ion-item>
-        <ion-label position="floating" class="grey">Comment</ion-label>
-        <ion-textarea placeholder="{{comment}}" value="{{comment}}" clearOnEdit="true"></ion-textarea>
-      </ion-item>
-    
 
-  </form>
+    <ion-list slot="content">
+      <ion-item>
+        <ion-label>Red</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Green</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Blue</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-accordion>
 
     <div class="action-buttons">
       <ion-button>
