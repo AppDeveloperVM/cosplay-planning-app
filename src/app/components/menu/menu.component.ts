@@ -40,14 +40,14 @@ export class MenuComponent implements OnInit {
         icon  : "body"
       },
       {
-        title : "Planning",
-        url   : "/main/tabs/planning",
-        icon  : "calendar"
-      },
-      {
         title : "Cosplay Groups",
         url   : "/main/tabs/cosplay-groups",
         icon  : "people-outline"
+      },
+      {
+        title : "Planning",
+        url   : "/main/tabs/planning",
+        icon  : "calendar"
       },
       {
         title : "Settings",
