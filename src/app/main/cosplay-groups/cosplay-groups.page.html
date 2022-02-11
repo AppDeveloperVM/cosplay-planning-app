@@ -11,11 +11,11 @@
    
 
       <ion-col
-      size="12"
-      size-md="6" 
-      offset-md="3"
-      size="8" offset="2"
-        text-center
+      size="12" 
+      size-md="10" offset-md="1" 
+      size-lg="6" offset-lg="3"
+      size-xl="6" offset-xl="3"
+      class="ion-text-center" 
         *ngIf="cosGroups$ | async as data"
       >
         <div *ngIf="!isLoading && data.length == 0">
@@ -32,7 +32,7 @@
       class="ion-text-center" 
       >
       <div *ngIf="isLoading">
-        <ion-list *ngFor="let number of [0,1,2]" lines="none" class="ion-no-padding">
+        <ion-list *ngFor="let number of [0,1,2,3,4,5,6,7]" lines="none" class="ion-no-padding">
           <ion-item>
             <ion-thumbnail slot="start">
               <ion-skeleton-text></ion-skeleton-text>
