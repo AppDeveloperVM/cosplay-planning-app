@@ -4,6 +4,12 @@ h1 {
 
 .planning_item {
 
+    ion-thumbnail{
+        margin-top: 0;
+        margin-bottom: 0px;
+        --border-radius: 10px;
+    }
+
     .thumbnail_icon {
         width: 40px;
         height: 40px;
