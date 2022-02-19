@@ -56,8 +56,8 @@ export class NewCosplayGroupPage implements OnInit {
   }
 
   ngOnInit() {
-    const availableFrom = new Date();
-    const availableTo = new Date();
+    const dateFrom = new Date();
+    const dateTo = new Date();
 
     this.form = new FormGroup({
       title: new FormControl(null, {

@@ -23,7 +23,7 @@
         <ion-col size-sm="6" offset-sm="3">
           <app-image-picker
           [selectedImage]="actualImage"
-          [showPreview]="form.get('image').value"
+          [showPreview]="form.get('imageUrl').value"
           (imagePick)="onImagePicked($event)"></app-image-picker>
         </ion-col>
       </ion-row>

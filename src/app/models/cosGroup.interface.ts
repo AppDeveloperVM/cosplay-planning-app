@@ -7,8 +7,8 @@ export interface CosGroup {
     series: string,
     imageUrl: string,
     place: string,
-    availableFrom: Date,
-    availableTo: Date,
+    dateFrom: Date,
+    dateTo: Date,
     userId: string,
     location: PlaceLocation
     cosMembers: CosGroupMember

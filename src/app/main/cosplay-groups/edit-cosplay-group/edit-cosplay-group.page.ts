@@ -61,27 +61,35 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
-      dateFrom: new FormControl(this.cosplayGroup.availableFrom, {
+      dateFrom: new FormControl(this.cosplayGroup.dateFrom, {
         updateOn: 'blur',
-        validators: [ Validators.required]
       }),
-      dateTo: new FormControl(this.cosplayGroup.availableTo, {
+      dateTo: new FormControl(this.cosplayGroup.dateTo, {
         updateOn: 'blur',
-        validators: [ Validators.required]
       }),
-      location: new FormControl(),
-      image: new FormControl()
+      location: new FormControl(null),
+      imageUrl: new FormControl(null)
     });
     this.actualImage = this.cosplayGroup.imageUrl;
     this.actualMapImage = this.cosplayGroup.location.staticMapImageUrl;
+
+    //Use saved info from db
+    if(this.form.get('imageUrl').value == null && this.cosplayGroup.imageUrl != null){
+      this.form.patchValue({ imageUrl: this.cosplayGroup.imageUrl })
+    }
+    if(this.form.get('location').value == null && this.cosplayGroup.location != null){
+      this.form.patchValue({ location: this.cosplayGroup.location })
+    }
+    console.log("Form data with saved info: "+ JSON.stringify(this.form.value));
     this.isLoading = false;
-    
  
   }
 
   //Submit form data ( Cosplay ) when ready
-  onUpdateCosplay() {
+  onUpdateCosplayGroup() {
     if (!this.form.valid) return
+
+    
 
     this.loadingCtrl
     .create({
@@ -96,8 +104,8 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
 
       setTimeout(() => {
         loadingEl.dismiss();
-        //this.form.reset();
-        //this.router.navigate(['main/tabs/cosplays/my-cosplays']);
+        this.form.reset();
+        this.router.navigate(['main/tabs/cosplay-groups']);
       }, 500);
 
     });
