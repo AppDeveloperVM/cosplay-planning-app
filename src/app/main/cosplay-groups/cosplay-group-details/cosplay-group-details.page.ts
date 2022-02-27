@@ -4,7 +4,7 @@ import { CosplayGroup } from '../cosplay-group.model';
 import { CosplayGroupService } from '../../../services/cosplay-group.service';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
-import { Cosplay } from '../../cosplays/cosplay.model';
+import { Cosplay } from '../../../models/cosplay.model';
 import { Observable, Subscription } from 'rxjs';
 import { MapModalComponent } from 'src/app/shared/map-modal/map-modal.component';
 import { PlaceDataService } from 'src/app/services/place-data.service';

@@ -5,7 +5,6 @@ import { CosplayGroupService } from '../../../services/cosplay-group.service';
 import { CosplayGroup } from '../cosplay-group.model';
 import { NgForm } from '@angular/forms';
 import { CosplayGroupSendRequestComponent } from '../cosplay-group-send-request/cosplay-group-send-request.component';
-import { Cosplay } from '../../cosplays/cosplay.model';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -37,22 +36,6 @@ export class CosplayGroupFormRequestPage implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    /*
-    this.route.paramMap.subscribe(paramMap => {
-      if (!paramMap.has('cosplayGroupId')) {
-        this.navCtrl.navigateBack('/main/tabs/cosplay-groups');
-        return;
-      }
-      this.cosplayGroupId = paramMap.has('cosplayGroupId')
-
-      this.cosplaygroupSub = this.cosplayGroupService
-        .getCosplayGroup(paramMap.get('cosplayGroupId'))
-        .subscribe(cosplayGroup => {
-        this.cosplayGroup = cosplayGroup;
-      });
-      
-    });
-    */
   }
 
   onSubmit(form: NgForm) {
@@ -92,18 +75,6 @@ export class CosplayGroupFormRequestPage implements OnInit, OnDestroy {
             loadingEl.present();
             const data = resultData.data; // get possible extra data from here
 
-            /* Aquí se crearía o enviaría la solicitud de personaje para la GRUPAL*/
-            /* this.cosplayGroupService.addCosplayGroupMember(
-              'new character',
-              '1',//cosplayerId
-              true, //asistanceConfirmed
-              this.cosplayGroupId //cosplayGroupId
-            ) */
-            /*
-            .subscribe(() => {
-              loadingEl.dismiss();
-            });
-            */
             loadingEl.dismiss();
             
             this.router.navigateByUrl('/main/tabs/cosplay-groups');

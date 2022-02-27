@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CosplaysService } from '../../../../services/cosplays.service';
 import { NavController, LoadingController, AlertController } from '@ionic/angular';
-import { Cosplay } from '../../cosplay.model';
+import { Cosplay } from '../../../../models/cosplay.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -89,8 +89,8 @@ export class EditCosplayPage implements OnInit, OnDestroy {
 
       setTimeout(() => {
         loadingEl.dismiss();
-        //this.form.reset();
-        //this.router.navigate(['main/tabs/cosplays/my-cosplays']);
+        this.form.reset();
+        this.router.navigate(['main/tabs/cosplays/my-cosplays']);
       }, 500);
 
     });
