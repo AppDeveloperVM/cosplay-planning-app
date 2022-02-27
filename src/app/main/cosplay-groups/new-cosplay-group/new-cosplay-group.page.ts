@@ -70,11 +70,11 @@ export class NewCosplayGroupPage implements OnInit {
       }),
       description: new FormControl(null, {
         updateOn: 'blur',
-        validators: [Validators.required, Validators.maxLength(180)]
+        validators: [ Validators.maxLength(180) ]
       }),
       place: new FormControl(null, {
         updateOn: 'blur',
-        validators: [Validators.required, Validators.maxLength(180)]
+        validators: [ Validators.maxLength(180) ]
       }),
       dateFrom: new FormControl(null, {
         updateOn: 'blur'
