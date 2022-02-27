@@ -27,25 +27,34 @@
     <ion-row>
       <ion-col size-sm="8" offset-sm="2" size-md="8" offset-md="2" padding text-center>
         <div class="cosgroup-details">
-          <div class="dates" *ngIf="cosplayGroup.dateFrom != null">
-            <ion-icon name="calendar" color="secondary"></ion-icon>
-            <ion-text  class="strong space-left">{{ isMobile == true ? (  cosplayGroup.dateFrom | date: 'MMM d' ) : (  cosplayGroup.dateFrom | date: 'MMM d' ) }}</ion-text> 
-            <span class="space-left">to</span>
-            <ion-text  class="strong space-left">{{ isMobile == true ? ( cosplayGroup.dateTo | date: 'd' ) : ( cosplayGroup.dateTo | date: 'd' ) }}</ion-text>
-            <span class="space-left">|</span>
-            <ion-text  class="space-left">{{ isMobile == true ? ( cosplayGroup.dateFrom | date: 'y' ) : ( cosplayGroup.dateFrom | date: 'y' ) }}</ion-text>
-          </div>
-          <div *ngIf="cosplayGroup.location != null">
-            <div>
-              <ion-text>
-                <p><ion-icon name="location" color="secondary"></ion-icon><ion-text class="space-left strong">{{ cosplayGroup.location.address.state}}</ion-text></p>
-                </ion-text>
+          <div class="dates">
+            <div class="dates-info" *ngIf="cosplayGroup.dateFrom != null">
+              <ion-icon name="calendar" color="secondary"></ion-icon>
+              <ion-text  class="strong space-left">{{ isMobile == true ? (  cosplayGroup.dateFrom | date: 'MMM d' ) : (  cosplayGroup.dateFrom | date: 'MMM d' ) }}</ion-text> 
+              <span class="space-left">to</span>
+              <ion-text  class="strong space-left">{{ isMobile == true ? ( cosplayGroup.dateTo | date: 'd' ) : ( cosplayGroup.dateTo | date: 'd' ) }}</ion-text>
+              <span class="space-left">|</span>
+              <ion-text  class="space-left">{{ isMobile == true ? ( cosplayGroup.dateFrom | date: 'y' ) : ( cosplayGroup.dateFrom | date: 'y' ) }}</ion-text>
             </div>
-            <div >
-              <p>{{ cosplayGroup.location.address.full_address }}</p>
+            <div class="no-info" *ngIf="cosplayGroup.dateFrom == null">
+              <ion-text  class="">No se han especificado fechas.</ion-text> 
             </div>
           </div>
-
+          <div>
+            <div *ngIf="cosplayGroup.location != null">
+              <div>
+                <ion-text>
+                  <p><ion-icon name="location" color="secondary"></ion-icon><ion-text class="space-left strong">{{ cosplayGroup.location.address.state}}</ion-text></p>
+                  </ion-text>
+              </div>
+              <div >
+                <p>{{ cosplayGroup.location.address.full_address }}</p>
+              </div>
+            </div>
+            <div *ngIf="cosplayGroup.location == null">
+              <ion-text><p>No se ha especificado lugar de reunión.</p></ion-text>
+            </div>
+          </div>
         </div>
       </ion-col>
     </ion-row>
@@ -60,7 +69,7 @@
         <div 
         *ngIf="(cosGroupMembers$ | async)?.length > 0; else loading"
         class="list-header" >
-          <p>Actual Characters taken</p>
+          <p>Personajes elegidos</p>
           <ion-button
             size="small" color="medium" (click)="enableEdit()">
             <ion-icon name="create-outline"></ion-icon>
@@ -68,7 +77,7 @@
         </div>
         <ng-template #loading>
           
-            <p>No characters taken yet</p>
+            <p>No hay personajes elegidos todavía.</p>
            
         </ng-template>
 
