@@ -3,6 +3,7 @@ import { PlaceLocation } from "./location.model";
 
 export interface CosGroup {
     id?: string,
+    creationDate?: Date;
     title: string,
     series: string,
     imageUrl: string,
