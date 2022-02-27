@@ -50,10 +50,11 @@
             <ion-datetime
             display-format="MMM DD YYYY"
             picker-format="YY MMM DD"
+            [(ngModel)]="startsAt"
             [min]=""
             [max]=""
+            (ionChange)="changedFromDate($event)"
             formControlName="startsAt"
-            required
             ></ion-datetime>
           </ion-item>
         </ion-col>
@@ -63,12 +64,20 @@
             <ion-datetime 
             display-format="MMM DD YYYY"
             picker-format="YY MMM DD"
+            [(ngModel)]="endsAt"
             [min]=""
             [max]=""
             formControlName="endsAt"
-            required
             ></ion-datetime>
           </ion-item>
+          <div class="ion-text-end">
+            <ion-button 
+            class="clearDates"
+            text-capitalize="false"
+            color="medium"
+            size="small" 
+            (click)="clearDates()">Clear dates</ion-button>
+          </div>
         </ion-col>
       </ion-row>
       <ion-row>
