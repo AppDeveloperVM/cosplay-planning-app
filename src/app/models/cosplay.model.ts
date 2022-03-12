@@ -1,3 +1,5 @@
+import { imagesData } from "./imagesData.model";
+
 export class Cosplay {
     constructor(
         public id: string,
