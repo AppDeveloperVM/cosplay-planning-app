@@ -36,6 +36,7 @@ function base64toBlob(base64Data, contentType) {
     providedIn: 'root'
 })
 export class UploadImageService {
+  imgSizes : any = [640,320,170];
 
     constructor(
         private storage: AngularFireStorage,
@@ -55,6 +56,65 @@ export class UploadImageService {
     public archivoForm = new FormGroup({
         archivo: new FormControl(null, Validators.required),
     });
+
+    async fullUploadProcess(imageData: string | File, form : FormGroup, processReady : boolean) : Promise<any> {
+
+      let uploadResults : any = [];
+
+      this.decodeFile(imageData)
+      .then(
+        //Decoded
+        () => {
+          //run compress and upload 3 times ( small, medium , big img)
+          let loop = new Promise((resolve, reject) => {
+            this.imgSizes.forEach(function (imgSize, index) {
+              async (val) => {
+                const maxWidth = imgSize;
+    
+                await this.compressFile(val,maxWidth)
+                .then(
+                  (val) => {
+                    async (val) => {
+                      await this.uploadToServer(val,form)
+                      .then(
+                        //Compressed and Uploaded Img to FireStorage
+                        (val) => {
+                          this.form.patchValue({ imageUrl: val })
+                          console.log("Img "+index+" Compressed and Uploaded Successfully.")
+    
+                          uploadResults.push();
+                          
+                        },
+                        (err) => console.error("Uploading error with img "+index+" : "+err)
+                      ).catch(err => {
+                        console.log(err);
+                      });
+                    }
+                  },
+                  (err) => console.error("Uploading error , img "+index+" : "+err)
+                ).catch(err => {
+                  console.log(err);
+                });
+    
+              }
+            })
+          })
+
+          loop.then(() => {
+            //check for errors in the upload process and then return formReady
+            processReady = true;
+          }).catch(err => {
+            console.log('Error uploading files.');
+          })
+        }
+
+      )
+      .catch(err => {
+        console.log(err);
+      })
+
+
+    }
 
     async decodeFile(imageData: string | File) : Promise<any> {
       let imageFile;
@@ -85,9 +145,7 @@ export class UploadImageService {
           imageFile = imageData;
           resolve(imageFile);
         }
-
-        
-        
+       
       });
 
       return promise;
