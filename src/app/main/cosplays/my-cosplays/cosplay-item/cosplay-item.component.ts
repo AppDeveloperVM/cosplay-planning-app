@@ -4,7 +4,7 @@ import { LoadingController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { CosplaysService } from 'src/app/services/cosplays.service';
 import { DataService } from 'src/app/services/data.service';
-import { Cosplay } from '../../cosplay.model';
+import { Cosplay } from '../../../../models/cosplay.model';
 
 @Component({
   selector: 'app-cosplay-item',

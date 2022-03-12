@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { CosplaysService } from '../../../services/cosplays.service';
-import { Cosplay } from '../cosplay.model';
+import { Cosplay } from '../../../models/cosplay.model';
 import { SegmentChangeEventDetail } from '@ionic/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { PopoverController } from '@ionic/angular';

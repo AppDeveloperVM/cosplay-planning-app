@@ -15,14 +15,13 @@
         class="ion-text-center"
         *ngIf="cosplays$ | async as data"
       >
-        <div *ngIf="isLoading" 
-        >        
-        <ion-progress-bar type="indeterminate"></ion-progress-bar>
-        </div>
-        <div class="ion-text-center"
-        *ngIf="!isLoading && data.length == 0">
-          <p text-center>No cosplays found! Please create one first</p>
-          <ion-button routerLink="/main/tabs/cosplays/my-cosplays/new">New Cosplay</ion-button>
+        <div *ngIf="isLoading">        
+          <ion-progress-bar type="indeterminate"></ion-progress-bar>
+          </div>
+          <div class="ion-text-center"
+          *ngIf="!isLoading && data.length == 0">
+            <p text-center>No cosplays found! Please create one first</p>
+            <ion-button routerLink="/main/tabs/cosplays/my-cosplays/new">New Cosplay</ion-button>
         </div>
       </ion-col>
 

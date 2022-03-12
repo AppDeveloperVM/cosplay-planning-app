@@ -4,6 +4,12 @@ h1 {
 
 .planning_item {
 
+    ion-thumbnail{
+        margin-top: 0;
+        margin-bottom: 0px;
+        --border-radius: 10px;
+    }
+
     .thumbnail_icon {
         width: 40px;
         height: 40px;
@@ -79,6 +85,8 @@ h1 {
 
     .dates {
         width:170px;
+        min-width:115px;
+        min-height: 20px;
         margin-left: auto; 
         margin-right: 0;
         text-align: right;

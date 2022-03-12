@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormGroupDirective, FormControl, Validators } from '@angular/forms';
 import { ModalController, LoadingController, AlertController } from '@ionic/angular';
-import { Cosplay } from '../../cosplay.model';
+import { Cosplay } from '../../../../models/cosplay.model';
 import { CosplaysService } from '../../../../services/cosplays.service';
 import { Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
@@ -29,7 +29,7 @@ export class NewCosplayPage implements OnInit {
   cosplay: Cosplay;
   imgReference;
   public URLPublica = '';
-  isFormReady = false;
+  isFormReady = true;
   uploadPercent: Observable<number>;
   ImageObs: Observable<string>;
   uploadReady : Observable<boolean>;

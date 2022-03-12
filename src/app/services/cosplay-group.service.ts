@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CosplayGroup } from '../main/cosplay-groups/cosplay-group.model';
-import { Cosplay } from '../main/cosplays/cosplay.model';
+import { Cosplay } from '../models/cosplay.model';
 import { CharacterMember } from 'src/app/models/characterMember.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
@@ -16,8 +16,8 @@ import { CosGroupMember } from '../models/cosGroupMember.interface';
 interface CosplayGroupData {
     title: string;
     place: string;
-    availableFrom: Date;
-    availableTo: Date;
+    dateFrom: Date;
+    dateTo: Date;
     imageUrl: string;
     series: string;
     userId: string;
@@ -151,8 +151,8 @@ export class CosplayGroupService {
                     cosplayGroupData.series,
                     cosplayGroupData.imageUrl,
                     cosplayGroupData.place,
-                    cosplayGroupData.availableFrom,
-                    cosplayGroupData.availableTo,
+                    cosplayGroupData.dateFrom,
+                    cosplayGroupData.dateTo,
                     this.authService.userId,
                     cosplayGroupData.location
                 );
@@ -225,8 +225,8 @@ export class CosplayGroupService {
                             CosplayGroupData[key].series,
                             CosplayGroupData[key].imageUrl,
                             CosplayGroupData[key].place,
-                            new Date(CosplayGroupData[key].availableFrom),
-                            new Date(CosplayGroupData[key].availableTo),
+                            new Date(CosplayGroupData[key].dateFrom),
+                            new Date(CosplayGroupData[key].dateTo),
                             CosplayGroupData[key].userId,
                             CosplayGroupData[key].location
                             )
@@ -315,8 +315,8 @@ export class CosplayGroupService {
         series: string,
         imageUrl: string,
         place: string,
-        availableFrom: Date,
-        availableTo: Date,
+        dateFrom: Date,
+        dateTo: Date,
         userId: string,
         location: PlaceLocation
     ) {
@@ -342,8 +342,8 @@ export class CosplayGroupService {
             series,
             imageUrl,
             place,
-            availableFrom,
-            availableTo,
+            dateFrom,
+            dateTo,
             userId,
             location
             );

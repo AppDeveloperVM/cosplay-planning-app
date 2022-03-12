@@ -35,15 +35,15 @@ button
       </div>
 
       <div class="planning-details">
-        <div 
-        *ngIf="planning.startsAt != null"
-        class="dates">
-          <ion-icon name="calendar" color="secondary"></ion-icon>
-          <ion-text  class="space-left">{{ isMobile == true ? ( planning.startsAt | date: 'MMM d' ) : ( planning.startsAt | date: 'MMM d' ) }}</ion-text>
-          <span class="space-left">to</span>
-          <ion-text  class="space-left">{{ isMobile == true ? ( planning.endsAt | date: 'd' ) : ( planning.endsAt | date: 'd' ) }}</ion-text>
-          <span class="space-left">|</span>
-          <ion-text  class="space-left">{{ isMobile == true ? ( planning.startsAt | date: 'y' ) : ( planning.startsAt | date: 'y' ) }}</ion-text>
+        <div class="dates">
+          <div *ngIf="planning.startsAt != null">
+            <ion-icon name="calendar" color="secondary"></ion-icon>
+            <ion-text  class="space-left">{{ isMobile == true ? ( planning.startsAt | date: 'MMM d' ) : ( planning.startsAt | date: 'MMM d' ) }}</ion-text>
+            <span class="space-left">to</span>
+            <ion-text  class="space-left">{{ isMobile == true ? ( planning.endsAt | date: 'd' ) : ( planning.endsAt | date: 'd' ) }}</ion-text>
+            <span class="space-left">|</span>
+            <ion-text  class="space-left">{{ isMobile == true ? ( planning.startsAt | date: 'y' ) : ( planning.startsAt | date: 'y' ) }}</ion-text>
+          </div>
         </div>
       </div>
     </ion-label>

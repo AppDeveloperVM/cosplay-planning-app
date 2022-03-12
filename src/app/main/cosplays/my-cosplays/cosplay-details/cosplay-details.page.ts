@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { NavController, ModalController, AlertController } from '@ionic/angular';
-import { Cosplay } from '../../cosplay.model';
+import { Cosplay } from '../../../../models/cosplay.model';
 import { CosplaysService } from '../../../../services/cosplays.service';
 import { Subscription } from 'rxjs';
 import { CosElementModalComponent } from './cos-element-modal/cos-element-modal.component';

@@ -24,7 +24,10 @@ export class NewPlanningPage implements OnInit {
   @ViewChild('createForm', { static: false }) createForm: FormGroupDirective;
 
   planning: PlanningInterface;
-  isFormReady = false;
+  minDate: string;
+  startsAt: string;
+  endsAt: string;
+  isFormReady = true;
   uploadPercent: Observable<number>;
   ImageObs: Observable<string>;
   urlImage: String;
@@ -39,6 +42,10 @@ export class NewPlanningPage implements OnInit {
   ) {
     const navigation = this.router.getCurrentNavigation();
     this.planning = navigation?.extras?.state?.value;
+
+    this.minDate = new Date().toISOString();
+    this.startsAt = new Date().toISOString();
+    this.endsAt = new Date(new Date(this.startsAt).getTime()).toISOString();
   }
 
   ngOnInit() {
@@ -51,12 +58,10 @@ export class NewPlanningPage implements OnInit {
         updateOn: 'blur'
       }),
       startsAt: new FormControl(null, {
-        updateOn: 'blur',
-        validators: [ Validators.required]
+        updateOn: 'blur'
       }),
       endsAt: new FormControl(null, {
-        updateOn: 'blur',
-        validators: [ Validators.required]
+        updateOn: 'blur'
       }),
       location: new FormControl(null, {
         validators: [Validators.required]
@@ -64,6 +69,18 @@ export class NewPlanningPage implements OnInit {
       imageUrl: new FormControl(null)
     });
 
+  }
+
+  changedFromDate(startsAt){
+    //startDATE.detail.value
+    console.log(startsAt.detail.value);
+    this.endsAt = startsAt.detail.value
+    //console.log(new Date(startDate).toISOString());
+    //this.endDate = new Date(startDate).toISOString();
+  }
+
+  clearDates(){
+    this.form.patchValue({ startsAt : null, endsAt : null});
   }
 
   onLocationPicked(location: PlaceLocation) {

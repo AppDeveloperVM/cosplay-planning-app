@@ -38,7 +38,7 @@ function base64toBlob(base64Data, contentType) {
 export class EditPlanningPage implements OnInit, OnDestroy {
   planning: Planning;
   planningId: string;
-  isLoading = false;
+  isLoading = true;
   private planningSub: Subscription;
   form: FormGroup;
   actualImage = "";
@@ -82,11 +82,20 @@ export class EditPlanningPage implements OnInit, OnDestroy {
         validators: [ Validators.required]
       }),
       location: new FormControl(this.planning.location, {validators: [Validators.required]}),
-      image: new FormControl(this.planning.imageUrl)
+      imageUrl: new FormControl(this.planning.imageUrl)
     });
     this.actualImage = this.planning.imageUrl;
     this.actualMapImage = this.planning.location.staticMapImageUrl;
-    this.form.patchValue({ image : this.planning.imageUrl });
+
+    //Use saved info from db
+    if(this.form.get('imageUrl').value == null && this.planning.imageUrl != null){
+      this.form.patchValue({ image : this.planning.imageUrl });
+    }
+    if(this.form.get('location').value == null && this.planning.location != null){
+      this.form.patchValue({ image : this.planning.location });
+    }
+    console.log("Form data with saved info: "+ JSON.stringify(this.form.value));
+    this.isLoading = false;
 
   }
 
@@ -108,8 +117,8 @@ export class EditPlanningPage implements OnInit, OnDestroy {
       setTimeout(() => {
         loadingEl.dismiss();
         console.log("Form values: " + this.form);
-        //this.form.reset();
-        //this.router.navigate(['main/tabs/planning']);
+        this.form.reset();
+        this.router.navigate(['main/tabs/planning']);
       }, 500);
 
     });

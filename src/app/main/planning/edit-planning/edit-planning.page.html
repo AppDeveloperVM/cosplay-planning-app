@@ -7,7 +7,7 @@
     </ion-buttons>
     <ion-title>Edit Planning</ion-title>
     <ion-buttons slot="primary">
-      <ion-button (click)="onUpdatePlanning()" [disabled]="!form?.valid || !form.get('image').value">
+      <ion-button (click)="onUpdatePlanning()" [disabled]="!form?.valid || !form.get('imageUrl').value">
         <ion-icon name="checkmark" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -77,7 +77,7 @@
         <ion-col size-sm="6" offset-sm="3">
           <app-image-picker
           [selectedImage]="actualImage"
-          [showPreview]="form.get('image').value"
+          [showPreview]="form.get('imageUrl').value"
           (imagePick)="onImagePicked($event)">
         </app-image-picker>
         </ion-col>

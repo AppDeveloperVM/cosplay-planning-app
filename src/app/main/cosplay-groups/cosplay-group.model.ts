@@ -7,8 +7,8 @@ export class CosplayGroup {
         public series: string,
         public imageUrl: string,
         public place: string,
-        public availableFrom: Date,
-        public availableTo: Date,
+        public dateFrom: Date,
+        public dateTo: Date,
         public userId: string,
         public location: PlaceLocation
     ) { }

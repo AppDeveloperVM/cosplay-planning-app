@@ -52,7 +52,10 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
     private platform: Platform
   ) {
     const navigation = this.router.getCurrentNavigation();
-    if(navigation.extras.state == undefined) { this.router.navigate(['main/tabs/planning']); }
+    if(navigation.extras.state == undefined) { 
+      this.router.navigate(['main/tabs/planning']); 
+      this.isLoading = false;
+    }
     this.planning = navigation?.extras?.state.value;
 
     this.placesData.push(this.planning.location);
