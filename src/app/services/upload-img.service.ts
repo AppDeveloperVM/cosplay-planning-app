@@ -61,58 +61,46 @@ export class UploadImageService {
 
       let uploadResults : any = [];
 
-      this.decodeFile(imageData)
+      await this.decodeFile(imageData)
       .then(
-        //Decoded
-        () => {
-          //run compress and upload 3 times ( small, medium , big img)
-          let loop = new Promise((resolve, reject) => {
-            this.imgSizes.forEach(function (imgSize, index) {
+      //Decoded
+        async (val) => {
+
+          //const maxWidth = 320;
+          const imgSizes : any = [640,320,170];
+
+          //upload img x times in multiple sizes
+          imgSizes.forEach( async (imgSize, index) => {
+
+            await this.compressFile(val,imgSize,index)
+            .then(
               async (val) => {
-                const maxWidth = imgSize;
-    
-                await this.compressFile(val,maxWidth)
+                await this.uploadToServer(val,this.form, index)
                 .then(
+                  //Compressed and Uploaded Img to FireStorage
                   (val) => {
-                    async (val) => {
-                      await this.uploadToServer(val,form)
-                      .then(
-                        //Compressed and Uploaded Img to FireStorage
-                        (val) => {
-                          this.form.patchValue({ imageUrl: val })
-                          console.log("Img "+index+" Compressed and Uploaded Successfully.")
-    
-                          uploadResults.push();
-                          
-                        },
-                        (err) => console.error("Uploading error with img "+index+" : "+err)
-                      ).catch(err => {
-                        console.log(err);
-                      });
-                    }
+                    form.patchValue({ imageUrl: val })
+                    console.log("Img "+ index +" Compressed and Uploaded Successfully.")
+                    //this.isFormReady = true;
                   },
-                  (err) => console.error("Uploading error , img "+index+" : "+err)
+                  (err) => console.error("Uploading error with img "+ index +" : "+err)
                 ).catch(err => {
                   console.log(err);
                 });
-    
-              }
-            })
+              },
+              (err) => console.log("Compressing error with img "+ index +" : "+err)
+            ).catch(async err => {
+              console.log(await err);
+            });
+
           })
 
-          loop.then(() => {
-            //check for errors in the upload process and then return formReady
-            processReady = true;
-          }).catch(err => {
-            console.log('Error uploading files.');
-          })
-        }
 
-      )
-      .catch(err => {
-        console.log(err);
-      })
-
+        },
+        (err) => console.log("Decoding Error: "+err)
+      ).catch(async err => {
+        console.log(await err);
+      });
 
     }
 
@@ -152,7 +140,7 @@ export class UploadImageService {
 
     }
 
-    async compressFile(imageFile : File,maxWidth = 1920) : Promise<any> {
+    async compressFile(imageFile : File,maxWidth = 1920, index : Number = null) : Promise<any> {
       await console.log(`originalFile size ${imageFile.size / 1024 / 1024} MB`);
   
       var promise = new Promise(async (resolve, reject) => {
@@ -165,10 +153,10 @@ export class UploadImageService {
 
         try {
           const compressedFile = await imageCompression(imageFile, options);
-          await console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
+          await console.log(`compressedFile `+index+`, size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
           resolve(compressedFile);
         } catch (error) {
-          reject(error);
+          reject('CompressProcess error with file '+index+': '+error);
         }
         
         
@@ -177,7 +165,7 @@ export class UploadImageService {
       return promise;
     }
   
-    uploadToServer(imageFile,form : FormGroup) : Promise<any> {
+    uploadToServer(imageFile,form : FormGroup, index : Number = null) : Promise<any> {
 
       var promise = new Promise((resolve, reject) => {
       
@@ -204,9 +192,9 @@ export class UploadImageService {
           })
         ).subscribe(
           //percentage Changes..
-          value => {console.log("Upload. Transferred: "+value.bytesTransferred + " of total :"+ value.totalBytes)},
+          value => {console.log("Upload "+index+". Transferred: "+value.bytesTransferred + " of total :"+ value.totalBytes)},
           error => { 
-            console.log('Error:'+ error); 
+            console.log('Error with img '+index+':'+ error); 
             reject("Error.") 
           },
           () => { 
