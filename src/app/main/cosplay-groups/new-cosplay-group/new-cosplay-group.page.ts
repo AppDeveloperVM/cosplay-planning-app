@@ -110,26 +110,38 @@ export class NewCosplayGroupPage implements OnInit {
     .then(
       //Decoded
       async (val) => {
-        const maxWidth = 320;
-        await this.uploadService.compressFile(val,maxWidth).then(
-          async (val) => {
-            await this.uploadService.uploadToServer(val,this.form)
+
+        //const maxWidth = 320;
+        const imgSizes : any = [640,320,170];
+
+        
+          //upload img x times in multiple sizes
+          imgSizes.forEach( async (imgSize, index) => {
+
+            await this.uploadService.compressFile(val,imgSize,index)
             .then(
-              //Compressed and Uploaded Img to FireStorage
-              (val) => {
-                this.form.patchValue({ imageUrl: val })
-                console.log("Img Compressed and Uploaded Successfully.")
-                this.isFormReady = true;
+              async (val) => {
+                await this.uploadService.uploadToServer(val,this.form, index)
+                .then(
+                  //Compressed and Uploaded Img to FireStorage
+                  (val) => {
+                    this.form.patchValue({ imageUrl: val })
+                    console.log("Img "+ index +" Compressed and Uploaded Successfully.")
+                    //this.isFormReady = true;
+                  },
+                  (err) => console.error("Uploading error with img "+ index +" : "+err)
+                ).catch(err => {
+                  console.log(err);
+                });
               },
-              (err) => console.error("Uploading error : "+err)
+              (err) => console.log("Compressing error with img "+ index +" : "+err)
             ).catch(err => {
               console.log(err);
             });
-          },
-          (err) => console.log("Compressing error : "+err)
-        ).catch(err => {
-          console.log(err);
-        });
+
+          })
+
+
       },
       (err) => console.log("Decoding Error: "+err)
     ).catch(err => {
