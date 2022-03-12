@@ -24,6 +24,7 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { MapModalLeafletComponent } from './shared/map-modal-leaflet/map-modal-leaflet.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from './shared/shared.module';
+import { SettingsService } from './services/settings.service';
 
 
 
@@ -52,6 +53,7 @@ import { SharedModule } from './shared/shared.module';
     StatusBar,
     SplashScreen,
     AngularFirestoreModule,
+    SettingsService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     //{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
