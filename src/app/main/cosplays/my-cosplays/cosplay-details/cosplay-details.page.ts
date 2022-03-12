@@ -75,11 +75,7 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
       title,
       store,
       status
-    },
-
-
-    }
-    ).then(modalEl => {
+    }}).then(modalEl => {
       modalEl.present();
     });
   }
