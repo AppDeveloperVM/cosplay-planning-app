@@ -90,35 +90,15 @@ export class NewPlanningPage implements OnInit {
   async onImagePicked(imageData: string | File) {
     this.isFormReady = false;
 
-    await this.uploadService.decodeFile(imageData)
-    .then(
-      //Decoded
-      async (val) => {
-        const maxWidth = 320;
-        await this.uploadService.compressFile(val,maxWidth).then(
-          async (val) => {
-            await this.uploadService.uploadToServer(val,this.form)
-            .then(
-              //Compressed and Uploaded Img to FireStorage
-              (val) => {
-                this.form.patchValue({ imageUrl: val })
-                console.log("Img Compressed and Uploaded Successfully.")
-                this.isFormReady = true;
-              },
-              (err) => console.error("Uploading error : "+err)
-            ).catch(err => {
-              console.log(err);
-            });
-          },
-          (err) => console.log("Compressing error : "+err)
-        ).catch(err => {
-          console.log(err);
-        });
-      },
-      (err) => console.log("Decoding Error: "+err)
-    ).catch(err => {
-      console.log(err);
-    });
+    this.uploadService
+          .fullUploadProcess(imageData,this.form)
+          .then((val) =>{
+            this.isFormReady = val;
+            console.log("formReady: "+val);
+          })
+          .catch(err => {
+            console.log(err);
+          });
 
   }
 

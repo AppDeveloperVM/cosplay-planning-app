@@ -16,7 +16,7 @@ import { getStorage, ref, uploadBytes,getDownloadURL } from "firebase/storage";
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreCollectionGroup } from '@angular/fire/compat/firestore';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { Observable } from 'rxjs';
+import { AsyncSubject, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-new-cosplay-group',
@@ -106,47 +106,15 @@ export class NewCosplayGroupPage implements OnInit {
   async onImagePicked(imageData: string | File) {
     this.isFormReady = false;
 
-    await this.uploadService.decodeFile(imageData)
-    .then(
-      //Decoded
-      async (val) => {
-
-        //const maxWidth = 320;
-        const imgSizes : any = [640,320,170];
-
-        
-          //upload img x times in multiple sizes
-          imgSizes.forEach( async (imgSize, index) => {
-
-            await this.uploadService.compressFile(val,imgSize,index)
-            .then(
-              async (val) => {
-                await this.uploadService.uploadToServer(val,this.form, index)
-                .then(
-                  //Compressed and Uploaded Img to FireStorage
-                  (val) => {
-                    this.form.patchValue({ imageUrl: val })
-                    console.log("Img "+ index +" Compressed and Uploaded Successfully.")
-                    //this.isFormReady = true;
-                  },
-                  (err) => console.error("Uploading error with img "+ index +" : "+err)
-                ).catch(err => {
-                  console.log(err);
-                });
-              },
-              (err) => console.log("Compressing error with img "+ index +" : "+err)
-            ).catch(err => {
-              console.log(err);
-            });
-
+    this.uploadService
+          .fullUploadProcess(imageData,this.form)
+          .then((val) =>{
+            this.isFormReady = val;
+            console.log("formReady: "+val);
           })
-
-
-      },
-      (err) => console.log("Decoding Error: "+err)
-    ).catch(err => {
-      console.log(err);
-    });
+          .catch(err => {
+            console.log(err);
+          });
 
   }
 

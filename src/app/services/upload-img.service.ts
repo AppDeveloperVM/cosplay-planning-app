@@ -57,51 +57,62 @@ export class UploadImageService {
         archivo: new FormControl(null, Validators.required),
     });
 
-    async fullUploadProcess(imageData: string | File, form : FormGroup, processReady : boolean) : Promise<any> {
+    async fullUploadProcess(imageData: string | File, form : FormGroup) : Promise<any> {
 
-      let uploadResults : any = [];
+      let upload = new Promise(async (resolve, reject) => { 
+        await this.decodeFile(imageData)
+        .then(
+        //Decoded
+          async (val) => {
 
-      await this.decodeFile(imageData)
-      .then(
-      //Decoded
-        async (val) => {
+            //const maxWidth = 320;
+            const imgSizes : any = [640,320,170];
+            //imageName for upload ( same for all + size)
+            const imageId = Math.random().toString(36).substring(2);
 
-          //const maxWidth = 320;
-          const imgSizes : any = [640,320,170];
+            //upload img x times in multiple sizes
+            imgSizes.forEach( async (imgSize, index) => {
 
-          //upload img x times in multiple sizes
-          imgSizes.forEach( async (imgSize, index) => {
+              await this.compressFile(val,imgSize,index)
+              .then(
+                async (val) => {
 
-            await this.compressFile(val,imgSize,index)
-            .then(
-              async (val) => {
-                await this.uploadToServer(val,this.form, index)
-                .then(
-                  //Compressed and Uploaded Img to FireStorage
-                  (val) => {
-                    form.patchValue({ imageUrl: val })
-                    console.log("Img "+ index +" Compressed and Uploaded Successfully.")
-                    //this.isFormReady = true;
-                  },
-                  (err) => console.error("Uploading error with img "+ index +" : "+err)
-                ).catch(err => {
-                  console.log(err);
-                });
-              },
-              (err) => console.log("Compressing error with img "+ index +" : "+err)
-            ).catch(async err => {
-              console.log(await err);
-            });
+                  await this.uploadToServer(val,imageId +"_"+imgSize,form, index)
+                  .then(
+                    //Compressed and Uploaded Img to FireStorage
+                    (val) => {
+                      if(index == 0){
+                        
+                      }else if(index == 2){
+                        console.log("index: "+index);
+                        form.patchValue({ imageUrl: val })
+                        resolve(true);
+                      }
+                      
+                      console.log("Img "+ index +" Compressed and Uploaded Successfully.")
 
-          })
+                    },
+                    (err) => console.error("Uploading error with img "+ index +" : "+err)
+                  ).catch(err => {
+                    console.log(err);
+                  });
+                  
+                },
+                (err) => console.log("Compressing error with img "+ index +" : "+err)
+              ).catch(async err => {
+                console.log(await err);
+              });
 
+            })
 
-        },
-        (err) => console.log("Decoding Error: "+err)
-      ).catch(async err => {
-        console.log(await err);
+          },
+          (err) => console.log("Decoding Error: "+err)
+        ).catch(async err => {
+          console.log(await err);
+        });
       });
 
+      return upload;
     }
 
     async decodeFile(imageData: string | File) : Promise<any> {
@@ -165,14 +176,14 @@ export class UploadImageService {
       return promise;
     }
   
-    uploadToServer(imageFile,form : FormGroup, index : Number = null) : Promise<any> {
+    uploadToServer(imageFile,imageId = Math.random().toString(36).substring(2) ,form : FormGroup, index : Number = null) : Promise<any> {
 
       var promise = new Promise((resolve, reject) => {
       
         //UPLOAD IMAGE
-        const id = Math.random().toString(36).substring(2);
+        
         const file = imageFile;
-        const filePath = `images/${id}`;// Image path + fileName  ||  can add profile_${id}
+        const filePath = `images/${imageId}`;// Image path + fileName  ||  can add profile_${id}
         const ref = this.storage.ref(filePath);
         const task = this.storage.upload(filePath, file);
         var imageUrl = "";
