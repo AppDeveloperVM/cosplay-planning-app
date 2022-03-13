@@ -4,10 +4,10 @@ button
   detail
   class="planning_item"
 >
-    <ion-thumbnail *ngIf="planning.imageUrl != null" slot="start" >
-      <ion-img [src]="planning.imageUrl"></ion-img>
+    <ion-thumbnail *ngIf="imageUrl != null" slot="start" >
+      <ion-img [src]="imageUrl"></ion-img>
     </ion-thumbnail>
-    <div class="thumbnail_icon" *ngIf="planning.imageUrl == null">
+    <div class="thumbnail_icon" *ngIf="imageUrl == null">
       <ion-icon slot="start" name="image" size="large"></ion-icon>
     </div>
 

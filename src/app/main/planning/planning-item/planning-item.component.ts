@@ -3,6 +3,7 @@ import { NavigationExtras, Router } from '@angular/router';
 import { LoadingController, Platform } from '@ionic/angular';
 import { DataService } from 'src/app/services/data.service';
 import { PlanningService } from 'src/app/services/planning.service';
+import { UploadImageService } from 'src/app/services/upload-img.service';
 import { Planning } from '../planning.model';
 
 @Component({
@@ -14,6 +15,7 @@ export class PlanningItemComponent implements OnInit {
   @Input() planning: Planning;
   public imgSrc: any;
   isMobile: boolean;
+  imageUrl: String;
 
   navigationExtras: NavigationExtras = {
     state : {
@@ -26,12 +28,22 @@ export class PlanningItemComponent implements OnInit {
     private platform: Platform,
     private loadingCtrl: LoadingController,
     private planningService: PlanningService,
-    private dataService: DataService
+    private dataService: DataService,
+    private uploadImgService : UploadImageService
   ) { }
 
   ngOnInit() {
     //console.log(this.planning);
     this.checkPlatform();
+
+    let imageName = this.planning.imageUrl;
+    this.uploadImgService.getStorageImgUrl(imageName,2).then((val)=>{
+      this.imageUrl = val;
+    })
+
+    this.uploadImgService.getStorageImgUrl(imageName,0).then((val)=>{
+      this.planning.imageUrl = val;
+    })
   }
 
   checkPlatform() {
