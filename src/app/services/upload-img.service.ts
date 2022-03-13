@@ -85,7 +85,7 @@ export class UploadImageService {
                         
                       }else if(index == 2){
                         console.log("index: "+index);
-                        form.patchValue({ imageUrl: val })
+                        form.patchValue({ imageUrl: imageId })
                         resolve(true);
                       }
                       
@@ -190,6 +190,7 @@ export class UploadImageService {
         this.uploadPercent = task.percentageChanges();
         task.snapshotChanges().pipe( 
           finalize(() => {
+            /*
             this.ImageObs = ref.getDownloadURL()
             this.ImageObs.subscribe(
               url=>{
@@ -200,6 +201,8 @@ export class UploadImageService {
               
               }
             );
+            */
+            resolve(imageId)
           })
         ).subscribe(
           //percentage Changes..
@@ -216,5 +219,42 @@ export class UploadImageService {
       });//finishes promise
         return promise;
     }
+
+    async getStorageImgUrl(fileName: String, size : Number) : Promise<any> {
+   
+      var promise = new Promise((resolve, reject) => {
+        
+        let file = '';
+        let suffix = '';
+        switch(size){
+          case 0: suffix = this.imgSizes[0];
+            break;
+          case 1: suffix = this.imgSizes[1];
+            break;
+          case 2: suffix = this.imgSizes[2];
+            break;
+          default: suffix = this.imgSizes[0];
+        }
+        file = fileName + "_" + suffix;
+
+        const filePath = `images/${file}`
+        const ref = this.storage.ref(filePath);
+        var imageUrl = "";
+        this.ImageObs = ref.getDownloadURL()
+
+          this.ImageObs.subscribe(
+            url=>{
+              imageUrl = url;
+              console.log('Value:' + imageUrl);
+              
+                resolve(url)
+            
+            }
+          );
+
+      })
+      return promise;
+
+   }
 
 }
