@@ -3,10 +3,10 @@ button
 detail
 class="cosgroup_item">
 
-  <ion-thumbnail slot="start" *ngIf="cosplaygroup.imageUrl != null">
-    <ion-img [src]="cosplaygroup.imageUrl"></ion-img>
+  <ion-thumbnail slot="start" *ngIf="imageUrl != null">
+    <ion-img [src]="imageUrl"></ion-img>
   </ion-thumbnail>
-  <div class="thumbnail_icon" *ngIf="cosplaygroup.imageUrl == null">
+  <div class="thumbnail_icon" *ngIf="imageUrl == null">
     <ion-icon slot="start" name="image" size="large" ></ion-icon>
   </div>
   
@@ -39,14 +39,14 @@ class="cosgroup_item">
       </p>
       <div class="dates">
         <div *ngIf="cosplaygroup.dateFrom != null && cosplaygroup.dateFrom != ''">
-        <ion-icon name="calendar" color="secondary"></ion-icon>
-        <ion-text  class="space-left">{{ isMobile == true ? (  cosplaygroup.dateFrom | date: 'MMM d' ) : (  cosplaygroup.dateFrom | date: 'MMM d' ) }}</ion-text> 
-        <span class="space-left">to</span>
-        <ion-text  class="space-left">{{ isMobile == true ? ( cosplaygroup.dateTo | date: 'd' ) : ( cosplaygroup.dateTo | date: 'd' ) }}</ion-text>
-        <span class="space-left">|</span>
-        <ion-text  class="space-left">{{ isMobile == true ? ( cosplaygroup.dateFrom | date: 'y' ) : ( cosplaygroup.dateFrom | date: 'y' ) }}</ion-text>
+          <ion-icon name="calendar" color="secondary"></ion-icon>
+          <ion-text  class="space-left">{{ isMobile == true ? (  cosplaygroup.dateFrom | date: 'MMM d' ) : (  cosplaygroup.dateFrom | date: 'MMM d' ) }}</ion-text> 
+          <span class="space-left">to</span>
+          <ion-text  class="space-left">{{ isMobile == true ? ( cosplaygroup.dateTo | date: 'd' ) : ( cosplaygroup.dateTo | date: 'd' ) }}</ion-text>
+          <span class="space-left">|</span>
+          <ion-text  class="space-left">{{ isMobile == true ? ( cosplaygroup.dateFrom | date: 'y' ) : ( cosplaygroup.dateFrom | date: 'y' ) }}</ion-text>
+        </div>
       </div>
-    </div>
     </div>
   </ion-label>
   
