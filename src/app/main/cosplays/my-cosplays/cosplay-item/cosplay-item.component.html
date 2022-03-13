@@ -5,11 +5,11 @@
   detail
   class="cosplay_item"
 >
-  <ion-thumbnail *ngIf="cosplay.imageUrl != null" slot="start">
-    <ion-img [src]="cosplay.imageUrl"></ion-img>
+  <ion-thumbnail *ngIf="imageUrl != null" slot="start">
+    <ion-img [src]="imageUrl"></ion-img>
   </ion-thumbnail>
-  <div class="thumbnail_icon" *ngIf="cosplay.imageUrl == null">
-    <ion-icon *ngIf="cosplay.imageUrl == null" slot="start" name="image" size="large"></ion-icon>
+  <div class="thumbnail_icon" *ngIf="imageUrl == null">
+    <ion-icon *ngIf="imageUrl == null" slot="start" name="image" size="large"></ion-icon>
   </div>
 
   <ion-label>
