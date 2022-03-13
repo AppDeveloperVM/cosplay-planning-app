@@ -4,6 +4,7 @@ import { LoadingController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { CosplaysService } from 'src/app/services/cosplays.service';
 import { DataService } from 'src/app/services/data.service';
+import { UploadImageService } from 'src/app/services/upload-img.service';
 import { Cosplay } from '../../../../models/cosplay.model';
 
 @Component({
@@ -16,6 +17,7 @@ export class CosplayItemComponent implements OnInit {
   public imgSrc: any;
   editMode : boolean;
   subscription: Subscription;
+  imageUrl: String;
 
   navigationExtras: NavigationExtras = {
     state : {
@@ -27,10 +29,17 @@ export class CosplayItemComponent implements OnInit {
     private router: Router,
     private loadingCtrl: LoadingController,
     private cosplaysService: CosplaysService,
-    private dataService: DataService
-  ) { }
+    private dataService: DataService,
+    private uploadImgService : UploadImageService
+  ) { }  
 
   ngOnInit() {
+    let imageName = this.cosplay.imageUrl;
+    this.uploadImgService.getStorageImgUrl(imageName,2).then((val)=>{
+      this.imageUrl = val;
+      this.cosplay.imageUrl = val;
+    })
+    
     console.log(this.cosplay);
   }
 
