@@ -1,7 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PopoverController } from '@ionic/angular';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
+import { Notice } from 'src/app/models/notice.model';
 import { DataService } from 'src/app/services/data.service';
 import { NoticesService } from 'src/app/services/notices.service';
 import { PopinfoComponent } from '../popinfo/popinfo.component';
@@ -16,6 +17,8 @@ export class HeaderComponent implements OnInit {
   @Input() titulo: string;
   @Input() routeArray: any;
   notifications: any = [];
+  private notifications$ = this.noticesService.notices$;
+
   checked_notif = false;
   obj : any;
   notif_count: number = 0
@@ -32,33 +35,36 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    //if(!this.noticesService.fetchJson()){
-    //}
-    this.notifications = this.noticesService.fetchFileData();
+    this.notifications$.subscribe((data)=> {
+      console.log(data);
+      this.notifications = data;
+    })
     this.subscription = this.dataService.editMode$.subscribe(r => this.editMode = r)
   }
 
-
   async mostrarPop( event ) {
 
-    if (this.notif_count) { 
-      console.log(this.notifications);
+   
+        console.log(this.notifications);
 
-      this.checked_notif = true;
-
-      const popover = await this.popoverCtrl.create({
-        component: PopinfoComponent,
-         componentProps: { notifications: this.notifications},
-        event,
-        // mode: 'ios',
-        backdropDismiss: true
-      });
-      await popover.present();
+        this.checked_notif = true;
   
-      const { data } = await popover.onWillDismiss(); // onDidDismiss();
-    } else {
-      console.log('No notifications - no popup');
-    }
+        const popover = await this.popoverCtrl.create({
+          component: PopinfoComponent,
+           componentProps: { notifications: this.notifications},
+          event,
+          // mode: 'ios',
+          backdropDismiss: true
+        });
+        await popover.present();
+    
+        const { data } = await popover.onWillDismiss(); // onDidDismiss();
+
+      
+   
+    
+      
+    
 
   }
 
