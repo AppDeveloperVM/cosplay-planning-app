@@ -33,31 +33,11 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     //if(!this.noticesService.fetchJson()){
-    this.fetchFileData(); // get notifs from file - this.file_notifications
     //}
+    this.notifications = this.noticesService.fetchFileData();
     this.subscription = this.dataService.editMode$.subscribe(r => this.editMode = r)
   }
 
-  fetchFileData() {
-
-    fetch('../../assets/data/notifications.json')
-    .then(res => res.json())
-    .then(data => {
-      console.log("Fetching Notifications from json..");
-      
-        for(var i in data.notifications){
-          this.noticesService.addNotice( 
-            data.notifications[i].user_from ,
-            data.notifications[i].type,
-            data.notifications[i].text
-          )
-        }
-
-        this.notif_count = this.noticesService.getNotices().length;
-        this.notifications = this.noticesService.getNotices();
-        console.log("Notifications : " + this.notif_count);
-    });
-  }
 
   async mostrarPop( event ) {
 
