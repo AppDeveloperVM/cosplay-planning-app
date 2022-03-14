@@ -28,7 +28,6 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
   file_notifications: any = []; // past ones from file
   all_notifications: any = []; // full list 
   notifications: any = []; // last ones
-  checked_notif = false;
 
   constructor(
     private cosplaysService: CosplaysService,
@@ -41,7 +40,6 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
    }
 
   ngOnInit() {
-    this.notifications = this.noticesService.getNotices();
 
     this.isLoading = true;
     this.cosplays$.subscribe(cos => {
