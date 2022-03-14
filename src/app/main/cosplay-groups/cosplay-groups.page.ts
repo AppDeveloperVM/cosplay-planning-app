@@ -20,9 +20,6 @@ export class CosplayGroupsPage implements OnInit, OnDestroy {
 
   cosplaygroups: CosplayGroup[];
   private cosplayGroupsSub: Subscription;
-  all_notifications: any = []; // full list 
-  notifications: any = []; // last ones
-
 
   loadedCosplayGroups: CosplayGroup[];
   listedLoadedCosplays: CosplayGroup[];
