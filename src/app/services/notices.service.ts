@@ -20,9 +20,6 @@ export class NoticesService {
   }
 
   constructor() {
-
-    this.fetchFileData();
-    
   }
 
   addNotice(

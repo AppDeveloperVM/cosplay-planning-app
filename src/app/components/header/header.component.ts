@@ -16,8 +16,8 @@ import { PopinfoComponent } from '../popinfo/popinfo.component';
 export class HeaderComponent implements OnInit {
   @Input() titulo: string;
   @Input() routeArray: any;
-  notifications: any = [];
-  private notifications$ = this.noticesService.notices$;
+  notifications: any;
+  notifications$ = this.noticesService.notices$;
 
   checked_notif = false;
   obj : any;
@@ -35,6 +35,7 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.noticesService.fetchFileData();
     this.notifications$.subscribe((data)=> {
       console.log(data);
       this.notifications = data;
