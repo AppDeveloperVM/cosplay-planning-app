@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { Notice } from '../models/notice.model';
 
 interface NoticeData {
@@ -11,13 +12,19 @@ interface NoticeData {
   providedIn: 'root'
 })
 export class NoticesService {
+  private notices$ = new Subject<Notice[]>();
   noticeList = [];
-  notice: Notice;
+  
   noticesUpdated: any;
-
   jsonFetched : boolean = false;
 
-  constructor() { }
+  getNotices$(): Observable<Notice[]> {
+    return this.notices$.asObservable();
+  }
+
+  constructor() {
+    this.fetchFileData();
+  }
 
   addNotice(
     userFrom: string,
@@ -41,14 +48,12 @@ export class NoticesService {
 
     
   }
-  //
-  setNotice(data : any) {
-    this.notice = data;
-  }
-
-  getNotice() {
+  /*
+  getNotice(id: String) {
     return this.notice;
   }
+  */
+
   //
   setNotices(data : any) {
     this.noticeList = data;
@@ -98,16 +103,26 @@ export class NoticesService {
     return false;
   }
 
-  fetchJson(){
-    var fetch : Boolean = true;
-    if(this.jsonFetched == false){
-      fetch = true;
-      this.jsonFetched = true;
-    }else{
-      fetch = false;
-    }
+  fetchFileData() {
 
-    return fetch;
+    fetch('../../assets/data/notifications.json')
+    .then(res => res.json())
+    .then(data => {
+      console.log("Fetching Notifications from json..");
+      
+        /*for(var i in data.notifications){
+          this.addNotice( 
+            data.notifications[i].user_from ,
+            data.notifications[i].type,
+            data.notifications[i].text
+          )
+        }*/
+        console.log(data.notifications);
+        this.setNotices(data.notifications);
+
+        this.noticeList = this.getNotices();
+    });
+    return this.noticeList;
   }
    
 
