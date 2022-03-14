@@ -40,6 +40,9 @@ function base64toBlob(base64Data, contentType) {
 export class CosplayGroupSendRequestComponent implements OnInit {
   @Input() selectedCosplayGroup: CosplayGroup;
   @Input() requestedCharacter: Cosplay;
+  notifications: any = [];
+  private notifications$ = this.noticesService.notices$;
+
 
   form: FormGroup;
   version: string;
@@ -72,6 +75,10 @@ export class CosplayGroupSendRequestComponent implements OnInit {
     this.DefaultVersionValue= "2" ;
     this.compareWith = this.compareWithFn;
     
+    this.notifications$.subscribe((data)=> {
+      console.log(data);
+      this.notifications = data;
+    })
 
     this.form = new FormGroup({
       characterName: new FormControl(null, {
