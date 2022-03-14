@@ -12,17 +12,15 @@ interface NoticeData {
   providedIn: 'root'
 })
 export class NoticesService {
-  private notices$ = new Subject<Notice[]>();
+  notices$ = new Subject<Notice[]>();
   noticeList = [];
   
-  noticesUpdated: any;
-  jsonFetched : boolean = false;
-
   getNotices$(): Observable<Notice[]> {
     return this.notices$.asObservable();
   }
 
   constructor() {
+
     this.fetchFileData();
   }
 
@@ -42,10 +40,10 @@ export class NoticesService {
     console.log("checking notice list");
     console.log(this.noticeList);
 
-    if (this.containsObject(newNotice) === false )  {
+    //if (this.containsObject(newNotice) === false )  {
       this.noticeList.push(newNotice);
-    }
-
+      this.notices$.next(this.noticeList);
+    //}
     
   }
   /*
@@ -56,37 +54,12 @@ export class NoticesService {
 
   //
   setNotices(data : any) {
+    this.notices$.next(data);
     this.noticeList = data;
   }
 
   getNotices() {
-    //this.noticeList.reverse();
     return this.noticeList;
-  }
-
-  getNoticesUpdateListener() {
-    return this.noticesUpdated.asObservable();
-  }
-
-  // Notif Badges
-  setNotifBadges(badgeNumber: number) {
-
-  }
-
-  getNotifBadges(){
-
-  }
-
-  increaseNotifBadges(){
-
-  }
-
-  decreaseNotifBadges(){
-
-  }
-
-  clearBadges(){
-
   }
 
   containsObject(obj) {
@@ -109,20 +82,10 @@ export class NoticesService {
     .then(res => res.json())
     .then(data => {
       console.log("Fetching Notifications from json..");
-      
-        /*for(var i in data.notifications){
-          this.addNotice( 
-            data.notifications[i].user_from ,
-            data.notifications[i].type,
-            data.notifications[i].text
-          )
-        }*/
-        console.log(data.notifications);
-        this.setNotices(data.notifications);
-
-        this.noticeList = this.getNotices();
+      console.log(data.notifications);
+      this.setNotices(data.notifications);
     });
-    return this.noticeList;
+
   }
    
 
