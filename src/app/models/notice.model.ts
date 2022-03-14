@@ -1,5 +1,5 @@
 export interface Notice {
-  user_from: string;
+  userFrom: string;
   type: string;
   text: string;
 }
