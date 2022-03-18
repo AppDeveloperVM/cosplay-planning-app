@@ -12,18 +12,21 @@ interface NoticeData {
   providedIn: 'root'
 })
 export class NoticesService {
-  notices$ = new Subject<Notice[]>();
+  _notices$ = new Subject<Notice[]>();
   noticeList = [];
   
-  getNotices$(): Observable<Notice[]> {
-    return this.notices$.asObservable();
+  get notices$(): Observable<Notice[]> {
+    return this._notices$.asObservable();
   }
 
   constructor() {
+    
+    
   }
 
   addNotice(
     userFrom: string,
+    category: string,
     type: string,
     text: string
   ) {
@@ -31,6 +34,7 @@ export class NoticesService {
     const newNotice = 
       {
         "user_from" : userFrom,
+        "category" : category,
         "type" : type,
         "text" : text
       };
@@ -40,19 +44,13 @@ export class NoticesService {
 
     //if (this.containsObject(newNotice) === false )  {
       this.noticeList.push(newNotice);
-      this.notices$.next(this.noticeList);
+      this._notices$.next(this.noticeList);
     //}
     
   }
-  /*
-  getNotice(id: String) {
-    return this.notice;
-  }
-  */
 
-  //
   setNotices(data : any) {
-    this.notices$.next(data);
+    this._notices$.next(data);
     this.noticeList = data;
   }
 
@@ -80,7 +78,6 @@ export class NoticesService {
     .then(res => res.json())
     .then(data => {
       console.log("Fetching Notifications from json..");
-      console.log(data.notifications);
       this.setNotices(data.notifications);
     });
 

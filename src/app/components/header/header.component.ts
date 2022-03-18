@@ -16,7 +16,7 @@ import { PopinfoComponent } from '../popinfo/popinfo.component';
 export class HeaderComponent implements OnInit {
   @Input() titulo: string;
   @Input() routeArray: any;
-  notifications: any;
+  notifications: any = [];
   notifications$ = this.noticesService.notices$;
 
   checked_notif = false;
@@ -32,40 +32,37 @@ export class HeaderComponent implements OnInit {
     private popoverCtrl: PopoverController,
     private noticesService: NoticesService,
     private dataService: DataService
-  ) { }
-
-  ngOnInit() {
-    this.noticesService.fetchFileData();
-    this.notifications$.subscribe((data)=> {
+  ) {
+    this.noticesService._notices$.subscribe((data)=> {
+      console.log("notifs next");
       console.log(data);
       this.notifications = data;
     })
+    this.noticesService.fetchFileData();
+  }
+
+  ngOnInit() {
+    
+
     this.subscription = this.dataService.editMode$.subscribe(r => this.editMode = r)
   }
 
   async mostrarPop( event ) {
 
-   
-        console.log(this.notifications);
+    console.log(this.notifications);
 
-        this.checked_notif = true;
-  
-        const popover = await this.popoverCtrl.create({
-          component: PopinfoComponent,
-           componentProps: { notifications: this.notifications},
-          event,
-          // mode: 'ios',
-          backdropDismiss: true
-        });
-        await popover.present();
-    
-        const { data } = await popover.onWillDismiss(); // onDidDismiss();
+    this.checked_notif = true;
 
-      
-   
-    
-      
-    
+    const popover = await this.popoverCtrl.create({
+      component: PopinfoComponent,
+        componentProps: { notifications: this.notifications},
+      event,
+      // mode: 'ios',
+      backdropDismiss: true
+    });
+    await popover.present();
+
+    const { data } = await popover.onWillDismiss(); // onDidDismiss();
 
   }
 

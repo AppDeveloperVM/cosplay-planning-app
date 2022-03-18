@@ -2,6 +2,7 @@
   "notifications" : [
     {
       "user_from": "Cosplay User",
+      "category": "cosplay",
       "type": "comment",
       "text": "Are you planning on buying another t-shirt?"
     }

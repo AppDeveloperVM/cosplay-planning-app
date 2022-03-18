@@ -22,12 +22,12 @@ export class PopinfoComponent implements OnInit,PipeTransform {
   }
 
 
-  onClick( valor: number) {
+  onClick(category: string, item: number) {
 
-    console.log('item' + valor);
+    console.log('category: '+category+', item: ' + item);
 
     this.popoverCtrl.dismiss({
-      item: valor,
+      item,
     });
   }
 
