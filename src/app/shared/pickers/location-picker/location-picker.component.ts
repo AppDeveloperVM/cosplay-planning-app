@@ -2,11 +2,16 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { ModalController, ActionSheetController, AlertController, Platform } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
-import { MapModalLeafletComponent } from '../../map-modal-leaflet/map-modal-leaflet.component';
 import { map, switchMap } from 'rxjs/operators';
 import { PlaceLocation, Coordinates } from '../../../models/location.model';
 import { Observable, of } from 'rxjs';
+
 import { Plugins, Capacitor, CallbackID } from '@capacitor/core';
+const { SplashScreen, Network, Device, StatusBar, Geolocation } = Plugins;
+import { AndroidPermissions } from '@ionic-native/android-permissions';
+import { LocationAccuracy } from '@ionic-native/location-accuracy';
+
+import { MapModalLeafletComponent } from '../../map-modal-leaflet/map-modal-leaflet.component';
 import * as L from "leaflet";
 import * as ELG from "esri-leaflet-geocoder";
 
@@ -37,14 +42,17 @@ export class LocationPickerComponent implements OnInit {
       private httpClient: HttpClient,
       private actionSheetCtrl: ActionSheetController,
       private alertCtrl: AlertController,
-      private locationService: LocationService,
+      private location: LocationService,
       private platform: Platform
     ) { }
 
   ngOnInit() {
     this.platform.ready().then(() => {
-      this.getCurrentCoords();
+      let permissions = this.location.checkPermissions();
+      if(permissions)
+       this.getCurrentCoords();
     });
+    
   }
 
   onPickLocation() {
@@ -63,11 +71,11 @@ export class LocationPickerComponent implements OnInit {
   }
 
   private locateUser() {
-    if (!Capacitor.isPluginAvailable('Geolocation')) {
+    /*if (!Capacitor.isPluginAvailable('Geolocation')) {
       
       this.showErrorAlert();
       return;
-    }
+    }*/
     this.isLoading = true;
     Plugins.Geolocation.getCurrentPosition().
     then(geoPosition => {
@@ -77,22 +85,22 @@ export class LocationPickerComponent implements OnInit {
       };
       this.center = coordinates;
       
-      this.createPlace([coordinates.lat, coordinates.lng]);
+      this.createPlace(coordinates);
       this.isLoading = false;
     }).
     catch(err => {
       this.isLoading = false;
-      //this.showErrorAlert();
+      this.showErrorAlert();
     });
   }
 
 
 
   private getCurrentCoords(){ 
-    if (!Capacitor.isPluginAvailable('Geolocation')) {
+    /*if (!Capacitor.isPluginAvailable('Geolocation')) {
       this.showErrorAlert();
       return;
-    }
+    }*/
     this.isLoading = true;
     Plugins.Geolocation.getCurrentPosition().
       then(geoPosition => {
@@ -102,21 +110,21 @@ export class LocationPickerComponent implements OnInit {
         };
         this.center = coordinates;
         
-        console.log('Coords Obtained');
+        console.log('Coords Obtained: '+coordinates.lat+','+coordinates.lng);
+        this.createPlace(new L.LatLng(coordinates.lat, coordinates.lng));
         this.isLoading = false;
       }).
       catch(err => {
         this.isLoading = false;
         this.showErrorAlert();
-        //this.checkPermissions();
+        this.location.requestGPSPermission();     
       });
   }
 
-
-  private showErrorAlert() {
+  private showErrorAlert(error: string = 'Please use the map to pick location') {
     this.alertCtrl.create({
-      header: 'Could not fetch location',
-      message: 'Please use the map to pick location',
+      header: 'Could not get location, try selecting it',
+      message: error,
       buttons : [ 'Okay']
     }).then(alertEl => alertEl.present() );
   }
@@ -205,11 +213,8 @@ export class LocationPickerComponent implements OnInit {
 
   }
 
-  
-
   private getMapImage(lat: number, lng: number, zoom: number) {
     var KEY = 'hmAnp6GU6CtArMcnLn38nJS0Sb1orh9Q';
-  
     return `https://open.mapquestapi.com/staticmap/v4/getplacemap?key=${KEY}&location=${lat},${lng}&size=600,400&zoom=9&showicon=red_1-1`;
   }
 }
