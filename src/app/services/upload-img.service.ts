@@ -36,7 +36,7 @@ function base64toBlob(base64Data, contentType) {
     providedIn: 'root'
 })
 export class UploadImageService {
-  imgSizes : any = [640,320,170];
+  imgSizes : any = [140,320,640];
 
     constructor(
         private storage: AngularFireStorage,
@@ -66,12 +66,12 @@ export class UploadImageService {
           async (val) => {
 
             //const maxWidth = 320;
-            const imgSizes : any = [640,320,170];
+            //const imgSizes : any = [640,320,170];
             //imageName for upload ( same for all + size)
             const imageId = Math.random().toString(36).substring(2);
 
             //upload img x times in multiple sizes
-            imgSizes.forEach( async (imgSize, index) => {
+            this.imgSizes.forEach( async (imgSize, index) => {
 
               await this.compressFile(val,imgSize,index)
               .then(
@@ -227,6 +227,7 @@ export class UploadImageService {
         let file = '';
         let suffix = '';
         switch(size){
+          //0 the smallest
           case 0: suffix = this.imgSizes[0];
             break;
           case 1: suffix = this.imgSizes[1];
