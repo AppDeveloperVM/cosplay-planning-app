@@ -37,11 +37,11 @@ export class PlanningItemComponent implements OnInit {
     this.checkPlatform();
 
     let imageName = this.planning.imageUrl;
-    this.uploadImgService.getStorageImgUrl(imageName,2).then((val)=>{
+    this.uploadImgService.getStorageImgUrl(imageName,0).then((val)=>{
       this.imageUrl = val;
     })
 
-    this.uploadImgService.getStorageImgUrl(imageName,0).then((val)=>{
+    this.uploadImgService.getStorageImgUrl(imageName,2).then((val)=>{
       this.planning.imageUrl = val;
     })
   }

@@ -35,11 +35,11 @@ export class CosplayItemComponent implements OnInit {
 
   ngOnInit() {
     let imageName = this.cosplay.imageUrl;
-    this.uploadImgService.getStorageImgUrl(imageName,2).then((val)=>{
+    this.uploadImgService.getStorageImgUrl(imageName,0).then((val)=>{
       this.imageUrl = val;
     })
 
-    this.uploadImgService.getStorageImgUrl(imageName,0).then((val)=>{
+    this.uploadImgService.getStorageImgUrl(imageName,2).then((val)=>{
       this.cosplay.imageUrl = val;
     })
     

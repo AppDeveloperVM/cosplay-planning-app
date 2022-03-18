@@ -43,11 +43,11 @@ export class CosplayGroupItemComponent implements OnInit, AfterViewInit {
     this.checkPlatform();
 
     let imageName = this.cosplaygroup.imageUrl;
-    this.uploadImgService.getStorageImgUrl(imageName,2).then((val)=>{
+    this.uploadImgService.getStorageImgUrl(imageName,0).then((val)=>{
       this.imageUrl = val;
     })
 
-    this.uploadImgService.getStorageImgUrl(imageName,0).then((val)=>{
+    this.uploadImgService.getStorageImgUrl(imageName,2).then((val)=>{
       this.cosplaygroup.imageUrl = val;
     })
   }
