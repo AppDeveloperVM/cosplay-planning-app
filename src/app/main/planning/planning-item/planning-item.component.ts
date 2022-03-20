@@ -17,12 +17,6 @@ export class PlanningItemComponent implements OnInit {
   isMobile: boolean;
   imageUrl: String;
 
-  navigationExtras: NavigationExtras = {
-    state : {
-      planning: null
-    }
-  }
-
   constructor(
     private router: Router, 
     private platform: Platform,
@@ -50,14 +44,12 @@ export class PlanningItemComponent implements OnInit {
     this.isMobile = this.platform.is('mobile');
   }
 
-  onGoToSee(item: any): void {
-    this.navigationExtras.state.value = item;
-    this.router.navigate(['main/tabs/planning/planning-detail'], this.navigationExtras );
+  onGoToSee(planningId: string): void {
+    this.router.navigate(['main/tabs/planning/details/'+ planningId] );
   }
 
-  onGoToEdit(item: any): void {
-    this.navigationExtras.state.value = item;
-    this.router.navigate(['main/tabs/planning/edit-planning'], this.navigationExtras );
+  onGoToEdit(planningId: string): void {
+    this.router.navigate(['main/tabs/planning/edit/'+ planningId]);
   }
 
   async onDeletePlanning(planningId: string): Promise<void> {

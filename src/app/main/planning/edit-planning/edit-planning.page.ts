@@ -8,27 +8,7 @@ import { NavController, ModalController, LoadingController, AlertController } fr
 import { PlanningService } from '../../../services/planning.service';
 import { switchMap } from 'rxjs/operators';
 import { PlaceLocation } from '../../../models/location.model';
-
-function base64toBlob(base64Data, contentType) {
-  contentType = contentType || '';
-  const sliceSize = 1024;
-  const byteCharacters = atob(base64Data);
-  const bytesLength = byteCharacters.length;
-  const slicesCount = Math.ceil(bytesLength / sliceSize);
-  const byteArrays = new Array(slicesCount);
-
-  for (let sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
-    const begin = sliceIndex * sliceSize;
-    const end = Math.min(begin + sliceSize, bytesLength);
-
-    const bytes = new Array(end - begin);
-    for (let offset = begin, i = 0; offset < end; ++i, ++offset) {
-      bytes[i] = byteCharacters[offset].charCodeAt(0);
-    }
-    byteArrays[sliceIndex] = new Uint8Array(bytes);
-  }
-  return new Blob(byteArrays, { type: contentType });
-}
+import { UploadImageService } from 'src/app/services/upload-img.service';
 
 @Component({
   selector: 'app-edit-planning',
@@ -36,7 +16,7 @@ function base64toBlob(base64Data, contentType) {
   styleUrls: ['./edit-planning.page.scss'],
 })
 export class EditPlanningPage implements OnInit, OnDestroy {
-  planning: Planning;
+  planning: any;
   planningId: string;
   isLoading = true;
   private planningSub: Subscription;
@@ -44,58 +24,70 @@ export class EditPlanningPage implements OnInit, OnDestroy {
   actualImage = "";
   actualMapImage = "";
   selectedLocationImage: string;
+  isFormReady = false;
 
   constructor(
     private navCtrl: NavController,
     private route: ActivatedRoute,
     private planningService: PlanningService,
+    private imgService : UploadImageService,
+    private uploadService: UploadImageService,
     private modalCtrl: ModalController,
     private loadingCtrl: LoadingController,
     private router: Router,
     private alertCtrl: AlertController
   ) { 
     console.log("Entrando en edit planning");
-    const navigation = this.router.getCurrentNavigation();
-    if(navigation.extras.state == undefined) { this.router.navigate(['main/tabs/planning']); }
-    this.planning = navigation?.extras?.state.value;
- 
+
   }
 
   ngOnInit() {
     
+    this.route.paramMap.subscribe(paramMap => {
+      if (!paramMap.has('planningId')) {
+        this.navCtrl.navigateBack('/main/tabs/planning');
+        return;
+      }
+      this.isLoading = true;
+      console.log('Searched for planningId: '+ paramMap.get('planningId'));
 
-    this.form = new FormGroup({
-      title: new FormControl(this.planning.title, {
-        updateOn: 'blur',
-        validators: [Validators.required]
-      }),
-      description: new FormControl(this.planning.description, {
-        updateOn: 'blur',
-        validators: [Validators.required]
-      }),
-      startsAt: new FormControl(this.planning.startsAt, {
-        updateOn: 'blur',
-        validators: [ Validators.required]
-      }),
-      endsAt: new FormControl(this.planning.endsAt, {
-        updateOn: 'blur',
-        validators: [ Validators.required]
-      }),
-      location: new FormControl(this.planning.location, {validators: [Validators.required]}),
-      imageUrl: new FormControl(this.planning.imageUrl)
+      //Getting the planning by Id
+      this.planning = this.planningService
+      .getPlanningById(paramMap.get('planningId'))
+      .subscribe(planning => {
+        this.planning = planning;
+
+        if(planning!= null){
+          this.buildForm();
+        } else {
+          console.log("Error loading item - not found");
+          this.router.navigate(['/main/tabs/planning']);
+        }
+
+        console.log("Form data with saved info: "+ JSON.stringify(this.form.value));
+        this.isLoading = false;
+
+      },error => {
+        //Show alert with defined error message
+        this.alertCtrl
+        .create({
+          header: 'An error ocurred!',
+          message: 'Could not load planning. Try again later. Error:'+error,
+          buttons: [{
+            text: 'Okay',
+            handler: () => {
+              this.router.navigate(['/main/tabs/planning']);
+            }
+          }]
+        }).then(alertEl => {
+          alertEl.present();
+        });
+      });
+
     });
-    this.actualImage = this.planning.imageUrl;
-    this.actualMapImage = this.planning.location.staticMapImageUrl;
 
-    //Use saved info from db
-    if(this.form.get('imageUrl').value == null && this.planning.imageUrl != null){
-      this.form.patchValue({ image : this.planning.imageUrl });
-    }
-    if(this.form.get('location').value == null && this.planning.location != null){
-      this.form.patchValue({ image : this.planning.location });
-    }
-    console.log("Form data with saved info: "+ JSON.stringify(this.form.value));
-    this.isLoading = false;
+    
+    
 
   }
 
@@ -124,25 +116,65 @@ export class EditPlanningPage implements OnInit, OnDestroy {
     });
   }
 
+  buildForm(){
+    this.form = new FormGroup({
+      title: new FormControl(this.planning.title, {
+        updateOn: 'blur',
+        validators: [Validators.required]
+      }),
+      description: new FormControl(this.planning.description, {
+        updateOn: 'blur',
+        validators: [Validators.required]
+      }),
+      startsAt: new FormControl(this.planning.startsAt, {
+        updateOn: 'blur',
+        validators: [ Validators.required]
+      }),
+      endsAt: new FormControl(this.planning.endsAt, {
+        updateOn: 'blur',
+        validators: [ Validators.required]
+      }),
+      location: new FormControl(this.planning.location, {validators: [Validators.required]}),
+      imageUrl: new FormControl(this.planning.imageUrl)
+    });
+
+    //Use saved info from db
+    this.getImageByFbUrl(this.planning.imageUrl,2).then((val)=>{
+      this.actualImage = val;
+      //Use saved info from db
+      if(this.form.get('imageUrl').value == null && this.planning.imageUrl != null){
+        this.form.patchValue({ imageUrl: this.planning.imageUrl })
+      }
+    })
+
+    if(this.form.get('location').value == null && this.planning.location != null){
+      this.form.patchValue({ image : this.planning.location });
+    }
+
+    this.actualMapImage = this.planning.location.staticMapImageUrl;
+
+  }
+
   onLocationPicked(location: PlaceLocation) {
     this.form.patchValue({ location });
   }
 
   onImagePicked(imageData: string | File) {
-    let imageFile;
-    if (typeof imageData === 'string') {
-      try {
-        imageFile = base64toBlob(
-          imageData.replace('data:image/jpeg;base64,', ''),
-          'image/jpeg');
-      } catch (error) {
-        console.log(error);
-        return;
-      }
-    } else {
-      imageFile = imageData;
-    }
-    this.form.patchValue({image: imageFile});
+    this.isFormReady = false;
+
+    this.uploadService
+          .fullUploadProcess(imageData,this.form)
+          .then((val) =>{
+            this.isFormReady = val;
+            console.log("formReady: "+val);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+  }
+
+  getImageByFbUrl(imageName: string, size: number){
+    return this.imgService.getStorageImgUrl(imageName,size);
   }
 
   ngOnDestroy() {

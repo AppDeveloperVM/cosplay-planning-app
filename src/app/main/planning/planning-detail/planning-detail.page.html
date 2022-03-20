@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title >{{ isLoading ? 'Loading...' : planning.title }}</ion-title>
+    <ion-title *ngIf="!isLoading">{{ isLoading ? 'Loading...' : planning.title }}</ion-title>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/main/tabs/planning"></ion-back-button>
     </ion-buttons>
@@ -8,8 +8,8 @@
       <ion-button >
         <ion-icon #favIcon name="heart"></ion-icon>
       </ion-button>
-      <ion-button color="primary"  
-        (click)="onGoToEdit(planning)"
+      <ion-button color="primary" *ngIf="!isLoading" 
+        (click)="onGoToEdit(planning.id)"
       >
         Edit
       </ion-button>

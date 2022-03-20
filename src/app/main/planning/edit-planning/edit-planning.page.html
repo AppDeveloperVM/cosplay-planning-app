@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button
-      [defaultHref]="'main/tabs/planning'">
+      [defaultHref]="'main/tabs/planning/details/' + planning.id">
       </ion-back-button>
     </ion-buttons>
     <ion-title>Edit Planning</ion-title>
@@ -69,6 +69,7 @@
           <app-location-picker
           [selectedLocationImage]="actualMapImage"
           [showPreview]="form.get('location').value"
+          [getCurrentLocation]="false"
           (locationPick)="onLocationPicked($event)">
         </app-location-picker>
         </ion-col>

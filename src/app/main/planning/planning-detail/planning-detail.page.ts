@@ -11,6 +11,7 @@ import { MapModalLeafletComponent } from 'src/app/shared/map-modal-leaflet/map-m
 import { NgForm } from '@angular/forms';
 import { PlaceDataService } from 'src/app/services/place-data.service';
 import { Coordinates } from '../../../models/location.model';
+import { UploadImageService } from 'src/app/services/upload-img.service';
 
 interface PlaceLocation extends Coordinates {
   placeId: string;
@@ -27,19 +28,15 @@ interface PlaceLocation extends Coordinates {
   styleUrls: ['./planning-detail.page.scss'],
 })
 export class PlanningDetailPage implements OnInit, OnDestroy {
-  planning: Planning;
+  planning: any;
   newPlanning: Planning;
   placesData = [];
   planningId: string;
+  imageUrl : string = '';
+
   isLoading = false;
   private planningSub: Subscription;
   isMobile = false;
-
-  navigationExtras: NavigationExtras = {
-    state : {
-      planning: null
-    }
-  }
 
   constructor(
     private modalCtrl: ModalController,
@@ -49,16 +46,11 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
     private navCtrl: NavController,
     private planningService: PlanningService,
     private placeDataService: PlaceDataService,
+    private imgService : UploadImageService,
     private platform: Platform
   ) {
-    const navigation = this.router.getCurrentNavigation();
-    if(navigation.extras.state == undefined) { 
-      this.router.navigate(['main/tabs/planning']); 
-      this.isLoading = false;
-    }
-    this.planning = navigation?.extras?.state.value;
 
-    this.placesData.push(this.planning.location);
+    
     //console.log("location: "+this.planning.location);
    }
 
@@ -67,20 +59,60 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
       this.isMobile = true;
     }
 
+    this.route.paramMap.subscribe(paramMap => {
+      if (!paramMap.has('planningId')) {
+        this.navCtrl.navigateBack('/main/tabs/planning');
+        return;
+      }
+      this.isLoading = true;
+        console.log('Searched for planningId: '+ paramMap.get('planningId'));
+        //Getting the planning by Id
+        this.planning = this.planningService
+        .getPlanningById(paramMap.get('planningId'))
+        .subscribe(planning => {
+          this.planning = planning;
+
+          if(planning!= null){
+            this.placesData.push(this.planning.location);
+            this.getImageByFbUrl(this.planning.imageUrl,2).then((val)=>{
+              this.imageUrl = val;
+            })
+          } else {
+          console.log("Error loading item - not found");
+          this.router.navigate(['/main/tabs/planning']);
+          }
+          
+          this.isLoading = false;
+        },error => {
+          //Show alert with defined error message
+          this.alertCtrl
+          .create({
+            header: 'An error ocurred!',
+            message: 'Could not load planning. Try again later. Error:'+error,
+            buttons: [{
+              text: 'Okay',
+              handler: () => {
+                this.router.navigate(['/main/tabs/planning']);
+              }
+            }]
+          }).then(alertEl => {
+            alertEl.present();
+          });
+        });
+
+    });
   }
 
   ionViewWillEnter() {
     console.log('ionViewWillEnter');
   }
 
-  onGoToEdit(item: any) {
-    this.navigationExtras.state.value = item;
-    this.router.navigate(['main/tabs/planning/edit'], this.navigationExtras );
-    //main/tabs/cosplays/my-cosplays/cosplay-details
-    return false;
+  onGoToEdit(planningId: string) {
+    this.router.navigate(['main/tabs/planning/edit/' + planningId]);
   }
 
-  onSubmit(form: NgForm) {
+  getImageByFbUrl(imageName: string, size: number){
+    return this.imgService.getStorageImgUrl(imageName,size);
   }
 
   onShowFullMap() {
