@@ -16,10 +16,11 @@ import { UploadImageService } from 'src/app/services/upload-img.service';
   styleUrls: ['./edit-cosplay-group.page.scss'],
 })
 export class EditCosplayGroupPage implements OnInit, OnDestroy {
-  cosplayGroup: CosplayGroup;
+  cosplayGroup: any;
   cosplayGroupId: string;
-  isLoading = true;
   private cosplayGroupSub: Subscription;
+  isLoading = true;
+
   form: FormGroup;
   actualImage = "";
   actualMapImage = "";
@@ -38,16 +39,65 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
     private loadingCtrl: LoadingController,
     private router: Router,
     private alertCtrl: AlertController,
-    private uploadService: UploadImageService
+    private uploadService: UploadImageService,
+    private imgService : UploadImageService
     ) {
-      const navigation = this.router.getCurrentNavigation();
-      if(navigation.extras.state == undefined) { this.router.navigate(['main/tabs/cosplay-groups']); }
-      this.cosplayGroup = navigation?.extras?.state.value;
+      console.log("Entrando en edit cosplayGroup");
     }
 
   ngOnInit() {
-    //this.cosplayGroupId = paramMap.get('cosplayGroupId');
+    this.route.paramMap.subscribe(paramMap => {
+      if (!paramMap.has('cosplayGroupId')) {
+        this.navCtrl.navigateBack('/main/tabs/cosplays/my-cosplays');
+        return;
+      }
 
+      this.isLoading = true;
+      console.log('Searched for cosplayId: '+ paramMap.get('cosplayGroupId'));
+
+      this.cosplayGroupSub = this.cosplayGroupService
+      .getCosGroupById(paramMap.get('cosplayGroupId'))
+      .subscribe(cosplay => {
+        this.cosplayGroup = cosplay;
+
+        if(cosplay!= null){
+
+          this.buildForm();
+      
+          //Use saved info from db
+          if(this.form.get('imageUrl').value == null && this.cosplayGroup.imageUrl != null){
+            this.form.patchValue({ imageUrl: this.cosplayGroup.imageUrl })
+            
+          }
+          console.log("Form data with saved info: "+ JSON.stringify(this.form.value));
+        }else{
+          console.log("Error loading item - not found");
+          this.router.navigate(['/main/tabs/cosplay-groups']);
+        }
+        
+        this.isLoading = false;
+      }, error => {
+        //Show alert with defined error message
+        this.alertCtrl
+        .create({
+          header: 'An error ocurred!',
+          message: 'Could not load cosplay. Try again later. Error:'+error,
+          buttons: [{
+            text: 'Okay',
+            handler: () => {
+              this.router.navigate(['/main/tabs/cosplays/my-cosplays']);
+            }
+          }]
+        }).then(alertEl => {
+          alertEl.present();
+        });
+      })
+
+    });
+
+  }
+
+  buildForm(){
     this.form = new FormGroup({
       title: new FormControl(this.cosplayGroup.title, {
         updateOn: 'blur',
@@ -70,19 +120,23 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
       location: new FormControl(null),
       imageUrl: new FormControl(null)
     });
-    this.actualImage = this.cosplayGroup.imageUrl;
-    this.actualMapImage = this.cosplayGroup.location.staticMapImageUrl;
 
+    this.getImageByFbUrl(this.cosplayGroup.imageUrl,2).then((val)=>{
+      this.actualImage = val;
+      //Use saved info from db
+      if(this.form.get('imageUrl').value == null && this.cosplayGroup.imageUrl != null){
+        this.form.patchValue({ imageUrl: this.cosplayGroup.imageUrl })
+      }
+    })
     //Use saved info from db
-    if(this.form.get('imageUrl').value == null && this.cosplayGroup.imageUrl != null){
-      this.form.patchValue({ imageUrl: this.cosplayGroup.imageUrl })
-    }
     if(this.form.get('location').value == null && this.cosplayGroup.location != null){
       this.form.patchValue({ location: this.cosplayGroup.location })
     }
+
+    this.actualMapImage = this.cosplayGroup.location.staticMapImageUrl;
+
+    
     console.log("Form data with saved info: "+ JSON.stringify(this.form.value));
-    this.isLoading = false;
- 
   }
 
   //Submit form data ( Cosplay ) when ready
@@ -127,6 +181,10 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
           .catch(err => {
             console.log(err);
           });
+  }
+
+  getImageByFbUrl(imageName: string, size: number){
+    return this.imgService.getStorageImgUrl(imageName,size);
   }
 
   ngOnDestroy() {

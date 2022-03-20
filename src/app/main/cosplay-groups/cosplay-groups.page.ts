@@ -5,6 +5,8 @@ import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { NoticesService } from 'src/app/services/notices.service';
 import { NavigationExtras, Router } from '@angular/router';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreCollectionGroup } from '@angular/fire/compat/firestore';
+
 
 @Component(
   {
@@ -36,6 +38,7 @@ export class CosplayGroupsPage implements OnInit, OnDestroy {
     private cosplaygroupService: CosplayGroupService,
     private authService: AuthService,
     private noticesService: NoticesService,
+    private readonly afs: AngularFirestore
   ) {
     
   }
@@ -75,6 +78,13 @@ export class CosplayGroupsPage implements OnInit, OnDestroy {
     this.listedLoadedCosplays = this.relevantCosplayGroups;
     console.log(filter);
   } */
+
+  getCosplayGroupById(cosGroupId: string = 'c9d0WYQfry6e5Xfz5Q2G') {
+    return this.afs
+    .collection('cosplay-groups')
+    .doc(cosGroupId)
+    .valueChanges()
+  }
 
   onFilterUpdate($event) {
     

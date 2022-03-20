@@ -14,12 +14,12 @@ const routes: Routes = [
       import('./new-cosplay-group/new-cosplay-group.module').then( m => m.NewCosplayGroupPageModule)
   },
   {
-    path: 'edit',
+    path: 'edit/:cosplayGroupId',
     loadChildren: () =>
     import('./edit-cosplay-group/edit-cosplay-group.module').then( m => m.EditCosplayGroupPageModule)
   },
   {
-    path: ':cosplayGroupId',
+    path: 'details/:cosplayGroupId',
     loadChildren: () =>
       import('./cosplay-group-details/cosplay-group-details.module').then( m => m.CosplayGroupDetailsPageModule)
   }

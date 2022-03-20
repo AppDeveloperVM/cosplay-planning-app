@@ -78,10 +78,11 @@ export class CosplayGroupService {
         )
     }
 
-    getcosGroupById(): void {
-        this.cosGroups = this.cosgroupsCollection.snapshotChanges().pipe(
-            map( actions => actions.map( a => a.payload.doc.data() as CosplayGroupData))
-        )
+    getCosGroupById(cosplayGroupId: string) {
+        return this.afs
+        .collection('cosplay-groups')
+        .doc(cosplayGroupId)
+        .valueChanges()
     }
 
     onSaveCosGroup(cosGroup: CosplayGroupData, cosGroupId: string): Promise<void> {

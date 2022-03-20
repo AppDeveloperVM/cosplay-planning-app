@@ -1,8 +1,8 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button
-      [defaultHref]="'main/tabs/cosplay-groups/' + cosplayGroupId"></ion-back-button>
+      <ion-back-button *ngIf="!isLoading"
+      [defaultHref]="'main/tabs/cosplay-groups/details/' + cosplayGroup.id"></ion-back-button>
     </ion-buttons>
     <ion-title>Edit Cosplay Group</ion-title>
     <ion-buttons slot="primary">
@@ -76,6 +76,7 @@
           <app-location-picker
           [selectedLocationImage]="actualMapImage"
           [showPreview]="form.get('location').value"
+          [getCurrentLocation]="false"
           (locationPick)="onLocationPicked($event)">
         </app-location-picker>
         </ion-col>

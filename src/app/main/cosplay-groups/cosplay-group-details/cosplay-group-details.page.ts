@@ -17,6 +17,7 @@ import { delay, map } from 'rxjs/operators';
 import { CosGroupMember } from 'src/app/models/cosGroupMember.interface';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { DataService } from 'src/app/services/data.service';
+import { UploadImageService } from 'src/app/services/upload-img.service';
 
 
 @Component({
@@ -33,6 +34,7 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
   isLoading = false;
   private cosplayGroupSub: Subscription;
   cosplayGroupMembers:any[]=[];
+  imageUrl : string = '';
 
   isMobile: boolean;
 
@@ -42,7 +44,7 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
   cosGroupMembers$;
 
   arreglo1 = [10, 20, 30, 40, 50];
-  cosplayGroup = null;
+  cosplayGroup: any;
 
   navigationExtras: NavigationExtras = {
     state : {
@@ -60,6 +62,7 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
     private router: Router,
     private cosplayGroupService: CosplayGroupService,
     private dataService: DataService,
+    private imgService : UploadImageService,
     private placeDataService: PlaceDataService,
     private readonly afs: AngularFirestore,
     private modalCtrl: ModalController,
@@ -67,19 +70,61 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
     private loadingCtrl: LoadingController,
     private platform: Platform
   ) {
-    const navigation = this.router.getCurrentNavigation();
-    if(navigation.extras.state == undefined) { this.router.navigate(['main/tabs/cosplay-groups']); }
-    this.cosplayGroup = navigation?.extras?.state.value;
 
-    this.placesData.push(this.cosplayGroup.location);
-    console.log("location: "+this.cosplayGroup.location);
     
-    this.cosgroupsmembersCollection = afs.collection<CosGroupMember>(`cosplay-groups/${this.cosplayGroup.id}/cosMembers`);
-    this.getcosGroupMembers();
   }
 
   ngOnInit() {
     this.subscription = this.dataService.editMode$.subscribe(r => this.editMode = r)
+
+    this.route.paramMap.subscribe(paramMap => {
+      if (!paramMap.has('cosplayGroupId')) {
+        this.navCtrl.navigateBack('/main/tabs/cosplay-groups');
+        return;
+      }
+
+      this.isLoading = true;
+      console.log('Searched for cosplayId: '+ paramMap.get('cosplayId'));
+      //Getting the cosplayGroup by Id
+      this.cosplayGroupSub = this.cosplayGroupService
+        .getCosGroupById(paramMap.get('cosplayGroupId'))
+        .subscribe(cosGroup => {
+          this.cosplayGroup = cosGroup;
+          
+          if(cosGroup!= null){
+
+            this.getImageByFbUrl(this.cosplayGroup.imageUrl,2).then((val)=>{
+              this.imageUrl = val; 
+            })
+
+            this.placesData.push(this.cosplayGroup.location);
+            console.log("location: "+ this.cosplayGroup.location);
+            
+            this.cosgroupsmembersCollection = this.afs.collection<CosGroupMember>(`cosplay-groups/${this.cosplayGroup.id}/cosMembers`);
+            this.getcosGroupMembers();
+            
+
+          }
+          this.isLoading = false;
+        }, error => {
+          //Show alert with defined error message
+          this.alertCtrl
+          .create({
+            header: 'An error ocurred!',
+            message: 'Could not load cosplay. Try again later. Error:'+error,
+            buttons: [{
+              text: 'Okay',
+              handler: () => {
+                this.router.navigate(['/main/tabs/cosplays/my-cosplays']);
+              }
+            }]
+          }).then(alertEl => {
+            alertEl.present();
+          });
+          
+        });
+
+    });
   }
 
   checkPlatform() {
@@ -90,16 +135,18 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
     console.log('ionViewWillEnter');
   }
 
+  getImageByFbUrl(imageName: string, size: number){
+    return this.imgService.getStorageImgUrl(imageName,size);
+  }
+
   getMarkers(){
     for (let marker in this.cosplayGroup.location) {
       this.placesData.push(marker);
     }
   }
 
-  onGoToEdit(item:any){
-    this.navigationExtras.state.value = item;
-    this.router.navigate(['main/tabs/cosplay-groups/edit'], this.navigationExtras );
-    return false;
+  onGoToEdit(cosGroupId : string){
+    this.router.navigate(['main/tabs/cosplay-groups/edit/' + cosGroupId]);
   }
 
   onGoToRequestForm(item: any): void {
