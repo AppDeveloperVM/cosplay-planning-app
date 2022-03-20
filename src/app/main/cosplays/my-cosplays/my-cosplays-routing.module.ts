@@ -14,12 +14,12 @@ const routes: Routes = [
     .then( m => m.NewCosplayPageModule)
   },
   {
-    path: 'edit',///:cosplayId
+    path: 'edit/:cosplayId',
     loadChildren: () => import('./edit-cosplay/edit-cosplay.module')
     .then( m => m.EditCosplayPageModule)
   },
   {
-    path: ':cosplayId',
+    path: 'details/:cosplayId',
     loadChildren: () => import('./cosplay-details/cosplay-details.module')
     .then( m => m.CosplayDetailsPageModule)
   },

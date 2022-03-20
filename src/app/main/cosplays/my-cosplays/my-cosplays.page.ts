@@ -68,11 +68,6 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
     this.listedLoadedCosplays = this.relevantCosplays;
   }
 
-
-  /* getItems() {
-    return this.http.get<[]>('components/popinfo');
-  }*/
-
   ngOnDestroy() {
     if (this.cosplaysSub) {
       this.cosplaysSub.unsubscribe();

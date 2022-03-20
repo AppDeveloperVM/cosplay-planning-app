@@ -14,12 +14,13 @@ import { UploadImageService } from 'src/app/services/upload-img.service';
   styleUrls: ['./edit-cosplay.page.scss'],
 })
 export class EditCosplayPage implements OnInit, OnDestroy {
-  cosplay: Cosplay;
+  cosplay: any;
   cosplayId: string;
   private cosplaySub: Subscription;
   isLoading = true;
   form: FormGroup;
-  actualImage = "";
+  actualImage : string = '';
+
   uploadPercent: Observable<number>;
   ImageObs: Observable<string>;
   uploadReady : Observable<boolean>;
@@ -33,17 +34,67 @@ export class EditCosplayPage implements OnInit, OnDestroy {
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     private cosplaysService: CosplaysService,
+    private imgService : UploadImageService,
     private uploadService: UploadImageService
   ) {
     console.log("Entrando en edit cosplay");
-    const navigation = this.router.getCurrentNavigation();
-    if(navigation.extras.state == undefined) { this.router.navigate(['main/tabs/cosplays/my-cosplays']); }
-    this.cosplay = navigation?.extras?.state.value;
+    
   }
 
   ngOnInit() {
-    
+    this.route.paramMap.subscribe(paramMap => {
+      if (!paramMap.has('cosplayId')) {
+        this.navCtrl.navigateBack('/main/tabs/cosplays/my-cosplays');
+        return;
+      }
 
+      this.isLoading = true;
+      console.log('Searched for cosplayId: '+ paramMap.get('cosplayId'));
+
+      this.cosplaySub = this.cosplaysService
+      .getCosplayById(paramMap.get('cosplayId'))
+      .subscribe(cosplay => {
+
+        this.cosplay = cosplay;
+        if(cosplay!= null){
+
+          this.buildForm();
+      
+          //Use saved info from db
+          if(this.form.get('imageUrl').value == null && this.cosplay.imageUrl != null){
+            this.form.patchValue({ imageUrl: this.cosplay.imageUrl })
+            
+          }
+          console.log("Form data with saved info: "+ JSON.stringify(this.form.value));
+          this.isLoading = false;
+        }else{
+          console.log("Error loading item - not found");
+          this.router.navigate(['/main/tabs/cosplays/my-cosplays']);
+        }
+        
+        this.isLoading = false;
+      }, error => {
+        //Show alert with defined error message
+        this.alertCtrl
+        .create({
+          header: 'An error ocurred!',
+          message: 'Could not load cosplay. Try again later. Error:'+error,
+          buttons: [{
+            text: 'Okay',
+            handler: () => {
+              this.router.navigate(['/main/tabs/cosplays/my-cosplays']);
+            }
+          }]
+        }).then(alertEl => {
+          alertEl.present();
+        });
+      });
+
+    });
+
+  }
+
+  buildForm(){
     this.form = new FormGroup({
       characterName: new FormControl(this.cosplay.characterName , {
         updateOn: 'blur',
@@ -59,13 +110,16 @@ export class EditCosplayPage implements OnInit, OnDestroy {
       }),
       imageUrl: new FormControl(null)
     });
-    this.actualImage = this.cosplay.imageUrl;
+    
+    this.getImageByFbUrl(this.cosplay.imageUrl,2).then((val)=>{
+      this.actualImage = val;
+      //Use saved info from db
+      if(this.form.get('imageUrl').value == null && this.cosplay.imageUrl != null){
+        this.form.patchValue({ imageUrl: this.cosplay.imageUrl })
+      }
+    })
 
-    //Use saved info from db
-    if(this.form.get('imageUrl').value == null && this.cosplay.imageUrl != null){
-      this.form.patchValue({ imageUrl: this.cosplay.imageUrl })
-      
-    }
+    
     console.log("Form data with saved info: "+ JSON.stringify(this.form.value));
     this.isLoading = false;
   }
@@ -73,8 +127,6 @@ export class EditCosplayPage implements OnInit, OnDestroy {
     //Submit form data ( Cosplay ) when ready
   onUpdateCosplay() {
     if (!this.form.valid) return
-
-    
 
     this.loadingCtrl
     .create({
@@ -111,6 +163,9 @@ export class EditCosplayPage implements OnInit, OnDestroy {
 
   }
 
+  getImageByFbUrl(imageName: string, size: number){
+    return this.imgService.getStorageImgUrl(imageName,size);
+  }
 
   ngOnDestroy() {
     if (this.cosplaySub) {

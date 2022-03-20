@@ -1,9 +1,9 @@
 <ion-header [translucent]="true" class="ion-no-border">
   <ion-toolbar>
-    <ion-title *ngIf="!isLoading">{{ cosplay.title }}</ion-title>
+    <ion-title *ngIf="!isLoading">{{ cosplay.characterName }}</ion-title>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/"></ion-back-button>
-      <ion-title text-center>{{ isLoading ? 'Loading...' : cosplay.characterName}}</ion-title>
+      <ion-title text-center></ion-title>
     </ion-buttons>
     <ion-buttons slot="end">
       
@@ -13,7 +13,7 @@
       <ion-button 
       type="button"
         color="primary"  
-        (click)="onGoToEdit(cosplay)"
+        (click)="onGoToEdit(cosplay.id)"
         routerDirection="forward"
       >
         Edit
@@ -29,8 +29,8 @@
   <ion-grid *ngIf="!isLoading">
   <ion-row>
     <ion-col class="content-col" >
-      <ion-thumbnail *ngIf="cosplay.imageUrl != null" class="user-image">
-        <img src="{{ cosplay.imageUrl }}">
+      <ion-thumbnail *ngIf="imageUrl != null" class="user-image">
+        <img src="{{ imageUrl }}">
       </ion-thumbnail>
       <ion-icon *ngIf="cosplay.imageUrl == null" slot="start" name="image"></ion-icon>
 

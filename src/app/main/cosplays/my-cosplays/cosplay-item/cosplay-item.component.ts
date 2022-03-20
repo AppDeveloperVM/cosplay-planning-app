@@ -19,12 +19,6 @@ export class CosplayItemComponent implements OnInit {
   subscription: Subscription;
   imageUrl: String;
 
-  navigationExtras: NavigationExtras = {
-    state : {
-      cosplay: null
-    }
-  }
-
   constructor(
     private router: Router,
     private loadingCtrl: LoadingController,
@@ -46,12 +40,9 @@ export class CosplayItemComponent implements OnInit {
     console.log(this.cosplay);
   }
 
-  onGoToSee(item: any): void {
-    this.navigationExtras.state.value = item;
-    this.router.navigate(['main/tabs/cosplays/my-cosplays/cosplay-details'], this.navigationExtras );
-  }
-
-  
+  onGoToSee(cosplayId: string): void {
+    this.router.navigate(['main/tabs/cosplays/my-cosplays/details/'+cosplayId]);
+  }  
 
   async onDeleteCosplay(cosplayId: string): Promise<void> {
 

@@ -58,6 +58,13 @@ export class CosplaysService {
     )
   }
 
+  getCosplayById(cosplayId: string) {
+    return this.afs
+    .collection('cosplays')
+    .doc(cosplayId)
+    .valueChanges()
+  }
+
   onSaveCosplay(cosplay: CosplayData, cosplayId: string): Promise<void> {
     return new Promise( async (resolve, reject) => {
         try {
@@ -88,15 +95,6 @@ export class CosplaysService {
             reject(err.message)
         }
     })
-  }
-
-
-  getCosplayById(cosplayId: string) {
-    return this.cosplays.pipe(take(1), map(cosplays => {
-      return cosplays.find((cos) => {
-        return cos.id === cosplayId;
-      });
-    }));
   }
 
 
