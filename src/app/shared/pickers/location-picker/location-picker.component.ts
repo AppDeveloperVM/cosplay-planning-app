@@ -28,6 +28,7 @@ export class LocationPickerComponent implements OnInit {
   @Output() locationPick = new EventEmitter<PlaceLocation>();
   @Input() showPreview = false;
   @Input() multiple = false;
+  @Input() getCurrentLocation = true;
   @Input() selectedLocationImage: string;
   @Input() center = {};
   streetObserv: Observable<any>;
@@ -47,11 +48,13 @@ export class LocationPickerComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    this.platform.ready().then(() => {
-      let permissions = this.location.checkPermissions();
-      if(permissions)
-       this.getCurrentCoords();
-    });
+    if(this.getCurrentLocation){
+      this.platform.ready().then(() => {
+        let permissions = this.location.checkPermissions();
+        if(permissions)
+        this.getCurrentCoords();
+      });
+    }
     
   }
 
