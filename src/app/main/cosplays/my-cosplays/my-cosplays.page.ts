@@ -61,9 +61,10 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
       this.relevantCosplays = this.loadedCosplays; // show everything (?)
     } else {
       // filtro - a mostrar tras elegir segundo segmented button on main
-      this.relevantCosplays = this.loadedCosplays.filter(
+      /*this.relevantCosplays = this.loadedCosplays.filter(
         cosplay => cosplay.status !== true // checking status
       );
+      */
     }
     this.listedLoadedCosplays = this.relevantCosplays;
   }
