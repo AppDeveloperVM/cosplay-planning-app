@@ -29,8 +29,9 @@
   <ion-grid *ngIf="!isLoading">
   <ion-row>
     <ion-col class="content-col" >
-      <ion-thumbnail *ngIf="imageUrl != null" class="user-image">
-        <img src="{{ imageUrl }}">
+      <ion-thumbnail *ngIf="imageUrl != null" class="user-image" >
+        <ion-progress-bar type="indeterminate" *ngIf="!imageReady"></ion-progress-bar>
+        <img src="{{ imageUrl }}" *ngIf="imageReady">
       </ion-thumbnail>
       <ion-icon *ngIf="cosplay.imageUrl == null" slot="start" name="image"></ion-icon>
 

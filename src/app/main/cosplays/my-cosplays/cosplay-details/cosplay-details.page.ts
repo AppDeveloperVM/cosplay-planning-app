@@ -19,6 +19,7 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
   cosplay: any;
   cosplayId: string;
   isLoading = false;
+  imageReady = false;
   private cosplaySub: Subscription;
   imageUrl : string = '';
   default: string = "elements"; // default segment
@@ -63,6 +64,7 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
           if(cosplay!= null){
             this.getImageByFbUrl(this.cosplay.imageUrl,2).then((val)=>{
               this.imageUrl = val;
+              this.imageReady = true;
             })
           }
           
