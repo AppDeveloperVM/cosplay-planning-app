@@ -1,4 +1,5 @@
 import { Component, OnInit, Input,Pipe, PipeTransform } from '@angular/core';
+import { Router } from '@angular/router';
 import { PopoverController } from '@ionic/angular';
 
 @Component({
@@ -13,7 +14,7 @@ export class PopinfoComponent implements OnInit,PipeTransform {
 
   @Input() notifications;
 
-  constructor( private popoverCtrl: PopoverController) { }
+  constructor( private popoverCtrl: PopoverController,private router: Router) { }
 
   ngOnInit() {};
 
@@ -22,12 +23,15 @@ export class PopinfoComponent implements OnInit,PipeTransform {
   }
 
 
-  onClick(category: string, item: number) {
+  onClick(category: string, id: string) {
 
-    console.log('category: '+category+', item: ' + item);
+    console.log('category: '+category+', item: ' + id);
+    if(category == 'cosplay'){
+      this.router.navigate(['main/tabs/cosplays/my-cosplays/details/'+ id]);
+    }
 
     this.popoverCtrl.dismiss({
-      item,
+      id,
     });
   }
 
