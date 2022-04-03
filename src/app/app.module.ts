@@ -26,7 +26,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from './shared/shared.module';
 import { SettingsService } from './services/settings.service';
 
-
+import { IonicStorageModule } from '@ionic/storage-angular';
+import { Drivers } from '@ionic/storage';
+import * as cordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 
 @NgModule({
   declarations: [
@@ -44,10 +46,13 @@ import { SettingsService } from './services/settings.service';
     IonicModule,
     ReactiveFormsModule,
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFirestoreModule,
-    //AngularFirestoreModule.enablePersistence(),
+    AngularFirestoreModule.enablePersistence(),
     AngularFireAuthModule,
-    SharedModule
+    SharedModule,
+    IonicStorageModule.forRoot({
+      name: "cosappdb",
+      driverOrder: [cordovaSQLiteDriver._driver,Drivers.IndexedDB, Drivers.LocalStorage]
+    })
   ],
   providers: [
     StatusBar,
