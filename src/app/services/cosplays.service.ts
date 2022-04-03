@@ -4,6 +4,8 @@ import { AuthService } from 'src/app/services/auth.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { take, map, tap, delay, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
+import { DataService } from 'src/app/services/data.service';
+
 //Firebase 
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreCollectionGroup } from '@angular/fire/compat/firestore';
 
@@ -43,6 +45,7 @@ export class CosplaysService {
 
   constructor(
     private authService: AuthService,
+    private dataService: DataService,
     private http: HttpClient,
     private readonly afs: AngularFirestore
 
@@ -71,11 +74,14 @@ export class CosplaysService {
             const id = cosplayId || this.afs.createId();
             const data = {id, ... cosplay};
             const result = await this.cosplaysCollection.doc(id).set(data);
+            //then save the cosplay to localstorage
+            //this.dataService.addData('cosplay',cosplay);
             resolve(result);
         } catch (err) {
             reject(err.message)
         }
     })
+    
   }
 
   
