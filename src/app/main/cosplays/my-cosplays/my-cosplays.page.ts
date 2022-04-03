@@ -5,10 +5,13 @@ import { SegmentChangeEventDetail } from '@ionic/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { PopoverController } from '@ionic/angular';
 import { PopinfoComponent } from 'src/app/components/popinfo/popinfo.component';
-import { RouterModule } from '@angular/router';
+import { Data, RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Observable, Subscription } from 'rxjs';
 import { NoticesService } from 'src/app/services/notices.service';
+import { DataService } from 'src/app/services/data.service';
+import { threadId } from 'worker_threads';
+import { SettingsService } from 'src/app/services/settings.service';
 
 @Component({
   selector: 'app-my-cosplays',
@@ -29,6 +32,8 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
     private cosplaysService: CosplaysService,
     private noticesService: NoticesService,
     private authService: AuthService,
+    private dataService : DataService,
+    public _settings: SettingsService,
     private popoverCtrl: PopoverController,
     private routermodule: RouterModule,
     private http: HttpClient
@@ -53,7 +58,7 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
   }
 
   ionViewWillEnter() {
-
+    
   }
 
   onFilterUpdate(filter: string) {
@@ -67,6 +72,14 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
       */
     }
     this.listedLoadedCosplays = this.relevantCosplays;
+  }
+
+  async addData(){
+    //this.dataService.addData('user',`Vic ${Math.floor(Math.random() * 100)}`);
+    this.dataService.getData().subscribe(res => {
+      console.log(res);
+      
+    });
   }
 
   ngOnDestroy() {
