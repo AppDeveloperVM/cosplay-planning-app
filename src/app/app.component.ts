@@ -4,6 +4,8 @@ import { Plugins, Capacitor } from '@capacitor/core';
 import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
 import { SettingsService } from './services/settings.service';
+import { Observable } from 'rxjs';
+import { DataService } from './services/data.service';
 
 @Component({
   selector: 'app-root',
@@ -13,20 +15,23 @@ import { SettingsService } from './services/settings.service';
 export class AppComponent {
   navigate: any;
   selectedTheme: String;
+  public darkMode$: Observable<boolean> = this._settings.selectToogleDarkMode();
+  public theme$: Observable<string> = this._settings.selectActualTheme();
 
   constructor(
     private platform: Platform,
     private authService: AuthService,
+    private dataService: DataService,
     private router: Router,
-    private settings: SettingsService
+    public _settings: SettingsService
   ) {
     this.initializeApp();
-    this.settings.activeTheme.subscribe(
-    val => {
-      this.selectedTheme = val;
-      console.log("theme: "+this.selectedTheme)
-    }
-    );
+
+    this.theme$.subscribe(value => { 
+      this.selectedTheme = value;
+      console.log('theme : '+ value);
+    } );
+    
   }
 
   initializeApp() {
@@ -35,6 +40,17 @@ export class AppComponent {
         Plugins.SplashScreen.hide();
       }
     });
+    
+
+
+  }
+
+  toggleDarkMode() {
+    this._settings.setDarkMode(!this._settings.snapshot.darkMode);
+  }
+
+  changeTheme(theme: string) {
+    this._settings.setActualTheme(theme);
   }
 
 
