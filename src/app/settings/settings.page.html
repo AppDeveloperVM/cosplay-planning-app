@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content >
-  <div class="content">
+  <div class="content" >
   <p class="space-left">ACCOUNT</p>
   <ion-list lines="none">
     <ion-item button="true">
@@ -18,7 +18,7 @@
     <ion-item>
       <ion-icon slot="start" name="eye-outline"></ion-icon>
       <ion-label>Private Account</ion-label>
-      <ion-toggle name="private"></ion-toggle>
+      <ion-toggle name="private"   [(ngModel)]="private_account" (ionChange)="updateOption('private_account',$event.detail)"></ion-toggle>
     </ion-item>
   </ion-list>
 
@@ -27,7 +27,7 @@
     <ion-item>
       <ion-icon slot="start" name="mail-unread-outline"></ion-icon>
       <ion-label>Push Notifications</ion-label>
-      <ion-toggle name="notifications" checked></ion-toggle>
+      <ion-toggle name="notifications" [(ngModel)]="push_notifs" (ionChange)="updateOption('push_notifs',$event.detail)"></ion-toggle>
     </ion-item>
   </ion-list>
 
@@ -36,7 +36,7 @@
     <ion-item>
       <ion-icon slot="start" name="moon-outline"></ion-icon>
       <ion-label>Dark Mode</ion-label>
-      <ion-toggle name="darkmode" checked></ion-toggle>
+      <ion-toggle name="darkmode" [(ngModel)]="darkMode" (ionChange)="updateOption('darkMode',$event.detail)"></ion-toggle>
     </ion-item>
   </ion-list>
   <p>HELP</p>
@@ -50,6 +50,12 @@
       <ion-label >Contact us</ion-label>
     </ion-item>
   </ion-list>
+  </div>
+
+  <div>
+    <div *ngFor="let item of testItems">
+      {{item}}
+    </div>
   </div>
 
 </ion-content>
