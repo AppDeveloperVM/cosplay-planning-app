@@ -32,12 +32,15 @@ export class DataService {
    * method set user data from firebase on localStorage
    */
   checkLocalStorage(item: string){
-    let  localData;
     if (!this.storage.get(item)) {
       return false;
     } else {
-      return localData;
+      return true;
     }
+  }
+
+  checkIfExists(item) {
+    
   }
 
   getData(storagekey = null){
@@ -52,10 +55,20 @@ export class DataService {
     
   } 
 
-  async addData(storagekey = null,item){
+  async addData(storagekey = null, item, unique = false){
     let key = storagekey != null ? storagekey : STORAGE_KEY;
-    const storedData = await this.storage.get(key) || [];
-    storedData.push(item);
+    let storedData = await this.storage.get(key) || [];
+    let stringified = item;// JSON.stringify( )
+    //check if item / id already exists
+      if(unique == false){
+        if(!storedData.includes(stringified)){
+          storedData.push(stringified);//add object item to localVar
+        }
+      }else if(unique == true){
+        await this.clearKey(key);
+        storedData = stringified;
+      }
+
     return this.storage.set(key, storedData);
   }
 
@@ -64,6 +77,10 @@ export class DataService {
     const storedData = await this.storage.get(key) || [];
     storedData.splice(index, 1);
     return this.storage.set(key, storedData);
+  }
+
+  async clearKey(storagekey = null) {
+    await this.storage.remove(storagekey);
   }
 
   async clearAllData(){
