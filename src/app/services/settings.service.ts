@@ -7,7 +7,7 @@ import { DataService } from './data.service';
 @Injectable()
 export class SettingsService {
  
-    private _settings = new BehaviorSubject<appSettingsConfig>({
+    settings$ = new BehaviorSubject<appSettingsConfig>({
         privateAccount: true,
         push_notifs: false,
         theme: 'dark-theme',
@@ -15,22 +15,19 @@ export class SettingsService {
     });
 
     constructor(private dataService : DataService) {
-        this._settings.subscribe(data => {
-            this.saveLocalConfig(data);
-        });
     }
 
-    public get settings$(): Observable<appSettingsConfig> {
-        return this._settings.asObservable();
-    }
+    /*public get settings$(): Observable<appSettingsConfig> {
+        return this.settings$.asObservable();
+    }*/
 
     public get snapshot(): appSettingsConfig {
-        return this._settings.getValue();
+        return this.settings$.getValue();
     }
 
     //privateAccount
     public selectPrivateAccount(): Observable<boolean> {
-        return this._settings.pipe(
+        return this.settings$.pipe(
             map(state => state.privateAccount),
             distinctUntilChanged()
         );
@@ -43,7 +40,7 @@ export class SettingsService {
 
     //pushNotifications
     public selectPushNotifs(): Observable<boolean> {
-        return this._settings.pipe(
+        return this.settings$.pipe(
             map(state => state.push_notifs),
             distinctUntilChanged()
         );
@@ -56,7 +53,7 @@ export class SettingsService {
 
     //dark mode
     public selectToogleDarkMode(): Observable<boolean> {
-        return this._settings.pipe(
+        return this.settings$.pipe(
             map(state => state.darkMode),
             distinctUntilChanged()
         );
@@ -69,7 +66,7 @@ export class SettingsService {
 
     //actual theme
     public selectActualTheme() : Observable<string> {
-        return this._settings.pipe(
+        return this.settings$.pipe(
             map(state => state.theme),
             distinctUntilChanged()
         )
@@ -80,11 +77,9 @@ export class SettingsService {
     }
 
     private patch(value: Partial<appSettingsConfig>) {
-        this._settings.next({...this._settings.getValue(), ...value});
+        this.settings$.next({...this.settings$.getValue(), ...value});
     }
  
-    private saveLocalConfig(data){
-        //this.dataService.addData('config',JSON.stringify(data))
-    }
+    
 
 }

@@ -39,16 +39,14 @@ export class DataService {
     }
   }
 
-  checkIfExists(item) {
-    
-  }
 
   getData(storagekey = null){
+    console.log('get data');
+    
     let key = storagekey != null ? storagekey : STORAGE_KEY;
     return this.storageReady.pipe(
       filter(ready => ready),
       switchMap(_ => {
-        console.log('OK');
         return from(this.storage.get(key) || of([]));
       })
     )
@@ -56,20 +54,32 @@ export class DataService {
   } 
 
   async addData(storagekey = null, item, unique = false){
+    console.log('add data');
+    
     let key = storagekey != null ? storagekey : STORAGE_KEY;
-    let storedData = await this.storage.get(key) || [];
-    let stringified = item;// JSON.stringify( )
-    //check if item / id already exists
-      if(unique == false){
-        if(!storedData.includes(stringified)){
-          storedData.push(stringified);//add object item to localVar
-        }
-      }else if(unique == true){
-        await this.clearKey(key);
-        storedData = stringified;
-      }
+    /* return this.storageReady.pipe(
+      filter(ready => ready),
+      switchMap(async _ => {
+        console.log('OK'); */
+        let storedData = await this.storage.get(key) || [];
+        let stringified = item;// JSON.stringify( )
+        //check if item / id already exists
+          if(unique == false){
+            if(!storedData.includes(stringified)){
+              storedData.push(stringified);//add object item to localVar
+            }
+          }else if(unique == true){
+            //await this.clearKey(key);
+            storedData = stringified;
+            console.log('storedData: '+storedData);
+            
+          }
 
-    return this.storage.set(key, storedData);
+        return this.storage.set(key, storedData);
+      /* })
+
+
+    ) */
   }
 
   async removeData(storagekey = null,index){
