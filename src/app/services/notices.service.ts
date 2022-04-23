@@ -77,7 +77,7 @@ export class NoticesService {
     fetch('../../assets/data/notifications.json')
     .then(res => res.json())
     .then(data => {
-      console.log("Fetching Notifications from json..");
+      //console.log("Fetching Notifications from json..");
       this.setNotices(data.notifications);
     });
 

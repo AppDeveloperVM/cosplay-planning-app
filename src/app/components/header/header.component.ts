@@ -34,8 +34,8 @@ export class HeaderComponent implements OnInit {
     private dataService: DataService
   ) {
     this.noticesService._notices$.subscribe((data)=> {
-      console.log("notifs next");
-      console.log(data);
+      //console.log("notifs next");
+      //console.log(data);
       this.notifications = data;
     })
     this.noticesService.fetchFileData();

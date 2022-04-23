@@ -246,7 +246,7 @@ export class UploadImageService {
           this.ImageObs.subscribe(
             url=>{
               imageUrl = url;
-              console.log('Value:' + imageUrl);
+              //console.log('Value:' + imageUrl);
               
                 resolve(url)
             

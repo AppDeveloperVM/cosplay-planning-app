@@ -39,7 +39,7 @@ export class CosplayGroupItemComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    console.log(this.cosplaygroup);
+    //console.log(this.cosplaygroup);
     this.checkPlatform();
 
     let imageName = this.cosplaygroup.imageUrl;

@@ -69,7 +69,7 @@ export class CosplayGroupService {
         this.cosgroupsCollection = afs.collection<CosplayGroupData>('cosplay-groups');
         this.cosGroupRequestCollection = afs.collection<CosGroupMember>('cosMembers');
         this.getcosGroups();
-        console.log("cosGroups: "+this.cosGroups);
+        //console.log("cosGroups: "+this.cosGroups);
     }
 
     private getcosGroups(): void {
