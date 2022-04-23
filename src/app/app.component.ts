@@ -17,6 +17,8 @@ export class AppComponent {
   selectedTheme: String;
   public darkMode$: Observable<boolean> = this._settings.selectToogleDarkMode();
   public theme$: Observable<string> = this._settings.selectActualTheme();
+  //Important observables ( auth - settings )
+  settings$ = this._settings.settings$;
 
   constructor(
     private platform: Platform,
@@ -27,11 +29,12 @@ export class AppComponent {
   ) {
     this.initializeApp();
 
-    this.theme$.subscribe(value => { 
-      this.selectedTheme = value;
-      console.log('theme : '+ value);
-    } );
-    
+    //Settings 
+    this._settings.settings$.subscribe(config => {
+      this.selectedTheme = config.theme;
+      console.log('theme : '+ config.theme);
+    });
+
   }
 
   initializeApp() {
