@@ -46,7 +46,7 @@ import * as cordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
     IonicModule,
     ReactiveFormsModule,
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFirestoreModule.enablePersistence(),
+    AngularFirestoreModule.enablePersistence({synchronizeTabs: true}),
     AngularFireAuthModule,
     SharedModule,
     IonicStorageModule.forRoot({
