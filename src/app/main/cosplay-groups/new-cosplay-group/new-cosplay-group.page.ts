@@ -10,7 +10,6 @@ import { CosGroup } from 'src/app/models/cosGroup.interface';
 
 import { UploadImageService } from '../../../services/upload-img.service';
 import { FirebaseStorageService } from '../../../services/firebase-storage.service';
-import { getStorage, ref, uploadBytes,getDownloadURL } from "firebase/storage";
 
 
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreCollectionGroup } from '@angular/fire/compat/firestore';
