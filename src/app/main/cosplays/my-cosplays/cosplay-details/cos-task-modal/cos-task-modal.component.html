@@ -1,3 +1,67 @@
-<p>
-  cos-task-modal works!
-</p>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Tarea</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button color="p" (click)="onCancel()">{{ closeButtonText }}</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="main">
+    <form >
+      
+      <ion-item class="form-item" lines="full">
+        <ion-label position="stacked">Nombre</ion-label>
+        <ion-input type="text" placeholder="..." autofocus="true" required></ion-input>
+      </ion-item>
+      <ion-row class="form-item">
+        <ion-col class="ion-no-padding ">
+          <ion-item lines="full">
+            <ion-label>¿Alarma?</ion-label>
+            <ion-checkbox></ion-checkbox>
+          </ion-item>
+        </ion-col>
+        <ion-col class="ion-no-padding left-space">
+          <ion-item lines="full">
+            <ion-label disabled position="stacked">Fecha / Hora</ion-label>
+            <ion-datetime first-day-of-week="1"></ion-datetime>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row class="form-item">
+        <ion-col class="ion-no-padding ">
+          <ion-item lines="full">
+            <ion-label>¿Hecho?</ion-label>
+            <ion-checkbox></ion-checkbox>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <app-image-picker></app-image-picker>
+       
+      <ion-item class="form-item" lines="full">
+        <ion-label position="stacked">Notas</ion-label>
+        <ion-textarea placeholder="Extra info.." autoGrow="false"></ion-textarea>
+      </ion-item>
+      
+    </form>
+
+    
+  </div>
+  
+
+  <div class="action-buttons">
+    <ion-button color="softblue">
+      Delete
+    </ion-button>
+    <ion-button color="softblue">
+      Edit
+    </ion-button>
+    <ion-button color="softblue">
+      <ion-icon name="save-outline"></ion-icon>
+    </ion-button>
+  </div>
+
+</ion-content>
+  
