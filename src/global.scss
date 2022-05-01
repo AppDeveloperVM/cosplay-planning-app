@@ -29,22 +29,230 @@
 @import "~leaflet/dist/leaflet.css";
 
 
-.ion-invalid.ion-touched ion-label {
-    color: var(--ion-color-danger);
+@media all {
+    :root {
+        --ion-color-softblue: #7a98c7;
+        --ion-color-softblue-rgb: 122,152,199;
+        --ion-color-softblue-contrast: #000000;
+        --ion-color-softblue-contrast-rgb: 0,0,0;
+        --ion-color-softblue-shade: #6b86af;
+        --ion-color-softblue-tint: #87a2cd;
+    }
+    
+    .ion-color-softblue {
+        --ion-color-base: var(--ion-color-softblue);
+        --ion-color-base-rgb: var(--ion-color-softblue-rgb);
+        --ion-color-contrast: var(--ion-color-softblue-contrast);
+        --ion-color-contrast-rgb: var(--ion-color-softblue-contrast-rgb);
+        --ion-color-shade: var(--ion-color-softblue-shade);
+        --ion-color-tint: var(--ion-color-softblue-tint);
+    }
+
+    .ion-invalid.ion-touched ion-label {
+        color: var(--ion-color-danger);
+    }
+    
+    
+    //Modal styles
+    //Modal styles
+    .custom-modal {
+        //--height: auto;
+
+        --backdrop {
+            --backdrop-filter: blur(12px);
+        }
+
+        
+
+        .modal-wrapper {
+            position: fixed;
+            //max-height: 500px;
+            --height: 80%; 
+            --width: 100%; 
+
+            ion-content .main {
+                padding: 10px;
+
+                .form-item {
+                    padding-bottom: 5px;
+                }
+
+                .right-space {
+                    padding-right: 5px;
+                }
+                .left-space {
+                    padding-left: 5px;
+                }
+            }
+        }
+
+        .ion-page {
+            
+            .inner-content {
+                //height: 40px;
+                //max-height: 40vh;
+                overflow: auto;
+                padding: 10px;
+            }
+        }
+
+    }
+
+    .modal-wrapper {
+        width: 100%;
+        height: 100%;
+    }
+    
+    .custom-modal .modal-wrapper.sc-ion-modal-md {
+        position: fixed;
+        //height: 500px;
+    }
+    
+    .error, .red {
+        color: rgb(212, 22, 9);
+    }
+
+    .succesful, .green {
+        color: rgb(14, 133, 14);
+    }
+
+    .important {
+        --background: rgb(53, 58, 71)!important;
+    }
+
+    .action-buttons {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-items: center;
+        justify-content: space-between;
+        ion-button {
+            flex: 1;
+            height: 40px;
+        }
+    }
+    
+    .accordion {
+        ul {
+            padding:0;
+    
+            li {
+                position: relative;
+                overflow: hidden;
+                padding: 0;
+                margin: 0;
+                background-color: #2b2a2a;
+                color: rgb(192, 189, 189);
+                + {
+                    li {
+                        margin-top: 15px;
+                    }   
+                }
+                i {
+                position: absolute;
+                transform: translate(-6px,0);
+                margin-top: 28px;
+                right:15px;
+                    &:before {
+                        content: "";
+                        position: absolute;
+                        transition: all 0.3s;
+                        background-color: rgb(35, 100, 131);
+                        width: 3px;
+                        height: 9px;
+                        transform: translate(-2px,0) rotate(45deg);
+                    }
+                    &:after {
+                        transform: translate(2px,0) rotate(-45deg);
+                        transition: all 0.3s;
+                        content: "";
+                        position: absolute;
+                        background-color: rgb(35, 100, 131);
+                        width: 3px;
+                        height: 9px;
+                    }
+            }
+                input[type="checkbox"] {
+                    position: absolute;
+                    cursor: pointer;
+                    width: 100%;
+                    height: 100%;
+                    z-index: 1;
+                    opacity: 0;
+                    touch-action: manipulation;
+                
+                    &:checked {
+                        ~ {
+                            h2 {
+                                color: rgb(192, 189, 189);
+                            }
+                            p {
+                                max-height: 0;
+                                transition:   0.3s;
+                                opacity: 0;
+                            }
+                            i {
+             
+                                &:before {
+                                    transform: translate(2px,0) rotate(45deg);
+                                }
+                                &:after {
+                                    transform: translate(-2px,0) rotate(-45deg);
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                .no-select {
+                    user-select: none;
+                }
+                h2 {
+                    color:rgb(129, 185, 238);
+                    font-size: 20px;
+                    line-height: 34px;
+                    text-align: left;
+                    padding: 15px 15px 0;
+                    text-transform: none;
+                    font-weight: 300;
+                    letter-spacing: 1px;
+                    display: block;
+                    margin: 0;
+                    cursor: pointer;
+                    transition: 0.2s;
+                }
+                p {
+                    color: rgb(170, 168, 168);
+                    text-align: left;
+                    font-size: 14px;
+                    line-height: 1.45;
+                    position: relative;
+                    overflow: hidden;
+                    max-height: 250px;
+                    will-change: max-height;
+                    contain: layout;
+                    display: inline-block;
+                    opacity: 1;
+                    transform: translate(0,0);
+                    margin-top: 5px;
+                    margin-bottom: 15px;
+                    padding: 0 50px 0 15px;
+                    transition: 0.3s;
+                }
+        }
+        }
+    }
+    
+    
 }
 
-
-//Modal styles
-.modal-wrapper {
-    width: 100%;
-    height: 100%;
-  }
-
-.custom-modal .modal-wrapper.sc-ion-modal-md {
-    width: 600px;
-    height: 300px;
-}
-  
-.error {
-    color: red;
+//non-mobile
+@media only screen and (min-width: 767px) {
+    .custom-modal .modal-wrapper.sc-ion-modal-md {
+        max-width: 700px;
+        
+        //max-height: 300px;
+    }
 }
