@@ -8,7 +8,7 @@ import { CosplayDetailsPageRoutingModule } from './cosplay-details-routing.modul
 
 import { CosplayDetailsPage } from './cosplay-details.page';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { CosElementModalComponent } from './cos-element-modal/cos-element-modal.component';
+import { CosElementDetailsModalComponent } from './cos-element-modal-details/cos-element-details-modal.component';
 
 @NgModule({
   imports: [
@@ -18,7 +18,7 @@ import { CosElementModalComponent } from './cos-element-modal/cos-element-modal.
     CosplayDetailsPageRoutingModule,
     SharedModule
   ],
-  declarations: [CosplayDetailsPage, CosElementModalComponent],
-  entryComponents:[CosElementModalComponent ]
+  declarations: [CosplayDetailsPage, CosElementDetailsModalComponent],
+  entryComponents:[CosElementDetailsModalComponent ]
 })
 export class CosplayDetailsPageModule {}
