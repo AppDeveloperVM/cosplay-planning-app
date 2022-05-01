@@ -18,6 +18,7 @@ export class CosplayItemComponent implements OnInit {
   editMode : boolean;
   subscription: Subscription;
   imageUrl: String;
+  isLoading : boolean = true;
 
   constructor(
     private router: Router,
@@ -28,16 +29,19 @@ export class CosplayItemComponent implements OnInit {
   ) { }  
 
   ngOnInit() {
+    
+ 
+  }
+
+
+  ngAfterViewInit() {
     let imageName = this.cosplay.imageUrl;
+    
     this.uploadImgService.getStorageImgUrl(imageName,0).then((val)=>{
       this.imageUrl = val;
-    })
-
-    this.uploadImgService.getStorageImgUrl(imageName,2).then((val)=>{
-      this.cosplay.imageUrl = val;
-    })
-    
-    console.log(this.cosplay);
+    }).finally(() => {
+      this.isLoading = false;
+    });
   }
 
   onGoToSee(cosplayId: string): void {
