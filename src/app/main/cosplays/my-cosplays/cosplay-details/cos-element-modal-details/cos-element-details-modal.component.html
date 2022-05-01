@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{title}}</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button color="p" (click)="onCancel()">{{ closeButtonText != undefined ? closeButtonText : 'X' }}</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <div class="action-buttons">
+      <ion-button color="softblue">
+        Delete
+      </ion-button>
+      <ion-button color="softblue">
+        Edit
+      </ion-button>
+      <ion-button color="softblue">
+        <ion-icon name="save-outline"></ion-icon>
+      </ion-button>
+    </div>
+
+</ion-content>
+  
