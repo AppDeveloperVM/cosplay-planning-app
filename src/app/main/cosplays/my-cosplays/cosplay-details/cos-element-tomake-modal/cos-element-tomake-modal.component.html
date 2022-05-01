@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>to BUY</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button color="p" (click)="onCancel()">{{ closeButtonText }}</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="main">
+
+    <form >
+      
+      <ion-item class="form-item" lines="full">
+        <ion-label position="stacked">Nombre</ion-label>
+        <ion-input type="text" placeholder="..." autofocus="true" required></ion-input>
+      </ion-item>
+      <ion-row class="form-item">
+        <ion-col>
+          <ion-label>Tiempo: </ion-label>
+        </ion-col>
+        <ion-col >
+          <ion-item lines="full"> 
+            <ion-label position="stacked">Horas</ion-label>
+            <ion-input type="number" placeholder="00" max-length="2" required></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item lines="full"> 
+            <ion-label position="stacked">Minutos</ion-label>
+            <ion-input type="number" placeholder="00" max-length="2" required></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      
+        <app-image-picker></app-image-picker>
+       
+        
+
+      <ion-item class="form-item" lines="full">
+        <ion-label position="stacked">Notas / Detalles</ion-label>
+        <ion-textarea placeholder="Extra info.." autoGrow="false"></ion-textarea>
+      </ion-item>
+      
+    </form>
+
+    
+  </div>
+  
+
+  <div class="action-buttons">
+    <ion-button color="softblue">
+      Delete
+    </ion-button>
+    <ion-button color="softblue">
+      Edit
+    </ion-button>
+    <ion-button color="softblue">
+      <ion-icon name="save-outline"></ion-icon>
+    </ion-button>
+  </div>
+
+</ion-content>
+  
