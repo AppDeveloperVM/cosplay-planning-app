@@ -4,9 +4,12 @@ import { NavController, ModalController, AlertController } from '@ionic/angular'
 import { Cosplay } from '../../../../models/cosplay.model';
 import { CosplaysService } from '../../../../services/cosplays.service';
 import { Subscription } from 'rxjs';
-import { CosElementModalComponent } from './cos-element-modal/cos-element-modal.component';
+import { CosElementDetailsModalComponent } from './cos-element-modal-details/cos-element-details-modal.component';
 import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { UploadImageService } from 'src/app/services/upload-img.service';
+import { CosElementTobuyModalComponent } from './cos-element-tobuy-modal/cos-element-tobuy-modal.component';
+import { CosElementTomakeModalComponent } from './cos-element-tomake-modal/cos-element-tomake-modal.component';
+import { CosTaskModalComponent } from './cos-task-modal/cos-task-modal.component';
 
 @Component({
   selector: 'app-cosplay-details',
@@ -26,8 +29,18 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
 
   //array para los tipos de segment y sus datos
   tasks_segment: string = "tasks"; 
-  tasks: any = [{name : "Coser traje de tienda china",image: "photo",type:"buy"},{name : "Imprimar goma Eva",type:"make"},{name : "Planear piezas collar",type:"make"}];
-  cosElements: any = [{name : "Hat",image: "photo",type:"buy",store:"amazon.es",store_url:"amazon.es"},{name : "Suit",type:"buy",store:"la tienda de la pepa"},{name : "Shoes",type:"make"}];
+  tasks: any = [
+    { name : "Coser traje de tienda china", image: "photo", type:"task"},
+    { name : "Imprimar goma Eva", type:"task"},
+    { name : "Planear piezas collar", type:"task"}
+  ];
+  cosElementsToBuy: any = [
+    { id: '12313', name : "Hat", image: "photo", type: 'toBuy', store:"amazon.es", store_url:"amazon.es", completed: false, important: false},
+    { id: '423432', name : "Suit", type: 'toBuy', store:"la tienda de la pepa", completed: true, important: true},
+  ];
+  cosElementsToDo: any = [
+    { id: '25252', name : "Shoes", type:'toMake', time: "5:00", percentComplete: "72"}
+  ];
   toBuy: boolean;
 
 
@@ -106,15 +119,24 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
     }
   }
 
-  OpenItemDetails(title : String, store: String, status: boolean){
+  OpenItemDetails(id : String, type){
+    let comp;
+    if(type == 'toBuy'){
+      comp = CosElementTobuyModalComponent
+    } else if(type == 'toMake'){
+      comp = CosElementTomakeModalComponent
+    } else if(type == 'task'){
+      comp = CosTaskModalComponent
+    }
+    
     this.modalCtrl.create({
-    component: CosElementModalComponent, 
+    component: comp, 
     cssClass: 'custom-modal',
     componentProps: {
       closeButtonText: 'X',
-      title,
-      store,
-      status
+      title: 'title',
+      id,
+      type
     }}).then(modalEl => {
       modalEl.present();
     });
