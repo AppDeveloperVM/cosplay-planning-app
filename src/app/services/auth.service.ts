@@ -6,10 +6,6 @@ import { BehaviorSubject, from, Observable } from 'rxjs';
 import { map, switchMap, take, tap } from 'rxjs/operators';
 import { User } from '../models/user.model';
 
-import { initializeApp } from 'firebase/app';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-
-
 const TOKEN_KEY = 'my-token';
 
 interface UserData {
