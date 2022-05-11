@@ -1,4 +1,4 @@
-import { Store } from "./store.mode";
+import { Store } from "./store.model";
 
 export interface CosElementToBuy {
     id: string;
