@@ -10,6 +10,7 @@ import { UploadImageService } from 'src/app/services/upload-img.service';
 import { CosElementTobuyModalComponent } from './cos-element-tobuy-modal/cos-element-tobuy-modal.component';
 import { CosElementTomakeModalComponent } from './cos-element-tomake-modal/cos-element-tomake-modal.component';
 import { CosTaskModalComponent } from './cos-task-modal/cos-task-modal.component';
+import { CosplayDevelopService } from 'src/app/services/cosplay-develop.service';
 
 @Component({
   selector: 'app-cosplay-details',
@@ -18,6 +19,7 @@ import { CosTaskModalComponent } from './cos-task-modal/cos-task-modal.component
 })
 export class CosplayDetailsPage implements OnInit, OnDestroy {
   //rootPage: any = TabsPage;
+  cosElementsToBuy$ = this.cosDevelopService.elementsToBuyObsv;
 
   cosplay: any;
   cosplayId: string;
@@ -52,7 +54,8 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
     private cosplaysService: CosplaysService,
     private imgService : UploadImageService,
     private alertCtrl: AlertController,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private cosDevelopService: CosplayDevelopService
   ) {
 
   }

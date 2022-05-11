@@ -10,23 +10,23 @@
 <div class="inner-content">
   <div class="main">
 
-    <form >
+    <form [formGroup]="form">
       
       <ion-item class="form-item" lines="full">
         <ion-label position="stacked">Nombre</ion-label>
-        <ion-input type="text" placeholder="..." autofocus="true" required></ion-input>
+        <ion-input type="text" placeholder="..." autofocus="true" formControlName="name" required></ion-input>
       </ion-item>
       <ion-row class="form-item">
         <ion-col class="ion-no-padding right-space">
           <ion-item lines="full">
             <ion-label position="stacked">Coste</ion-label>
-            <ion-input type="text" placeholder="0 €" required></ion-input>
+            <ion-input type="text" formControlName="cost" placeholder="0 €" required></ion-input>
           </ion-item>
         </ion-col>
         <ion-col class="ion-no-padding left-space">
           <ion-item lines="full">
             <ion-label>¿Listo?</ion-label>
-            <ion-checkbox></ion-checkbox>
+            <ion-checkbox formControlName="completed"></ion-checkbox>
           </ion-item>
         </ion-col>
       </ion-row>
@@ -35,7 +35,7 @@
 
       <ion-item class="form-item" lines="full">
         <ion-label position="stacked">Notas</ion-label>
-        <ion-textarea placeholder="Extra info.." autoGrow="false"></ion-textarea>
+        <ion-textarea formControlName="notes" placeholder="Extra info.." autoGrow="false"></ion-textarea>
       </ion-item>
       
     </form>
@@ -51,7 +51,7 @@
     <ion-button color="softblue">
       Edit
     </ion-button>
-    <ion-button color="softblue">
+    <ion-button color="softblue" (click)="onSubmitElement()">
       <ion-icon name="save-outline"></ion-icon>
     </ion-button>
   </div>

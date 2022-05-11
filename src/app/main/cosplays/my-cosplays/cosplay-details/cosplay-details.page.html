@@ -94,10 +94,10 @@
           </ion-grid>
 
         </ion-item>
-
+<!--*ngFor="let el of cosElementsToBuy"-->
         <ion-item
           id="tobuy"
-          *ngFor="let el of cosElementsToBuy"
+          *ngFor="let el of cosElementsToBuy$ | async  "
           (click)="OpenItemDetails( el.id, el.type )"
           class="ion-no-padding bottom-border list-item" 
           [ngClass]="el.important == true ? 'important' : 'e'"
