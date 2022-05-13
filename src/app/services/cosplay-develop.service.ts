@@ -7,6 +7,7 @@ import { CosTask } from '../models/cosTask.model';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreCollectionGroup } from '@angular/fire/compat/firestore';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { CosElementTomakeModalComponent } from '../main/cosplays/my-cosplays/cosplay-details/cos-element-tomake-modal/cos-element-tomake-modal.component';
 
 
 @Injectable({
@@ -69,17 +70,72 @@ export class CosplayDevelopService {
     )
   }
 
+  getElToBuyById(elementId: string) {
+    return this.afs
+    .collection('cosElementsToBuy')
+    .doc(elementId)
+    .valueChanges()
+  }
+
+  getElToMakeById(elementId: string) {
+    return this.afs
+    .collection('cosElementsToMake')
+    .doc(elementId)
+    .valueChanges()
+  }
+
+  getTaskById(elementId: string) {
+    return this.afs
+    .collection('cosTasks')
+    .doc(elementId)
+    .valueChanges()
+  }
 
   onSaveElToBuy(element: CosElementToBuy, elementId: string): Promise<void> {
     return new Promise( async (resolve, reject) => {
       try {
         const id = elementId || this.afs.createId();
         const data = {id, ... element};
-        const result = await this.elToBuyCollection.doc(id).set(data);
+        const result = await this.elToBuyCollection.doc(id).collection('cosElementsToBuy').doc().set(data);
         resolve(result)
       } catch(err) {
         reject(err.message)
       }
+    })
+  }
+
+  onDeleteElementToBuy(elementId: string, cosplayId: string): Promise<void> {
+    return new Promise (async (resolve, reject) => {
+        try {
+            const result = this.elToBuyCollection.doc(cosplayId).collection('cosElementsToBuy').doc(elementId).delete();
+            resolve(result);
+        } catch(err){
+            reject(err.message)
+        }
+    })
+  }
+
+  onSaveElToMake(element: CosElementToDo, elementId: string): Promise<void> {
+    return new Promise( async (resolve, reject) => {
+      try {
+        const id = elementId || this.afs.createId();
+        const data = {id, ... element};
+        const result = await this.elToDoCollection.doc(id).collection('cosElementsToMake').doc().set(data);
+        resolve(result)
+      } catch(err) {
+        reject(err.message)
+      }
+    })
+  }
+
+  onDeleteElementToMake(elementId: string, cosplayId: string): Promise<void> {
+    return new Promise (async (resolve, reject) => {
+        try {
+            const result = this.elToDoCollection.doc(cosplayId).collection('cosElementsToMake').doc(elementId).delete();
+            resolve(result);
+        } catch(err){
+            reject(err.message)
+        }
     })
   }
 

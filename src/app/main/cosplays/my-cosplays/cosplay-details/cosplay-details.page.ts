@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
-import { NavController, ModalController, AlertController } from '@ionic/angular';
+import { NavController, ModalController, AlertController, LoadingController } from '@ionic/angular';
 import { Cosplay } from '../../../../models/cosplay.model';
 import { CosplaysService } from '../../../../services/cosplays.service';
 import { Subscription } from 'rxjs';
@@ -20,6 +20,7 @@ import { CosplayDevelopService } from 'src/app/services/cosplay-develop.service'
 export class CosplayDetailsPage implements OnInit, OnDestroy {
   //rootPage: any = TabsPage;
   cosElementsToBuy$ = this.cosDevelopService.elementsToBuyObsv;
+  cosElementsToMake$ = this.cosDevelopService.elementsToDoObsv;
 
   cosplay: any;
   cosplayId: string;
@@ -55,6 +56,7 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
     private imgService : UploadImageService,
     private alertCtrl: AlertController,
     private modalCtrl: ModalController,
+    private loadingCtrl: LoadingController,
     private cosDevelopService: CosplayDevelopService
   ) {
 
@@ -142,6 +144,27 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
       type
     }}).then(modalEl => {
       modalEl.present();
+    });
+  }
+
+  async onDeleteElement(elementId: string): Promise<void> {
+
+    await this.loadingCtrl
+    .create({
+      message: 'Deleting Element...'
+    })
+    .then(loadingEl => {
+      loadingEl.present();
+        try {
+          this.cosDevelopService.onDeleteElementToBuy(this.cosplay.id,elementId);
+        }catch (err) {
+          console.log(err);
+        }
+
+        setTimeout(() => {
+          loadingEl.dismiss();
+        }, 500);
+
     });
   }
 
