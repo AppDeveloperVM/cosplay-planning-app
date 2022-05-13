@@ -31,19 +31,33 @@ export class CosElementTobuyModalComponent implements OnInit {
 
   ngOnInit() {
     this.form = new FormGroup({
-      name: new FormControl('name!'),
-      type: new FormControl('toBuy'),
+      name: new FormControl(null, {
+        updateOn: 'blur',
+        validators: [Validators.required, Validators.maxLength(180)]
+      }),
       image: new FormControl('img'),
-      notes: new FormControl('notes..'),
-      stores: new FormControl(''),
-      cost: new FormControl('15'),
+      notes: new FormControl(null, {
+        updateOn: 'blur',
+        validators: [Validators.required, Validators.maxLength(180)]
+      }),
+      stores: new FormControl(null, {
+        updateOn: 'blur',
+        validators: [Validators.required, Validators.maxLength(180)]
+      }),
+      cost: new FormControl(0, {
+        updateOn: 'blur',
+        validators: [Validators.required, Validators.maxLength(180)]
+      }),
       important: new FormControl(false),
-      completed: new FormControl(false),
+      completed: new FormControl(false, {
+        updateOn: 'blur',
+        validators: [Validators.required, Validators.maxLength(180)]
+      }),
     });
   }
   
   onSubmitElement(){
-    if (!this.form.valid) return
+    //if (!this.form.valid) return
 
     this.loadingCtrl
     .create({
@@ -53,12 +67,11 @@ export class CosElementTobuyModalComponent implements OnInit {
       loadingEl.present();
       const elementToBuy = this.form.value;
       const elementId = this.cosElementToBuy?.id || null;
-      this.cosDevelopService.onSaveElToBuy(elementToBuy,elementId);
+      this.cosDevelopService.onSaveElToBuy(elementToBuy, elementId);
       console.log(elementToBuy);
       
       loadingEl.dismiss();
       this.form.reset();
-      this.router.navigate(['main/tabs/cosplays/my-cosplays']);
     });
     
   }
