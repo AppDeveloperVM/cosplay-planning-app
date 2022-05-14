@@ -55,7 +55,7 @@ export class CosplaysService {
       console.log("cosplays: "+this.cosplaysObsv);
   }
 
-  private getCosplays(): void {
+  getCosplays(): void {
     this.cosplaysObsv = this.cosplaysCollection.snapshotChanges().pipe(
         map( actions => actions.map( a => a.payload.doc.data() as CosplayData))
     )
