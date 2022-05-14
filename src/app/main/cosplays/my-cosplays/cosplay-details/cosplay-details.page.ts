@@ -4,7 +4,6 @@ import { NavController, ModalController, AlertController, LoadingController } fr
 import { Cosplay } from '../../../../models/cosplay.model';
 import { CosplaysService } from '../../../../services/cosplays.service';
 import { Subscription } from 'rxjs';
-import { CosElementDetailsModalComponent } from './cos-element-modal-details/cos-element-details-modal.component';
 import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { UploadImageService } from 'src/app/services/upload-img.service';
 import { CosElementTobuyModalComponent } from './cos-element-tobuy-modal/cos-element-tobuy-modal.component';
@@ -15,6 +14,8 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/comp
 import { CosElementToBuy } from 'src/app/models/cosElementToBuy.model';
 import { CosElementToDo } from 'src/app/models/cosElementToDo.model';
 import { CosTask } from 'src/app/models/cosTask.model';
+import { map } from 'rxjs/operators';
+import { CosElementNewModalComponent } from './cos-element-new-modal/cos-element-new-modal.component';
 
 @Component({
   selector: 'app-cosplay-details',
@@ -23,7 +24,7 @@ import { CosTask } from 'src/app/models/cosTask.model';
 })
 export class CosplayDetailsPage implements OnInit, OnDestroy {
   //rootPage: any = TabsPage;
-  cosElementsToBuy$ = this.cosDevelopService.elementsToBuyObsv;
+  cosElementsToBuy$ = this.cosDevelopService.elementsToBuyObsv$;
   cosElementsToMake$ = this.cosDevelopService.elementsToDoObsv;
   cosTasks$ = this.cosDevelopService.tasksObsv;
 
@@ -38,7 +39,7 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
   //Collections
   private cosplaysCollection: AngularFirestoreCollection<Cosplay>;
   private elToBuyCollection: AngularFirestoreCollection<CosElementToBuy>;
-  private elToDoCollection: AngularFirestoreCollection<CosElementToDo>;
+  private elToMakeCollection: AngularFirestoreCollection<CosElementToDo>;
   private tasksCollection: AngularFirestoreCollection<CosTask>;
 
 
@@ -101,12 +102,13 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
 
           if(cosplay!= null){
             this.cosDevelopService.cosplay = this.cosplay;
-            this.cosDevelopService.elToBuyCollection = this.afs.collection<CosElementToBuy>(`cosplays/${this.cosplay.id}/cosElementsToBuy`);
-            this.cosDevelopService.elToDoCollection = this.afs.collection<CosElementToDo>(`cosplays/${this.cosplay.id}/cosElementsToDo`);
-            this.cosDevelopService.tasksCollection = this.afs.collection<CosTask>(`cosplays/${this.cosplay.id}/cosTasks`);
-            this.cosDevelopService.getElementsToBuy();
-            this.cosDevelopService.getElementsToDo();
-            this.cosDevelopService.getTasks();
+            this.elToBuyCollection = this.afs.collection<CosElementToBuy>(`cosplays/${this.cosplay.id}/cosElementsToBuy`);
+            this.elToMakeCollection = this.afs.collection<CosElementToDo>(`cosplays/${this.cosplay.id}/cosElementsToMake`);
+            this.tasksCollection = this.afs.collection<CosTask>(`cosplays/${this.cosplay.id}/cosTasks`);
+            this.getElementsToBuy();
+            this.getElementsToMake();
+            //this.cosDevelopService.getElementsToDo();
+            //this.cosDevelopService.getTasks();
           }
 
           
@@ -131,8 +133,6 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
 
       });
   }
-
-  
 
   getImageByFbUrl(imageName: string, size: number){
     return this.imgService.getStorageImgUrl(imageName,size);
@@ -160,6 +160,8 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
     } else if(type == 'task'){
       comp = CosTaskModalComponent
     }
+
+    comp = CosElementNewModalComponent
     
     this.modalCtrl.create({
     component: comp, 
@@ -192,6 +194,31 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
         }, 500);
 
     });
+  }
+
+
+  getElementsToBuy(): void {
+    this.cosElementsToBuy$ = this.elToBuyCollection.snapshotChanges().pipe(
+      map( elements => elements.map( 
+        el => {
+          const data = el.payload.doc.data() as CosElementToBuy;
+          const elId = el.payload.doc.id;
+          return { elId, ...data };
+        }
+      ))
+    )
+  }
+
+  getElementsToMake(): void {
+    this.cosElementsToMake$ = this.elToMakeCollection.snapshotChanges().pipe(
+      map( elements => elements.map( 
+        el => {
+          const data = el.payload.doc.data() as CosElementToDo;
+          const elId = el.payload.doc.id;
+          return { elId, ...data };
+        }
+      ))
+    )
   }
 
   ngOnDestroy() {

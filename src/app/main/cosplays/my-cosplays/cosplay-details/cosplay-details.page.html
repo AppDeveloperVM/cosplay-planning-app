@@ -73,122 +73,127 @@
         <ion-icon name="add-outline"></ion-icon>
       </ion-button>
       </ion-item>
+      <div>
+        <ion-list
+        *ngIf="cosElementsToBuy$ | async"
+        class="ion-no-padding" lines="full">
+          <!--cosElementsToBuy-->
+          <ion-item 
+          no-lines class="ion-no-padding bottom-border  header-item">
 
-      <ion-list class="ion-no-padding" lines="full">
+            <ion-grid class="ion-no-padding ion-no-border">
+              <ion-row class="list-header-row">
+                <ion-col class="list-header-col">
+                  <div class="main">To Buy</div>
+                </ion-col>
+                <ion-col class="list-header-col">
+                  <div class="sec">Cost</div>
+                </ion-col >
+                <ion-col class=" col list-header-col ">
+                  <div class="sec">Status</div>
+                </ion-col >
+              </ion-row>
 
-        <ion-item no-lines class="ion-no-padding bottom-border  header-item">
+            </ion-grid>
 
-          <ion-grid class="ion-no-padding ion-no-border">
-            <ion-row class="list-header-row">
-              <ion-col class="list-header-col">
-                <div class="main">To Buy</div>
-              </ion-col>
-              <ion-col class="list-header-col">
-                <div class="sec">Store</div>
-              </ion-col >
-              <ion-col class=" col list-header-col ">
-                <div class="sec">Status</div>
-              </ion-col >
-            </ion-row>
+          </ion-item>
+          <ion-item
+            id="tobuy"
+            *ngFor="let el of cosElementsToBuy$ | async"
+            (click)="OpenItemDetails( el.id, 'toBuy' )"
+            class="ion-no-padding bottom-border list-item" 
+            [ngClass]="el.important == true ? 'important' : 'e'"
+            no-lines
+            detail
+          >
+            
+            <ion-grid class="ion-no-padding">
 
-          </ion-grid>
-
-        </ion-item>
-        <!--cosElementsToBuy-->
-        <ion-item
-          id="tobuy"
-          *ngFor="let el of cosElementsToBuy$ | async"
-          (click)="OpenItemDetails( el.id, 'toBuy' )"
-          class="ion-no-padding bottom-border list-item" 
-          [ngClass]="el.important == true ? 'important' : 'e'"
-          no-lines
-          detail
-        >
-          
-          <ion-grid class="ion-no-padding">
-
-            <ion-row class="elements-list">
-              <ion-col>
-              <div class="elements-list-data">
-                <div class="elements-list-name">{{ el.name }}</div>
-                <div class="elements-list-icons">
-                  <small>
-                  <ion-icon name="image-outline" *ngIf="el.image"></ion-icon>
-                </small>
+              <ion-row class="elements-list">
+                <ion-col>
+                <div class="elements-list-data">
+                  <div class="elements-list-name">{{ el.name }}</div>
+                  <div class="elements-list-icons">
+                    <small>
+                    <ion-icon name="image-outline" *ngIf="el.image"></ion-icon>
+                  </small>
+                  </div>
                 </div>
-              </div>
-              </ion-col>
-              <ion-col class="elements-list-data sec">
-                <div class="">{{ el.store }}</div>
-              </ion-col>
-              <ion-col class="elements-list-data sec">
-                <div *ngIf="!el.completed" class="red">
-                  <ion-icon name="remove" size="large"></ion-icon>
+                </ion-col>
+                <ion-col class="elements-list-data sec">
+                  <div>{{ el.cost }} €</div>
+                </ion-col>
+                <ion-col class="elements-list-data sec">
+                  <div *ngIf="!el.completed" class="red">
+                    <ion-icon name="remove" size="large"></ion-icon>
+                  </div>
+                  <div *ngIf="el.completed"  class="green">
+                    <ion-icon name="checkmark" size="large"></ion-icon>
+                  </div>
+                </ion-col>
+              </ion-row>
+
+            </ion-grid>
+          </ion-item>
+
+        </ion-list>
+        <ion-list 
+        *ngIf="cosElementsToMake$ | async"
+        class="ion-no-padding" lines="full">
+          <!--cosElementsToDo-->
+          <ion-item no-lines class="ion-no-padding bottom-border  header-item">
+
+            <ion-grid class="ion-no-padding ion-no-border">
+              <ion-row class="list-header-row">
+                <ion-col class="list-header-col">
+                  <div class="main">To Do</div>
+                </ion-col>
+                <ion-col class="list-header-col">
+                  <div class="sec">Time</div>
+                </ion-col >
+                <ion-col class=" col list-header-col ">
+                  <div class="sec">Percent</div>
+                </ion-col >
+              </ion-row>
+
+            </ion-grid>
+
+          </ion-item>
+          <ion-item
+            id="tomake"
+            *ngFor="let el of cosElementsToMake$ | async"
+            (click)="OpenItemDetails( el.id, 'toMake')"
+            class="ion-no-padding bottom-border list-item" 
+            no-lines
+            detail
+          >
+            
+            <ion-grid class="ion-no-padding">
+
+              <ion-row class="elements-list">
+                <ion-col>
+                <div class="elements-list-data">
+                  <div class="elements-list-name">{{ el.name }}</div>
+                  <div class="elements-list-icons">
+                    <small>
+                    <ion-icon name="image-outline" *ngIf="el.image"></ion-icon>
+                  </small>
+                  </div>
                 </div>
-                <div *ngIf="el.completed"  class="green">
-                  <ion-icon name="checkmark" size="large"></ion-icon>
-                </div>
-              </ion-col>
-            </ion-row>
+                </ion-col>
+                <ion-col class="elements-list-data sec">
+                  <div class="">{{ el.hours }} : {{ el.minutes }}</div>
+                </ion-col>
+                <ion-col class="elements-list-data sec">
+                  <div class="">{{ el.percentComplete != null ? el.percentComplete + '%' : '-' }} </div>
+                </ion-col>
+              </ion-row>
 
-          </ion-grid>
+            </ion-grid>
 
-        </ion-item>
-
-        <ion-item no-lines class="ion-no-padding bottom-border  header-item">
-
-          <ion-grid class="ion-no-padding ion-no-border">
-            <ion-row class="list-header-row">
-              <ion-col class="list-header-col">
-                <div class="main">To Do</div>
-              </ion-col>
-              <ion-col class="list-header-col">
-                <div class="sec">Time</div>
-              </ion-col >
-              <ion-col class=" col list-header-col ">
-                <div class="sec">Percent</div>
-              </ion-col >
-            </ion-row>
-
-          </ion-grid>
-
-        </ion-item>
-
-        <ion-item
-          id="tomake"
-          *ngFor="let el of cosElementsToMake$ | async"
-          (click)="OpenItemDetails( el.id, 'toMake')"
-          class="ion-no-padding bottom-border list-item" 
-          no-lines
-          detail
-        >
-          
-          <ion-grid class="ion-no-padding">
-
-            <ion-row class="elements-list">
-              <ion-col>
-              <div class="elements-list-data">
-                <div class="elements-list-name">{{ el.name }}</div>
-                <div class="elements-list-icons">
-                  <small>
-                  <ion-icon name="image-outline" *ngIf="el.image"></ion-icon>
-                </small>
-                </div>
-              </div>
-              </ion-col>
-              <ion-col class="elements-list-data sec">
-                <div class="">{{ el.time }}</div>
-              </ion-col>
-              <ion-col class="elements-list-data sec">
-                <div class="">{{ el.percentComplete != null ? el.percentComplete + '%' : '-' }} </div>
-              </ion-col>
-            </ion-row>
-
-          </ion-grid>
-
-        </ion-item>
-      </ion-list>
-
+          </ion-item>
+        </ion-list>
+      </div>
       
       
     </div>
