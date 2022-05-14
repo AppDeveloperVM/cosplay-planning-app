@@ -8,6 +8,8 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreCollectio
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { CosElementTomakeModalComponent } from '../main/cosplays/my-cosplays/cosplay-details/cos-element-tomake-modal/cos-element-tomake-modal.component';
+import { Cosplay } from '../models/cosplay.model';
+import { CosplaysService } from './cosplays.service';
 
 
 @Injectable({
@@ -30,43 +32,64 @@ export class CosplayDevelopService {
   get tasks() {
     return this._cosTasks.asObservable();
   }
-
+  cosplay: any;
   //Collections
   elementsToBuyObsv: Observable<CosElementToBuy[]>;
   elementsToDoObsv: Observable<CosElementToDo[]>;
   tasksObsv: Observable<CosTask[]>;
-  private elToBuyCollection: AngularFirestoreCollection<CosElementToBuy>;
-  private elToDoCollection: AngularFirestoreCollection<CosElementToDo>;
-  private tasksCollection: AngularFirestoreCollection<CosTask>;
+  cosplaysCollection: AngularFirestoreCollection<Cosplay>;
+  elToBuyCollection: AngularFirestoreCollection<CosElementToBuy>;
+  elToDoCollection: AngularFirestoreCollection<CosElementToDo>;
+  tasksCollection: AngularFirestoreCollection<CosTask>;
 
   constructor(
-    private readonly afs: AngularFirestore
+    private readonly afs: AngularFirestore,
+    private cosService: CosplaysService
   ) {
-    this.elToBuyCollection = afs.collection<CosElementToBuy>('cosElementsToBuy');
-    this.elToDoCollection = afs.collection<CosElementToDo>('cosElementsToDo');
-    this.tasksCollection = afs.collection<CosTask>('cosTasks');
 
-    this.getElementsToBuy();
-    this.getElementsToDo();
-    this.getTasks();
+    this.cosplaysCollection = afs.collection<Cosplay>('cosplays');
+    this.cosService.getCosplays();
+    if(this.cosplay != undefined){
+
+      //if cosplayId not null
+      
+    }
   }
 
 
-  private getElementsToBuy(): void {
+  public getElementsToBuy(): void {
     this.elementsToBuyObsv = this.elToBuyCollection.snapshotChanges().pipe(
-      map( elements => elements.map( el => el.payload.doc.data() as CosElementToBuy))
+      map( elements => elements.map( el => 
+        {
+          const data = el.payload.doc.data() as CosElementToBuy;
+          const elId = el.payload.doc.id;
+          return { elId, ...data };
+        }
+      ))
     )
   }
 
-  private getElementsToDo(): void {
+  public getElementsToDo(): void {
     this.elementsToDoObsv = this.elToDoCollection.snapshotChanges().pipe(
-      map( elements => elements.map( el => el.payload.doc.data() as CosElementToDo))
+      map( elements => elements.map( el => 
+        {
+          const data = el.payload.doc.data() as CosElementToDo;
+          const elId = el.payload.doc.id;
+          return { elId, ...data };
+        }
+      ))
     )
   }
 
-  private getTasks(): void {
+  public getTasks(): void {
     this.tasksObsv = this.tasksCollection.snapshotChanges().pipe(
-      map( elements => elements.map( el => el.payload.doc.data() as CosTask))
+      map( elements => elements.map( el => 
+        {
+          const data = el.payload.doc.data() as CosTask;
+          const elId = el.payload.doc.id;
+          return { elId, ...data };
+        }
+      ))
     )
   }
 
@@ -91,12 +114,12 @@ export class CosplayDevelopService {
     .valueChanges()
   }
 
-  onSaveElToBuy(element: CosElementToBuy, elementId: string): Promise<void> {
+  onSaveElToBuy(element: CosElementToBuy, cosplayId: string): Promise<void> {
     return new Promise( async (resolve, reject) => {
       try {
-        const id = elementId || this.afs.createId();
+        const id = cosplayId || this.afs.createId();
         const data = {id, ... element};
-        const result = await this.elToBuyCollection.doc(id).collection('cosElementsToBuy').doc().set(data);
+        const result = await this.cosplaysCollection.doc(id).collection('cosElementsToBuy').doc().set(data);
         resolve(result)
       } catch(err) {
         reject(err.message)
@@ -107,7 +130,7 @@ export class CosplayDevelopService {
   onDeleteElementToBuy(elementId: string, cosplayId: string): Promise<void> {
     return new Promise (async (resolve, reject) => {
         try {
-            const result = this.elToBuyCollection.doc(cosplayId).collection('cosElementsToBuy').doc(elementId).delete();
+            const result = this.cosplaysCollection.doc(cosplayId).collection('cosElementsToBuy').doc(elementId).delete();
             resolve(result);
         } catch(err){
             reject(err.message)
@@ -120,7 +143,7 @@ export class CosplayDevelopService {
       try {
         const id = elementId || this.afs.createId();
         const data = {id, ... element};
-        const result = await this.elToDoCollection.doc(id).collection('cosElementsToMake').doc().set(data);
+        const result = await this.cosplaysCollection.doc(id).collection('cosElementsToMake').doc().set(data);
         resolve(result)
       } catch(err) {
         reject(err.message)
@@ -131,7 +154,7 @@ export class CosplayDevelopService {
   onDeleteElementToMake(elementId: string, cosplayId: string): Promise<void> {
     return new Promise (async (resolve, reject) => {
         try {
-            const result = this.elToDoCollection.doc(cosplayId).collection('cosElementsToMake').doc(elementId).delete();
+            const result = this.cosplaysCollection.doc(cosplayId).collection('cosElementsToMake').doc(elementId).delete();
             resolve(result);
         } catch(err){
             reject(err.message)
