@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Elija el tipo de Elemento</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button class="close-button" (click)="onClose()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<div class="inner-content">
+  <div class="main">
+    <div class="action-buttons">
+      <ion-button (click)="goToBuyModal()" color="softblue">
+        Por comprar
+      </ion-button>
+      <ion-button (click)="goToMakeModal()" color="softblue">
+        Por Hacer
+      </ion-button>
+    </div>
+  </div>
+
+</div>
+  
