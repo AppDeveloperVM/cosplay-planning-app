@@ -5,9 +5,8 @@ import { CosTask } from '../models/cosTask.model';
 
 //Firebase 
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreCollectionGroup } from '@angular/fire/compat/firestore';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { CosElementTomakeModalComponent } from '../main/cosplays/my-cosplays/cosplay-details/cos-element-tomake-modal/cos-element-tomake-modal.component';
 import { Cosplay } from '../models/cosplay.model';
 import { CosplaysService } from './cosplays.service';
 
@@ -33,8 +32,9 @@ export class CosplayDevelopService {
     return this._cosTasks.asObservable();
   }
   cosplay: any;
+  cosplayObsv$ = new Subject<Cosplay>();
   //Collections
-  elementsToBuyObsv: Observable<CosElementToBuy[]>;
+  elementsToBuyObsv$: Observable<CosElementToBuy[]>;
   elementsToDoObsv: Observable<CosElementToDo[]>;
   tasksObsv: Observable<CosTask[]>;
   cosplaysCollection: AngularFirestoreCollection<Cosplay>;
@@ -49,18 +49,13 @@ export class CosplayDevelopService {
 
     this.cosplaysCollection = afs.collection<Cosplay>('cosplays');
     this.cosService.getCosplays();
-    if(this.cosplay != undefined){
-
-      //if cosplayId not null
-      
-    }
   }
 
 
   public getElementsToBuy(): void {
-    this.elementsToBuyObsv = this.elToBuyCollection.snapshotChanges().pipe(
-      map( elements => elements.map( el => 
-        {
+    this.elementsToBuyObsv$ = this.elToBuyCollection.snapshotChanges().pipe(
+      map( elements => elements.map( 
+        el => {
           const data = el.payload.doc.data() as CosElementToBuy;
           const elId = el.payload.doc.id;
           return { elId, ...data };
@@ -138,10 +133,10 @@ export class CosplayDevelopService {
     })
   }
 
-  onSaveElToMake(element: CosElementToDo, elementId: string): Promise<void> {
+  onSaveElToMake(element: CosElementToDo, cosplayId: string): Promise<void> {
     return new Promise( async (resolve, reject) => {
       try {
-        const id = elementId || this.afs.createId();
+        const id = cosplayId || this.afs.createId();
         const data = {id, ... element};
         const result = await this.cosplaysCollection.doc(id).collection('cosElementsToMake').doc().set(data);
         resolve(result)
