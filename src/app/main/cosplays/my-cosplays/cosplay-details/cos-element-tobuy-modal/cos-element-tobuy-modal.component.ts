@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { LoadingController, ModalController } from '@ionic/angular';
 import { log } from 'console';
 import { CosElementToBuy } from 'src/app/models/cosElementToBuy.model';
+import { Cosplay } from 'src/app/models/cosplay.model';
 import { CosplayDevelopService } from 'src/app/services/cosplay-develop.service';
 
 @Component({
@@ -12,6 +13,8 @@ import { CosplayDevelopService } from 'src/app/services/cosplay-develop.service'
   styleUrls: ['./cos-element-tobuy-modal.component.scss'],
 })
 export class CosElementTobuyModalComponent implements OnInit {
+
+  @Input() selectedCosplay: Cosplay;
 
   @Input() title = 'Detalles';
   @Input() name = 'New Item';
@@ -66,12 +69,14 @@ export class CosElementTobuyModalComponent implements OnInit {
     .then(loadingEl => {
       loadingEl.present();
       const elementToBuy = this.form.value;
-      const elementId = this.cosElementToBuy?.id || null;
-      this.cosDevelopService.onSaveElToBuy(elementToBuy, elementId);
-      console.log(elementToBuy);
+      const cosplayId = this.selectedCosplay?.id || null;
+      this.cosDevelopService.onSaveElToBuy(elementToBuy, cosplayId);
+      console.log(cosplayId);
       
       loadingEl.dismiss();
       this.form.reset();
+
+      this.modalCtrl.dismiss();
     });
     
   }
