@@ -1,3 +1,6 @@
+import { CosElementToBuy } from "./cosElementToBuy.model";
+import { CosElementToDo } from "./cosElementToDo.model";
+import { CosTask } from "./cosTask.model";
 import { imagesData } from "./imagesData.model";
 
 export class Cosplay {
@@ -11,6 +14,9 @@ export class Cosplay {
         public funds: number,
         public percentComplete: string,
         public status: boolean,
-        public userId: string
+        public userId: string,
+        public elementsToBuy?: CosElementToBuy,
+        public elementsToMake?: CosElementToDo,
+        public tasks?: CosTask
     ) {}
 }
