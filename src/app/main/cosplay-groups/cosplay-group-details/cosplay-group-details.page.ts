@@ -39,9 +39,8 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
   isMobile: boolean;
 
   //Collections
-  cosGroupMembers: Observable<CosGroupMember[]>;
+  cosGroupMembers$: Observable<CosGroupMember[]>;
   private cosgroupsmembersCollection: AngularFirestoreCollection<CosGroupMember>;
-  cosGroupMembers$;
 
   arreglo1 = [10, 20, 30, 40, 50];
   cosplayGroup: any;
@@ -185,7 +184,7 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
 
   private getcosGroupMembers(): void {
     const ref = this.cosgroupsmembersCollection;
-    this.cosGroupMembers = ref.snapshotChanges().pipe(
+    this.cosGroupMembers$ = ref.snapshotChanges().pipe(
         map( actions => actions.map(
             a => {
               const data = a.payload.doc.data() as CosGroupMember;
@@ -195,7 +194,6 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
            )
         )
     )
-    this.cosGroupMembers$ = this.cosGroupMembers;
   }
 
   async enableEdit(): Promise<void>{
@@ -208,7 +206,7 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
     this.modalCtrl.create({
       component: CosgroupEditModalComponent, 
       componentProps: {
-        ember: this.cosGroupMembers,
+        ember: this.cosGroupMembers$,
         closeButtonText: 'close',
         title: ' Cosplay Group Members'
     } }).then(modalEl => {
