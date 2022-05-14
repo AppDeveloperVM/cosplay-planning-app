@@ -64,6 +64,10 @@
         --backdrop-opacity: var(--ion-backdrop-opacity, 0.4);
         backdrop-filter: blur(6px);
 
+        .close-button {
+            font-size: 20px;
+        }
+
         .inner-content .main {
             padding: 10px;
 
