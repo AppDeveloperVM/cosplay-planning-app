@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoadingController, ModalController } from '@ionic/angular';
 import { CosElementToDo } from 'src/app/models/cosElementToDo.model';
+import { Cosplay } from 'src/app/models/cosplay.model';
 import { CosplayDevelopService } from 'src/app/services/cosplay-develop.service';
 
 @Component({
@@ -11,6 +12,8 @@ import { CosplayDevelopService } from 'src/app/services/cosplay-develop.service'
   styleUrls: ['./cos-element-tomake-modal.component.scss'],
 })
 export class CosElementTomakeModalComponent implements OnInit {
+
+  @Input() selectedCosplay: Cosplay;
 
   form: FormGroup;
   cosElementToMake: CosElementToDo;
@@ -24,7 +27,22 @@ export class CosElementTomakeModalComponent implements OnInit {
 
   ngOnInit() {
     this.form = new FormGroup({
-
+      name: new FormControl('name', {
+        updateOn: 'blur',
+        validators: [Validators.required, Validators.maxLength(180)]
+      }),
+      hours: new FormControl('05', {
+        updateOn: 'blur',
+        validators: [Validators.required, Validators.maxLength(180)]
+      }),
+      minutes: new FormControl('00', {
+        updateOn: 'blur',
+        validators: [Validators.required, Validators.maxLength(180)]
+      }),
+      notes: new FormControl('notes', {
+        updateOn: 'blur',
+        validators: [Validators.required, Validators.maxLength(180)]
+      }),
     });
   }
 
@@ -38,12 +56,14 @@ export class CosElementTomakeModalComponent implements OnInit {
     .then(loadingEl => {
       loadingEl.present();
       const elementToMake = this.form.value;
-      const elementId = this.cosElementToMake?.id || null;
-      this.cosDevelopService.onSaveElToMake(elementToMake,elementId);
+      const cosplayId = this.selectedCosplay?.id || null;
+      this.cosDevelopService.onSaveElToMake(elementToMake, cosplayId);
       console.log(elementToMake);
       
       loadingEl.dismiss();
       this.form.reset();
+
+      this.modalCtrl.dismiss();
     });
   }
 

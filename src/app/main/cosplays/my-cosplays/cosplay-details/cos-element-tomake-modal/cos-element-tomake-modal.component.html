@@ -1,8 +1,10 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>to BUY</ion-title>
+    <ion-title>Por Hacer</ion-title>
     <ion-buttons slot="primary">
-      <ion-button color="p" (click)="onCancel()">{{ closeButtonText }}</ion-button>
+      <ion-button  class="close-button" (click)="onCancel()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -14,7 +16,7 @@
       
       <ion-item class="form-item" lines="full">
         <ion-label position="stacked">Nombre</ion-label>
-        <ion-input type="text" placeholder="..." autofocus="true" required></ion-input>
+        <ion-input type="text" formControlName="name" placeholder="..." autofocus="true" required></ion-input>
       </ion-item>
       <ion-row class="form-item">
         <ion-col>
@@ -23,25 +25,22 @@
         <ion-col >
           <ion-item lines="full"> 
             <ion-label position="stacked">Horas</ion-label>
-            <ion-input type="number" placeholder="00" max-length="2" required></ion-input>
+            <ion-input formControlName="hours" type="number" placeholder="00" max-length="2" required></ion-input>
           </ion-item>
         </ion-col>
         <ion-col>
           <ion-item lines="full"> 
             <ion-label position="stacked">Minutos</ion-label>
-            <ion-input type="number" placeholder="00" max-length="2" required></ion-input>
+            <ion-input formControlName="minutes" type="number" placeholder="00" max-length="2" required></ion-input>
           </ion-item>
         </ion-col>
       </ion-row>
-
-      
+   
         <app-image-picker></app-image-picker>
-       
-        
 
       <ion-item class="form-item" lines="full">
         <ion-label position="stacked">Notas / Detalles</ion-label>
-        <ion-textarea placeholder="Extra info.." autoGrow="false"></ion-textarea>
+        <ion-textarea formControlName="notes" placeholder="Extra info.." autoGrow="false"></ion-textarea>
       </ion-item>
       
     </form>
@@ -57,7 +56,7 @@
     <ion-button color="softblue">
       Edit
     </ion-button>
-    <ion-button color="softblue">
+    <ion-button (click)="onSubmitElement()" color="softblue">
       <ion-icon name="save-outline"></ion-icon>
     </ion-button>
   </div>
