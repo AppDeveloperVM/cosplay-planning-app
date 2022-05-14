@@ -11,6 +11,10 @@ import { CosElementTobuyModalComponent } from './cos-element-tobuy-modal/cos-ele
 import { CosElementTomakeModalComponent } from './cos-element-tomake-modal/cos-element-tomake-modal.component';
 import { CosTaskModalComponent } from './cos-task-modal/cos-task-modal.component';
 import { CosplayDevelopService } from 'src/app/services/cosplay-develop.service';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
+import { CosElementToBuy } from 'src/app/models/cosElementToBuy.model';
+import { CosElementToDo } from 'src/app/models/cosElementToDo.model';
+import { CosTask } from 'src/app/models/cosTask.model';
 
 @Component({
   selector: 'app-cosplay-details',
@@ -21,6 +25,7 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
   //rootPage: any = TabsPage;
   cosElementsToBuy$ = this.cosDevelopService.elementsToBuyObsv;
   cosElementsToMake$ = this.cosDevelopService.elementsToDoObsv;
+  cosTasks$ = this.cosDevelopService.tasksObsv;
 
   cosplay: any;
   cosplayId: string;
@@ -29,6 +34,13 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
   private cosplaySub: Subscription;
   imageUrl : string = '';
   default: string = "elements"; // default segment
+  
+  //Collections
+  private cosplaysCollection: AngularFirestoreCollection<Cosplay>;
+  private elToBuyCollection: AngularFirestoreCollection<CosElementToBuy>;
+  private elToDoCollection: AngularFirestoreCollection<CosElementToDo>;
+  private tasksCollection: AngularFirestoreCollection<CosTask>;
+
 
   //array para los tipos de segment y sus datos
   tasks_segment: string = "tasks"; 
@@ -57,6 +69,7 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
     private alertCtrl: AlertController,
     private modalCtrl: ModalController,
     private loadingCtrl: LoadingController,
+    private readonly afs: AngularFirestore,
     private cosDevelopService: CosplayDevelopService
   ) {
 
@@ -85,6 +98,18 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
               this.imageReady = true;
             })
           }
+
+          if(cosplay!= null){
+            this.cosDevelopService.cosplay = this.cosplay;
+            this.cosDevelopService.elToBuyCollection = this.afs.collection<CosElementToBuy>(`cosplays/${this.cosplay.id}/cosElementsToBuy`);
+            this.cosDevelopService.elToDoCollection = this.afs.collection<CosElementToDo>(`cosplays/${this.cosplay.id}/cosElementsToDo`);
+            this.cosDevelopService.tasksCollection = this.afs.collection<CosTask>(`cosplays/${this.cosplay.id}/cosTasks`);
+            this.cosDevelopService.getElementsToBuy();
+            this.cosDevelopService.getElementsToDo();
+            this.cosDevelopService.getTasks();
+          }
+
+          
           
           this.isLoading = false;
         }, error => {
@@ -106,6 +131,8 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
 
       });
   }
+
+  
 
   getImageByFbUrl(imageName: string, size: number){
     return this.imgService.getStorageImgUrl(imageName,size);
@@ -140,8 +167,7 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
     componentProps: {
       closeButtonText: 'X',
       title: 'title',
-      id,
-      type
+      selectedCosplay: this.cosplay
     }}).then(modalEl => {
       modalEl.present();
     });
