@@ -34,16 +34,16 @@ export class CosElementTobuyModalComponent implements OnInit {
 
   ngOnInit() {
     this.form = new FormGroup({
-      name: new FormControl(null, {
+      name: new FormControl('name', {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
-      image: new FormControl('img'),
+      image: new FormControl(null),
       notes: new FormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
-      stores: new FormControl(null, {
+      stores: new FormControl(['amazon?','amazon?','amazon?','amazon?'], {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
