@@ -15,19 +15,19 @@
       
       <ion-item class="form-item" lines="full">
         <ion-label position="stacked">Nombre</ion-label>
-        <ion-input type="text" placeholder="..." autofocus="true" required></ion-input>
+        <ion-input type="text" formControlName="name" placeholder="..." autofocus="true" required></ion-input>
       </ion-item>
       <ion-row class="form-item">
         <ion-col class="ion-no-padding ">
           <ion-item lines="full">
             <ion-label>¿Alarma?</ion-label>
-            <ion-checkbox></ion-checkbox>
+            <ion-checkbox formControlName="alarm"></ion-checkbox>
           </ion-item>
         </ion-col>
         <ion-col class="ion-no-padding left-space">
           <ion-item lines="full">
             <ion-label disabled position="stacked">Fecha / Hora</ion-label>
-            <ion-datetime first-day-of-week="1"></ion-datetime>
+            <ion-datetime formControlName="date" first-day-of-week="1"></ion-datetime>
           </ion-item>
         </ion-col>
       </ion-row>
@@ -35,7 +35,7 @@
         <ion-col class="ion-no-padding ">
           <ion-item lines="full">
             <ion-label>¿Hecho?</ion-label>
-            <ion-checkbox></ion-checkbox>
+            <ion-checkbox formControlName="done"></ion-checkbox>
           </ion-item>
         </ion-col>
       </ion-row>
