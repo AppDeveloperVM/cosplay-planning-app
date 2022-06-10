@@ -69,7 +69,7 @@
       <ion-title class="ion-text-center title">
         <h3>Elementos del Cosplay</h3>
       </ion-title>
-      <ion-button color="medium" size="medium" (click)="createItem(00,'toBuy')">
+      <ion-button color="medium" size="medium" (click)="createNewItem(00,'toBuy')">
         <ion-icon name="add-outline"></ion-icon>
       </ion-button>
       </ion-item>
@@ -100,7 +100,7 @@
           <ion-item
             id="tobuy"
             *ngFor="let el of cosElementsToBuy$ | async"
-            (click)="OpenItemDetails( el, 'toBuy' )"
+            (click)="openDetails( el.id, 'toBuy' )"
             class="ion-no-padding bottom-border list-item" 
             [ngClass]="el.important == true ? 'important' : 'e'"
             no-lines
@@ -162,7 +162,7 @@
           <ion-item
             id="tomake"
             *ngFor="let el of cosElementsToMake$ | async"
-            (click)="OpenItemDetails( el.id, 'toMake')"
+            (click)="createNewItem( el.id, 'toMake')"
             class="ion-no-padding bottom-border list-item" 
             no-lines
             detail
@@ -199,9 +199,15 @@
     </div>
     <div *ngSwitchCase="'tasks'">
 
+      <ion-item color="transparent" lines="none">
       <ion-title class="ion-text-center">
         <h3>Tareas</h3>
       </ion-title>
+      <ion-button color="medium" size="medium" (click)="createNewTask()">
+        <ion-icon name="add-outline"></ion-icon>
+      </ion-button>
+      </ion-item>
+      
 
         <ion-list class="ion-no-padding" lines="full">
 
@@ -223,7 +229,7 @@
           <ion-item 
             id="todo"
             *ngFor="let task of tasks"
-            (click)="OpenItemDetails( task.id, task.type )"
+            (click)="openDetails( task.id, 'task' )"
             class="ion-no-padding bottom-border list-item" 
             no-lines
             detail

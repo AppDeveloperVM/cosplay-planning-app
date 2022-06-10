@@ -151,7 +151,35 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
     }
   }
 
-  createItem(id : String, type){
+  createNewItem(id : String, type){
+    let comp;
+    if(type == 'toBuy'){
+      comp = CosElementTobuyModalComponent
+    } else if(type == 'toMake'){
+      comp = CosElementTomakeModalComponent
+    } else if(type == 'task'){
+      comp = CosTaskModalComponent
+    }
+
+    comp = CosElementNewModalComponent
+    
+    this.modalCtrl.create({
+    component: comp, 
+    cssClass: 'custom-modal',
+    componentProps: {
+      closeButtonText: 'X',
+      title: 'title',
+      selectedCosplay: this.cosplay
+    }}).then(modalEl => {
+      modalEl.present();
+    });
+  }
+
+  createNewTask(){
+
+  }
+
+  openDetails(elementId: string, type: string){
     let comp;
     if(type == 'toBuy'){
       comp = CosElementTobuyModalComponent
@@ -218,7 +246,6 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
 
     });
   }
-
 
   getElementsToBuy(): void {
     this.cosElementsToBuy$ = this.elToBuyCollection.snapshotChanges().pipe(
