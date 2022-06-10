@@ -15,6 +15,7 @@ import { CosplayDevelopService } from 'src/app/services/cosplay-develop.service'
 export class CosElementTobuyModalComponent implements OnInit {
 
   @Input() selectedCosplay: Cosplay;
+  @Input() item: any;
 
   @Input() title = 'Detalles';
   @Input() name = 'New Item';
@@ -30,11 +31,16 @@ export class CosElementTobuyModalComponent implements OnInit {
     private loadingCtrl: LoadingController,
     private router: Router,
     private cosDevelopService: CosplayDevelopService
-  ) { }
+  ) {
+    
+    
+  }
 
   ngOnInit() {
+    console.log('item: ',this.item);
+
     this.form = new FormGroup({
-      name: new FormControl('name', {
+      name: new FormControl(this.item.name, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
