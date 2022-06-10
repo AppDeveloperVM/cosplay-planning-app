@@ -60,7 +60,11 @@ export class SettingsService {
     }
 
     public setDarkMode(darkMode: boolean) {
-        this.patch({darkMode});
+        if(darkMode){
+            this.patch({theme : 'dark-theme'});
+        }else{
+            this.patch({theme : 'light-theme'});
+        }
         
     }
 

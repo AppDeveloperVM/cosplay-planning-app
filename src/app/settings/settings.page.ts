@@ -81,11 +81,10 @@ export class SettingsPage implements OnInit {
     console.log('-> Triggered update');
     this.settingsObj = new appSettingsConfig(this.privateAccount, this.push_notifs, this.theme, this.darkMode);
     await this.settings.settings$.next(this.settingsObj);
+
     this.dataService.addData('settings', this.settingsObj, true);
     console.log(this.settingsObj);
-    
     //await this.dataService.addData(LOCALDATAKEY, this.settingsObj, true);
-    
   }
 
 
