@@ -151,7 +151,7 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
     }
   }
 
-  OpenItemDetails(id : String, type){
+  createItem(id : String, type){
     let comp;
     if(type == 'toBuy'){
       comp = CosElementTobuyModalComponent
@@ -170,6 +170,29 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
       closeButtonText: 'X',
       title: 'title',
       selectedCosplay: this.cosplay
+    }}).then(modalEl => {
+      modalEl.present();
+    });
+  }
+
+  OpenItemDetails(item, type){
+    let comp;
+    if(type == 'toBuy'){
+      comp = CosElementTobuyModalComponent
+    } else if(type == 'toMake'){
+      comp = CosElementTomakeModalComponent
+    } else if(type == 'task'){
+      comp = CosTaskModalComponent
+    }
+    
+    this.modalCtrl.create({
+    component: comp, 
+    cssClass: 'custom-modal',
+    componentProps: {
+      closeButtonText: 'X',
+      title: 'title',
+      selectedCosplay: this.cosplay,
+      item
     }}).then(modalEl => {
       modalEl.present();
     });

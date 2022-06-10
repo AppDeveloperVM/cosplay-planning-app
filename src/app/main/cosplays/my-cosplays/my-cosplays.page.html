@@ -3,12 +3,6 @@
 
 <ion-content padding>
 
-  <ion-fab vertical="top" horizontal="start" slot="fixed">
-    <ion-fab-button (click)="addData()" color="secondary">
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
-
   <ion-segment (ionChange)="onFilterUpdate($event.detail.value)">
     <ion-segment-button value="all" checked>All Cosplays</ion-segment-button>
     <ion-segment-button value="finished">Finished Cosplays</ion-segment-button>
