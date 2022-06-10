@@ -157,5 +157,28 @@ export class CosplayDevelopService {
     })
   }
 
+  onSaveTask(task: CosTask, cosplayId: string): Promise<void>{
+    return new Promise( async (resolve, reject) => {
+      try {
+        const id = cosplayId || this.afs.createId();
+        const data = {id, ... task};
+        const result = await this.cosplaysCollection.doc(id).collection('tasks').doc().set(data);
+        resolve(result)
+      } catch(err) {
+        reject(err.message)
+      }
+    })
+  }
+
+  onDeleteTask(taskId: string, cosplayId: string): Promise<void> {
+    return new Promise (async (resolve, reject) => {
+        try {
+            const result = this.cosplaysCollection.doc(cosplayId).collection('tasks').doc(taskId).delete();
+            resolve(result);
+        } catch(err){
+            reject(err.message)
+        }
+    })
+  }
 
 }
