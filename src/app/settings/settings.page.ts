@@ -19,24 +19,11 @@ export class SettingsPage implements OnInit {
   
   constructor(private settings: SettingsService, private dataService: DataService) {
     //Orden de datos
-
-    //comprobar si hay datos locales de config 
-    if( this.dataService.checkLocalStorage(LOCALDATAKEY) ){
-      //cargar datos locales
-      this.loadLocalData(LOCALDATAKEY);
-    }else{
-      this.settings._settings$.subscribe(config => {
-        this.privateAccount = config.privateAccount;
-        this.push_notifs = config.push_notifs;
-        this.theme = config.theme;
-        this.darkMode = config.darkMode;
-        console.log(config);
-      });
-    }
     
+    this.loadLocalData(LOCALDATAKEY);
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     
   }
 
@@ -79,7 +66,7 @@ export class SettingsPage implements OnInit {
   async updateSettingsConfig() {
     console.log('-> Triggered update');
     this.settingsObj = new appSettingsConfig(this.privateAccount, this.push_notifs, this.theme, this.darkMode);
-    await this.settings._settings$.next(this.settingsObj);
+    //await this.settings._settings$.next(this.settingsObj);
 
     this.dataService.addData('settings', this.settingsObj, true);
     console.log(this.settingsObj);

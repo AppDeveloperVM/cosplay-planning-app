@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { SettingsService } from './services/settings.service';
 import { Observable } from 'rxjs';
 import { DataService } from './services/data.service';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { threadId } from 'worker_threads';
 
 @Component({
   selector: 'app-root',
@@ -14,11 +16,11 @@ import { DataService } from './services/data.service';
 })
 export class AppComponent {
   navigate: any;
-  selectedTheme: String;
+  selectedTheme: String = this._settings.getActualTheme();
   public darkMode$: Observable<boolean> = this._settings.selectToogleDarkMode();
   public theme$: Observable<string> = this._settings.selectActualTheme();
   //Important observables ( auth - settings )
-  settings$ = this._settings._settings$;
+  settings$ = this._settings.settings;
 
   constructor(
     private platform: Platform,
@@ -29,11 +31,14 @@ export class AppComponent {
   ) {
     this.initializeApp();
 
+    this.dataService.init();
+    this._settings.init();
     //Settings 
-    this._settings._settings$.subscribe(config => {
+    this.settings$.subscribe(config => {
       this.selectedTheme = config.theme;
       console.log('theme : '+ config.theme);
     });
+
 
   }
 

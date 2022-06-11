@@ -32,6 +32,8 @@ export class DataService {
    * method set user data from firebase on localStorage
    */
   checkLocalStorage(item: string){
+    if(!this.storageReady) return false 
+
     if (!this.storage.get(item)) {
       return false;
     } else {
