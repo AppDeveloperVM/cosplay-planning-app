@@ -11,7 +11,7 @@ const LOCALDATAKEY = 'settings';
   styleUrls: ['./settings.page.scss'],
 })
 export class SettingsPage implements OnInit {
-  private privateAccount: boolean;
+  public privateAccount: boolean;
   public push_notifs: boolean;
   public theme: string;
   public darkMode: boolean;
@@ -25,7 +25,7 @@ export class SettingsPage implements OnInit {
       //cargar datos locales
       this.loadLocalData(LOCALDATAKEY);
     }else{
-      this.settings.settings$.subscribe(config => {
+      this.settings._settings$.subscribe(config => {
         this.privateAccount = config.privateAccount;
         this.push_notifs = config.push_notifs;
         this.theme = config.theme;
@@ -58,21 +58,20 @@ export class SettingsPage implements OnInit {
   }
 
   async updateOption(option: string) {
-    
-    
+
       switch(option){
         case 'private_account': 
         this.settings.setPrivateAccount(this.privateAccount);
-          break;
+        break;
         case 'push_notifs': 
         this.settings.setPushNotifs(this.push_notifs);
-          break;
+        break;
         case 'theme': 
         this.settings.setActualTheme(this.theme);
-          break;
+        break;
         case 'darkMode': 
         this.settings.setDarkMode(this.darkMode);
-          break;
+        break;
       }
       await this.updateSettingsConfig();
   }
@@ -80,7 +79,7 @@ export class SettingsPage implements OnInit {
   async updateSettingsConfig() {
     console.log('-> Triggered update');
     this.settingsObj = new appSettingsConfig(this.privateAccount, this.push_notifs, this.theme, this.darkMode);
-    await this.settings.settings$.next(this.settingsObj);
+    await this.settings._settings$.next(this.settingsObj);
 
     this.dataService.addData('settings', this.settingsObj, true);
     console.log(this.settingsObj);

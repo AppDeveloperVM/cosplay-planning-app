@@ -6,28 +6,37 @@ import { DataService } from './data.service';
  
 @Injectable()
 export class SettingsService {
- 
-    settings$ = new BehaviorSubject<appSettingsConfig>({
-        privateAccount: true,
-        push_notifs: false,
-        theme: 'dark-theme',
-        darkMode: true
-    });
 
-    constructor(private dataService : DataService) {
+    public privateAccount: boolean = true;
+    public push_notifs: boolean = false;
+    public theme: string = 'dark-theme';
+    public darkMode: boolean = true;
+    public settingsObj : appSettingsConfig;
+ 
+    settingsConfig : appSettingsConfig = new appSettingsConfig(
+        this.privateAccount,
+        this.push_notifs,
+        this.theme,
+        this.darkMode 
+    )
+    public _settings$ : BehaviorSubject<appSettingsConfig> = new BehaviorSubject<appSettingsConfig>(
+        this.settingsConfig
+    );
+    settings$ : Observable<appSettingsConfig> = this._settings$.asObservable();
+
+    constructor(private dataService : DataService) { }
+
+    public get settings(): Observable<appSettingsConfig> {
+        return this.settings$;
     }
 
-    /*public get settings$(): Observable<appSettingsConfig> {
-        return this.settings$.asObservable();
-    }*/
-
     public get snapshot(): appSettingsConfig {
-        return this.settings$.getValue();
+        return this._settings$.getValue();
     }
 
     //privateAccount
     public selectPrivateAccount(): Observable<boolean> {
-        return this.settings$.pipe(
+        return this._settings$.pipe(
             map(state => state.privateAccount),
             distinctUntilChanged()
         );
@@ -40,7 +49,7 @@ export class SettingsService {
 
     //pushNotifications
     public selectPushNotifs(): Observable<boolean> {
-        return this.settings$.pipe(
+        return this._settings$.pipe(
             map(state => state.push_notifs),
             distinctUntilChanged()
         );
@@ -53,24 +62,19 @@ export class SettingsService {
 
     //dark mode
     public selectToogleDarkMode(): Observable<boolean> {
-        return this.settings$.pipe(
+        return this._settings$.pipe(
             map(state => state.darkMode),
             distinctUntilChanged()
         );
     }
 
     public setDarkMode(darkMode: boolean) {
-        if(darkMode){
-            this.patch({theme : 'dark-theme'});
-        }else{
-            this.patch({theme : 'light-theme'});
-        }
-        
+        this.patch({darkMode});
     }
 
     //actual theme
     public selectActualTheme() : Observable<string> {
-        return this.settings$.pipe(
+        return this._settings$.pipe(
             map(state => state.theme),
             distinctUntilChanged()
         )
@@ -81,7 +85,7 @@ export class SettingsService {
     }
 
     private patch(value: Partial<appSettingsConfig>) {
-        this.settings$.next({...this.settings$.getValue(), ...value});
+        this._settings$.next({...this._settings$.getValue(), ...value});
     }
  
     
