@@ -77,7 +77,6 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-      let cosplayDetailed;
       //check buy lists for header
       //this.toBuyList();
       this.route.paramMap.subscribe(paramMap => {
@@ -151,17 +150,8 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
     }
   }
 
-  createNewItem(id : String, type){
-    let comp;
-    if(type == 'toBuy'){
-      comp = CosElementTobuyModalComponent
-    } else if(type == 'toMake'){
-      comp = CosElementTomakeModalComponent
-    } else if(type == 'task'){
-      comp = CosTaskModalComponent
-    }
-
-    comp = CosElementNewModalComponent
+  createNewItem(){
+    let comp = CosElementNewModalComponent;
     
     this.modalCtrl.create({
     component: comp, 
@@ -176,20 +166,7 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
   }
 
   createNewTask(){
-
-  }
-
-  openDetails(elementId: string, type: string){
-    let comp;
-    if(type == 'toBuy'){
-      comp = CosElementTobuyModalComponent
-    } else if(type == 'toMake'){
-      comp = CosElementTomakeModalComponent
-    } else if(type == 'task'){
-      comp = CosTaskModalComponent
-    }
-
-    comp = CosElementNewModalComponent
+    let comp = CosTaskModalComponent;
     
     this.modalCtrl.create({
     component: comp, 

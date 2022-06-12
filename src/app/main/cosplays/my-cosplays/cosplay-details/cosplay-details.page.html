@@ -100,7 +100,7 @@
           <ion-item
             id="tobuy"
             *ngFor="let el of cosElementsToBuy$ | async"
-            (click)="openDetails( el.id, 'toBuy' )"
+            (click)="OpenItemDetails( el, 'toBuy' )"
             class="ion-no-padding bottom-border list-item" 
             [ngClass]="el.important == true ? 'important' : 'e'"
             no-lines
@@ -162,7 +162,7 @@
           <ion-item
             id="tomake"
             *ngFor="let el of cosElementsToMake$ | async"
-            (click)="createNewItem( el.id, 'toMake')"
+            (click)="OpenItemDetails( el, 'toMake')"
             class="ion-no-padding bottom-border list-item" 
             no-lines
             detail
@@ -229,7 +229,7 @@
           <ion-item 
             id="todo"
             *ngFor="let task of tasks"
-            (click)="openDetails( task.id, 'task' )"
+            (click)="OpenItemDetails( task, 'task' )"
             class="ion-no-padding bottom-border list-item" 
             no-lines
             detail
