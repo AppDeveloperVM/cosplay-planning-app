@@ -17,11 +17,11 @@ export class CosElementTobuyModalComponent implements OnInit {
   @Input() selectedCosplay: Cosplay;
   @Input() item: any;
 
-  @Input() title = 'Detalles';
-  @Input() name = 'New Item';
-  @Input() store = 'Amazon';
-  @Input() cost = '0.00€';
-  @Input() comment = 'Notes...';
+  title;
+  name;
+  store;
+  cost;
+  comment;
 
   form:FormGroup;
   cosElementToBuy: CosElementToBuy;
@@ -32,15 +32,17 @@ export class CosElementTobuyModalComponent implements OnInit {
     private router: Router,
     private cosDevelopService: CosplayDevelopService
   ) {
-    
-    
+    this.title = this.item!= null ? this.item.title : 'Detalles';
+    this.name = this.item!= null ? this.item.name : 'New Item';
+    this.store = this.item!= null ? this.item.store : 'Amazon';
+    this.cost = this.item!= null ? this.item.cost : '0.00€';
+    this.comment = this.item!= null ? this.item.comment : 'Notes...';
   }
 
   ngOnInit() {
-    console.log('item: ',this.item);
 
     this.form = new FormGroup({
-      name: new FormControl(this.item.name, {
+      name: new FormControl(this.name, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
