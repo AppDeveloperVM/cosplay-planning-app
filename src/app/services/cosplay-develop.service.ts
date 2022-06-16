@@ -204,7 +204,7 @@ export class CosplayDevelopService {
       try {
         const id = cosplayId || this.afs.createId();
         const data = {id, ... task};
-        const result = await this.cosplaysCollection.doc(id).collection('tasks').doc().set(data);
+        const result = await this.cosplaysCollection.doc(id).collection('cosTasks').doc().set(data);
         resolve(result)
       } catch(err) {
         reject(err.message)
@@ -215,7 +215,7 @@ export class CosplayDevelopService {
   onDeleteTask(taskId: string, cosplayId: string): Promise<void> {
     return new Promise (async (resolve, reject) => {
         try {
-            const result = this.cosplaysCollection.doc(cosplayId).collection('tasks').doc(taskId).delete();
+            const result = this.cosplaysCollection.doc(cosplayId).collection('cosTasks').doc(taskId).delete();
             resolve(result);
         } catch(err){
             reject(err.message)

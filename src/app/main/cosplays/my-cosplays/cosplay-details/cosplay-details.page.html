@@ -244,7 +244,7 @@
 
           <ion-item 
             id="todo"
-            *ngFor="let task of tasks"
+            *ngFor="let task of cosTasks$ | async"
             (click)="OpenItemDetails( task, 'task' )"
             class="ion-no-padding bottom-border list-item" 
             no-lines

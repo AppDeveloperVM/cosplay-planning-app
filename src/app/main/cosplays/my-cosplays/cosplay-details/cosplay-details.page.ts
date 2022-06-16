@@ -112,6 +112,7 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
             this.tasksCollection = this.afs.collection<CosTask>(`cosplays/${this.cosplay.id}/cosTasks`);
             this.getElementsToBuy();
             this.getElementsToMake();
+            this.getCosTasks();
             //this.cosDevelopService.getElementsToDo();
             //this.cosDevelopService.getTasks();
           }
@@ -265,6 +266,18 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
           const data = el.payload.doc.data() as CosElementToDo;
           const elId = el.payload.doc.id;
           return { elId, ...data };
+        }
+      ))
+    )
+  }
+
+  getCosTasks(): void {
+    this.cosTasks$ = this.tasksCollection.snapshotChanges().pipe(
+      map( tasks => tasks.map(
+        task => {
+          const data = task.payload.doc.data() as CosTask;
+          const taskId = task.payload.doc.id;
+          return { taskId, ...data}
         }
       ))
     )

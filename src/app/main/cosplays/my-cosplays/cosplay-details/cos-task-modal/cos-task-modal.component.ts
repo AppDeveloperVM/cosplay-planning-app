@@ -46,7 +46,7 @@ export class CosTaskModalComponent implements OnInit {
       
   }
 
-  onSubmitElement(){
+  onSubmitTask(){
     if (!this.form.valid) return
 
     this.loadingCtrl
