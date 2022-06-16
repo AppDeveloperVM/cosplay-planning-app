@@ -69,9 +69,14 @@
       <ion-title class="ion-text-center title">
         <h3>Elementos del Cosplay</h3>
       </ion-title>
+      <ion-button
+            size="medium" color="medium" (click)="enableEdit()">
+            <ion-icon name="create-outline"></ion-icon>
+          </ion-button>
       <ion-button color="medium" size="medium" (click)="createNewItem(00,'toBuy')">
         <ion-icon name="add-outline"></ion-icon>
       </ion-button>
+        
       </ion-item>
       <div>
         <ion-list
@@ -123,6 +128,7 @@
                 <ion-col class="elements-list-data sec">
                   <div>{{ el.cost }} €</div>
                 </ion-col>
+                
                 <ion-col class="elements-list-data sec">
                   <div *ngIf="!el.completed" class="red">
                     <ion-icon name="remove" size="large"></ion-icon>
@@ -131,6 +137,11 @@
                     <ion-icon name="checkmark" size="large"></ion-icon>
                   </div>
                 </ion-col>
+                  <ion-button 
+                  [style.visibility]=" (dataService.editMode$ | async) ? 'visible' : 'hidden'"
+                  color="danger" (click)="onDeleteElement(el.elId, 'toBuy');$event.stopPropagation();">
+                    <ion-icon name="close" ></ion-icon>
+                  </ion-button>
               </ion-row>
 
             </ion-grid>
@@ -187,6 +198,11 @@
                 <ion-col class="elements-list-data sec">
                   <div class="">{{ el.percentComplete != null ? el.percentComplete + '%' : '-' }} </div>
                 </ion-col>
+                <ion-button 
+                  [style.visibility]="(dataService.editMode$ | async) ? 'visible' : 'hidden'"
+                  color="danger" (click)="onDeleteElement(el.elId, 'toMake');$event.stopPropagation();">
+                    <ion-icon name="close" ></ion-icon>
+                  </ion-button>
               </ion-row>
 
             </ion-grid>

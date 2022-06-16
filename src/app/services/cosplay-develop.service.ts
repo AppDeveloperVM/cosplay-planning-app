@@ -109,6 +109,48 @@ export class CosplayDevelopService {
     .valueChanges()
   }
 
+  /* private getcosItemsToBuy(): void {
+    const ref = this.cosItemsToBuyCollection;
+    this.cosItemsToBuy$ = ref.snapshotChanges().pipe(
+        map( actions => actions.map(
+            a => {
+              const data = a.payload.doc.data() as Cos;
+              const memberId = a.payload.doc.id;
+              return { memberId, ...data };
+            }
+           )
+        )
+    )
+  }
+
+  private getcosItemsToMake(): void {
+    const ref = this.cosItemsToMakeCollection;
+    this.cosItemsToMake$ = ref.snapshotChanges().pipe(
+        map( actions => actions.map(
+            a => {
+              const data = a.payload.doc.data() as Cos;
+              const memberId = a.payload.doc.id;
+              return { memberId, ...data };
+            }
+           )
+        )
+    )
+  }
+
+  private getcosTasks(): void {
+    const ref = this.cosTasks;
+    this.cosTasks$ = ref.snapshotChanges().pipe(
+        map( actions => actions.map(
+            a => {
+              const data = a.payload.doc.data() as Cos;
+              const memberId = a.payload.doc.id;
+              return { memberId, ...data };
+            }
+           )
+        )
+    )
+  } */
+
   onSaveElToBuy(element: CosElementToBuy, cosplayId: string): Promise<void> {
     return new Promise( async (resolve, reject) => {
       try {

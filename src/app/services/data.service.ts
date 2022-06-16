@@ -3,6 +3,8 @@ import { BehaviorSubject, from, of } from 'rxjs';
 import { Storage } from '@ionic/storage-angular';
 import * as cordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 import { filter, switchMap } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 
 
 const STORAGE_KEY = 'mylist';
@@ -16,7 +18,7 @@ export class DataService {
   _editMode = new BehaviorSubject<boolean>(false)
   editMode$ = this._editMode.asObservable()
 
-  constructor(private storage: Storage) {
+  constructor(private storage: Storage,private router: Router, private route: ActivatedRoute, private alertCtrl: AlertController) {
     this.init();
   }
 
@@ -97,6 +99,23 @@ export class DataService {
 
   async clearAllData(){
     await this.storage.clear();
+  }
+
+  showErrorMessage(message: string, redirectRoute: string = null){
+    this.alertCtrl
+    .create({
+      header: 'An error ocurred!',
+      message,
+      buttons: [{
+        text: 'Okay',
+        handler: () => {
+          if(redirectRoute)
+          this.router.navigate([redirectRoute]);
+        }
+      }]
+    }).then(alertEl => {
+      alertEl.present();
+    });
   }
 
   modeChanged(value) {

@@ -16,6 +16,7 @@ import { CosElementToDo } from 'src/app/models/cosElementToDo.model';
 import { CosTask } from 'src/app/models/cosTask.model';
 import { map } from 'rxjs/operators';
 import { CosElementNewModalComponent } from './cos-element-new-modal/cos-element-new-modal.component';
+import { DataService } from 'src/app/services/data.service';
 
 @Component({
   selector: 'app-cosplay-details',
@@ -32,6 +33,8 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
   cosplayId: string;
   isLoading = false;
   imageReady = false;
+  editMode: boolean;
+  subscription: Subscription;
   private cosplaySub: Subscription;
   imageUrl : string = '';
   default: string = "elements"; // default segment
@@ -65,6 +68,7 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private navCtrl: NavController,
+    private dataService: DataService,
     private cosplaysService: CosplaysService,
     private imgService : UploadImageService,
     private alertCtrl: AlertController,
@@ -77,6 +81,8 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.subscription = this.dataService.editMode$.subscribe(r => this.editMode = r)
+
       //check buy lists for header
       //this.toBuyList();
       this.route.paramMap.subscribe(paramMap => {
@@ -135,6 +141,11 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
 
   getImageByFbUrl(imageName: string, size: number){
     return this.imgService.getStorageImgUrl(imageName,size);
+  }
+
+  async enableEdit(): Promise<void>{
+    this.dataService.modeChanged(!this.editMode);
+    console.log("edit mode:"+this.editMode);
   }
 
   onGoToEdit(cosplayId: string) {
@@ -203,7 +214,7 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
     });
   }
 
-  async onDeleteElement(elementId: string): Promise<void> {
+  async onDeleteElement(elementId: string, elementType: string): Promise<void> {
 
     await this.loadingCtrl
     .create({
@@ -211,8 +222,19 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
     })
     .then(loadingEl => {
       loadingEl.present();
+
+      console.log('el id:'+ elementId);
+      
         try {
-          this.cosDevelopService.onDeleteElementToBuy(this.cosplay.id,elementId);
+          if(elementType == 'toBuy'){
+            this.cosDevelopService.onDeleteElementToBuy(elementId, this.cosplay.id).then((data)=>{ console.log(data)}).catch((error) => { this.dataService.showErrorMessage('No se ha podido eliminar el item'); });;
+          }else if(elementType == 'toMake'){
+            this.cosDevelopService.onDeleteElementToMake(elementId, this.cosplay.id).then((data)=>{ console.log(data)});
+          }else if(elementType == 'task'){
+            this.cosDevelopService.onDeleteTask(elementId, this.cosplay.id).then((data)=>{ console.log(data)});
+          }else{
+            console.error('Tipo de elemento no conocido o erróneo');
+          }
         }catch (err) {
           console.log(err);
         }
