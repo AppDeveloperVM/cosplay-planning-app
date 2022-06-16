@@ -11,10 +11,10 @@ const LOCALDATAKEY = 'settings';
   styleUrls: ['./settings.page.scss'],
 })
 export class SettingsPage implements OnInit {
-  public privateAccount: boolean;
-  public push_notifs: boolean;
-  public theme: string;
-  public darkMode: boolean;
+  public privateAccount: boolean = false;
+  public push_notifs: boolean = true;
+  public theme: string = 'dark-theme';
+  public darkMode: boolean = false;
   public settingsObj : appSettingsConfig;
   
   constructor(private settings: SettingsService, private dataService: DataService) {
@@ -31,15 +31,15 @@ export class SettingsPage implements OnInit {
     console.log('->Load local data');
     
     //await this.dataService.addData('user',`Vic ${Math.floor(Math.random() * 100)}`);
-    this.dataService.getData(key).subscribe(config => {
+    this.dataService.getData(key).subscribe(async config => {
       if(config != null){
         console.log(config);
-        
         this.privateAccount = config['privateAccount'];
         this.push_notifs = config['push_notifs'];
         this.theme = config['theme'];
         this.darkMode = config['darkMode'];
-        
+      } else {
+        await this.updateSettingsConfig();
       }
     });
   }
