@@ -215,7 +215,7 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
     });
   }
 
-  async onDeleteElement(elementId: string, elementType: string): Promise<void> {
+  async onDelete(elementId: string, elementType: string): Promise<void> {
 
     await this.loadingCtrl
     .create({
