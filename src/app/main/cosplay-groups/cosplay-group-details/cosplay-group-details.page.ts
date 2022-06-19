@@ -249,9 +249,11 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
 
   onShowFullMap() {
     this.modalCtrl.create({component: MapModalLeafletComponent, componentProps: {
+      item: this.cosplayGroup,
+      itemType: 'cosGroup',
       center: { lat: this.cosplayGroup.location.lat, lng: this.cosplayGroup.location.lng },
       markers: this.placesData , // array of markers
-      selectable: false,
+      selectable: true,
       closeButtonText: 'close',
       title: this.cosplayGroup.title
     } }).then(modalEl => {
