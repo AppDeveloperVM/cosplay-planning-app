@@ -14,11 +14,12 @@ import { FormBuilder } from '@angular/forms';
   styleUrls: ['./cos-element-tobuy-modal.component.scss'],
 })
 export class CosElementTobuyModalComponent implements OnInit {
+  form:FormGroup;
 
   @Input() selectedCosplay: Cosplay;
   @Input() item: any;
 
-  element:FormGroup;
+  
   cosElementToBuy: CosElementToBuy;
 
   constructor(
@@ -30,15 +31,15 @@ export class CosElementTobuyModalComponent implements OnInit {
   ) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
 
-    this.element = new FormGroup({
+    this.form = new FormGroup({
       name: new FormControl( this.item!= null ? this.item.name : 'New Item', {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
       image: new FormControl(null),
-      notes: new FormControl( this.item!= null ? this.item.title : 'Detalles' , {
+      cost: new FormControl(this.item!= null ? this.item.cost : 0, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
@@ -47,7 +48,7 @@ export class CosElementTobuyModalComponent implements OnInit {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
-      cost: new FormControl(this.item!= null ? this.item.cost : 0, {
+      notes: new FormControl( this.item!= null ? this.item.title : 'Detalles' , {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
@@ -59,9 +60,10 @@ export class CosElementTobuyModalComponent implements OnInit {
     });
   }
   
-  onSubmitElement(){
-    //if (!this.form.valid) return
-    console.log(this.element.value);
+  onSubmit(){
+    console.log(this.form.value);
+    if (!this.form.valid) return
+    
     
 
     /*this.loadingCtrl
@@ -75,7 +77,6 @@ export class CosElementTobuyModalComponent implements OnInit {
       const cosplayId = this.selectedCosplay?.id || null;
       this.cosDevelopService.onSaveElToBuy(elementToBuy, cosplayId);
       */
-      console.log(this.element.value);
       
       //loadingEl.dismiss();
       //this.form.reset();

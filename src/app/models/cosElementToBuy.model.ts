@@ -4,9 +4,9 @@ export interface CosElementToBuy {
     id: string;
     name: string;
     image: string;
-    notes: string;
-    stores: Store;
     cost: number;
+    stores: Store;
+    notes: string;
     important: boolean;
     completed: boolean;
   }
