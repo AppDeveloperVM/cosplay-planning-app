@@ -6,6 +6,7 @@ import { log } from 'console';
 import { CosElementToBuy } from 'src/app/models/cosElementToBuy.model';
 import { Cosplay } from 'src/app/models/cosplay.model';
 import { CosplayDevelopService } from 'src/app/services/cosplay-develop.service';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-cos-element-tobuy-modal',
@@ -24,7 +25,8 @@ export class CosElementTobuyModalComponent implements OnInit {
     private modalCtrl: ModalController,
     private loadingCtrl: LoadingController,
     private router: Router,
-    private cosDevelopService: CosplayDevelopService
+    private cosDevelopService: CosplayDevelopService,
+    private fb: FormBuilder
   ) {
   }
 
@@ -49,8 +51,8 @@ export class CosElementTobuyModalComponent implements OnInit {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
-      important: new FormControl(false),
-      completed: new FormControl(false, {
+      important: new FormControl( false ),
+      completed: new FormControl( false, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
@@ -59,8 +61,10 @@ export class CosElementTobuyModalComponent implements OnInit {
   
   onSubmitElement(){
     //if (!this.form.valid) return
+    console.log(this.element.value);
+    
 
-    this.loadingCtrl
+    /*this.loadingCtrl
     .create({
       message: 'Creating Element ...'
     })
@@ -76,7 +80,7 @@ export class CosElementTobuyModalComponent implements OnInit {
       //loadingEl.dismiss();
       //this.form.reset();
       //this.modalCtrl.dismiss();
-    });
+    //});
     
   }
 

@@ -16,19 +16,19 @@
       
       <ion-item class="form-item" lines="full">
         <ion-label position="stacked">Nombre</ion-label>
-        <ion-input type="text" formControlName="name"></ion-input>
+        <ion-input type="text" formControlName="name" value="{{name}}"></ion-input>
       </ion-item>
       <ion-row class="form-item">
         <ion-col class="ion-no-padding right-space">
           <ion-item lines="full">
             <ion-label position="stacked">Coste</ion-label>
-            <ion-input type="currency" formControlName="cost" placeholder="0 €" required></ion-input>
+            <ion-input type="currency" formControlName="cost" placeholder="0 €" value="{{cost}}" required></ion-input>
           </ion-item>
         </ion-col>
         <ion-col class="ion-no-padding left-space">
           <ion-item lines="full">
             <ion-label>¿Listo?</ion-label>
-            <ion-checkbox formControlName="completed"></ion-checkbox>
+            <ion-checkbox formControlName="completed" checked="completed"></ion-checkbox>
           </ion-item>
         </ion-col>
       </ion-row>
