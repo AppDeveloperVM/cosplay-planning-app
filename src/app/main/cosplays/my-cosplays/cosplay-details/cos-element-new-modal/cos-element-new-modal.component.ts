@@ -22,9 +22,7 @@ export class CosElementNewModalComponent implements OnInit {
   ) {
   }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() { }
 
   goToBuyModal(){
     this.onClose();
@@ -33,12 +31,12 @@ export class CosElementNewModalComponent implements OnInit {
       component: CosElementTobuyModalComponent, 
       cssClass: 'custom-modal',
       componentProps: {
+        selectedCosplay: this.selectedCosplay
       }}).then(modalEl => {
         modalEl.present();
       });
 
   }
-
   goToMakeModal(){
     this.onClose();
 
