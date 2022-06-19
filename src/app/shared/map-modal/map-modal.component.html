@@ -12,6 +12,7 @@
 <ion-content>
   <div class="map" #map></div>
   <div id="map_options" *ngIf="selectable === true">
+    <!--<ion-label *ngIf="clickTriggersNewPlace" class="options_label">Select a Place by clicking on the map</ion-label>-->
     <div *ngIf="!clickTriggersNewPlace">
       <ion-button (click)="addClickListenertoMap()">
         Añadir nuevo lugar
@@ -20,6 +21,6 @@
         Definir ruta
       </ion-button>
     </div>
-      <ion-label *ngIf="clickTriggersNewPlace" class="options_label">Select a Place by clicking on the map</ion-label>
+      
   </div>
 </ion-content>

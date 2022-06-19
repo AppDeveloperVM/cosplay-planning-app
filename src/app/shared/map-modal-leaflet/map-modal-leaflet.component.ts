@@ -38,6 +38,7 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
   markerLayer;
   centerLatLng = [];
 
+  @Input() planning;
   @Input() center ; // initial route point
   @Input() markers = []; // array of markers given
   @Input() selectable; // = true;
@@ -96,9 +97,9 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
    
     
     for (let marker of this.markers) {
-      console.log("marker: "+ marker );
+      console.log("marker: ", marker );
         let markPoint = L.marker( { lat: marker['lat'], lng: marker['lng'] } , markerOptions );
-        markPoint.bindPopup(marker.address.full_address);
+        if(marker.address) markPoint.bindPopup(marker.address.full_address);
         markPoint.addTo(outerThis.map).on('click', this.onMarkerClick);
     }
 
@@ -127,7 +128,8 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
     this.markerLayer = L.layerGroup().addTo(this.map);
     const markerLatLng = { lat: e.latlng.lat, lng:e.latlng.lng };
 
-    let markPoint = L.marker( markerLatLng , outerThis.MarkerOptions );
+    //outerThis.MarkerOptions
+    let markPoint = L.marker( markerLatLng ,  );
     markPoint.bindPopup('Centro de la ciudad')
     markPoint.addTo(this.markerLayer);
     markPoint.openPopup();
@@ -151,7 +153,7 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
   }
 
   onMarkerClick(e){
-    this.map.flyTo(e.latlng);
+    //this.map.flyTo(e.latlng);
   }
 
   async showToast(message: string) {
