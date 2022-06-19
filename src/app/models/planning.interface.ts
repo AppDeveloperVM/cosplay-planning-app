@@ -4,8 +4,8 @@ export  interface PlanningInterface {
     title: string;
     description: string;
     imageUrl: string;
-    places: any;
     location: any;
+    places: any;
     startsAt: Date,
     endsAt: Date,
     userId: string;
