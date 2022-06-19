@@ -190,21 +190,22 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
     const markerLatLng = { lat: e.latlng.lat, lng:e.latlng.lng };
       //outerThis.MarkerOptions
       let markPoint = L.marker( markerLatLng , this.MarkerOptions );
-      markPoint.bindPopup('Centro de la ciudad')
+      var inserted_name = data.name;
+      markPoint.bindPopup(inserted_name)
       markPoint.addTo(this.markerLayer);
       markPoint.openPopup();
 
       // new Marker Object
       const PlaceData = [
         {
-          name : 'Centro de la ciudad',
+          name : data.name,
           state : 'Spain', // se deberia obtener, no hardcodear
           latitude: e.latlng.lat,
           longitude: e.latlng.lng
         }
       ];
 
-      var inserted_name = data.name;
+      
 
       const MarkerData = 
       {
