@@ -13,10 +13,15 @@
   <div id="mapId" style="width: 100%; height: 90%"></div>
   <div *ngIf="selectable" id="map_options">
     <div >
-      <ion-button >
-        Añadir nuevo lugar
+      <ion-button [color]="clickTriggersNewPlace == true ? 'success' : 'primary'" (click)="enableClickListener()">
+        <span *ngIf="clickTriggersNewPlace == true">
+          Añada marcador
+        </span>
+        <span *ngIf="clickTriggersNewPlace == false">
+          Añadir marcador
+        </span>
       </ion-button>
-      <ion-button >
+      <ion-button [hidden]="true" (click)="defineRoute()">
         Definir ruta
       </ion-button>
     </div>
