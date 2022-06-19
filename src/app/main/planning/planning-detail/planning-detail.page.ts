@@ -73,7 +73,7 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
           this.planning = planning;
 
           if(planning!= null){
-            this.placesData.push(this.planning.location);
+            this.placesData = this.planning.places != undefined ? this.planning.places : [] ;
             this.getImageByFbUrl(this.planning.imageUrl,2).then((val)=>{
               this.imageUrl = val;
             })
@@ -119,7 +119,8 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
     console.log(this.placesData[0]);
     this.modalCtrl.create({component: MapModalLeafletComponent, 
       componentProps: {
-        planning: this.planning,
+        item: this.planning,
+        itemType: 'planning',
         center: { lat: this.planning.location.lat, lng: this.planning.location.lng }, //bcn
         //{ lat: this.cosplayGroup.location.lat, lng: this.cosplayGroup.location.lng },
         markers: this.placesData , // array of markers
