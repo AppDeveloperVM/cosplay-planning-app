@@ -5,8 +5,9 @@ import { AlertController, ModalController, NavController, ToastController } from
 import * as Leaflet from 'leaflet';
 import { antPath } from 'leaflet-ant-path';
 import 'leaflet/dist/leaflet.css';
-import * as L from "leaflet";
+//import * as L from "leaflet";
 import * as vector from 'esri-leaflet-vector';
+import 'leaflet-routing-machine';
 import { ApiKey } from '@esri/arcgis-rest-auth';
 import {
   solveRoute,
@@ -16,6 +17,8 @@ import { PlanningService } from 'src/app/services/planning.service';
 import { CosplaysService } from 'src/app/services/cosplays.service';
 import { CosplayGroupService } from 'src/app/services/cosplay-group.service';
 import { LocationService } from 'src/app/services/location.service';
+
+declare var L: any;
 
 @Component({
   selector: 'app-map-modal-leaflet',
@@ -66,6 +69,11 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
     private cosplayGroupService:CosplayGroupService){ }
 
   ngOnInit() {
+    L.Icon.Default.mergeOptions({
+      iconRetinaUrl: '',
+      iconUrl:       'assets/icon/marker-icon.png',
+      shadowUrl:     ''
+    });
   }
   
   ionViewDidEnter() { this.leafletMap(); }
@@ -78,14 +86,14 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
       zoom: 10
     }
 
-    this.map = new L.Map('mapId', mapOptions);
+    this.map = new Leaflet.Map('mapId', mapOptions);
 
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+    Leaflet.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
       attribution: 'edupala.com'
     }).addTo(this.map);
 
     //Custom icon
-    var customIcon = L.icon({
+    var customIcon = Leaflet.icon({
       iconUrl: 'marker-icon.png',
       shadowUrl: 'marker-icon.png',
       iconSize:     [25, 40], // size of the icon
@@ -118,7 +126,7 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
         const popupContent = `<p style='text-align:center;'><b>${name}</b><br/>${address}</p>`
         markerOptions.title = `${name}`;
 
-        let markPoint = L.marker( { lat: marker['lat'], lng: marker['lng'] } , markerOptions );
+        let markPoint = Leaflet.marker( { lat: marker['lat'], lng: marker['lng'] } , markerOptions );
         markPoint.bindPopup(popupContent);
         markPoint.addTo(outerThis.map).on('click', this.onMarkerClick);
     });
@@ -148,7 +156,7 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
     if(this.multiple == false && this.markerLayer != null){
       this.markerLayer.clearLayers();
     }
-    this.markerLayer = L.layerGroup().addTo(this.map);
+    this.markerLayer = Leaflet.layerGroup().addTo(this.map);
     
     const alert = this.alertCtrl.create({
       header: 'New Place',
@@ -189,7 +197,7 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
   newMarker(e,data){
     let markerLatLng = { lat: e.latlng.lat, lng:e.latlng.lng };
     //outerThis.MarkerOptions
-    let markPoint = L.marker( markerLatLng , this.MarkerOptions );
+    let markPoint = Leaflet.marker( markerLatLng , this.MarkerOptions );
     let name = data.name;
     let first = name.substr(0,1).toUpperCase();
     let marker_name = first +  name.substr(1);
@@ -296,6 +304,23 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
 
   defineRoute(){
 
+    this.locationService.setMarkersArray(this.markers);
+    this.locationService.traceRoute().then((data) => {
+      console.log('data returned:',data);
+      
+      if(!data) return;
+      let origin = data.origin;
+      let destination = data.destination;
+      let control = L.Routing.control({
+        waypoints: [
+            L.latLng(origin.lat, origin.lng),
+            L.latLng(destination.lat, destination.lng)
+        ],
+        routeWhileDragging: true,
+        createMarker: function() { return null; },
+      }).addTo(this.map);
+      control.hide();
+    });
   }
 
   createRoute(){
@@ -305,11 +330,11 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
     this.directions.innerHTML = "Click on the map to create a start and end for the route.";
     document.body.appendChild(this.directions);
     // Layer Group for start/end-points
-    this.startLayerGroup = L.layerGroup().addTo(this.map);
-    this.endLayerGroup = L.layerGroup().addTo(this.map);
+    this.startLayerGroup = Leaflet.layerGroup().addTo(this.map);
+    this.endLayerGroup = Leaflet.layerGroup().addTo(this.map);
 
     // Layer Group for route lines
-    this.routeLines = L.layerGroup().addTo(this.map);
+    this.routeLines = Leaflet.layerGroup().addTo(this.map);
     this.currentStep = "start";
   }
 
@@ -332,7 +357,7 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
     .then((response) => {
       // Show the result route on the map.
       this.routeLines.clearLayers();
-      L.geoJSON().addTo(this.routeLines);
+      Leaflet.geoJSON().addTo(this.routeLines);
 
       // Show the result text directions on the map.
       const directionsHTML = response.directions[0].features.map((f) => f.attributes.text).join("<br/>");
