@@ -6,6 +6,11 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx'
 
 import { LocationAccuracy } from '@ionic-native/location-accuracy';
 import { Geolocation } from '@capacitor/core';
+import { Platform } from "@ionic/angular";
+import { AddressData } from "../models/addressData.model";
+import { Observable } from "rxjs";
+import { HttpClient } from "@angular/common/http";
+import { LatLng } from "leaflet";
 
 
 @Injectable({
@@ -13,10 +18,29 @@ import { Geolocation } from '@capacitor/core';
   })
 export class LocationService {
 
-  state: any = { 0 : {center : '', loading: ''}};
-  watchId: CallbackID = '';
+    latlng: any = {lat : null, lng : null};
+    //OpenMapQuest key and url
+    KEY = 'hmAnp6GU6CtArMcnLn38nJS0Sb1orh9Q';
+    reversegeocodeurl = `https://open.mapquestapi.com/nominatim/v1/reverse.php?key=${this.KEY}&format=json&lat=${this.latlng.lat}&lon=${this.latlng.lng}`;
 
-  constructor() { }
+    state: any = { 0 : {center : '', loading: ''}};
+    watchId: CallbackID = '';
+    streetObserv: Observable<any>;
+    streetData: any;
+    staticMapImageUrl;
+
+    addressInfo : AddressData = {
+        full_address: null,
+        road: null,
+        country: null,
+        state: null,
+        postal_code: null
+    }
+
+  constructor(
+    private platform: Platform,
+    private httpClient: HttpClient
+  ) { }
 
   async checkPermissions(): Promise<Boolean>{
     return await new Promise(async (resolve, reject) => {
@@ -155,10 +179,6 @@ export class LocationService {
 
     
   }
-  
-
-  
-
 
   clearWatch() {
     if (this.watchId != null) {
@@ -169,7 +189,50 @@ export class LocationService {
     })
   }
 
-  
+  setLocationCoords(lat: number, lng: number){
+    this.latlng.lat = lat;
+    this.latlng.lng = lng;
+    this.reversegeocodeurl = `https://open.mapquestapi.com/nominatim/v1/reverse.php?key=${this.KEY}&format=json&lat=${this.latlng.lat}&lon=${this.latlng.lng}`;
+  }
 
+  async getAddressInfo() : Promise<void> {
+
+    return new Promise( async (resolve, reject) => {
+        try {
+        let address;
+        
+        this.streetObserv = this.httpClient.get(this.reversegeocodeurl);
+        await this.streetObserv
+        .subscribe(data => {
+            console.log('my data: ', data);
+            this.streetData = data;
+            const road = this.streetData['address']['road'] != undefined ? this.streetData['address']['road'] : null;
+            const county = this.streetData['address']['county'] != undefined ? this.streetData['address']['county'] : null;
+            const state = this.streetData['address']['state'] != undefined ? this.streetData['address']['state'] : null;
+            //save info if not null
+            let fullAddress;
+            let fullAddressNotEmpty = [ road, county, state ].filter(function (val) {return val;}).join(', ');
+            fullAddress = fullAddressNotEmpty
+            console.log("fulladdress: " +fullAddress);
+            //Address Info
+            this.addressInfo.full_address = fullAddress;
+            this.addressInfo.road = road;
+            this.addressInfo.state = state;
+            this.addressInfo.country = county;
+            //const staticMapImageUrl = this.getMapImage(pickedLocation.lat, pickedLocation.lng, 14)
+            address = this.addressInfo;
+            resolve(address);
+        });
+
+        } catch(err) {
+            reject(err.message)
+        }
+    })
+  }
+
+  private getMapImage(lat: number, lng: number, zoom: number) {
+    var KEY = 'hmAnp6GU6CtArMcnLn38nJS0Sb1orh9Q';
+    return `https://open.mapquestapi.com/staticmap/v4/getplacemap?key=${KEY}&location=${lat},${lng}&size=600,400&zoom=9&showicon=red_1-1`;
+  }
 
 }
