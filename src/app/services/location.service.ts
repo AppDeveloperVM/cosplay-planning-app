@@ -28,6 +28,7 @@ export class LocationService {
     streetObserv: Observable<any>;
     streetData: any;
     staticMapImageUrl;
+    markers : any = [];
 
     addressInfo : AddressData = {
         full_address: null,
@@ -233,6 +234,47 @@ export class LocationService {
   private getMapImage(lat: number, lng: number, zoom: number) {
     var KEY = 'hmAnp6GU6CtArMcnLn38nJS0Sb1orh9Q';
     return `https://open.mapquestapi.com/staticmap/v4/getplacemap?key=${KEY}&location=${lat},${lng}&size=600,400&zoom=9&showicon=red_1-1`;
+  }
+
+  setMarkersArray(markers:any){
+    this.markers = markers;
+  }
+
+  async traceRoute() : Promise<any> {
+
+    return new Promise( async (resolve, reject) => {
+    try {
+        var routeInfo : any = { origin : null, waypoints : null, destination : null};
+        var origin = {lat:0,lng:0};
+        var destination = {lat:0,lng:0};
+        var waypoints = [];
+        var waypoints_iteration = 0;
+        var iterations = this.markers;
+
+        this.markers.forEach((element,index) => {
+            if(index == 0){
+            //primer elemento
+                origin.lat = element.lat;
+                origin.lng = element.lng;
+            } else if(index = this.markers.length - 1){
+            //ultimo elemento
+                destination.lat = element.lat;
+                destination.lng = element.lng;
+            } else {
+                waypoints[index] = { location : element, stopover : false};
+            }
+        });
+        console.log('Origin: ', origin);
+        console.log('Waypoints: ', waypoints);
+        console.log('Destination: ', destination);
+        routeInfo.origin = origin;
+        routeInfo.waypoints = waypoints;
+        routeInfo.destination = destination;
+        resolve(routeInfo);
+    } catch(err) {
+        reject(err.message)
+    }})
+
   }
 
 }
