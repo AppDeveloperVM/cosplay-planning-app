@@ -193,9 +193,6 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
     let name = data.name;
     let first = name.substr(0,1).toUpperCase();
     let marker_name = first +  name.substr(1);
-    markPoint.bindPopup(marker_name)
-    markPoint.addTo(this.markerLayer);
-    markPoint.openPopup();
 
     // new Marker Object
     const PlaceData = [
@@ -226,6 +223,16 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
       this.markers.push(MarkerData); 
       this.updateMarkers();
       this.centerLatLng.push(e.latlng);
+
+      const name = marker_name!= undefined ? marker_name : '';
+      const address = address_info.full_address!= undefined ? address_info.full_address : null;
+      const popupContent = `<p style='text-align:center;'><b>${name}</b><br/>${address}</p>`
+        
+
+      markPoint.bindPopup(popupContent);
+      markPoint.addTo(this.markerLayer);
+      markPoint.openPopup();
+
       console.log(this.markers);
       console.log(e.latlng);
 
