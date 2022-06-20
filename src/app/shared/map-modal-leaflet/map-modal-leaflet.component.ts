@@ -15,6 +15,7 @@ import { PlaceDataService } from 'src/app/services/place-data.service';
 import { PlanningService } from 'src/app/services/planning.service';
 import { CosplaysService } from 'src/app/services/cosplays.service';
 import { CosplayGroupService } from 'src/app/services/cosplay-group.service';
+import { LocationService } from 'src/app/services/location.service';
 
 @Component({
   selector: 'app-map-modal-leaflet',
@@ -60,6 +61,7 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
     private toastCtrl: ToastController,
     private alertCtrl: AlertController,
     private placeDataService: PlaceDataService,
+    private locationService: LocationService,
     private planningService:PlanningService,
     private cosplayGroupService:CosplayGroupService){ }
 
@@ -106,16 +108,14 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
     var outerThis = this;
     //add multiple markers
    console.log('markers:',this.markers);
-   
-   
-    
+
    if(this.markers.length > 0){
     this.markers.forEach((value,index)=> {
       var marker = value;
         console.log("marker: ", marker );
         const name = marker.name!= undefined ? marker.name : '';
         const address = marker.address!= undefined ? marker.address.full_address : null;
-        const popupContent = `<p>${address}</p>`
+        const popupContent = `<p style='text-align:center;'><b>${name}</b><br/>${address}</p>`
         markerOptions.title = `${name}`;
 
         let markPoint = L.marker( { lat: marker['lat'], lng: marker['lng'] } , markerOptions );
@@ -187,31 +187,36 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
   }
 
   newMarker(e,data){
-    const markerLatLng = { lat: e.latlng.lat, lng:e.latlng.lng };
-      //outerThis.MarkerOptions
-      let markPoint = L.marker( markerLatLng , this.MarkerOptions );
-      var inserted_name = data.name;
-      markPoint.bindPopup(inserted_name)
-      markPoint.addTo(this.markerLayer);
-      markPoint.openPopup();
+    let markerLatLng = { lat: e.latlng.lat, lng:e.latlng.lng };
+    //outerThis.MarkerOptions
+    let markPoint = L.marker( markerLatLng , this.MarkerOptions );
+    let name = data.name;
+    let first = name.substr(0,1).toUpperCase();
+    let marker_name = first +  name.substr(1);
+    markPoint.bindPopup(marker_name)
+    markPoint.addTo(this.markerLayer);
+    markPoint.openPopup();
 
-      // new Marker Object
-      const PlaceData = [
-        {
-          name : data.name,
-          state : 'Spain', // se deberia obtener, no hardcodear
-          latitude: e.latlng.lat,
-          longitude: e.latlng.lng
-        }
-      ];
+    // new Marker Object
+    const PlaceData = [
+      {
+        name : data.name,
+        state : 'Spain', // se deberia obtener, no hardcodear
+        latitude: e.latlng.lat,
+        longitude: e.latlng.lng
+      }
+    ];
 
-      
-
+    let address_info;
+    this.locationService.setLocationCoords(e.latlng.lat,e.latlng.lng)
+    this.locationService.getAddressInfo().then((data) =>
+    {
+      address_info = data;
       const MarkerData = 
       {
-        name: inserted_name,
+        name: marker_name,
         address : {
-          full_address : inserted_name
+          full_address : address_info.full_address
         },
         state : 'Spain', // se deberia obtener, no hardcodear
         lat: e.latlng.lat,
@@ -226,6 +231,9 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
 
       this.placeDataService.setPlace(MarkerData);
       this.showToast('Lugar añadido!');
+
+    });
+    
   }
 
   onMarkerClick(e){
@@ -277,7 +285,6 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
   enableClickListener(){
     this.clickTriggersNewPlace = !this.clickTriggersNewPlace;
     console.log(this.clickTriggersNewPlace);
-    
   }
 
   defineRoute(){
