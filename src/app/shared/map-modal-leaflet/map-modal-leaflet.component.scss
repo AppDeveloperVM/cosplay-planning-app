@@ -48,3 +48,11 @@
     position: sticky;
     top:100%;
   }
+
+  #mapId > .leaflet-control-container > .leaflet-routing-container {
+    background-color: white!important;
+  }
+
+  .leaflet-control-container .leaflet-routing-container-hide {
+    display: none;
+  }

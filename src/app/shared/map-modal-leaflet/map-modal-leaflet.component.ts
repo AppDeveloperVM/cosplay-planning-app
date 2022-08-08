@@ -56,6 +56,7 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
   MarkerOptions;
   markerLayer;
   centerLatLng = [];
+  routingControl;
 
   
 
@@ -137,6 +138,15 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
       this.map.on('click', this.onMapClick, this);
       //Enable options menu ( buttons )
     }
+
+
+    this.routingControl = L.Routing.control({
+      show: false,
+      routeWhileDragging: false,
+      collapsible : true,
+      router: L.Routing.mapbox('pk.eyJ1Ijoidm1tYXBkZXZlbG9wZXIiLCJhIjoiY2w0bXQ2bzdyMGZzNDNjbnM2YTllaDVlbyJ9.KJMSxBbt482Bs-1ihJZoVg'),
+      createMarker: function() { return null; },
+    }).addTo(this.map);
 
     /*
     this.startCoords = [{'lat': 41.390205, 'long': 2.154007}];
@@ -303,24 +313,25 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
   }
 
   defineRoute(){
-
     this.locationService.setMarkersArray(this.markers);
     this.locationService.traceRoute().then((data) => {
       console.log('data returned:',data);
       
+      
       if(!data) return;
       let origin = data.origin;
       let destination = data.destination;
-      let control = L.Routing.control({
-        waypoints: [
-            L.latLng(origin.lat, origin.lng),
-            L.latLng(destination.lat, destination.lng)
-        ],
-        routeWhileDragging: true,
-        createMarker: function() { return null; },
-      }).addTo(this.map);
-      control.hide();
+
+      this.routingControl.setWaypoints(
+        [
+          L.latLng(origin.lat, origin.lng),
+          L.latLng(destination.lat, destination.lng)
+        ]
+      )
+
+      
     });
+
   }
 
   createRoute(){
