@@ -215,7 +215,7 @@
       
     </div>
     <div *ngSwitchCase="'tasks'">
-
+      
       <ion-item color="transparent" lines="none">
       <ion-title class="ion-text-center">
         <h3>Tareas</h3>
@@ -237,7 +237,7 @@
 
               <ion-row class="list-header-row">
                 <ion-col class="list-header-col">
-                  <div class="main">To Buy</div>
+                  <div class="main">Tasks</div>
                 </ion-col>
                 <ion-col class="list-header-col">
                   <div class="sec">Status</div>
@@ -246,7 +246,7 @@
 
             </ion-grid>
           </ion-item>
-
+          <!-- Tasks -->
           <ion-item 
             id="todo"
             *ngFor="let task of cosTasks$ | async"
@@ -264,9 +264,12 @@
                     <div class="">{{ task.name }}</div>
                   </div>
                 </ion-col>
-                <ion-col>
-                  <div class="elements-list-data sec">
-                    -
+                <ion-col class="elements-list-data sec">
+                  <div *ngIf="!task.done" class="red">
+                    <ion-icon name="remove" size="large"></ion-icon>
+                  </div>
+                  <div *ngIf="task.done"  class="green">
+                    <ion-icon name="checkmark" size="large"></ion-icon>
                   </div>
                 </ion-col>
                 <ion-button 
