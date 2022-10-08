@@ -13,6 +13,7 @@ import { CosplayDevelopService } from 'src/app/services/cosplay-develop.service'
 })
 export class CosTaskModalComponent implements OnInit {
   @Input() selectedCosplay: Cosplay;
+  @Input() item;
 
   form: FormGroup;
   task: CosTask;
@@ -23,28 +24,28 @@ export class CosTaskModalComponent implements OnInit {
     private router: Router,
     private cosDevelopService: CosplayDevelopService
   ) {
+    
+  }
+
+  ngOnInit() {
     this.form = new FormGroup({
-      name: new FormControl('-', {
+      name: new FormControl( this.item?.name ? this.item?.name : '-' , {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
-      alarm: new FormControl(false, {
+      alarm: new FormControl( this.item?.alarm ? this.item?.alarm : false, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
-      date: new FormControl(new Date() , {
+      date: new FormControl( this.item?.date ? this.item?.date : new Date() , {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
-      done: new FormControl(false, {
+      done: new FormControl( this.item?.done ? this.item?.done : false , {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
     });
-  }
-
-  ngOnInit() {
-    
       
   }
 
