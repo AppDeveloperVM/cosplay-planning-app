@@ -9,6 +9,8 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { CosplayGroupSendRequestComponent } from './main/cosplay-groups/cosplay-group-send-request/cosplay-group-send-request.component';
+import { CosElementTobuyModalComponent } from './main/cosplays/my-cosplays/cosplay-details/cos-element-tobuy-modal/cos-element-tobuy-modal.component';
+import { CosElementTomakeModalComponent } from './main/cosplays/my-cosplays/cosplay-details/cos-element-tomake-modal/cos-element-tomake-modal.component';
 import { ComponentsModule } from './components/components.module';
 import { PopinfoComponent } from './components/popinfo/popinfo.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -34,6 +36,8 @@ import * as cordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
   declarations: [
     AppComponent, 
     CosplayGroupSendRequestComponent,
+    CosElementTobuyModalComponent,
+    CosElementTomakeModalComponent,
     MapModalLeafletComponent,
   ],
   entryComponents: [CosplayGroupSendRequestComponent,PopinfoComponent],
