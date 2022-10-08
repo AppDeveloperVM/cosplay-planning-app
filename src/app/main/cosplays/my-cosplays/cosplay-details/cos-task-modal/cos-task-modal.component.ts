@@ -22,11 +22,9 @@ export class CosTaskModalComponent implements OnInit {
     private loadingCtrl: LoadingController,
     private router: Router,
     private cosDevelopService: CosplayDevelopService
-  ) { }
-
-  ngOnInit() {
+  ) {
     this.form = new FormGroup({
-      name: new FormControl('tarea', {
+      name: new FormControl('-', {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
@@ -43,6 +41,10 @@ export class CosTaskModalComponent implements OnInit {
         validators: [Validators.required, Validators.maxLength(180)]
       }),
     });
+  }
+
+  ngOnInit() {
+    
       
   }
 
