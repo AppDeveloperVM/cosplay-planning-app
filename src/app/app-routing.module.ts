@@ -46,7 +46,11 @@ const routes: Routes = [
   {
     path: '**',
     redirectTo: 'main'
+  },  {
+    path: 'splash',
+    loadChildren: () => import('./splash/splash.module').then( m => m.SplashPageModule)
   }
+
 
 
 ];
