@@ -162,19 +162,20 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
     }
   }
 
-  createNewItem(){
+  async createNewItem(){
     let comp = CosElementNewModalComponent;
     
-    this.modalCtrl.create({
+    const modal = await this.modalCtrl.create({
     component: comp, 
     cssClass: 'custom-modal',
     componentProps: {
       closeButtonText: 'X',
       title: 'title',
       selectedCosplay: this.cosplay
-    }}).then(modalEl => {
-      modalEl.present();
-    });
+    }});
+
+    await modal.present();
+
   }
 
   createNewTask(){
