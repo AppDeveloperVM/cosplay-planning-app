@@ -6,9 +6,11 @@
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-title text-center>{{ isLoading ? 'Loading...' : '' }}</ion-title>
+      <!--
       <ion-button >
         <ion-icon #favIcon name="heart"></ion-icon>
       </ion-button>
+      --> 
       <ion-button *ngIf="!isLoading" color="primary"  
         (click)="onGoToEdit(cosplayGroup.id)"
       >
