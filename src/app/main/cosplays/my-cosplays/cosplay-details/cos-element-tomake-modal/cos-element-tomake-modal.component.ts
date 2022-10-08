@@ -27,15 +27,15 @@ export class CosElementTomakeModalComponent implements OnInit {
     public fb: FormBuilder
   ) {
     this.form =  this.fb.group({
-      name: new FormControl('name', {
+      name: new FormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
-      hours: new FormControl('05', {
+      hours: new FormControl('00', {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
-      minutes: new FormControl('00', {
+      minutes: new FormControl('01', {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),

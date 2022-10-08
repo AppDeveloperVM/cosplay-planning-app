@@ -16,8 +16,12 @@ import { FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveF
 })
 export class CosElementTobuyModalComponent implements OnInit {
   @Input() selectedCosplay: Cosplay;
+  @Input() item;
   cosElementToBuy: CosElementToBuy;
   element:FormGroup;
+
+  name = null;
+  image = null;
 
   constructor(
     private modalCtrl: ModalController,
@@ -26,35 +30,35 @@ export class CosElementTobuyModalComponent implements OnInit {
     private cosDevelopService: CosplayDevelopService,
     public fb: FormBuilder
   ) {
+ 
+  }
+
+  ngOnInit(): void {
+    console.log(this.item);
     this.element = this.fb.group({
-      name: new FormControl( null, {
+      name: new FormControl( this.item?.name , {
         validators: [Validators.required, Validators.maxLength(180)]
       }),
-      image: new FormControl(null),
-      cost: new FormControl(0, {
+      image: new FormControl( this.item?.image ? this.item?.image : null ),
+      cost: new FormControl( this.item?.cost ? this.item?.cost : null, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
-      stores: new FormControl('Amazon', 
+      stores: new FormControl( this.item?.stores ? this.item?.stores : 'Amazon', 
       {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
-      notes: new FormControl('Detalles' , {
+      notes: new FormControl( this.item?.notes ? this.item?.notes : null , {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
-      important: new FormControl( false ),
-      completed: new FormControl( false, {
+      important: new FormControl( this.item?.important ? this.item?.important :false ),
+      completed: new FormControl( this.item?.completed ? this.item?.completed : false , {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
     });
-  }
-
-  ngOnInit(): void {
-
-    
   }
   
   onSubmit(){
