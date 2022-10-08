@@ -193,7 +193,7 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
     });
   }
 
-  OpenItemDetails(item, type){
+  OpenItemDetails(item, type, itemID = null){
     let comp;
     if(type == 'toBuy'){
       comp = CosElementTobuyModalComponent
@@ -210,7 +210,8 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
       closeButtonText: 'X',
       title: 'title',
       selectedCosplay: this.cosplay,
-      item
+      item,
+      itemID
     }}).then(modalEl => {
       modalEl.present();
     });
