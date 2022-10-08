@@ -15,6 +15,8 @@ import { FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveF
 export class CosElementTomakeModalComponent implements OnInit {
 
   @Input() selectedCosplay: Cosplay;
+  @Input() item;
+  @Input() itemID;
 
   form: FormGroup;
   cosElementToMake: CosElementToDo;
@@ -26,28 +28,29 @@ export class CosElementTomakeModalComponent implements OnInit {
     private cosDevelopService: CosplayDevelopService,
     public fb: FormBuilder
   ) {
-    this.form =  this.fb.group({
-      name: new FormControl(null, {
-        updateOn: 'blur',
-        validators: [Validators.required, Validators.maxLength(180)]
-      }),
-      hours: new FormControl('00', {
-        updateOn: 'blur',
-        validators: [Validators.required, Validators.maxLength(180)]
-      }),
-      minutes: new FormControl('01', {
-        updateOn: 'blur',
-        validators: [Validators.required, Validators.maxLength(180)]
-      }),
-      notes: new FormControl('notes', {
-        updateOn: 'blur',
-        validators: [Validators.required, Validators.maxLength(180)]
-      }),
-    });
+    
   }
 
   ngOnInit() {
-    
+    this.form =  this.fb.group({
+      name: new FormControl( this.item?.name ? this.item?.name : null, {
+        updateOn: 'blur',
+        validators: [Validators.required, Validators.maxLength(180)]
+      }),
+      hours: new FormControl( this.item?.hours ? this.item?.hours : '00' , {
+        updateOn: 'blur',
+        validators: [Validators.required, Validators.maxLength(180)]
+      }),
+      minutes: new FormControl( this.item?.minutes ? this.item?.minutes : '01' , {
+        updateOn: 'blur',
+        validators: [Validators.required, Validators.maxLength(180)]
+      }),
+      notes: new FormControl(this.item?.notes ? this.item?.notes : 'notes', {
+        updateOn: 'blur',
+        validators: [Validators.required, Validators.maxLength(180)]
+      }),
+      elementID: new FormControl( this.itemID )
+    });
   }
 
   onSubmitElement(){
