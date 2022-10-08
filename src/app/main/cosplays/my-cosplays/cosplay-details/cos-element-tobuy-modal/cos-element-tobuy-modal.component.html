@@ -2,12 +2,14 @@
   <ion-toolbar>
     <ion-title>Por Comprar</ion-title>
     <ion-buttons slot="primary">
-      <ion-button class="close-button" (click)="onCancel()">
+      <ion-button class="close-button" (click)="closeModal()">
         <ion-icon name="close"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
+
 
 <div class="inner-content">
   <div class="main">
@@ -16,9 +18,9 @@
       
       <ion-item class="form-item" lines="full">
         <ion-label position="stacked">Nombre</ion-label>
-        <ion-input type="text" formControlName="name"></ion-input>
+        <ion-input type="text" formControlName="name" ></ion-input>
       </ion-item>
-      <ion-input hidden formControlName="image" ></ion-input>
+      
       <ion-row class="form-item">
         <ion-col class="ion-no-padding right-space">
           <ion-item lines="full">
@@ -26,12 +28,12 @@
             <ion-input type="currency" formControlName="cost" placeholder="0 €" required></ion-input>
           </ion-item>
         </ion-col>
-        <ion-input hidden formControlName="stores" ></ion-input>
+        
         <ion-item class="form-item" lines="full">
           <ion-label position="stacked">Notas</ion-label>
           <ion-textarea formControlName="notes" placeholder="Extra info.." autoGrow="false"></ion-textarea>
         </ion-item>
-        <ion-input hidden formControlName="important" ></ion-input>
+        
         <ion-col class="ion-no-padding left-space">
           <ion-item lines="full">
             <ion-label>¿Listo?</ion-label>
@@ -40,7 +42,11 @@
         </ion-col>
       </ion-row>
 
-    </form>
+      <ion-button color="softblue" (click)="onSubmit()" >
+        <ion-icon name="save-outline"></ion-icon>
+      </ion-button>
+
+      </form>
 
     
   </div>
@@ -58,5 +64,7 @@
     </ion-button>
   </div>
 
+
+
 </div>
-  
+

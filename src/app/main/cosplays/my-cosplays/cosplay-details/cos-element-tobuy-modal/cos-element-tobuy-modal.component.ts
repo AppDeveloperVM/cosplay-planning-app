@@ -1,12 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoadingController, ModalController } from '@ionic/angular';
 import { log } from 'console';
 import { CosElementToBuy } from 'src/app/models/cosElementToBuy.model';
 import { Cosplay } from 'src/app/models/cosplay.model';
 import { CosplayDevelopService } from 'src/app/services/cosplay-develop.service';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+
 
 @Component({
   selector: 'app-cos-element-tobuy-modal',
@@ -14,41 +15,32 @@ import { FormBuilder } from '@angular/forms';
   styleUrls: ['./cos-element-tobuy-modal.component.scss'],
 })
 export class CosElementTobuyModalComponent implements OnInit {
-  form:FormGroup;
-
   @Input() selectedCosplay: Cosplay;
-  @Input() item: any;
-
-  
   cosElementToBuy: CosElementToBuy;
+  element:FormGroup;
 
   constructor(
     private modalCtrl: ModalController,
     private loadingCtrl: LoadingController,
     private router: Router,
     private cosDevelopService: CosplayDevelopService,
-    private fb: FormBuilder
+    public fb: FormBuilder
   ) {
-  }
-
-  ngOnInit(): void {
-
-    this.form = new FormGroup({
-      name: new FormControl( this.item!= null ? this.item.name : 'New Item', {
-        updateOn: 'blur',
+    this.element = this.fb.group({
+      name: new FormControl( null, {
         validators: [Validators.required, Validators.maxLength(180)]
       }),
       image: new FormControl(null),
-      cost: new FormControl(this.item!= null ? this.item.cost : 0, {
+      cost: new FormControl(0, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
-      stores: new FormControl(this.item!= null ? this.item.store : 'Amazon', 
+      stores: new FormControl('Amazon', 
       {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
-      notes: new FormControl( this.item!= null ? this.item.title : 'Detalles' , {
+      notes: new FormControl('Detalles' , {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
@@ -59,34 +51,44 @@ export class CosElementTobuyModalComponent implements OnInit {
       }),
     });
   }
+
+  ngOnInit(): void {
+
+    
+  }
   
   onSubmit(){
-    console.log(this.form.value);
-    if (!this.form.valid) return
-    
-    
+    console.log(this.element.value);
+    if (!this.element.valid) return
 
-    /*this.loadingCtrl
+    this.loadingCtrl
     .create({
       message: 'Creating Element ...'
     })
     .then(loadingEl => {
-      /*
+      
       loadingEl.present();
-      const elementToBuy = this.form.value;
+
+      const elementToBuy = this.element.value;
+      console.log(elementToBuy);
       const cosplayId = this.selectedCosplay?.id || null;
       this.cosDevelopService.onSaveElToBuy(elementToBuy, cosplayId);
-      */
       
-      //loadingEl.dismiss();
-      //this.form.reset();
-      //this.modalCtrl.dismiss();
-    //});
+      setTimeout(() => {
+        loadingEl.dismiss();
+        this.closeModal();
+        this.element.reset();
+      }, 500);
+  
+      
+    });
     
   }
 
-  onCancel() {
-    this.modalCtrl.dismiss();
+  closeModal() {
+    this.modalCtrl.dismiss(
+      //this.element.value,'ee'
+    );
     // cerrar modal
   }
 

@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-title>Por Hacer</ion-title>
     <ion-buttons slot="primary">
-      <ion-button  class="close-button" (click)="onCancel()">
+      <ion-button class="close-button" (click)="onCancel()">
         <ion-icon name="close"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -12,7 +12,7 @@
 <div class="inner-content">
   <div class="main">
 
-    <form >
+    <form [formGroup]="form">
       
       <ion-item class="form-item" lines="full">
         <ion-label position="stacked">Nombre</ion-label>
