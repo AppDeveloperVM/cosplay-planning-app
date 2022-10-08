@@ -14,6 +14,7 @@ import { CosplayDevelopService } from 'src/app/services/cosplay-develop.service'
 export class CosTaskModalComponent implements OnInit {
   @Input() selectedCosplay: Cosplay;
   @Input() item;
+  @Input() itemID;
 
   form: FormGroup;
   task: CosTask;
@@ -45,6 +46,7 @@ export class CosTaskModalComponent implements OnInit {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
+      taskID: new FormControl( this.itemID )
     });
       
   }
