@@ -17,6 +17,7 @@ import { FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveF
 export class CosElementTobuyModalComponent implements OnInit {
   @Input() selectedCosplay: Cosplay;
   @Input() item;
+  @Input() itemID;
   cosElementToBuy: CosElementToBuy;
   element:FormGroup;
 
@@ -58,6 +59,7 @@ export class CosElementTobuyModalComponent implements OnInit {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
+      elementID: new FormControl( this.itemID )
     });
   }
   
