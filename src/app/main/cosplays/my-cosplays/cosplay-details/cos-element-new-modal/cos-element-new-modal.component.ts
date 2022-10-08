@@ -24,17 +24,21 @@ export class CosElementNewModalComponent implements OnInit {
 
   ngOnInit() { }
 
-  goToBuyModal(){
+  async goToBuyModal(){
     this.onClose();
 
-    this.modalCtrl.create({
+    const modal = await this.modalCtrl.create({
       component: CosElementTobuyModalComponent, 
       cssClass: 'custom-modal',
       componentProps: {
         selectedCosplay: this.selectedCosplay
-      }}).then(modalEl => {
-        modalEl.present();
-      });
+    }});
+
+    modal.onDidDismiss().then((data) => {
+      //console.log(data);
+    });
+
+    return await modal.present();
 
   }
   goToMakeModal(){
