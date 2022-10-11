@@ -1,10 +1,10 @@
 .purple-theme {
 
    
-    --ion-background-color: #6149c4;
+    --ion-background-color: rgb(104, 18, 162);
 	--ion-background-color-rgb: 97,73,196;
 
-	--ion-text-color: #bbb9b9;
+	--ion-text-color: #ebe6e6;
 	--ion-text-color-rgb: 0,0,0;
 
 	--ion-color-step-50: #5c45ba;
@@ -31,9 +31,17 @@
 		--background-checked: #745adc;
 		--color-checked: #29282f;
 	}
-	--ion-item-background: #4f3d9f;
+	--ion-item-background: rgb(95,15,147);
 
-    ion-icon {
+	ion-item {
+		--ion-item-background: rgb(104, 18, 162)!important;
+	}
+
+    .item .item-content {
         color: #bfb9b9;
     }
+
+	.header-item {
+		--ion-background-color: rgb(104, 18, 162);
+	}
 }
