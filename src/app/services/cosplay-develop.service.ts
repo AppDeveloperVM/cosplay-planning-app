@@ -111,12 +111,13 @@ export class CosplayDevelopService {
 
 
 
-  onSaveElToBuy(element: CosElementToBuy, cosplayId: string): Promise<void> {
+  onSaveElToBuy(element, cosplayId: string): Promise<void> {
     return new Promise( async (resolve, reject) => {
       try {
         const id = cosplayId || this.afs.createId();
+        const ElID = element.elementID || this.afs.createId();
         const data = {id, ... element};
-        const result = await this.cosplaysCollection.doc(id).collection('cosElementsToBuy').doc().set(data);
+        const result = await this.cosplaysCollection.doc(id).collection('cosElementsToBuy').doc(ElID).set(data);
         resolve(result);
       } catch(err) {
         reject(err.message)
@@ -135,12 +136,13 @@ export class CosplayDevelopService {
     })
   }
 
-  onSaveElToMake(element: CosElementToDo, cosplayId: string): Promise<void> {
+  onSaveElToMake(element, cosplayId: string): Promise<void> {
     return new Promise( async (resolve, reject) => {
       try {
         const id = cosplayId || this.afs.createId();
+        const ElID = element.elementID || this.afs.createId();
         const data = {id, ... element};
-        const result = await this.cosplaysCollection.doc(id).collection('cosElementsToMake').doc().set(data);
+        const result = await this.cosplaysCollection.doc(id).collection('cosElementsToMake').doc(ElID).set(data);
         resolve(result)
       } catch(err) {
         reject(err.message)
@@ -159,12 +161,13 @@ export class CosplayDevelopService {
     })
   }
 
-  onSaveTask(task: CosTask, cosplayId: string): Promise<void>{
+  onSaveTask(task, cosplayId: string): Promise<void>{
     return new Promise( async (resolve, reject) => {
       try {
         const id = cosplayId || this.afs.createId();
+        const taskID = task.taskID || this.afs.createId();
         const data = {id, ... task};
-        const result = await this.cosplaysCollection.doc(id).collection('cosTasks').doc().set(data);
+        const result = await this.cosplaysCollection.doc(id).collection('cosTasks').doc(taskID).set(data);
         resolve(result)
       } catch(err) {
         reject(err.message)
