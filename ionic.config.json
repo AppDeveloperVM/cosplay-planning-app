@@ -1,7 +1,8 @@
 {
   "name": "cosplay-planning-app",
   "integrations": {
-    "capacitor": {}
+    "capacitor": {},
+    "cordova": {}
   },
   "type": "angular"
 }
