@@ -75,7 +75,7 @@ export class DataService {
           }else if(unique == true){
             //await this.clearKey(key);
             storedData = stringified;
-            console.log('storedData: '+storedData);
+            console.log('storedData: ',storedData);
             
           }
 
