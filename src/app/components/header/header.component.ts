@@ -33,37 +33,39 @@ export class HeaderComponent implements OnInit {
     private noticesService: NoticesService,
     private dataService: DataService
   ) {
-    this.noticesService._notices$.subscribe((data)=> {
-      //console.log("notifs next");
-      //console.log(data);
-      this.notifications = data;
+    this.notifications$.subscribe((data)=> {
+      this.notifications.push(data);
+      console.log(this.notifications);
     })
-    this.noticesService.fetchFileData();
+    //this.noticesService.fetchFileData();
+    this.noticesService.loadLocalData('notifs');
+    this.notifications = this.noticesService.getNotices();
   }
 
   ngOnInit() {
-    
 
     this.subscription = this.dataService.editMode$.subscribe(r => this.editMode = r)
   }
 
   async mostrarPop( event ) {
-
     console.log(this.notifications);
+    this.noticesService.addNotificationTest();
 
-    this.checked_notif = true;
+    if(this.notifications.length > 0){
+      this.checked_notif = true;
 
-    const popover = await this.popoverCtrl.create({
-      component: PopinfoComponent,
-        componentProps: { notifications: this.notifications},
-      event,
-      // mode: 'ios',
-      backdropDismiss: true
-    });
-    await popover.present();
+      const popover = await this.popoverCtrl.create({
+        component: PopinfoComponent,
+          componentProps: { notifications: this.notifications},
+        event,
+        // mode: 'ios',
+        backdropDismiss: true
+      });
+      await popover.present();
 
-    const { data } = await popover.onWillDismiss(); // onDidDismiss();
-
+      const { data } = await popover.onWillDismiss(); // onDidDismiss();
+    
+    }
   }
 
   async enableEdit(): Promise<void>{

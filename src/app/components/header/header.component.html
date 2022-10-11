@@ -8,9 +8,9 @@
       <ion-button size="small" shape="round" color="medium" (click)="enableEdit()">
         <ion-icon name="create-outline"></ion-icon>
       </ion-button>
-      <ion-button size="small" shape="round" color="medium" (click)="mostrarPop($event)" *ngIf="notifications$ | async as notifs">
+      <ion-button size="small" shape="round" color="medium" (click)="mostrarPop($event)" *ngIf="notifications$ | async ">
         <ion-icon name="notifications-outline"></ion-icon>
-        <ion-badge color="dark" slot="end" *ngIf="notifs.length > 0">{{notifs.length}}</ion-badge>
+        <ion-badge color="dark" slot="end" *ngIf="notifications.length > 0">{{ notifications.length }}</ion-badge>
         <!--&& checked_notif == false-->
       </ion-button>
       <div *ngIf="routeArray != null">
