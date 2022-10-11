@@ -1,6 +1,18 @@
 # Specifies intentionally untracked files to ignore when using Git
 # http://git-scm.com/docs/gitignore
 
+# Built application files
+/*/build/
+
+# Crashlytics configuations
+com_crashlytics_export_strings.xml
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Signing files
+.signing/
+
 *~
 *.sw[mnpcod]
 .tmp
@@ -33,7 +45,16 @@ npm-debug.log*
 /platforms
 /plugins
 /www
+*.iml
 
+# OS-specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
 
 *.code-workspace
