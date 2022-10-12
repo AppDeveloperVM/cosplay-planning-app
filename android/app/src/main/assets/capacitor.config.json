@@ -1,9 +1,18 @@
 {
   "appId": "com.cosplay_planning.app",
-  "appName": "CosPlanningApp",
+  "appName": "CosPlanning",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",
+  "plugins": {
+    "SplashScreen": {
+        "launchShowDuration": 2000,
+        "launchAutoHide": true,
+        "backgroundColor": "#ffffffff",
+        "androidSplashResourceName": "splash",
+        "androidScaleType": "CENTER_CROP"
+    }
+  },
   "cordova": {},
   "windowsAndroidStudioPath": "D:\\Users\\SpaceRonin\\Program Files\\Android Studio\bin\\studio64.exe"
 }
