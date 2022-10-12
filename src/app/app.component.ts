@@ -46,8 +46,8 @@ export class AppComponent {
     this.platform.ready().then(() => {
       /* if (Capacitor.isPluginAvailable('SplashScreen')) {  
         Plugins.SplashScreen.hide();
-      } */
-      this.router.navigateByUrl('splash');
+      }  */
+      //this.router.navigateByUrl('splash');
     });
     
 
