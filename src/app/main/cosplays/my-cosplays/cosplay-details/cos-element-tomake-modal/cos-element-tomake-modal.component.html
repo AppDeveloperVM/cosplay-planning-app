@@ -12,12 +12,21 @@
 <div class="inner-content">
   <div class="main">
 
-    <form [formGroup]="form">
+    <form [formGroup]="element">
       
       <ion-item class="form-item" lines="full">
         <ion-label position="stacked">Nombre</ion-label>
         <ion-input type="text" formControlName="name" placeholder="..." autofocus="true" required></ion-input>
       </ion-item>
+      <div class="error-container">
+        <ng-container *ngFor="let validation of validations.name">
+          <div class="error-message" *ngIf="element.get('name').hasError(validation.type) && (element.get('name').dirty || element.get('name').touched)">
+            <ion-icon name="information-circle-outline"></ion-icon>
+            <span>{{ validation.message }}</span>
+          </div>
+        </ng-container>
+      </div>
+
       <ion-row class="form-item">
         <ion-col>
           <ion-label>Tiempo: </ion-label>
@@ -27,12 +36,28 @@
             <ion-label position="stacked">Horas</ion-label>
             <ion-input formControlName="hours" type="number" placeholder="00" max-length="2" required></ion-input>
           </ion-item>
+          <div class="error-container">
+            <ng-container *ngFor="let validation of validations.hours">
+              <div class="error-message" *ngIf="element.get('hours').hasError(validation.type) && (element.get('hours').dirty || element.get('hours').touched)">
+                <ion-icon name="information-circle-outline"></ion-icon>
+                <span>{{ validation.message }}</span>
+              </div>
+            </ng-container>
+          </div>
         </ion-col>
         <ion-col>
           <ion-item lines="full"> 
             <ion-label position="stacked">Minutos</ion-label>
             <ion-input formControlName="minutes" type="number" placeholder="00" max-length="2" required></ion-input>
           </ion-item>
+          <div class="error-container">
+            <ng-container *ngFor="let validation of validations.minutes">
+              <div class="error-message" *ngIf="element.get('minutes').hasError(validation.type) && (element.get('minutes').dirty || element.get('minutes').touched)">
+                <ion-icon name="information-circle-outline"></ion-icon>
+                <span>{{ validation.message }}</span>
+              </div>
+            </ng-container>
+          </div>
         </ion-col>
       </ion-row>
    
@@ -42,6 +67,14 @@
         <ion-label position="stacked">Notas / Detalles</ion-label>
         <ion-textarea formControlName="notes" placeholder="Extra info.." autoGrow="false"></ion-textarea>
       </ion-item>
+      <div class="error-container">
+        <ng-container *ngFor="let validation of validations.notes">
+          <div class="error-message" *ngIf="element.get('notes').hasError(validation.type) && (element.get('notes').dirty || element.get('notes').touched)">
+            <ion-icon name="information-circle-outline"></ion-icon>
+            <span>{{ validation.message }}</span>
+          </div>
+        </ng-container>
+      </div>
 
       <ion-input type="hidden" formControlName="elementID"></ion-input>
       
