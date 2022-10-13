@@ -35,6 +35,7 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
   private cosplayGroupSub: Subscription;
   cosplayGroupMembers:any[]=[];
   imageUrl : string = '';
+  imageReady = false;
 
   isMobile: boolean;
 
@@ -91,10 +92,15 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
           this.cosplayGroup = cosGroup;
           
           if(cosGroup!= null){
-
-            this.getImageByFbUrl(this.cosplayGroup.imageUrl,2).then((val)=>{
-              this.imageUrl = val; 
-            })
+            if(this.cosplayGroup.imageUrl != null) {
+              this.getImageByFbUrl(this.cosplayGroup.imageUrl,2).then((val)=>{
+                this.imageUrl = val; 
+                this.imageReady = true;
+              })
+            } else {
+              this.imageUrl = null;
+              this.imageReady = true;
+            }  
 
             this.placesData.push(this.cosplayGroup.location);
             console.log("location: "+ this.cosplayGroup.location);
@@ -102,7 +108,6 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
             this.cosgroupsmembersCollection = this.afs.collection<CosGroupMember>(`cosplay-groups/${this.cosplayGroup.id}/cosMembers`);
             this.getcosGroupMembers();
             
-
           }
           this.isLoading = false;
         }, error => {

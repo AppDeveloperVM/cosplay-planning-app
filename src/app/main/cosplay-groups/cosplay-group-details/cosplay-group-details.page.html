@@ -43,6 +43,16 @@
             </div>
           </div>
           <div>
+            <div>
+              <ion-thumbnail *ngIf="imageUrl != null" class="user-image" >
+                <ion-progress-bar type="indeterminate" *ngIf="!imageReady"></ion-progress-bar>
+                <img src="{{ imageUrl }}" *ngIf="imageReady">
+              </ion-thumbnail>
+              <ion-thumbnail class="thumbnail_icon" *ngIf="imageUrl == null" >
+                <ion-icon class="ion-text-center" name="image" size="large"></ion-icon>
+              </ion-thumbnail>
+            </div>
+
             <div *ngIf="cosplayGroup.location != null">
               <div>
                 <ion-text>
@@ -56,6 +66,9 @@
             <div *ngIf="cosplayGroup.location == null">
               <ion-text><p>No se ha especificado lugar de reunión.</p></ion-text>
             </div>
+          </div>
+          <div *ngIf="cosplayGroup.description != null">
+            <ion-text><p>{{ cosplayGroup.description }}</p></ion-text>
           </div>
         </div>
       </ion-col>
