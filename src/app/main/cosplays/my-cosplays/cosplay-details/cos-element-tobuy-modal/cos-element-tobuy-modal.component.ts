@@ -20,6 +20,7 @@ export class CosElementTobuyModalComponent implements OnInit {
   @Input() itemID;
   cosElementToBuy: CosElementToBuy;
   element:FormGroup;
+  validations = null;
 
   name = null;
   image = null;
@@ -31,6 +32,27 @@ export class CosElementTobuyModalComponent implements OnInit {
     private cosDevelopService: CosplayDevelopService,
     public fb: FormBuilder
   ) {
+
+    this.validations = {
+      'name': [
+        { type: 'required', message: 'Name is required.' },
+        { type: 'minlength', message: 'Name must be at least 5 characters long.' },
+        { type: 'maxlength', message: 'Name cannot be more than 25 characters long.' },
+        { type: 'pattern', message: 'The name must contain only numbers and letters.' },
+      ],
+      'cost': [
+        { type: 'required', message: 'Cost is required.' },
+        { type: 'maxlength', message: 'Cost cannot be more than 5 digits long.' },
+        { type: 'pattern', message: 'The cost must contain only numbers .' },
+      ],
+      'notes': [
+        { type: 'maxlength', message: 'Cost cannot be more than 180 characters long.' },
+      ],
+      'completed': [
+        { type: 'required', message: 'Completed field is required' },
+      ],
+      // other validations
+    };
  
   }
 
@@ -41,23 +63,23 @@ export class CosElementTobuyModalComponent implements OnInit {
         validators: [Validators.required, Validators.maxLength(180)]
       }),
       image: new FormControl( this.item?.image ? this.item?.image : null ),
-      cost: new FormControl( this.item?.cost ? this.item?.cost : null, {
+      cost: new FormControl( this.item?.cost ? this.item?.cost : 0, {
         updateOn: 'blur',
-        validators: [Validators.required, Validators.maxLength(180)]
+        validators: [Validators.maxLength(5), Validators.pattern("^([0-9]*)$")]
       }),
-      stores: new FormControl( this.item?.stores ? this.item?.stores : 'Amazon', 
+      stores: new FormControl( this.item?.stores ? this.item?.stores : '-', 
       {
         updateOn: 'blur',
-        validators: [Validators.required, Validators.maxLength(180)]
+        validators: [Validators.maxLength(180)]
       }),
       notes: new FormControl( this.item?.notes ? this.item?.notes : null , {
         updateOn: 'blur',
-        validators: [Validators.required, Validators.maxLength(180)]
+        validators: [Validators.maxLength(180)]
       }),
       important: new FormControl( this.item?.important ? this.item?.important :false ),
       completed: new FormControl( this.item?.completed ? this.item?.completed : false , {
         updateOn: 'blur',
-        validators: [Validators.required, Validators.maxLength(180)]
+        validators: [Validators.required]
       }),
       elementID: new FormControl( this.itemID )
     });

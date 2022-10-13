@@ -20,25 +20,57 @@
         <ion-label position="stacked">Nombre</ion-label>
         <ion-input type="text" formControlName="name" ></ion-input>
       </ion-item>
+      <div class="error-container">
+        <ng-container *ngFor="let validation of validations.name">
+          <div class="error-message" *ngIf="element.get('name').hasError(validation.type) && (element.get('name').dirty || element.get('name').touched)">
+            <ion-icon name="information-circle-outline"></ion-icon>
+            <span>{{ validation.message }}</span>
+          </div>
+        </ng-container>
+      </div>
       
       <ion-row class="form-item">
         <ion-col class="ion-no-padding right-space">
           <ion-item lines="full">
             <ion-label position="stacked">Coste</ion-label>
-            <ion-input type="currency" formControlName="cost" placeholder="0 €" required></ion-input>
+            <ion-input type="text" formControlName="cost" required></ion-input>
           </ion-item>
+          <div class="error-container">
+            <ng-container *ngFor="let validation of validations.cost">
+              <div class="error-message" *ngIf="element.get('cost').hasError(validation.type) && (element.get('cost').dirty || element.get('cost').touched)">
+                <ion-icon name="information-circle-outline"></ion-icon>
+                <span>{{ validation.message }}</span>
+              </div>
+            </ng-container>
+          </div>
         </ion-col>
         
         <ion-item class="form-item" lines="full">
           <ion-label position="stacked">Notas</ion-label>
           <ion-textarea formControlName="notes" placeholder="Extra info.." autoGrow="false"></ion-textarea>
         </ion-item>
+        <div class="error-container">
+          <ng-container *ngFor="let validation of validations.notes">
+            <div class="error-message" *ngIf="element.get('notes').hasError(validation.type) && (element.get('notes').dirty || element.get('notes').touched)">
+              <ion-icon name="information-circle-outline"></ion-icon>
+              <span>{{ validation.message }}</span>
+            </div>
+          </ng-container>
+        </div>
         
         <ion-col class="ion-no-padding left-space">
           <ion-item lines="full">
             <ion-label>¿Listo?</ion-label>
             <ion-checkbox formControlName="completed" checked="completed"></ion-checkbox>
           </ion-item>
+          <div class="error-container">
+            <ng-container *ngFor="let validation of validations.completed">
+              <div class="error-message" *ngIf="element.get('completed').hasError(validation.type) && (element.get('completed').dirty || element.get('completed').touched)">
+                <ion-icon name="information-circle-outline"></ion-icon>
+                <span>{{ validation.message }}</span>
+              </div>
+            </ng-container>
+          </div>
         </ion-col>
       </ion-row>
       <ion-input type="hidden" formControlName="elementID"></ion-input>
@@ -50,9 +82,6 @@
   
 
   <div class="action-buttons">
-    <ion-button color="softblue">
-      Delete
-    </ion-button>
     <ion-button color="softblue">
       Edit
     </ion-button>
