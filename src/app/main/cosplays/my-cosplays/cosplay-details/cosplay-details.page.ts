@@ -99,10 +99,15 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
         .subscribe(cosplay => {
           this.cosplay = cosplay;
           if(cosplay!= null){
-            this.getImageByFbUrl(this.cosplay.imageUrl,2).then((val)=>{
-              this.imageUrl = val;
+            if(this.cosplay.imageUrl != null) {
+              this.getImageByFbUrl(this.cosplay.imageUrl,2).then((val)=>{
+                this.imageUrl = val;
+                this.imageReady = true;
+              })
+            } else {
+              this.imageUrl = null;
               this.imageReady = true;
-            })
+            }        
           }
 
           if(cosplay!= null){
@@ -116,9 +121,7 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
             //this.cosDevelopService.getElementsToDo();
             //this.cosDevelopService.getTasks();
           }
-
-          
-          
+  
           this.isLoading = false;
         }, error => {
           //Show alert with defined error message

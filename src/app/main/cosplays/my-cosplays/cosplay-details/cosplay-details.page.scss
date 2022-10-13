@@ -81,3 +81,16 @@ ion-item.list-item {
   text-align: left;
 }
 
+.thumbnail_icon {
+  width: auto;
+  height: 140px;
+
+  ion-icon {
+      color: rgba(184, 179, 179, 0.679);
+      width: 130px;
+      height: 130px;
+      display: block;
+      margin: auto;
+    }
+}
+
