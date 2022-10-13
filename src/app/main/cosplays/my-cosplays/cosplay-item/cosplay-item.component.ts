@@ -29,19 +29,24 @@ export class CosplayItemComponent implements OnInit {
   ) { }  
 
   ngOnInit() {
-    
+    let imageName = this.cosplay.imageUrl;
+
+    if(imageName == null){
+      this.imageUrl = null;
+      this.isLoading = false;
+      return false;
+    }
+
+      this.uploadImgService.getStorageImgUrl(imageName,0).then((val)=>{
+        this.imageUrl = val;
+      }).finally(() => {
+        this.isLoading = false;
+      });
  
   }
 
-
   ngAfterViewInit() {
-    let imageName = this.cosplay.imageUrl;
-    
-    this.uploadImgService.getStorageImgUrl(imageName,0).then((val)=>{
-      this.imageUrl = val;
-    }).finally(() => {
-      this.isLoading = false;
-    });
+
   }
 
   onGoToSee(cosplayId: string): void {
