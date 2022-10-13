@@ -22,6 +22,7 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
   isLoading = true;
 
   form: FormGroup;
+  validations = null;
   actualImage = "";
   actualMapImage = "";
   selectedLocationImage: string;
@@ -42,7 +43,29 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
     private uploadService: UploadImageService,
     private imgService : UploadImageService
     ) {
-      console.log("Entrando en edit cosplayGroup");
+      this.validations = {
+        'title': [
+          { type: 'required', message: 'Name is required.' },
+          { type: 'maxlength', message: 'Name cannot be more than 100 characters long.' },
+        ],
+        'series': [
+          { type: 'required', message: 'Series is required.' },
+          { type: 'maxlength', message: 'Cost cannot be more than 180 characters long.' },
+        ],
+        'description': [
+          { type: 'maxlength', message: 'Cost cannot be more than 180 characters long.' },
+        ],
+        'place': [
+          { type: 'maxlength', message: 'Cost cannot be more than 180 characters long.' },
+        ],
+        'dateFrom': [
+          { type: 'required', message: 'Initial Date is required.' },
+        ],
+        'dateTo': [
+          { type: 'required', message: 'Final Date is required.' },
+        ]
+        // other validations
+      };
     }
 
   ngOnInit() {
@@ -106,6 +129,10 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
       series: new FormControl(this.cosplayGroup.series, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
+      }),
+      description: new FormControl(this.cosplayGroup.description, {
+        updateOn: 'blur',
+        validators: [ Validators.maxLength(180) ]
       }),
       place: new FormControl(this.cosplayGroup.place, {
         updateOn: 'blur',
