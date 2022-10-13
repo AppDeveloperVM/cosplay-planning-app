@@ -3,12 +3,11 @@
   routerDirection="forward"
   button
   detail
-  class="cosplay_item"
->
+  class="cosplay_item">
 
   <ion-spinner *ngIf="isLoading == true"></ion-spinner>
   <div *ngIf="isLoading == false">
-    <ion-thumbnail *ngIf="imageUrl != null" slot="start">
+    <ion-thumbnail class="thumbnail_icon" *ngIf="imageUrl != null" slot="start">
       <ion-img [src]="imageUrl"></ion-img>
     </ion-thumbnail>
     <div class="thumbnail_icon" *ngIf="imageUrl == null">

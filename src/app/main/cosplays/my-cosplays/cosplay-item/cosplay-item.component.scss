@@ -1,3 +1,10 @@
+ion-item {
+    margin: 0;
+    --padding-end: 0px;
+    --inner-padding-end: 5px;
+    // here other custom CSS from documentation 
+}
+
 .cosplay_item .header{
     padding: 0 0px 0 0px;
 }
@@ -16,32 +23,50 @@ h1 {
     }
 
     .thumbnail_icon {
-        width: 40px;
-        height: 40px;
-    
+        width: 60px;
+        height: 60px;
+        margin-right: 12px;
+
         ion-icon {
             color: rgb(136, 133, 133);
-          }
+            width: 60px;
+            height: 60px;
+            margin-left: 0px;
+            
+        }
     }
 
     .header {
+
         min-width:120px;
-    
+        border: 1px solid rgb(48, 82, 141);;
+        padding: 0 0px 0 0px;
+        margin: 4px;
+        border-radius: 5px;
+        color: lightgrey;
+
         ion-item {
             --padding-end: 8px;
             --padding-start: 8px;
             --inner-padding-end: 0px;
             border-radius: 5px;
-            // here other custom CSS from documentation
+            // here other custom CSS from documentation  
+        }
+
+        .title h1{
+            max-width:210px!important;
+        }
+
+        
+
+        ion-button {
+            margin-inline-start:4px;
         }
 
         .header-info h2, .header-info p{
             max-width:210px!important;
         }
 
-        ion-button {
-            margin-inline-start:4px;
-        }
 
     }
 
