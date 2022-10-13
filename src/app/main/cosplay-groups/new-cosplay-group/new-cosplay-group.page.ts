@@ -24,6 +24,7 @@ import { AsyncSubject, Observable } from 'rxjs';
 })
 export class NewCosplayGroupPage implements OnInit {
   form: FormGroup;
+  validations = null;
   @Input() selectedCosplayGroup: CosplayGroup;
   @Input() selectedMode: 'select' | 'random';
   //  modes = ['date','datetime','month-year','time-date'];
@@ -52,6 +53,29 @@ export class NewCosplayGroupPage implements OnInit {
     this.minDate = new Date().toISOString();
     this.startDate = new Date().toISOString();
     this.endDate = new Date(new Date(this.startDate).getTime()).toISOString();
+    this.validations = {
+      'title': [
+        { type: 'required', message: 'Name is required.' },
+        { type: 'maxlength', message: 'Name cannot be more than 100 characters long.' },
+      ],
+      'series': [
+        { type: 'required', message: 'Series is required.' },
+        { type: 'maxlength', message: 'Cost cannot be more than 180 characters long.' },
+      ],
+      'description': [
+        { type: 'maxlength', message: 'Cost cannot be more than 180 characters long.' },
+      ],
+      'place': [
+        { type: 'maxlength', message: 'Cost cannot be more than 180 characters long.' },
+      ],
+      'dateFrom': [
+        { type: 'required', message: 'Initial Date is required.' },
+      ],
+      'dateTo': [
+        { type: 'required', message: 'Final Date is required.' },
+      ]
+      // other validations
+    };
   }
 
   ngOnInit() {
@@ -61,7 +85,7 @@ export class NewCosplayGroupPage implements OnInit {
     this.form = new FormGroup({
       title: new FormControl(null, {
         updateOn: 'blur',
-        validators: [Validators.required]
+        validators: [Validators.required, Validators.maxLength(180)]
       }),
       series: new FormControl(null, {
         updateOn: 'blur',
