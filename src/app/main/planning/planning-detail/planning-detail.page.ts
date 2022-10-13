@@ -33,6 +33,7 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
   placesData = [];
   planningId: string;
   imageUrl : string = '';
+  imageReady = false;
 
   isLoading = false;
   private planningSub: Subscription;
@@ -74,9 +75,18 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
 
           if(planning!= null){
             this.placesData = this.planning.places != undefined ? this.planning.places : [] ;
-            this.getImageByFbUrl(this.planning.imageUrl,2).then((val)=>{
-              this.imageUrl = val;
-            })
+            
+            if(this.planning.imageUrl != null) {
+              this.getImageByFbUrl(this.planning.imageUrl,2).then((val)=>{
+                this.imageUrl = val;
+                this.imageReady = true;
+              })
+            } else {
+              this.imageUrl = null;
+              this.imageReady = true;
+            } 
+
+            
           } else {
           console.log("Error loading item - not found");
           this.router.navigate(['/main/tabs/planning']);
