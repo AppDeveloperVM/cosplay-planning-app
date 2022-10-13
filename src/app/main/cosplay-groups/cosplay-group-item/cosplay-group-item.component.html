@@ -1,13 +1,17 @@
-<ion-item (click)="onGoToSee(cosplaygroup.id)"
-button
-detail
-class="cosgroup_item">
+<ion-item 
+  (click)="onGoToSee(cosplaygroup.id)"
+  button
+  detail
+  class="cosgroup_item">
 
-  <ion-thumbnail slot="start" *ngIf="imageUrl != null">
-    <ion-img [src]="imageUrl"></ion-img>
-  </ion-thumbnail>
-  <div class="thumbnail_icon" *ngIf="imageUrl == null">
-    <ion-icon slot="start" name="image" size="large" ></ion-icon>
+  <ion-spinner *ngIf="isLoading == true"></ion-spinner>
+  <div *ngIf="isLoading == false">
+    <ion-thumbnail class="thumbnail_icon" slot="start" *ngIf="imageUrl != null">
+      <ion-img [src]="imageUrl"></ion-img>
+    </ion-thumbnail>
+    <div class="thumbnail_icon" *ngIf="imageUrl == null">
+      <ion-icon slot="start" name="image" size="large" ></ion-icon>
+    </div>
   </div>
   
   <ion-label>

@@ -18,6 +18,7 @@ export class CosplayGroupItemComponent implements OnInit, AfterViewInit {
   public imgSrc: any;
   isMobile: boolean;
   imageUrl: String;
+  isLoading : boolean = true;
 
   navigationExtras: NavigationExtras = {
     state : {
@@ -41,15 +42,25 @@ export class CosplayGroupItemComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     //console.log(this.cosplaygroup);
     this.checkPlatform();
-
     let imageName = this.cosplaygroup.imageUrl;
+
+    if(imageName == null){
+      this.imageUrl = null;
+      this.isLoading = false;
+      return false;
+    }
+
     this.uploadImgService.getStorageImgUrl(imageName,0).then((val)=>{
       this.imageUrl = val;
-    })
+    }).finally(() => {
+      this.isLoading = false;
+    });
 
     this.uploadImgService.getStorageImgUrl(imageName,2).then((val)=>{
       this.cosplaygroup.imageUrl = val;
-    })
+    }).finally(() => {
+      this.isLoading = false;
+    });
   }
 
   checkPlatform() {
