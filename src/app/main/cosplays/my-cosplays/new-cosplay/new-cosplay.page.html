@@ -26,6 +26,14 @@
             <ion-label position="floating">Character Name</ion-label>
             <ion-input type="text" formControlName="characterName"></ion-input>
           </ion-item>
+          <div class="error-container">
+            <ng-container *ngFor="let validation of validations.characterName">
+              <div class="error-message" *ngIf="form.get('characterName').hasError(validation.type) && (form.get('characterName').dirty || form.get('characterName').touched)">
+                <ion-icon name="information-circle-outline"></ion-icon>
+                <span>{{ validation.message }}</span>
+              </div>
+            </ng-container>
+          </div>
         </ion-col>
       </ion-row>
       <ion-row>
@@ -46,6 +54,14 @@
             <ion-label position="floating">Series</ion-label>
             <ion-input type="text" formControlName="series" ></ion-input>
           </ion-item>
+          <div class="error-container">
+            <ng-container *ngFor="let validation of validations.series">
+              <div class="error-message" *ngIf="form.get('series').hasError(validation.type) && (form.get('series').dirty || form.get('series').touched)">
+                <ion-icon name="information-circle-outline"></ion-icon>
+                <span>{{ validation.message }}</span>
+              </div>
+            </ng-container>
+          </div>
         </ion-col>
       </ion-row>
       <ion-row>
@@ -54,6 +70,14 @@
             <ion-label position="floating">Description</ion-label>
             <ion-textarea rows="3" formControlName="description"></ion-textarea>
           </ion-item>
+          <div class="error-container">
+            <ng-container *ngFor="let validation of validations.description">
+              <div class="error-message" *ngIf="form.get('description').hasError(validation.type) && (form.get('description').dirty ||form.get('description').touched)">
+                <ion-icon name="information-circle-outline"></ion-icon>
+                <span>{{ validation.message }}</span>
+              </div>
+            </ng-container>
+          </div>
         </ion-col>
       </ion-row>
       

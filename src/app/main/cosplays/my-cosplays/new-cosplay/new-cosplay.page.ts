@@ -24,6 +24,7 @@ import { Toast } from '@capacitor/core';
 })
 export class NewCosplayPage implements OnInit {
   form: FormGroup;
+  validations = null;
   @ViewChild('createForm', { static: false }) createForm: FormGroupDirective;
 
   cosplay: Cosplay;
@@ -47,14 +48,28 @@ export class NewCosplayPage implements OnInit {
   ) {
     const navigation = this.router.getCurrentNavigation();
     //this.cosGroup = navigation?.extras?.state?.value;
-
+    this.validations = {
+      'characterName': [
+        { type: 'required', message: 'Name is required.' },
+        { type: 'maxlength', message: 'Name cannot be more than 100 characters long.' },
+      ],
+      'series': [
+        { type: 'required', message: 'Series is required.' },
+        { type: 'maxlength', message: 'Cost cannot be more than 180 characters long.' },
+        { type: 'pattern', message: 'The cost must contain only numbers .' },
+      ],
+      'description': [
+        { type: 'maxlength', message: 'Cost cannot be more than 180 characters long.' },
+      ]
+      // other validations
+    };
   }
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      characterName: new FormControl('', Validators.required),
-      series: new FormControl('', Validators.required),
-      description: new FormControl(''),
+      characterName: new FormControl('', { validators: [ Validators.required, Validators.maxLength(100)] } ),
+      series: new FormControl('', { validators: [ Validators.required, Validators.maxLength(180)] } ),
+      description: new FormControl('', { validators: [ Validators.maxLength(180)] } ),
       imageUrl: new FormControl(null)
     });
     
