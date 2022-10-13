@@ -19,6 +19,7 @@ export class EditCosplayPage implements OnInit, OnDestroy {
   private cosplaySub: Subscription;
   isLoading = true;
   form: FormGroup;
+  validations = null;
   actualImage : string = '';
 
   uploadPercent: Observable<number>;
@@ -37,8 +38,21 @@ export class EditCosplayPage implements OnInit, OnDestroy {
     private imgService : UploadImageService,
     private uploadService: UploadImageService
   ) {
-    console.log("Entrando en edit cosplay");
-    
+    this.validations = {
+      'characterName': [
+        { type: 'required', message: 'Name is required.' },
+        { type: 'maxlength', message: 'Name cannot be more than 100 characters long.' },
+      ],
+      'series': [
+        { type: 'required', message: 'Series is required.' },
+        { type: 'maxlength', message: 'Cost cannot be more than 180 characters long.' },
+        { type: 'pattern', message: 'The cost must contain only numbers .' },
+      ],
+      'description': [
+        { type: 'maxlength', message: 'Cost cannot be more than 180 characters long.' },
+      ]
+      // other validations
+    };
   }
 
   ngOnInit() {
