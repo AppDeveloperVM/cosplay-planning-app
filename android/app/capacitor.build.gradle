@@ -13,7 +13,7 @@ dependencies {
     implementation project(':capacitor-toast')
     implementation project(':capacitor-screenshot')
     implementation project(':capacitor-geolocation')
-
+    implementation "androidx.legacy:legacy-support-v4:1.0.0"
 }
 
 
