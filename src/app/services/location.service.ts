@@ -1,11 +1,13 @@
 
-import { CallbackID, Capacitor, Toast } from "@capacitor/core";
+import { Capacitor } from "@capacitor/core";
+import { Toast } from "@capacitor/toast";
 import { Injectable } from '@angular/core';
 
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx'
 
 import { LocationAccuracy } from '@ionic-native/location-accuracy';
-import { Geolocation } from '@capacitor/core';
+import { CallbackID } from '@capacitor/core';
+import { Geolocation } from '@capacitor/geolocation';
 import { Platform } from "@ionic/angular";
 import { AddressData } from "../models/addressData.model";
 import { Observable } from "rxjs";
@@ -160,7 +162,8 @@ export class LocationService {
   watchPosition = async () => {
     try {
         this.state.loading = true;
-         this.watchId = Geolocation.watchPosition({}, (position, err) => {
+        //this.watchId = 
+         Geolocation.watchPosition({}, (position, err) => {
           console.log('watchPosition');
             if (err) {
                 return;

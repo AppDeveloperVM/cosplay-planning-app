@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef, Input } from '@angular/core';
-import { Plugins, Capacitor, CameraSource, CameraResultType } from '@capacitor/core';
+import { Capacitor} from '@capacitor/core';
+import { Camera, CameraSource, CameraResultType } from '@capacitor/camera';
 import { Platform } from '@ionic/angular';
 
 @Component({
@@ -37,7 +38,7 @@ export class ImagePickerComponent implements OnInit {
       this.filePicker.nativeElement.click();
       return;
     }
-    Plugins.Camera.getPhoto({
+    Camera.getPhoto({
       quality: 50,
       source: CameraSource.Prompt, // Prompt : ask for picture from camera or gallery
       correctOrientation: true,

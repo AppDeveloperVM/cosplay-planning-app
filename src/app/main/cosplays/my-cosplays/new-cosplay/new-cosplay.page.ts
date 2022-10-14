@@ -14,7 +14,7 @@ import { finalize } from 'rxjs/operators';
 import { map } from 'leaflet';
 import imageCompression from 'browser-image-compression';
 import { UploadImageService } from 'src/app/services/upload-img.service';
-import { Toast } from '@capacitor/core';
+import { Toast } from '@capacitor/toast';
 
 
 @Component({
