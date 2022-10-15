@@ -5,7 +5,6 @@ import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { SocialSharing } from '@awesome-cordova-plugins/social-sharing/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -60,14 +59,14 @@ import * as cordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
       name: "cosappdb",
       driverOrder: [cordovaSQLiteDriver._driver,Drivers.IndexedDB, Drivers.LocalStorage]
     })
+
   ],
   providers: [
     StatusBar,
     SplashScreen,
     AngularFirestoreModule,
     SettingsService,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    SocialSharing
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
     //{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
