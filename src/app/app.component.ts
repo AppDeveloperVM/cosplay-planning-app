@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { Plugins, Capacitor } from '@capacitor/core';
-import { AuthService } from './services/auth.service';
 import { Router } from '@angular/router';
 import { SettingsService } from './services/settings.service';
 import { Observable } from 'rxjs';
@@ -24,7 +23,6 @@ export class AppComponent {
 
   constructor(
     private platform: Platform,
-    private authService: AuthService,
     private dataService: DataService,
     private router: Router,
     public _settings: SettingsService
@@ -62,10 +60,5 @@ export class AppComponent {
     this._settings.setActualTheme(theme);
   }
 
-
-  onLogout() {
-    this.authService.logout();
-    this.router.navigateByUrl('/login');
-  }
 
 }
