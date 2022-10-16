@@ -5,19 +5,29 @@ import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import {
   AngularFirestore,
+  AngularFirestoreCollection,
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root',
 })
 export class AuthenticationService {
   userData: any;
+  //Collections
+  usersObsv: Observable<User[]>;
+  private usersCollection: AngularFirestoreCollection<User>;
+
   constructor(
     public afStore: AngularFirestore,
     public ngFireAuth: AngularFireAuth,
     public router: Router,
     public ngZone: NgZone
   ) {
+    this.usersCollection = afStore.collection<User>('users');
+
+
     this.ngFireAuth.authState.subscribe((user) => {
       if (user) {
         this.userData = user;
@@ -27,14 +37,47 @@ export class AuthenticationService {
         localStorage.setItem('user', null);
         JSON.parse(localStorage.getItem('user'));
       }
+      console.log('user:',user);
     });
   }
+
+  getUsers(): void {
+    this.usersObsv = this.usersCollection.snapshotChanges().pipe(
+        map( actions => actions.map( a => a.payload.doc.data() as User))
+    )
+  }
+
+  getUserByUID(uid: string) {
+    this.afStore
+    .collection('users')
+    .doc(uid).get().subscribe(data => {
+      console.log('data : '+ data);
+      this.userData = data;
+    });
+
+    return this.userData;
+  }
+
   // Login in with email/password
   SignIn(email, password) {
     return this.ngFireAuth.signInWithEmailAndPassword(email, password);
   }
   // Register user with email/password
   RegisterUser(email, password) {
+
+    const user = {
+      uid : email,
+      email: email,
+      displayName: email,
+      photoURL : null,
+      emailVerified : false
+    };
+    this.SetUserData(user).then( () => {
+      console.log('User succesfully registered in Firebase');
+    }).catch((error) => {
+      window.alert(error.message)
+    })
+
     return this.ngFireAuth.createUserWithEmailAndPassword(email, password);
   }
   // Email verification when new user register
@@ -61,14 +104,31 @@ export class AuthenticationService {
   // Returns true when user is looged in
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user'));
-    return user !== null && user.emailVerified !== false ? true : false;
+    return user !== null  ? true : false;
+    //&& user.emailVerified !== false
   }
   // Returns true when user's email is verified
-  get isEmailVerified(): boolean {
-    const user = JSON.parse(localStorage.getItem('user'));
-    console.log('userData: ',user);
+  //get
+  isEmailVerified(uid): boolean {
+    // Se debe chequear si está verified en FIREBASE
+    //const user = JSON.parse(localStorage.getItem('user'));
+    const user = this.getUserByUID(uid);
+    console.log('userData: ', user);
     return user.emailVerified !== false ? true : false;
   }
+
+  CheckIfUserHasEmailVerified(){
+   /*  getAuth()
+    .getUser(uid)
+    .then((userRecord) => {
+      // See the UserRecord reference doc for the contents of userRecord.
+      console.log(`Successfully fetched user data: ${userRecord.toJSON()}`);
+    })
+    .catch((error) => {
+      console.log('Error fetching user data:', error);
+    }); */
+  }
+
   // Sign in with Gmail
   GoogleAuth() {
     return this.AuthLogin(new auth.GoogleAuthProvider());
