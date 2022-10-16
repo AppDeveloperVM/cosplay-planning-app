@@ -40,7 +40,7 @@ export class LoginPage implements OnInit {
     const password = this.ionicForm.value.password;
     this.authService.SignIn(email, password)
       .then((res) => {
-        if(this.authService.isEmailVerified) {
+        if(this.authService.isEmailVerified(email) ) {
           this.router.navigate(['/']);          
         } else {
           window.alert('Email is not verified')
