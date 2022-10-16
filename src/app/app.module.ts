@@ -33,15 +33,16 @@ import { IonicStorageModule } from '@ionic/storage-angular';
 import { Drivers } from '@ionic/storage';
 import * as cordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 
+
 @NgModule({
-  declarations: [
+  declarations: [		
     AppComponent, 
     CosplayGroupSendRequestComponent,
     CosElementTobuyModalComponent,
     CosElementTomakeModalComponent,
     CosTaskModalComponent,
-    MapModalLeafletComponent,
-  ],
+    MapModalLeafletComponent
+   ],
   entryComponents: [CosplayGroupSendRequestComponent,PopinfoComponent],
   imports: [
     BrowserModule,

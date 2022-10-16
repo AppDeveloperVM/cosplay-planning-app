@@ -3,6 +3,7 @@ import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { Form, NgForm,FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { AuthenticationService } from "../services/authenticationService";
 
 
 @Component({
@@ -16,7 +17,12 @@ export class LoginPage implements OnInit {
   isLoading = false;
   isSubmitted = false;
 
-  constructor(public formBuilder: FormBuilder,private authService: AuthService, private router: Router, private loadingCtrl: LoadingController,private alertController: AlertController) { }
+  constructor(
+    public formBuilder: FormBuilder,
+    public authService: AuthenticationService,
+    private router: Router, 
+    private loadingCtrl: LoadingController,
+    private alertController: AlertController) { }
 
   ngOnInit() {
     this.ionicForm = this.formBuilder.group({
@@ -29,7 +35,23 @@ export class LoginPage implements OnInit {
     return this.ionicForm.controls;
   }
 
-  async onSubmit(form: NgForm) {
+  logIn() {
+    const email = this.ionicForm.value.email;
+    const password = this.ionicForm.value.password;
+    this.authService.SignIn(email, password)
+      .then((res) => {
+        if(this.authService.isEmailVerified) {
+          this.router.navigate(['/']);          
+        } else {
+          window.alert('Email is not verified')
+          return false;
+        }
+      }).catch((error) => {
+        window.alert(error.message)
+      })
+  }
+
+ /*  async onSubmit(form: NgForm) {
     const loading = await this.loadingCtrl.create();
     await loading.present();
 
@@ -51,7 +73,7 @@ export class LoginPage implements OnInit {
  
         await alert.present();
       }
-      */
+      
       async (res) => {
         await loading.dismiss();        
         localStorage.setItem('userId',"I29AxVFEYrUarMkyfrxnreERKEg1");
@@ -59,11 +81,6 @@ export class LoginPage implements OnInit {
       }
     );
 
-    
-    
-
-
-
-  }
+  } */
 
 }
