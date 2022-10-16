@@ -3,6 +3,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PopoverController } from '@ionic/angular';
 import { Subject, Subscription } from 'rxjs';
 import { Notice } from 'src/app/models/notice.model';
+import { AuthenticationService } from 'src/app/services/authenticationService';
 import { DataService } from 'src/app/services/data.service';
 import { NoticesService } from 'src/app/services/notices.service';
 import { PopinfoComponent } from '../popinfo/popinfo.component';
@@ -31,7 +32,8 @@ export class HeaderComponent implements OnInit {
     private router: Router,
     private popoverCtrl: PopoverController,
     private noticesService: NoticesService,
-    private dataService: DataService
+    private dataService: DataService,
+    public authService: AuthenticationService
   ) {
     this.notifications$.subscribe((data)=> {
       this.notifications.push(data);
