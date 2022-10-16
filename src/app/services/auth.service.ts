@@ -84,8 +84,7 @@ export class AuthService {
       data.email,
       data.displayName,
       "",
-      false,
-      ""
+      false
     );
 
     var uid = "-MqJr4JhnCtq-uvPp0zb";
