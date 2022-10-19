@@ -21,6 +21,10 @@ const routes: Routes = [
     loadChildren: () => import('./verify-email/verify-email.module').then( m => m.VerifyEmailPageModule)
   },
   {
+    path: 'verified-email',
+    loadChildren: () => import('./verified-email/verified-email.module').then( m => m.VerifiedEmailPageModule)
+  },
+  {
     path: 'profile',
     children : [
       {
@@ -52,13 +56,15 @@ const routes: Routes = [
     loadChildren: () => import('./logout/logout.module').then( m => m.LogoutPageModule)
   },
   {
-    path: '**',
-    redirectTo: 'main'
-  },
-  {
     path: 'splash',
     loadChildren: () => import('./splash/splash.module').then( m => m.SplashPageModule)
+  },
+  {
+    path: '**',
+    redirectTo: 'main'
   }
+
+
 
 
 
