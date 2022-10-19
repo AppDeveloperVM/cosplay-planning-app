@@ -10,6 +10,8 @@ import {
 } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { getAuth } from 'firebase/auth';
+import { resolve } from 'path';
 @Injectable({
   providedIn: 'root',
 })
@@ -27,6 +29,7 @@ export class AuthenticationService {
   ) {
     this.usersCollection = afStore.collection<User>('users');
 
+    
 
     this.ngFireAuth.authState.subscribe((user) => {
       if (user) {
@@ -37,7 +40,7 @@ export class AuthenticationService {
         localStorage.setItem('user', null);
         JSON.parse(localStorage.getItem('user'));
       }
-      console.log('user:',user);
+      //console.log('user:',user.uid);
     });
   }
 
@@ -48,14 +51,23 @@ export class AuthenticationService {
   }
 
   getUserByUID(uid: string) {
-    this.afStore
+    return this.afStore
     .collection('users')
-    .doc(uid).get().subscribe(data => {
-      console.log('data : '+ data);
+    .doc(uid).valueChanges()
+    /*.get().subscribe(data => {
+      console.log('data : ', data);
       this.userData = data;
-    });
+    })*/
+  }
 
-    return this.userData;
+  getUserByEmail(email: string) {
+    return this.afStore
+    .collection('users')
+    .doc(email).valueChanges()
+    /*.get().subscribe(data => {
+      console.log('data : ', data);
+      this.userData = data;
+    })*/
   }
 
   // Login in with email/password
@@ -65,27 +77,50 @@ export class AuthenticationService {
   // Register user with email/password
   RegisterUser(email, password) {
 
-    const user = {
-      uid : email,
-      email: email,
-      displayName: email,
-      photoURL : null,
-      emailVerified : false
-    };
-    this.SetUserData(user).then( () => {
-      console.log('User succesfully registered in Firebase');
-    }).catch((error) => {
-      window.alert(error.message)
-    })
+    var register = new Promise( async (resolve, reject) => {
 
-    return this.ngFireAuth.createUserWithEmailAndPassword(email, password);
+      var uidGenerated = null; 
+
+      await this.ngFireAuth.createUserWithEmailAndPassword(email, password).then(
+        (user)=> {
+          uidGenerated = user.user.uid;
+          console.log('uid: '+ uidGenerated);
+        }
+      )
+      
+      const user = {
+        uid: uidGenerated,
+        email: email,
+        displayName: email,
+        photoURL : null,
+        emailVerified : false
+      };
+
+      this.SetUserData(user).then( (userRecord) => {
+        console.log('User succesfully registered in Firebase');
+        resolve('Good');
+
+      }).catch((error) => {
+        window.alert(error.message);
+        reject('Error,'+ error);
+      })
+
+      
+    }
+    ) 
+
+    return register;
   }
   // Email verification when new user register
   SendVerificationMail() {
     return this.ngFireAuth.currentUser.then((user) => {
-      return user.sendEmailVerification().then(() => {
+      return user.sendEmailVerification({
+        url : "http://localhost:8100/verified-email"
+      }).then(() => {
         this.router.navigate(['verify-email']);
-      });
+      }).catch((error) => {
+        window.alert(error.message)
+      })
     });
   }
   // Recover password
@@ -104,17 +139,28 @@ export class AuthenticationService {
   // Returns true when user is looged in
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user'));
-    return user !== null  ? true : false;
-    //&& user.emailVerified !== false
+    return user !== null && user.emailVerified !== false ? true : false;
+    //
   }
   // Returns true when user's email is verified
   //get
-  isEmailVerified(uid): boolean {
+  isEmailVerified(email): boolean {
     // Se debe chequear si está verified en FIREBASE
     //const user = JSON.parse(localStorage.getItem('user'));
-    const user = this.getUserByUID(uid);
-    console.log('userData: ', user);
-    return user.emailVerified !== false ? true : false;
+
+    var userWithEmailX = new Promise<any>((resolve)=> { 
+      this.afStore.collection('users', ref => ref.where('email', '==', email)).valueChanges()
+      .subscribe(user => {
+        resolve(user);
+        this.userData = user;
+      });
+    });
+
+    /* this.getUserByEmail(email).subscribe(userData => {
+      this.userData = userData;
+    }); */
+    console.log('userData: ', this.userData);
+    return this.userData.emailVerified !== false ? true : false;
   }
 
   CheckIfUserHasEmailVerified(){
@@ -153,7 +199,6 @@ export class AuthenticationService {
       `users/${user.uid}`
     );
     const userData: User = {
-      uid: user.uid,
       email: user.email,
       displayName: user.displayName,
       photoURL: user.photoURL,
