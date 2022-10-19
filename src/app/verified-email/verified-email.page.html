@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Email Verified</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <h2>Congrats!</h2>
+    </ion-row>
+    <ion-row>
+      <p>
+         Your email has been verified, now proceed to the next steps.
+      </p>
+    </ion-row>
+    <ion-row>
+      <ion-button type="submit" (click)="goToHomePage()" expand="block">
+        Proceed to HomePage
+      </ion-button>
+    </ion-row>
+  </ion-grid>
+</ion-content>
