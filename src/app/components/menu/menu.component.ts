@@ -64,6 +64,13 @@ export class MenuComponent implements OnInit {
         icon  : "log-out-outline"
       };
       this.navigate.push(logout);
+    } else {
+      const logout = {
+        title : "Login",
+        url   : "/login",
+        icon  : "log-in-outline"
+      };
+      this.navigate.push(logout);
     }
 
   }
