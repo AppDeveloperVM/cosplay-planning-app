@@ -39,15 +39,50 @@ export class LoginPage implements OnInit {
     const email = this.ionicForm.value.email;
     const password = this.ionicForm.value.password;
     this.authService.SignIn(email, password)
-      .then((res) => {
+      .then(async (res) => {
+
+        /*
+    getAuth()
+    .getUserByPhoneNumber(phoneNumber)
+    */
+
+        if(!this.authService.getUserByEmail(email)){
+          const alert = await this.alertController.create({
+            header: 'User doesnt exist.',
+            message: res.additionalUserInfo.username,
+            buttons: ['OK'],
+          });
+          await alert.present();
+          return false;
+        }
+
         if(this.authService.isEmailVerified(email) ) {
           this.router.navigate(['/']);          
         } else {
-          window.alert('Email is not verified')
-          return false;
+
+          const alert = await this.alertController.create({
+            header: 'Login failed, Email isnt verified.',
+            message: res.additionalUserInfo.username,
+            buttons: [
+              {
+                text: 'OK',
+                role: 'info'
+              },
+              {
+                text: 'Go to verify page',
+                role: 'info',
+                handler: data => {
+                  this.router.navigate(['/verify-email'])
+                }
+              }
+            ],
+          });
+          await alert.present();
+          //this.router.navigate(['/verify-email']);  
         }
       }).catch((error) => {
         window.alert(error.message)
+        
       })
   }
 
