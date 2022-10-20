@@ -9,7 +9,7 @@ import { IonicModule } from '@ionic/angular';
 import { ImagePickerComponent } from './pickers/image-picker/image-picker.component';
 import { HeaderComponent } from '../components/header/header.component';
 import { RouterModule } from '@angular/router';
-import { PlanningItemComponent } from '../main/planning/planning-item/planning-item.component';
+import { PlanningItemComponent } from '../pages/main/planning/planning-item/planning-item.component';
 import { CosgroupEditModalComponent } from './cosgroup-edit-modal/cosgroup-edit-modal.component';
 
 @NgModule({

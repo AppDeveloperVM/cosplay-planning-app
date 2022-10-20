@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Convention } from '../main/conventions/conventions.model';
+import { Convention } from '../pages/main/conventions/conventions.model';
 
 @Injectable({
   providedIn: 'root'

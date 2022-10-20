@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CosplayGroup } from '../main/cosplay-groups/cosplay-group.model';
+import { CosplayGroup } from '../pages/main/cosplay-groups/cosplay-group.model';
 import { Cosplay } from '../models/cosplay.model';
 import { CharacterMember } from 'src/app/models/characterMember.model';
 import { AuthService } from 'src/app/services/auth.service';
