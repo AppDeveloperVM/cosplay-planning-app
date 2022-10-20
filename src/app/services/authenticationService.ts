@@ -54,20 +54,12 @@ export class AuthenticationService {
     return this.afStore
     .collection('users')
     .doc(uid).valueChanges()
-    /*.get().subscribe(data => {
-      console.log('data : ', data);
-      this.userData = data;
-    })*/
   }
 
   getUserByEmail(email: string) {
     return this.afStore
     .collection('users')
     .doc(email).valueChanges()
-    /*.get().subscribe(data => {
-      console.log('data : ', data);
-      this.userData = data;
-    })*/
   }
 
   // Login in with email/password
@@ -86,7 +78,30 @@ export class AuthenticationService {
           uidGenerated = user.user.uid;
           console.log('uid: '+ uidGenerated);
         }
-      )
+      ).catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+
+        switch(errorCode) {
+          case 'auth/email-already-in-use':
+            errorMessage = 'Already exists an account with the given email address.';
+            break;
+          case 'auth/invalid-email':
+            errorMessage = 'Email invalid.';
+            break;
+          case 'auth/operation-not-allowed':
+            errorMessage = 'Operation not allowed.';
+            break;
+          case 'auth/weak-password':
+            errorMessage = 'Password is too weak.';
+            break;
+        }
+
+        alert(errorMessage);
+        console.log(errorMessage);
+
+      });
       
       const user = {
         uid: uidGenerated,
