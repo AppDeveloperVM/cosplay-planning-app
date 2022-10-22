@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
-import { Form, NgForm,FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Form, NgForm,FormGroup, FormBuilder, Validators, ReactiveFormsModule  } from '@angular/forms';
 import { AuthenticationService } from "../../services/authenticationService";
+import { SharedModule } from 'src/app/shared/shared.module';
 
 
 @Component({
@@ -35,16 +36,16 @@ export class LoginPage implements OnInit {
     return this.ionicForm.controls;
   }
 
-  logIn() {
+  async logIn() {
     const email = this.ionicForm.value.email;
     const password = this.ionicForm.value.password;
+
+    if( this.ionicForm.valid == false){
+      return false;
+    }
+
     this.authService.SignIn(email, password)
       .then(async (res) => {
-
-        /*
-    getAuth()
-    .getUserByPhoneNumber(phoneNumber)
-    */
 
         if(!this.authService.getUserByEmail(email)){
           const alert = await this.alertController.create({
@@ -78,44 +79,10 @@ export class LoginPage implements OnInit {
             ],
           });
           await alert.present();
-          //this.router.navigate(['/verify-email']);  
         }
       }).catch((error) => {
         window.alert(error.message)
-        
       })
   }
-
- /*  async onSubmit(form: NgForm) {
-    const loading = await this.loadingCtrl.create();
-    await loading.present();
-
-    this.isSubmitted = true;
-
-    this.authService.login(this.ionicForm.value).subscribe(
-      async (res) => {
-        await loading.dismiss();        
-        this.router.navigateByUrl('/', { replaceUrl: true });
-      },
-      /*
-      async (res) => {
-        await loading.dismiss();
-        const alert = await this.alertController.create({
-          header: 'Login failed',
-          message: res.error.error,
-          buttons: ['OK'],
-        });
- 
-        await alert.present();
-      }
-      
-      async (res) => {
-        await loading.dismiss();        
-        localStorage.setItem('userId',"I29AxVFEYrUarMkyfrxnreERKEg1");
-        this.router.navigateByUrl('/', { replaceUrl: true });
-      }
-    );
-
-  } */
 
 }

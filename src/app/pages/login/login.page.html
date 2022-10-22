@@ -1,13 +1,6 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Login</ion-title>
-
-    <!-- 
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/main/tabs/cosplays/my-cosplays"></ion-back-button>
-    </ion-buttons>
-    -->
-    
   </ion-toolbar>
 </ion-header>
 
@@ -22,9 +15,8 @@
               <ion-label position="floating">E-mail</ion-label>
               <ion-input 
                 type="email" 
-                name="email" 
-                email
                 formControlName="email"
+                required
               ></ion-input>
             </ion-item>
             <!-- Error messages -->
@@ -39,8 +31,8 @@
               <ion-label position="floating">Password</ion-label>
               <ion-input 
                 type="password"
-                name="password" 
                 formControlName="password"
+                required
               ></ion-input>
             </ion-item>
             <!-- Error messages -->
@@ -67,17 +59,16 @@
           >Signup</ion-button>
 
           <ion-button 
-          type="submit" 
+          type="button" 
           color="primary" 
           expand="block"
           (click)="logIn()"
+          [disabled]="!ionicForm.valid"
           >
             Login
           </ion-button>
         </ion-col>
-        <ion-col size-sm="6" offset-sm="3">
-          <span class="divider line one-line text-center">or</span>
-        </ion-col>
+        
       </ion-row>
       
       <ion-row>
