@@ -7,19 +7,38 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <form>    
-    <ion-item lines="full">
-      <ion-label position="floating">Email</ion-label>
-      <ion-input type="text" #email required></ion-input>
-    </ion-item> 
-    <ion-item lines="full">
-      <ion-label position="floating">Password</ion-label>
-      <ion-input type="password" #password required></ion-input>
-    </ion-item>
+  <form>   
+    
+  <ion-grid>
     <ion-row>
-      <ion-col> 
-      <ion-button type="submit" (click)="signUp(email, password)" expand="block">Register</ion-button>
-      </ion-col>
-    </ion-row>
+      <ion-col size-sm="6" offset-sm="3">
+
+        <ion-item lines="full">
+          <ion-label position="floating">Email</ion-label>
+          <ion-input type="text" #email required></ion-input>
+        </ion-item> 
+        <ion-item lines="full">
+          <ion-label position="floating">Password</ion-label>
+          <ion-input type="password" #password required></ion-input>
+        </ion-item>
+        <ion-row>
+          <ion-col> 
+          <ion-button type="submit" (click)="signUp(email, password)" expand="block">Register</ion-button>
+          <ion-button 
+            type="button"
+            color="tertiary" 
+            expand="block"
+            [routerLink]="['/login']"
+            >Login
+          </ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+        </ion-row>
+
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
   </form>
 </ion-content>
