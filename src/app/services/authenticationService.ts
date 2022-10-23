@@ -156,7 +156,8 @@ export class AuthenticationService {
   SendVerificationMail() {
     return this.ngFireAuth.currentUser.then((user) => {
       return user.sendEmailVerification({
-        url : "https://cosplay-planning-app.vercel.app/verified-email"
+        url : "https://cosplay-planning-app.vercel.app/verified-email",
+        handleCodeInApp: true,
       }).then(() => {
         this.router.navigate(['verify-email']);
       }).catch((error) => {
