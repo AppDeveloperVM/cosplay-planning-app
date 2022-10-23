@@ -14,9 +14,9 @@ export class RegistrationPage implements OnInit {
   ionicForm: FormGroup;
 
   constructor(
+    public formBuilder: FormBuilder,
     public authService: AuthenticationService,
-    private router: Router,
-    public formBuilder: FormBuilder
+    private router: Router
   ) { }
   
   ngOnInit(){
@@ -36,11 +36,14 @@ export class RegistrationPage implements OnInit {
 
     this.authService.RegisterUser(email, password)      
     .then((res) => {
-      // Do something here
+
+        // Do something here
       this.authService.SendVerificationMail();
       this.router.navigate(['verify-email']);
+      window.alert(res);
+      
     }).catch((error) => {
-      window.alert(error.message)
+      window.alert(error);
     })
   }
 }
