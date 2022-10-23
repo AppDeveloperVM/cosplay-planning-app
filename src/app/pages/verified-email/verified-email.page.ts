@@ -6,6 +6,8 @@ import {
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
+import { rejects } from 'assert';
+import { resolve } from 'path';
 import { AuthenticationService } from "../../services/authenticationService";
 
 
@@ -30,13 +32,32 @@ export class VerifiedEmailPage implements OnInit {
   }
 
   changeToVerifiedAccount(){
-    this.ngFireAuth.authState.subscribe((user) => {
-      this.afStore.doc(
-        `users/${user.uid}`
-      ).update({
-        emailVerified : true
+
+    const verify = new Promise( (resolve,reject) => {
+      this.ngFireAuth.authState.subscribe((user) => {
+
+        this.afStore.doc(
+          `users/${user.uid}`
+        ).update({
+          emailVerified : true
+        })
+        .then( (res) => {
+          console.log(res);
+        })
+        .catch( (err) => {
+          alert(err);
+        });
+
       })
+    }).then( (res) => {
+      
     })
+    .catch( (err) => {
+      
+    });
+
+    
+
   }
 
   goToHomePage(){
