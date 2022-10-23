@@ -12,6 +12,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { getAuth } from 'firebase/auth';
 import { resolve } from 'path';
+import { rejects } from 'assert';
 @Injectable({
   providedIn: 'root',
 })
@@ -19,6 +20,7 @@ export class AuthenticationService {
   userData: any;
   //Collections
   usersObsv: Observable<User[]>;
+  uidGenerated = null;
   private usersCollection: AngularFirestoreCollection<User>;
 
   constructor(
@@ -69,62 +71,86 @@ export class AuthenticationService {
   // Register user with email/password
   RegisterUser(email, password) {
 
-    var register = new Promise( async (resolve, reject) => {
+    try {
 
-      var uidGenerated = null; 
+      var register = new Promise( async (resolve, reject) => {
 
-      await this.ngFireAuth.createUserWithEmailAndPassword(email, password).then(
-        (user)=> {
-          uidGenerated = user.user.uid;
-          console.log('uid: '+ uidGenerated);
-        }
-      ).catch(function(error) {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
+        //var uidGenerated = null; 
 
-        switch(errorCode) {
-          case 'auth/email-already-in-use':
-            errorMessage = 'Already exists an account with the given email address.';
-            break;
-          case 'auth/invalid-email':
-            errorMessage = 'Email invalid.';
-            break;
-          case 'auth/operation-not-allowed':
-            errorMessage = 'Operation not allowed.';
-            break;
-          case 'auth/weak-password':
-            errorMessage = 'Password is too weak.';
-            break;
-        }
+        await this.ngFireAuth.createUserWithEmailAndPassword(email, password)
+        .then(
+          (user)=> {
+           
+            this.uidGenerated = user.user.uid;
+            console.log('user: ', user.user);
+            console.log('uid: '+ this.uidGenerated);
 
-        alert(errorMessage);
-        console.log(errorMessage);
+            resolve('succesful');
+
+          }
+        ).catch(function(error) {
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
+
+          switch(errorCode) {
+            case 'auth/email-already-in-use':
+              errorMessage = 'Already exists an account with the given email address.';
+              break;
+            case 'auth/invalid-email':
+              errorMessage = 'Email invalid.';
+              break;
+            case 'auth/operation-not-allowed':
+              errorMessage = 'Operation not allowed.';
+              break;
+            case 'auth/weak-password':
+              errorMessage = 'Password is too weak.';
+              break;
+          }
+
+          reject(errorMessage);
+          //console.log('error catched 1');
+          //alert(errorMessage);
+          //console.log(errorMessage);
+        });
+  
+      });
+
+      const localUser = new Promise( async (resolve, reject) => {
+        register.then( () => {
+
+          const userData = {
+            uid: this.uidGenerated,
+            email: email,
+            displayName: email,
+            photoURL : null,
+            emailVerified : false
+          };
+    
+          this.SetUserData(userData).then( (userRecord) => {
+            console.log('User succesfully registered in Firebase');
+            resolve('User succesfully registered in Firebase');
+            
+          }).catch((error) => {
+            console.log('error catched 2');
+            reject(error);
+          })
+  
+
+        }).catch((error) => {
+          reject(error);
+        });
 
       });
-      
-      const user = {
-        uid: uidGenerated,
-        email: email,
-        displayName: email,
-        photoURL : null,
-        emailVerified : false
-      };
+      //
 
-      this.SetUserData(user).then( (userRecord) => {
-        console.log('User succesfully registered in Firebase');
-        resolve('Good');
-
-      }).catch((error) => {
-        window.alert(error.message);
-        reject('Error,'+ error);
-      })
-
-      
+      return localUser;
+     
+    } catch(error) {
+      console.log(error);
     }
-    ) 
 
-    return register;
+    
   }
   // Email verification when new user register
   SendVerificationMail() {
@@ -134,6 +160,7 @@ export class AuthenticationService {
       }).then(() => {
         this.router.navigate(['verify-email']);
       }).catch((error) => {
+        console.log('error catched 3');
         window.alert(error.message)
       })
     });
@@ -148,7 +175,7 @@ export class AuthenticationService {
         );
       })
       .catch((error) => {
-        window.alert(error);
+        window.alert('error reseting password,error: '+ error );
       });
   }
   // Returns true when user is looged in
