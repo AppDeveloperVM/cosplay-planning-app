@@ -67,7 +67,7 @@ export class CosElementTobuyModalComponent implements OnInit {
         updateOn: 'blur',
         validators: [Validators.maxLength(5), Validators.pattern("^([0-9]*)$")]
       }),
-      stores: new FormControl( this.item?.stores ? this.item?.stores : '-', 
+      stores: new FormControl( this.item?.stores ? this.item?.stores : null, 
       {
         updateOn: 'blur',
         validators: [Validators.maxLength(180)]
@@ -89,9 +89,11 @@ export class CosElementTobuyModalComponent implements OnInit {
     console.log(this.element.value);
     if (!this.element.valid) return
 
+    const modalText = this.item?.name ? 'Updating ...' : 'Creating ...'; 
+
     this.loadingCtrl
     .create({
-      message: 'Creating Element ...'
+      message: modalText
     })
     .then(loadingEl => {
       
@@ -107,16 +109,18 @@ export class CosElementTobuyModalComponent implements OnInit {
         this.closeModal();
         this.element.reset();
       }, 500);
-  
       
     });
     
   }
 
   closeModal() {
-    this.modalCtrl.dismiss(
-      //this.element.value,'ee'
-    );
+    this.modalCtrl.dismiss();
+    // cerrar modal
+  }
+
+  onCancel() {
+    this.modalCtrl.dismiss();
     // cerrar modal
   }
 

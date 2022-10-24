@@ -40,7 +40,7 @@ export class CosTaskModalComponent implements OnInit {
       }),
       date: new FormControl( this.item?.date ? this.item?.date : new Date() , {
         updateOn: 'blur',
-        validators: [Validators.required, Validators.maxLength(180)]
+        validators: [Validators.maxLength(180)]
       }),
       done: new FormControl( this.item?.done ? this.item?.done : false , {
         updateOn: 'blur',

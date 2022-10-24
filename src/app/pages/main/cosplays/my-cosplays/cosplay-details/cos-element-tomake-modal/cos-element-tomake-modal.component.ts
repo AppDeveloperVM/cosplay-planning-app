@@ -65,7 +65,7 @@ export class CosElementTomakeModalComponent implements OnInit {
         updateOn: 'blur',
         validators: [Validators.maxLength(2)]
       }),
-      notes: new FormControl(this.item?.notes ? this.item?.notes : 'notes', {
+      notes: new FormControl(this.item?.notes ? this.item?.notes : null, {
         updateOn: 'blur',
         validators: [Validators.maxLength(180)]
       }),
@@ -76,22 +76,30 @@ export class CosElementTomakeModalComponent implements OnInit {
   onSubmitElement(){
     if (!this.element.valid) return
 
+    const modalText = this.item?.name ? 'Updating ...' : 'Creating ...'; 
+
     this.loadingCtrl
     .create({
-      message: 'Creating Element ...'
+      message: modalText
     })
     .then(loadingEl => {
       loadingEl.present();
       const elementToMake = this.element.value;
       const cosplayId = this.selectedCosplay?.id || null;
       this.cosDevelopService.onSaveElToMake(elementToMake, cosplayId);
-      console.log(elementToMake);
       
-      loadingEl.dismiss();
-      this.element.reset();
-
-      this.modalCtrl.dismiss();
+      setTimeout(() => {
+        loadingEl.dismiss();
+        this.closeModal();
+        this.element.reset();
+      }, 500);
+      
     });
+  }
+
+  closeModal() {
+    this.modalCtrl.dismiss();
+    // cerrar modal
   }
 
   onCancel() {
