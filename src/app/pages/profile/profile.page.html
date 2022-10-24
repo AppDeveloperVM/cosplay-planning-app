@@ -30,17 +30,19 @@
       </ion-text>
 
       <ion-list>
-        <ion-item>
-          <ion-label position="stacked">Instagram</ion-label>
-          <ion-input color="primary" readonly="true">
-            <a target="_blank" href={{instagram_url}}>{{instagram_name}}</a>
+        <ion-item target="_blank" href={{instagram_url}}>
+          <ion-label color="primary" position="stacked">Instagram</ion-label>
+          <ion-input readonly="true">
+            <a target="_blank" slot="start" >{{instagram_name}}</a>
           </ion-input>
+          <ion-icon slot="end" name="link-outline"></ion-icon>
         </ion-item>
-        <ion-item>
-          <ion-label position="stacked">Twitter</ion-label>
-          <ion-input color="primary" readonly="true">
-            <a target="_blank" href={{twitter_url}}>{{twitter_name}}</a>
+        <ion-item target="_blank" href={{twitter_url}}>
+          <ion-label color="primary" position="stacked">Twitter</ion-label>
+          <ion-input readonly="true">
+            <a  >{{twitter_name}}</a>
           </ion-input>
+          <ion-icon slot="end" name="link-outline"></ion-icon>
         </ion-item>
       </ion-list>
 
