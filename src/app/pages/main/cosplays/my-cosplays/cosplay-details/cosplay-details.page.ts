@@ -175,7 +175,9 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
       closeButtonText: 'X',
       title: 'title',
       selectedCosplay: this.cosplay
-    }});
+    },
+    backdropDismiss:false
+    });
 
     await modal.present();
 
@@ -191,7 +193,10 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
       closeButtonText: 'X',
       title: 'title',
       selectedCosplay: this.cosplay
-    }}).then(modalEl => {
+    },
+    backdropDismiss : false,
+    showBackdrop : true
+    }).then(modalEl => {
       modalEl.present();
     });
   }
@@ -215,7 +220,10 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
       selectedCosplay: this.cosplay,
       item,
       itemID
-    }}).then(modalEl => {
+    },
+    backdropDismiss : false,
+    showBackdrop : true
+    }).then(modalEl => {
       modalEl.present();
     });
   }
