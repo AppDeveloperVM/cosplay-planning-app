@@ -42,15 +42,17 @@ export class VerifiedEmailPage implements OnInit {
           emailVerified : true
         })
         .then( (res) => {
+          resolve(true);
           console.log(res);
         })
         .catch( (err) => {
           alert(err);
+          reject(false);
         });
 
       })
     }).then( (res) => {
-      
+      this.goToHomePage();
     })
     .catch( (err) => {
       
