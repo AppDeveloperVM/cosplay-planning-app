@@ -39,47 +39,58 @@ export class LoginPage implements OnInit {
   async logIn() {
     const email = this.ionicForm.value.email;
     const password = this.ionicForm.value.password;
+    console.log('email: '+ email);
 
     if( this.ionicForm.valid == false){
       return false;
     }
 
     this.authService.SignIn(email, password)
-      .then(async (res) => {
+      .then(async (response) => {
+        console.log(response);
 
         if(!this.authService.getUserByEmail(email)){
           const alert = await this.alertController.create({
             header: 'User doesnt exist.',
-            message: res.additionalUserInfo.username,
+            message: '-',
             buttons: ['OK'],
           });
           await alert.present();
           return false;
         }
 
-        if(this.authService.isEmailVerified(email) ) {
-          this.router.navigate(['/']);          
-        } else {
+        this.authService.isEmailVerified(email)
+        .then( async (res) => {
+          await console.log(res);
 
-          const alert = await this.alertController.create({
-            header: 'Login failed, Email isnt verified.',
-            message: res.additionalUserInfo.username,
-            buttons: [
-              {
-                text: 'OK',
-                role: 'info'
-              },
-              {
-                text: 'Go to verify page',
-                role: 'info',
-                handler: data => {
-                  this.router.navigate(['/verify-email'])
+          if(res == true){
+            this.router.navigate(['/']);          
+          } else if (res == false) {
+            const alert = await this.alertController.create({
+              header: 'Login failed, Email isnt verified.',
+              message: '-',
+              buttons: [
+                {
+                  text: 'OK',
+                  role: 'info'
+                },
+                {
+                  text: 'Go to verify page',
+                  role: 'info',
+                  handler: data => {
+                    this.router.navigate(['/verify-email'])
+                  }
                 }
-              }
-            ],
-          });
-          await alert.present();
-        }
+              ],
+            });
+            alert.present();
+
+          }
+        })
+        .catch( (err) => {
+          alert(err);
+        })
+
       }).catch((error) => {
         window.alert(error.message)
       })
