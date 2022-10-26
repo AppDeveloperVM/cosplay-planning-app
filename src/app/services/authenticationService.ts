@@ -22,6 +22,7 @@ export class AuthenticationService {
   usersObsv: Observable<User[]>;
   uidGenerated = null;
   private usersCollection: AngularFirestoreCollection<User>;
+  gotUserData = false;
 
   constructor(
     public afStore: AngularFirestore,
@@ -30,8 +31,6 @@ export class AuthenticationService {
     public ngZone: NgZone
   ) {
     this.usersCollection = afStore.collection<User>('users');
-
-    
 
     this.ngFireAuth.authState.subscribe((user) => {
       if (user) {
@@ -187,23 +186,32 @@ export class AuthenticationService {
   }
   // Returns true when user's email is verified
   //get
-  isEmailVerified(email): boolean {
+  isEmailVerified(email): Promise<any> {
     // Se debe chequear si está verified en FIREBASE
     //const user = JSON.parse(localStorage.getItem('user'));
+    var verified;
 
-    var userWithEmailX = new Promise<any>((resolve)=> { 
-      this.afStore.collection('users', ref => ref.where('email', '==', email)).valueChanges()
-      .subscribe(user => {
-        resolve(user);
+    var userWithEmailX = new Promise<Boolean>(async (resolve, reject)=> { 
+
+      await this.afStore.collection('users', ref => ref.where('email', '==', email)).valueChanges()
+      .subscribe(async user => {
         this.userData = user;
+        verified = this.userData[0].emailVerified ;
+        resolve(verified);
+        return verified;
+      }, error => {
+        reject(false);
+        return false;
       });
+
+    }).then( (res) => {
+      console.log(res);
+      console.log('userData: ', this.userData[0]);
+    }).catch( (err) => {
+      console.log(err);
     });
 
-    /* this.getUserByEmail(email).subscribe(userData => {
-      this.userData = userData;
-    }); */
-    console.log('userData: ', this.userData);
-    return this.userData.emailVerified !== false ? true : false;
+    return userWithEmailX;
   }
 
   CheckIfUserHasEmailVerified(){
