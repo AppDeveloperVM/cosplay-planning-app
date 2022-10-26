@@ -36,7 +36,7 @@ export class HeaderComponent implements OnInit {
     public authService: AuthenticationService
   ) {
     this.notifications$.subscribe((data)=> {
-      this.notifications.push(data);
+      //this.notifications.push(data);
       console.log(this.notifications);
     })
     //this.noticesService.fetchFileData();
