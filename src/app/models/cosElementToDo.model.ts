@@ -1,3 +1,5 @@
+import { cosElementType } from "./cosElementType.model";
+
 export interface CosElementToDo {
     id: string;
     name: string;
