@@ -48,6 +48,7 @@ export class LoginPage implements OnInit {
     this.authService.SignIn(email, password)
       .then(async (response) => {
         console.log(response);
+        
 
         if(!this.authService.getUserByEmail( response.user.email )){
           const alert = await this.alertController.create({
@@ -57,6 +58,8 @@ export class LoginPage implements OnInit {
           });
           await alert.present();
           return false;
+        } else {
+          this.router.navigate(['/']);   
         }
 
         /* this.authService.isEmailVerified(email)
