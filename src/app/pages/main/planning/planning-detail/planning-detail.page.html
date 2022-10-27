@@ -26,7 +26,7 @@
   
   <ion-grid *ngIf="!isLoading">
     <ion-row>
-      <ion-col size-sm="8" offset-sm="2" padding text-center>
+      <ion-col size-sm="8" offset-sm="2" size-lg="6" offset-lg="3" padding text-center>
       <div class="planning-details">
         <div 
         *ngIf="planning.startsAt != null"
@@ -62,14 +62,16 @@
         <div *ngIf="planning.description != null">
           <ion-text><p>{{ planning.description }}</p></ion-text>
         </div>
+
+        <ion-row>
+          <ion-col  no-padding>
+            <ion-img role="button" (click)="onShowFullMap()" class="location-image" width="500" height="400" [src]="planning.location.staticMapImageUrl"></ion-img>
+          </ion-col>
+        </ion-row>
       
       </div>
       </ion-col>
     </ion-row>
-    <ion-row>
-      <ion-col size-sm="8" offset-sm="2" no-padding>
-        <ion-img role="button" (click)="onShowFullMap()" class="location-image" [src]="planning.location.staticMapImageUrl"></ion-img>
-      </ion-col>
-    </ion-row>
+    
   </ion-grid>
 </ion-content>
