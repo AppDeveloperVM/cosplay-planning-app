@@ -290,8 +290,10 @@ export class AuthenticationService {
             reject(error);
           });
 
+        } else {
+          reject('is NOT SignInWithEmailLink');
         }
-        reject('is NOT SignInWithEmailLink');
+        
       });
 
       return promise;
