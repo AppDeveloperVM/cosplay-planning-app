@@ -207,20 +207,22 @@ export class AuthenticationService {
   // Email verification when new user register
   SendVerificationMail() {
 
-    const actionCodeSettings = {
-      // URL you want to redirect back to. The domain (www.example.com) for
-      // this URL must be whitelisted in the Firebase Console.
-      url: 'https://cosplay-planning-app.vercel.app/verified-email',
-      // This must be true for email link sign-in.
-      handleCodeInApp: true,
-    };
+    
 
     return this.ngFireAuth.currentUser.then((user) => {
 
-      const email = user.email;
       const auth = getAuth();
+      const email = user.email;
+      const actionCodeSettings = {
+        // URL you want to redirect back to. The domain (www.example.com) for
+        // this URL must be whitelisted in the Firebase Console.
+        url: 'https://cosplay-planning-app.vercel.app/verified-email',
+        // This must be true for email link sign-in.
+        handleCodeInApp: true,
+      };
 
-      sendEmailVerification(user, actionCodeSettings)
+      //sendEmailVerification(user, actionCodeSettings)
+      sendSignInLinkToEmail(auth, email, actionCodeSettings)
         .then(() => {
           // The link was successfully sent. Inform the user.
           // Save the email locally so you don't need to ask the user for it again
