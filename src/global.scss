@@ -103,6 +103,7 @@
         pointer-events: none !important;
     }
 
+    //Common
     .error, .red {
         color: rgb(212, 22, 9);
     }
@@ -238,7 +239,14 @@
         }
         }
     }
-    
+
+    //Maps
+    ion-img.location-image{
+        width:100%;
+        height: auto;
+        max-width: 100%;
+        aspect-ratio: attr(width) / attr(height);
+    }
     
 }
 
