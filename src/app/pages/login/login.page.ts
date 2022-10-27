@@ -49,7 +49,7 @@ export class LoginPage implements OnInit {
       .then(async (response) => {
         console.log(response);
 
-        if(!this.authService.getUserByEmail(email)){
+        if(!this.authService.getUserByEmail( response.user.email )){
           const alert = await this.alertController.create({
             header: 'User doesnt exist.',
             message: '-',
@@ -59,7 +59,7 @@ export class LoginPage implements OnInit {
           return false;
         }
 
-        this.authService.isEmailVerified(email)
+        /* this.authService.isEmailVerified(email)
         .then( async (res) => {
           await console.log(res);
 
@@ -89,7 +89,7 @@ export class LoginPage implements OnInit {
         })
         .catch( (err) => {
           alert(err);
-        })
+        }) */
 
       }).catch((error) => {
         window.alert(error.message)

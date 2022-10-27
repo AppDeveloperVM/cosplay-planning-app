@@ -165,6 +165,32 @@ export class AuthenticationService {
       })
     });
   }
+
+  ChangeToVerifiedAccount() : Promise<any>{
+
+    const verify = new Promise( (resolve,reject) => {
+      this.ngFireAuth.authState.subscribe((user) => {
+
+        this.afStore.doc(
+          `users/${user.uid}`
+        ).update({
+          emailVerified : true
+        })
+        .then( (res) => {
+          resolve(true);
+          console.log(res);
+        })
+        .catch( (err) => {
+          alert(err);
+          reject(false);
+        });
+
+      });
+    });
+
+    return verify;
+  }
+
   // Recover password
   PasswordRecover(passwordResetEmail) {
     return this.ngFireAuth

@@ -33,32 +33,13 @@ export class VerifiedEmailPage implements OnInit {
 
   changeToVerifiedAccount(){
 
-    const verify = new Promise( (resolve,reject) => {
-      this.ngFireAuth.authState.subscribe((user) => {
-
-        this.afStore.doc(
-          `users/${user.uid}`
-        ).update({
-          emailVerified : true
-        })
-        .then( (res) => {
-          resolve(true);
-          console.log(res);
-        })
-        .catch( (err) => {
-          alert(err);
-          reject(false);
-        });
-
-      })
-    }).then( (res) => {
+    this.authService.ChangeToVerifiedAccount()
+    .then( (res) => {
       this.goToHomePage();
     })
     .catch( (err) => {
       
     });
-
-    
 
   }
 
