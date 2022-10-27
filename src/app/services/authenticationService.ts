@@ -13,6 +13,7 @@ import { map } from 'rxjs/operators';
 import { getAuth } from 'firebase/auth';
 import { resolve } from 'path';
 import { rejects } from 'assert';
+import { AlertController } from '@ionic/angular';
 @Injectable({
   providedIn: 'root',
 })
@@ -28,7 +29,8 @@ export class AuthenticationService {
     public afStore: AngularFirestore,
     public ngFireAuth: AngularFireAuth,
     public router: Router,
-    public ngZone: NgZone
+    public ngZone: NgZone,
+    private alertController: AlertController
   ) {
     this.usersCollection = afStore.collection<User>('users');
 
@@ -64,8 +66,59 @@ export class AuthenticationService {
   }
 
   // Login in with email/password
-  SignIn(email, password) {
-    return this.ngFireAuth.signInWithEmailAndPassword(email, password);
+  SignIn(email, password) : Promise<any> {
+    return this.ngFireAuth.signInWithEmailAndPassword(email, password)
+      .then(async (response) => {
+        console.log(response);
+
+        if(!this.getUserByEmail( response.user.email )){
+          const alert = await this.alertController.create({
+            header: 'User doesnt exist.',
+            message: '-',
+            buttons: ['OK'],
+          });
+          await alert.present();
+          return false;
+        } else {
+          this.router.navigate(['/']);   
+        }
+
+        /* this.authService.isEmailVerified(email)
+        .then( async (res) => {
+          await console.log(res);
+
+          if(res == true){
+            this.router.navigate(['/']);          
+          } else if (res == false) {
+            const alert = await this.alertController.create({
+              header: 'Login failed, Email isnt verified.',
+              message: '-',
+              buttons: [
+                {
+                  text: 'OK',
+                  role: 'info'
+                },
+                {
+                  text: 'Go to verify page',
+                  role: 'info',
+                  handler: data => {
+                    this.router.navigate(['/verify-email'])
+                  }
+                }
+              ],
+            });
+            alert.present();
+
+          }
+        })
+        .catch( (err) => {
+          alert(err);
+        }) */
+
+      }).catch((error) => {
+        window.alert(error.message)
+      })
+
   }
   // Register user with email/password
   RegisterUser(email, password) {
@@ -262,7 +315,7 @@ export class AuthenticationService {
       .signInWithPopup(provider)
       .then((result) => {
         this.ngZone.run(() => {
-          this.router.navigate(['dashboard']);
+          this.router.navigate(['/']);
         });
         this.SetUserData(result.user);
       })

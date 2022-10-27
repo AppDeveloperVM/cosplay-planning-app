@@ -46,57 +46,11 @@ export class LoginPage implements OnInit {
     }
 
     this.authService.SignIn(email, password)
-      .then(async (response) => {
-        console.log(response);
-        
+    .then( () => {
 
-        if(!this.authService.getUserByEmail( response.user.email )){
-          const alert = await this.alertController.create({
-            header: 'User doesnt exist.',
-            message: '-',
-            buttons: ['OK'],
-          });
-          await alert.present();
-          return false;
-        } else {
-          this.router.navigate(['/']);   
-        }
-
-        /* this.authService.isEmailVerified(email)
-        .then( async (res) => {
-          await console.log(res);
-
-          if(res == true){
-            this.router.navigate(['/']);          
-          } else if (res == false) {
-            const alert = await this.alertController.create({
-              header: 'Login failed, Email isnt verified.',
-              message: '-',
-              buttons: [
-                {
-                  text: 'OK',
-                  role: 'info'
-                },
-                {
-                  text: 'Go to verify page',
-                  role: 'info',
-                  handler: data => {
-                    this.router.navigate(['/verify-email'])
-                  }
-                }
-              ],
-            });
-            alert.present();
-
-          }
-        })
-        .catch( (err) => {
-          alert(err);
-        }) */
-
-      }).catch((error) => {
-        window.alert(error.message)
-      })
+    }).catch(()=> {
+      
+    })
   }
 
 }
