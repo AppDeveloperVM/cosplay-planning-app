@@ -24,11 +24,11 @@ export class VerifiedEmailPage implements OnInit {
     public ngFireAuth: AngularFireAuth,
     public authService: AuthenticationService
     ) {
-      this.changeToVerifiedAccount();
+      
     }
 
   ngOnInit() {
-    
+    this.changeToVerifiedAccount();
   }
 
   changeToVerifiedAccount(){
