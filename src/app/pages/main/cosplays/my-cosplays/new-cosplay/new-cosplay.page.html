@@ -17,72 +17,76 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+<form [formGroup]="form">
+<ion-grid>
+<ion-row>
+<ion-col size-sm="12" size-md="12" size-lg="8" offset-lg="2" size-xl="8" offset-xl="2">
 
-  <form [formGroup]="form">
-    <ion-grid>
-      <ion-row>
-        <ion-col size-sm="6" offset-sm="3">
-          <ion-item>
-            <ion-label position="floating">Character Name</ion-label>
-            <ion-input type="text" formControlName="characterName"></ion-input>
-          </ion-item>
-          <div class="error-container">
-            <ng-container *ngFor="let validation of validations.characterName">
-              <div class="error-message" *ngIf="form.get('characterName').hasError(validation.type) && (form.get('characterName').dirty || form.get('characterName').touched)">
-                <ion-icon name="information-circle-outline"></ion-icon>
-                <span>{{ validation.message }}</span>
-              </div>
-            </ng-container>
+  <ion-row>
+    <ion-col >
+      <ion-item>
+        <ion-label position="floating">Character Name</ion-label>
+        <ion-input type="text" formControlName="characterName"></ion-input>
+      </ion-item>
+      <div class="error-container">
+        <ng-container *ngFor="let validation of validations.characterName">
+          <div class="error-message" *ngIf="form.get('characterName').hasError(validation.type) && (form.get('characterName').dirty || form.get('characterName').touched)">
+            <ion-icon name="information-circle-outline"></ion-icon>
+            <span>{{ validation.message }}</span>
           </div>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col size-sm="6" offset-sm="3">
-          <app-image-picker
-          [showPreview]="form.get('imageUrl').value"
-          (imagePick)="onImagePicked($event)"></app-image-picker>
-          <div class="progress">
-            <div class="progress-bar progress-bar-stripped bg-success" role="progressbar" 
-            [style.width]="(uploadPercent | async) + '%'">
-            </div>
+        </ng-container>
+      </div>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col >
+      <app-image-picker
+      [showPreview]="form.get('imageUrl').value"
+      (imagePick)="onImagePicked($event)"></app-image-picker>
+      <div class="progress">
+        <div class="progress-bar progress-bar-stripped bg-success" role="progressbar" 
+        [style.width]="(uploadPercent | async) + '%'">
+        </div>
+      </div>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col >
+      <ion-item>
+        <ion-label position="floating">Series</ion-label>
+        <ion-input type="text" formControlName="series" ></ion-input>
+      </ion-item>
+      <div class="error-container">
+        <ng-container *ngFor="let validation of validations.series">
+          <div class="error-message" *ngIf="form.get('series').hasError(validation.type) && (form.get('series').dirty || form.get('series').touched)">
+            <ion-icon name="information-circle-outline"></ion-icon>
+            <span>{{ validation.message }}</span>
           </div>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col size-sm="6" offset-sm="3">
-          <ion-item>
-            <ion-label position="floating">Series</ion-label>
-            <ion-input type="text" formControlName="series" ></ion-input>
-          </ion-item>
-          <div class="error-container">
-            <ng-container *ngFor="let validation of validations.series">
-              <div class="error-message" *ngIf="form.get('series').hasError(validation.type) && (form.get('series').dirty || form.get('series').touched)">
-                <ion-icon name="information-circle-outline"></ion-icon>
-                <span>{{ validation.message }}</span>
-              </div>
-            </ng-container>
+        </ng-container>
+      </div>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col >
+      <ion-item>
+        <ion-label position="floating">Description</ion-label>
+        <ion-textarea rows="3" formControlName="description"></ion-textarea>
+      </ion-item>
+      <div class="error-container">
+        <ng-container *ngFor="let validation of validations.description">
+          <div class="error-message" *ngIf="form.get('description').hasError(validation.type) && (form.get('description').dirty ||form.get('description').touched)">
+            <ion-icon name="information-circle-outline"></ion-icon>
+            <span>{{ validation.message }}</span>
           </div>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col size-sm="6" offset-sm="3">
-          <ion-item>
-            <ion-label position="floating">Description</ion-label>
-            <ion-textarea rows="3" formControlName="description"></ion-textarea>
-          </ion-item>
-          <div class="error-container">
-            <ng-container *ngFor="let validation of validations.description">
-              <div class="error-message" *ngIf="form.get('description').hasError(validation.type) && (form.get('description').dirty ||form.get('description').touched)">
-                <ion-icon name="information-circle-outline"></ion-icon>
-                <span>{{ validation.message }}</span>
-              </div>
-            </ng-container>
-          </div>
-        </ion-col>
-      </ion-row>
-      
-    </ion-grid>
-  </form>
+        </ng-container>
+      </div>
+    </ion-col>
+  </ion-row>
+
+</ion-col>
+</ion-row> 
+</ion-grid>
+</form>
 
   
 </ion-content>

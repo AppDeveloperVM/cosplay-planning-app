@@ -24,270 +24,273 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" >
-  <div text-center *ngIf="isLoading">        
-    <ion-spinner color="primary" ></ion-spinner>
-  </div>
-  <ion-grid *ngIf="!isLoading">
-  <ion-row>
-    <ion-col class="content-col" >
-      <ion-thumbnail *ngIf="imageUrl != null" class="user-image" >
-        <ion-progress-bar type="indeterminate" *ngIf="!imageReady"></ion-progress-bar>
-        <img src="{{ imageUrl }}" *ngIf="imageReady">
-      </ion-thumbnail>
-      <ion-thumbnail class="thumbnail_icon" *ngIf="imageUrl == null" >
-        <ion-icon class="ion-text-center" name="image" size="large"></ion-icon>
-      </ion-thumbnail>
+<ion-grid *ngIf="!isLoading">
+<ion-row >
+<ion-col size-sm="12" size-md="12" size-lg="8" offset-lg="2" size-xl="8" offset-xl="2">
 
-      <ion-list class="ion-no-padding">
-        <ion-item class="notclickable">
-          <ion-label color="primary" position="stacked">Series</ion-label>
-          <ion-input readonly="true">{{cosplay.series}}</ion-input>
-        </ion-item>
-        <ion-item class="notclickable">
-          <ion-label color="primary" position="stacked">Description</ion-label>
-          <ion-input readonly="true">{{cosplay.description}}</ion-input>
-        </ion-item>
-      </ion-list>
-
-     
-      
-    </ion-col>
-  </ion-row>
-
-  <div padding>
-    <ion-segment [(ngModel)]="default">
-      <ion-segment-button value="elements">
-        <ion-icon name="shirt-outline"></ion-icon>
-      </ion-segment-button>
-      <ion-segment-button value="tasks">
-        <ion-icon name="list-outline"></ion-icon>
-      </ion-segment-button>
-    </ion-segment>
-  </div>
-
-  <div [ngSwitch]="default">
-    <div *ngSwitchCase="'elements'">
-
-      <ion-item color="transparent" lines="none">
-      <ion-title class="ion-text-center title">
-        <h3>Elementos del Cosplay</h3>
-      </ion-title>
-      <ion-button
-        size="medium" color="medium" (click)="enableEdit()">
-        <ion-icon name="create-outline"></ion-icon>
-      </ion-button>
-      <ion-button color="medium" size="medium" (click)="createNewItem(00,'toBuy')">
-        <ion-icon name="add-outline"></ion-icon>
-      </ion-button>
-        
-      </ion-item>
-      <div>
-        <ion-list
-        *ngIf="cosElementsToBuy$ | async"
-        class="ion-no-padding" lines="full">
-          <!--cosElementsToBuy-->
-          <ion-item 
-          no-lines class="ion-no-padding bottom-border  header-item">
-
-            <ion-grid class="ion-no-padding ion-no-border">
-              <ion-row class="list-header-row">
-                <ion-col class="list-header-col">
-                  <div class="main">To Buy</div>
-                </ion-col>
-                <ion-col class="list-header-col">
-                  <div class="sec">Cost</div>
-                </ion-col >
-                <ion-col class=" col list-header-col ">
-                  <div class="sec">Status</div>
-                </ion-col >
-              </ion-row>
-
-            </ion-grid>
-
-          </ion-item>
-          <ion-item
-            id="tobuy"
-            *ngFor="let el of cosElementsToBuy$ | async"
-            (click)="OpenItemDetails( el, 'toBuy', el.elId)"
-            class="ion-no-padding bottom-border list-item" 
-            [ngClass]="el.important == true ? 'important' : 'e'"
-            no-lines
-            detail
-          >
-            
-            <ion-grid class="ion-no-padding">
-
-              <ion-row class="elements-list">
-                <ion-col>
-                <div class="elements-list-data">
-                  <div class="elements-list-name">{{ el.name }}</div>
-                  <div class="elements-list-icons">
-                    <small>
-                    <ion-icon name="image-outline" *ngIf="el.image"></ion-icon>
-                  </small>
-                  </div>
-                </div>
-                </ion-col>
-                <ion-col class="elements-list-data sec">
-                  <div>{{ el.cost }} €</div>
-                </ion-col>
-                
-                <ion-col class="elements-list-data sec">
-                  <div *ngIf="!el.completed" class="red">
-                    <ion-icon name="remove" size="large"></ion-icon>
-                  </div>
-                  <div *ngIf="el.completed"  class="green">
-                    <ion-icon name="checkmark" size="large"></ion-icon>
-                  </div>
-                </ion-col>
-                  <ion-button 
-                  [style.visibility]=" (dataService.editMode$ | async) ? 'visible' : 'hidden'"
-                  color="danger" (click)="onDelete(el.elId, 'toBuy');$event.stopPropagation();">
-                    <ion-icon name="close" ></ion-icon>
-                  </ion-button>
-              </ion-row>
-
-            </ion-grid>
-          </ion-item>
-
-        </ion-list>
-        <ion-list 
-        *ngIf="cosElementsToMake$ | async"
-        class="ion-no-padding" lines="full">
-          <!--cosElementsToDo-->
-          <ion-item no-lines class="ion-no-padding bottom-border  header-item">
-
-            <ion-grid class="ion-no-padding ion-no-border">
-              <ion-row class="list-header-row">
-                <ion-col class="list-header-col">
-                  <div class="main">To Do</div>
-                </ion-col>
-                <ion-col class="list-header-col">
-                  <div class="sec">Time</div>
-                </ion-col >
-                <ion-col class=" col list-header-col ">
-                  <div class="sec">Percent</div>
-                </ion-col >
-              </ion-row>
-
-            </ion-grid>
-
-          </ion-item>
-          <ion-item
-            id="tomake"
-            *ngFor="let el of cosElementsToMake$ | async"
-            (click)="OpenItemDetails( el, 'toMake', el.elId)"
-            class="ion-no-padding bottom-border list-item" 
-            no-lines
-            detail
-          >
-            
-            <ion-grid class="ion-no-padding">
-
-              <ion-row class="elements-list">
-                <ion-col>
-                <div class="elements-list-data">
-                  <div class="elements-list-name">{{ el.name }}</div>
-                  <div class="elements-list-icons">
-                    <small>
-                    <ion-icon name="image-outline" *ngIf="el.image"></ion-icon>
-                  </small>
-                  </div>
-                </div>
-                </ion-col>
-                <ion-col class="elements-list-data sec">
-                  <div class="">{{ el.hours }} : {{ el.minutes }}</div>
-                </ion-col>
-                <ion-col class="elements-list-data sec">
-                  <div class="">{{ el.percentComplete != null ? el.percentComplete + '%' : '-' }} </div>
-                </ion-col>
-                <ion-button 
-                  [style.visibility]="(dataService.editMode$ | async) ? 'visible' : 'hidden'"
-                  color="danger" (click)="onDelete(el.elId, 'toMake');$event.stopPropagation();">
-                    <ion-icon name="close" ></ion-icon>
-                  </ion-button>
-              </ion-row>
-
-            </ion-grid>
-
-          </ion-item>
-        </ion-list>
-      </div>
-      
-      
+    <div text-center *ngIf="isLoading">        
+      <ion-spinner color="primary" ></ion-spinner>
     </div>
-    <div *ngSwitchCase="'tasks'">
-      
-      <ion-item color="transparent" lines="none">
-      <ion-title class="ion-text-center">
-        <h3>Tareas</h3>
-      </ion-title>
-      <ion-button
-        size="medium" color="medium" (click)="enableEdit()">
-        <ion-icon name="create-outline"></ion-icon>
-      </ion-button>
-      <ion-button color="medium" size="medium" (click)="createNewTask()">
-        <ion-icon name="add-outline"></ion-icon>
-      </ion-button>
-      </ion-item>
-      
+    
+    <ion-row>
+      <ion-col class="content-col" >
+        <ion-thumbnail *ngIf="imageUrl != null" class="user-image" >
+          <ion-progress-bar type="indeterminate" *ngIf="!imageReady"></ion-progress-bar>
+          <img src="{{ imageUrl }}" *ngIf="imageReady">
+        </ion-thumbnail>
+        <ion-thumbnail class="thumbnail_icon" *ngIf="imageUrl == null" >
+          <ion-icon class="ion-text-center" name="image" size="large"></ion-icon>
+        </ion-thumbnail>
 
-        <ion-list class="ion-no-padding" lines="full">
-
-          <ion-item no-lines class="ion-no-padding bottom-border header-item">
-            <ion-grid class="ion-no-padding">
-
-              <ion-row class="list-header-row">
-                <ion-col class="list-header-col">
-                  <div class="main">Tasks</div>
-                </ion-col>
-                <ion-col class="list-header-col">
-                  <div class="sec">Status</div>
-                </ion-col>
-              </ion-row>
-
-            </ion-grid>
+        <ion-list class="ion-no-padding">
+          <ion-item class="notclickable">
+            <ion-label color="primary" position="stacked">Series</ion-label>
+            <ion-input readonly="true">{{cosplay.series}}</ion-input>
           </ion-item>
-          <!-- Tasks -->
-          <ion-item 
-            id="todo"
-            *ngFor="let task of cosTasks$ | async"
-            (click)="OpenItemDetails( task, 'task', task.taskId )"
-            class="ion-no-padding bottom-border list-item" 
-            no-lines
-            detail
-          >
-            
-            <ion-grid class="ion-no-padding">
-
-              <ion-row class="elements-list">
-                <ion-col>
-                  <div class="elements-list-data">
-                    <div class="">{{ task.name }}</div>
-                  </div>
-                </ion-col>
-                <ion-col class="elements-list-data sec">
-                  <div *ngIf="!task.done" class="red">
-                    <ion-icon name="remove" size="large"></ion-icon>
-                  </div>
-                  <div *ngIf="task.done"  class="green">
-                    <ion-icon name="checkmark" size="large"></ion-icon>
-                  </div>
-                </ion-col>
-                <ion-button 
-                  [style.visibility]=" (dataService.editMode$ | async) ? 'visible' : 'hidden'"
-                  color="danger" (click)="onDelete(task.taskId, 'task');$event.stopPropagation();">
-                    <ion-icon name="close" ></ion-icon>
-                  </ion-button>
-              </ion-row>
-            </ion-grid>
-
+          <ion-item class="notclickable">
+            <ion-label color="primary" position="stacked">Description</ion-label>
+            <ion-input readonly="true">{{cosplay.description}}</ion-input>
           </ion-item>
-
         </ion-list>
-      
-      </div>
-  </div>
+      </ion-col>
+    </ion-row>
 
+    <div padding>
+      <ion-segment [(ngModel)]="default">
+        <ion-segment-button value="elements">
+          <ion-icon name="shirt-outline"></ion-icon>
+        </ion-segment-button>
+        <ion-segment-button value="tasks">
+          <ion-icon name="list-outline"></ion-icon>
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+
+    <div [ngSwitch]="default">
+      <div *ngSwitchCase="'elements'">
+
+        <ion-item color="transparent" lines="none">
+        <ion-title class="ion-text-center title">
+          <h3>Elementos del Cosplay</h3>
+        </ion-title>
+        <ion-button
+          size="medium" color="medium" (click)="enableEdit()">
+          <ion-icon name="create-outline"></ion-icon>
+        </ion-button>
+        <ion-button color="medium" size="medium" (click)="createNewItem(00,'toBuy')">
+          <ion-icon name="add-outline"></ion-icon>
+        </ion-button>
+          
+        </ion-item>
+        <div>
+          <ion-list
+          *ngIf="cosElementsToBuy$ | async"
+          class="ion-no-padding" lines="full">
+            <!--cosElementsToBuy-->
+            <ion-item 
+            no-lines class="ion-no-padding bottom-border  header-item">
+
+              <ion-grid class="ion-no-padding ion-no-border">
+                <ion-row class="list-header-row">
+                  <ion-col class="list-header-col">
+                    <div class="main">To Buy</div>
+                  </ion-col>
+                  <ion-col class="list-header-col">
+                    <div class="sec">Cost</div>
+                  </ion-col >
+                  <ion-col class=" col list-header-col ">
+                    <div class="sec">Status</div>
+                  </ion-col >
+                </ion-row>
+
+              </ion-grid>
+
+            </ion-item>
+            <ion-item
+              id="tobuy"
+              *ngFor="let el of cosElementsToBuy$ | async"
+              (click)="OpenItemDetails( el, 'toBuy', el.elId)"
+              class="ion-no-padding bottom-border list-item" 
+              [ngClass]="el.important == true ? 'important' : 'e'"
+              no-lines
+              detail
+            >
+              
+              <ion-grid class="ion-no-padding">
+
+                <ion-row class="elements-list">
+                  <ion-col>
+                  <div class="elements-list-data">
+                    <div class="elements-list-name">{{ el.name }}</div>
+                    <div class="elements-list-icons">
+                      <small>
+                      <ion-icon name="image-outline" *ngIf="el.image"></ion-icon>
+                    </small>
+                    </div>
+                  </div>
+                  </ion-col>
+                  <ion-col class="elements-list-data sec">
+                    <div>{{ el.cost }} €</div>
+                  </ion-col>
+                  
+                  <ion-col class="elements-list-data sec">
+                    <div *ngIf="!el.completed" class="red">
+                      <ion-icon name="remove" size="large"></ion-icon>
+                    </div>
+                    <div *ngIf="el.completed"  class="green">
+                      <ion-icon name="checkmark" size="large"></ion-icon>
+                    </div>
+                  </ion-col>
+                    <ion-button 
+                    [style.visibility]=" (dataService.editMode$ | async) ? 'visible' : 'hidden'"
+                    color="danger" (click)="onDelete(el.elId, 'toBuy');$event.stopPropagation();">
+                      <ion-icon name="close" ></ion-icon>
+                    </ion-button>
+                </ion-row>
+
+              </ion-grid>
+            </ion-item>
+
+          </ion-list>
+          <ion-list 
+          *ngIf="cosElementsToMake$ | async"
+          class="ion-no-padding" lines="full">
+            <!--cosElementsToDo-->
+            <ion-item no-lines class="ion-no-padding bottom-border  header-item">
+
+              <ion-grid class="ion-no-padding ion-no-border">
+                <ion-row class="list-header-row">
+                  <ion-col class="list-header-col">
+                    <div class="main">To Do</div>
+                  </ion-col>
+                  <ion-col class="list-header-col">
+                    <div class="sec">Time</div>
+                  </ion-col >
+                  <ion-col class=" col list-header-col ">
+                    <div class="sec">Percent</div>
+                  </ion-col >
+                </ion-row>
+
+              </ion-grid>
+
+            </ion-item>
+            <ion-item
+              id="tomake"
+              *ngFor="let el of cosElementsToMake$ | async"
+              (click)="OpenItemDetails( el, 'toMake', el.elId)"
+              class="ion-no-padding bottom-border list-item" 
+              no-lines
+              detail
+            >
+              
+              <ion-grid class="ion-no-padding">
+
+                <ion-row class="elements-list">
+                  <ion-col>
+                  <div class="elements-list-data">
+                    <div class="elements-list-name">{{ el.name }}</div>
+                    <div class="elements-list-icons">
+                      <small>
+                      <ion-icon name="image-outline" *ngIf="el.image"></ion-icon>
+                    </small>
+                    </div>
+                  </div>
+                  </ion-col>
+                  <ion-col class="elements-list-data sec">
+                    <div class="">{{ el.hours }} : {{ el.minutes }}</div>
+                  </ion-col>
+                  <ion-col class="elements-list-data sec">
+                    <div class="">{{ el.percentComplete != null ? el.percentComplete + '%' : '-' }} </div>
+                  </ion-col>
+                  <ion-button 
+                    [style.visibility]="(dataService.editMode$ | async) ? 'visible' : 'hidden'"
+                    color="danger" (click)="onDelete(el.elId, 'toMake');$event.stopPropagation();">
+                      <ion-icon name="close" ></ion-icon>
+                    </ion-button>
+                </ion-row>
+
+              </ion-grid>
+
+            </ion-item>
+          </ion-list>
+        </div>
+        
+        
+      </div>
+      <div *ngSwitchCase="'tasks'">
+        
+        <ion-item color="transparent" lines="none">
+        <ion-title class="ion-text-center">
+          <h3>Tareas</h3>
+        </ion-title>
+        <ion-button
+          size="medium" color="medium" (click)="enableEdit()">
+          <ion-icon name="create-outline"></ion-icon>
+        </ion-button>
+        <ion-button color="medium" size="medium" (click)="createNewTask()">
+          <ion-icon name="add-outline"></ion-icon>
+        </ion-button>
+        </ion-item>
+        
+
+          <ion-list class="ion-no-padding" lines="full">
+
+            <ion-item no-lines class="ion-no-padding bottom-border header-item">
+              <ion-grid class="ion-no-padding">
+
+                <ion-row class="list-header-row">
+                  <ion-col class="list-header-col">
+                    <div class="main">Tasks</div>
+                  </ion-col>
+                  <ion-col class="list-header-col">
+                    <div class="sec">Status</div>
+                  </ion-col>
+                </ion-row>
+
+              </ion-grid>
+            </ion-item>
+            <!-- Tasks -->
+            <ion-item 
+              id="todo"
+              *ngFor="let task of cosTasks$ | async"
+              (click)="OpenItemDetails( task, 'task', task.taskId )"
+              class="ion-no-padding bottom-border list-item" 
+              no-lines
+              detail
+            >
+              
+              <ion-grid class="ion-no-padding">
+
+                <ion-row class="elements-list">
+                  <ion-col>
+                    <div class="elements-list-data">
+                      <div class="">{{ task.name }}</div>
+                    </div>
+                  </ion-col>
+                  <ion-col class="elements-list-data sec">
+                    <div *ngIf="!task.done" class="red">
+                      <ion-icon name="remove" size="large"></ion-icon>
+                    </div>
+                    <div *ngIf="task.done"  class="green">
+                      <ion-icon name="checkmark" size="large"></ion-icon>
+                    </div>
+                  </ion-col>
+                  <ion-button 
+                    [style.visibility]=" (dataService.editMode$ | async) ? 'visible' : 'hidden'"
+                    color="danger" (click)="onDelete(task.taskId, 'task');$event.stopPropagation();">
+                      <ion-icon name="close" ></ion-icon>
+                    </ion-button>
+                </ion-row>
+              </ion-grid>
+
+            </ion-item>
+
+          </ion-list>
+        
+        </div>
+    </div>
+
+</ion-col>
+</ion-row>
 </ion-grid>
 </ion-content>
