@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { appSettingsConfig } from '../../models/appSettingsConfig.model';
 import { DataService } from '../../services/data.service';
 import { SettingsService } from '../../services/settings.service';
+import { AuthenticationService } from 'src/app/services/authenticationService';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+
 
 const LOCALDATAKEY = 'settings';
 
@@ -16,15 +19,29 @@ export class SettingsPage implements OnInit {
   public theme: string = 'dark-theme';
   public darkMode: boolean = false;
   public settingsObj : appSettingsConfig;
+  public userData : any;
+  public isLoading = false;
   
-  constructor(private settings: SettingsService, private dataService: DataService) {
+  constructor(
+    private settings: SettingsService,
+    private dataService: DataService,
+    private authService : AuthenticationService,
+    private authFire : AngularFireAuth
+
+    ) {
     //Orden de datos
-    
     this.loadLocalData(LOCALDATAKEY);
+    
   }
 
   async ngOnInit() {
+    this.isLoading = true;
+    this.authFire.authState.subscribe((user) => {  
+      this.userData = user;
+      this.isLoading = false;
+    });
     
+    console.group("userData: " ,this.userData);
   }
 
   async loadLocalData(key){

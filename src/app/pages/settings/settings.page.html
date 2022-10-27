@@ -12,12 +12,12 @@
 <ion-row>
 <ion-col size-sm="12" size-md="12" size-lg="8" offset-lg="2" size-xl="8" offset-xl="2">
 
-  <div class="content" >
+  <div class="content" *ngIf="!isLoading">
   <p class="space-left">ACCOUNT</p>
   <ion-list lines="none">
     <ion-item button="true">
       <ion-icon slot="start" name="person-circle-outline" size="large"></ion-icon>
-      <ion-label>UserName</ion-label>
+      <ion-label>{{ userData.email }}</ion-label>
     </ion-item>
     <ion-item disabled="true">
       <ion-icon slot="start" name="eye-outline"></ion-icon>
@@ -44,7 +44,7 @@
       <ion-toggle name="darkmode" [(ngModel)]="darkMode" (ionChange)="updateOption('darkMode',$event.detail)"></ion-toggle>
     </ion-item>
     -->
-    <ion-item>
+    <ion-item disabled="true">
       <ion-label>Theme options</ion-label>
       <ion-select interface="popover" [(ngModel)]="theme" (ionChange)="updateOption('theme',$event.detail)">
         <ion-select-option value="dark-theme">Dark</ion-select-option>
@@ -64,12 +64,6 @@
       <ion-label >Contact us</ion-label>
     </ion-item>
   </ion-list>
-  </div>
-
-  <div>
-    <div *ngFor="let item of testItems">
-      {{item}}
-    </div>
   </div>
 
 </ion-col>
