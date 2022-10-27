@@ -19,6 +19,9 @@
   </div>
   <form [formGroup]="form" *ngIf="!isLoading">
     <ion-grid>
+    <ion-row>
+    <ion-col size-sm="12" size-md="12" size-lg="8" offset-lg="2" size-xl="8" offset-xl="2">
+
       <ion-row>
         <ion-col>
           <ion-item>
@@ -60,7 +63,7 @@
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col size-sm="6" offset-sm="3">
+        <ion-col >
           <ion-item>
             <ion-label position="stacked">Description</ion-label>
             <ion-textarea rows="3" formControlName="description"></ion-textarea>
@@ -76,7 +79,7 @@
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col size-sm="6" offset-sm="0">
+        <ion-col size-sm="6" >
           <ion-item>
             <ion-label position="floating" color="primary">Starts</ion-label>
             <ion-datetime
@@ -120,7 +123,7 @@
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col size-sm="6" offset-sm="3">
+        <ion-col>
           <app-location-picker
           [selectedLocationImage]="actualMapImage"
           [showPreview]="form.get('location').value"
@@ -130,7 +133,7 @@
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col size-sm="6" offset-sm="3">
+        <ion-col>
           <app-image-picker
           [selectedImage]="actualImage"
           [showPreview]="form.get('imageUrl').value"
@@ -139,6 +142,8 @@
         </ion-col>
       </ion-row>
 
-    </ion-grid>
+  </ion-col>
+  </ion-row>
+  </ion-grid>
   </form>
 </ion-content>
