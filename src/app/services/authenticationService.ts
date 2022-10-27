@@ -10,7 +10,7 @@ import {
 } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { getAuth, isSignInWithEmailLink, sendSignInLinkToEmail, signInWithEmailLink } from 'firebase/auth';
+import { getAuth, isSignInWithEmailLink, sendSignInLinkToEmail, signInWithEmailLink, sendEmailVerification } from 'firebase/auth';
 import { resolve } from 'path';
 import { rejects } from 'assert';
 import { AlertController } from '@ionic/angular';
@@ -220,7 +220,7 @@ export class AuthenticationService {
       const email = user.email;
       const auth = getAuth();
 
-      sendSignInLinkToEmail(auth, email, actionCodeSettings)
+      sendEmailVerification(user, actionCodeSettings)
         .then(() => {
           // The link was successfully sent. Inform the user.
           // Save the email locally so you don't need to ask the user for it again
@@ -269,6 +269,7 @@ export class AuthenticationService {
           window.localStorage.removeItem('emailForSignIn');
           // You can access the new user via result.user
           // Additional user info profile not available via:
+          console.log('User linked : ' , result.user)
           // result.additionalUserInfo.profile == null
           // You can check if the user is new or existing:
           // result.additionalUserInfo.isNewUser
