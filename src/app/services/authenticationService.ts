@@ -250,6 +250,8 @@ export class AuthenticationService {
 
     const promise = new Promise( (resolve, reject) => {
 
+      console.log('email link? : ' + window.location.href)
+
       // Confirm the link is a sign-in with email link.
       const auth = getAuth();
       if (isSignInWithEmailLink(auth, window.location.href)) {
