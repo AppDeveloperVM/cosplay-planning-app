@@ -278,9 +278,10 @@ export class AuthenticationService {
             // Additional user info profile not available via:
             console.log('User linked : ' , result.user);
             // result.additionalUserInfo.profile == null
+
             // You can check if the user is new or existing:
             // result.additionalUserInfo.isNewUser
-
+            this.ChangeToVerifiedAccount();
             resolve(true);
 
           })
@@ -299,16 +300,16 @@ export class AuthenticationService {
       return promise;
   }
 
-  ChangeToVerifiedAccount(user, email) : Promise<any>{
+  ChangeToVerifiedAccount() : Promise<any>{
 
     const promise = new Promise( (resolve, reject) => {
 
       const localUserData = JSON.parse(localStorage.getItem('user'));
       if (  localUserData != null  ){
         const uid = localUserData.uid 
-        console.log(user);
+        console.log(localUserData);
           this.afStore.doc(
-            `users/${user.uid}`
+            `users/${uid}`
           ).update({
             emailVerified : true
           })
