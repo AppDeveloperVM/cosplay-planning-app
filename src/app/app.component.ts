@@ -28,8 +28,8 @@ export class AppComponent {
     private router: Router,
     public _settings: SettingsService
   ) {
-    defineCustomElements(window);
     this.initializeApp();
+    defineCustomElements(window);
 
     this.dataService.init();
     this._settings.init();
