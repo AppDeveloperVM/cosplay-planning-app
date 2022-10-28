@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { DataService } from './services/data.service';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { threadId } from 'worker_threads';
+import { defineCustomElements } from '@ionic/pwa-elements/loader';
 
 @Component({
   selector: 'app-root',
@@ -27,6 +28,7 @@ export class AppComponent {
     private router: Router,
     public _settings: SettingsService
   ) {
+    defineCustomElements(window);
     this.initializeApp();
 
     this.dataService.init();
