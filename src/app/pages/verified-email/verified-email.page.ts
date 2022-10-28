@@ -36,7 +36,7 @@ export class VerifiedEmailPage implements OnInit {
     this.authService.CompleteAccessWithEmailLink()
     .then( (res) => {
       console.log(res);
-      this.goToHomePage();
+      //this.goToHomePage();
     })
     .catch( (err) => {
       console.log(err);

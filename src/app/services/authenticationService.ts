@@ -334,6 +334,8 @@ export class AuthenticationService {
           })
           .then( (res) => {
             console.log(res);
+            
+            this.router.navigate(['/']);
           })
           .catch( (err) => {
             alert(err);
