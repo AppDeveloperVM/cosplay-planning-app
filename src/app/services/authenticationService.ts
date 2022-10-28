@@ -10,7 +10,7 @@ import {
 } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { getAuth, isSignInWithEmailLink, sendSignInLinkToEmail, signInWithEmailLink, sendEmailVerification, reauthenticateWithCredential, signInWithEmailAndPassword  } from 'firebase/auth';
+import { getAuth, isSignInWithEmailLink, sendSignInLinkToEmail, signInWithEmailLink, sendEmailVerification, reauthenticateWithCredential, signInWithEmailAndPassword, linkWithCredential, EmailAuthProvider  } from 'firebase/auth';
 import { resolve } from 'path';
 import { rejects } from 'assert';
 import { AlertController } from '@ionic/angular';
@@ -281,7 +281,26 @@ export class AuthenticationService {
 
             // You can check if the user is new or existing:
             // result.additionalUserInfo.isNewUser
-            this.ChangeToVerifiedAccount();
+
+            //-Get credentials for linked user
+            const credential = EmailAuthProvider.credentialWithLink(
+              email, window.location.href);
+
+            // Link the credential to the current user.
+            const auth = getAuth();
+            linkWithCredential(auth.currentUser, credential)
+              .then((usercred) => {
+                console.log('usercred: ', usercred);
+                // The provider is now successfully linked.
+                // The phone user can now sign in with their phone number or email.
+                this.ChangeToVerifiedAccount();
+              })
+              .catch((error) => {
+                // Some error occurred.
+              });
+
+            
+
             resolve(true);
 
           })
