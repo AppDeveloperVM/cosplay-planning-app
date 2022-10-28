@@ -293,10 +293,18 @@ export class AuthenticationService {
                 console.log('usercred: ', usercred);
                 // The provider is now successfully linked.
                 // The phone user can now sign in with their phone number or email.
-                this.ChangeToVerifiedAccount();
+                this.ChangeToVerifiedAccount()
+                .then( (res) => {
+                  console.log(res);
+                  this.router.navigate(['/']);
+                })
+                .catch( (err) => {
+                  console.log(err)
+                })
               })
               .catch((error) => {
                 // Some error occurred.
+                console.log(error)
               });
 
             
@@ -334,8 +342,8 @@ export class AuthenticationService {
           })
           .then( (res) => {
             console.log(res);
+
             
-            this.router.navigate(['/']);
           })
           .catch( (err) => {
             alert(err);
