@@ -33,10 +33,10 @@ export class VerifiedEmailPage implements OnInit {
 
   changeToVerifiedAccount(){
 
-    this.authService.CompleteAccessWithEmailLink()
+    this.authService.ChangeToVerifiedAccount()
     .then( (res) => {
       console.log(res);
-      //this.goToHomePage();
+      this.goToHomePage();
     })
     .catch( (err) => {
       console.log(err);

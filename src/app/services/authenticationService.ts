@@ -207,8 +207,6 @@ export class AuthenticationService {
   // Email verification when new user register
   SendVerificationMail() {
 
-    
-
     return this.ngFireAuth.currentUser.then((user) => {
 
       const auth = getAuth();
@@ -221,8 +219,76 @@ export class AuthenticationService {
         handleCodeInApp: true,
       };
 
-      //sendEmailVerification(user, actionCodeSettings)
-      sendSignInLinkToEmail(auth, email, actionCodeSettings)
+      return user.sendEmailVerification(actionCodeSettings)
+      .then(() => {
+        this.router.navigate(['verify-email']);
+      }).catch((error) => {
+        console.log('error catched 3');
+        window.alert(error.message)
+      }) 
+
+    });
+  }
+
+
+  ChangeToVerifiedAccount() : Promise<any>{
+
+    const promise = new Promise( (resolve, reject) => {
+
+      const localUserData = JSON.parse(localStorage.getItem('user'));
+
+      if (  localUserData != null  ){
+        const uid = localUserData.uid 
+        console.log(localUserData);
+          this.afStore.doc(
+            `users/${uid}`
+          ).update({
+            emailVerified : true
+          })
+          .then( (res) => {
+            console.log(res);
+
+          })
+          .catch( (err) => {
+            alert(err);
+          });
+          resolve(true);
+
+      } else {
+        reject(false);
+      }
+
+    });
+
+    return promise;
+
+   /*  const verify = new Promise( (resolve,reject) => {
+      this.ngFireAuth.authState.subscribe((user) => { */
+        
+
+      /* });
+    }); */
+
+  }
+
+
+  //Register with emailLink
+  SendSignInLink(){
+
+    return this.ngFireAuth.currentUser.then((user) => {
+
+        const auth = getAuth();
+          const email = user.email;
+          const actionCodeSettings = {
+            // URL you want to redirect back to. The domain (www.example.com) for
+            // this URL must be whitelisted in the Firebase Console.
+            url: 'https://cosplay-planning-app.vercel.app/verified-email',
+            // This must be true for email link sign-in.
+            handleCodeInApp: true,
+          };
+
+        //sendEmailVerification(user, actionCodeSettings)
+        sendSignInLinkToEmail(auth, email, actionCodeSettings)
         .then(() => {
           // The link was successfully sent. Inform the user.
           // Save the email locally so you don't need to ask the user for it again
@@ -233,21 +299,12 @@ export class AuthenticationService {
           const errorCode = error.code;
           const errorMessage = error.message;
           // ...
-        });
-      
-      /* return user.sendEmailVerification({
-        url : "https://cosplay-planning-app.vercel.app/verified-email",
-        handleCodeInApp: true,
-      }).then(() => {
-        this.router.navigate(['verify-email']);
-      }).catch((error) => {
-        console.log('error catched 3');
-        window.alert(error.message)
-      }) */
+      });
 
     });
   }
 
+  //Register by EmailLink ( doesnt have password yet )
   CompleteAccessWithEmailLink() : Promise<any> {
 
     const promise = new Promise( (resolve, reject) => {
@@ -327,45 +384,7 @@ export class AuthenticationService {
       return promise;
   }
 
-  ChangeToVerifiedAccount() : Promise<any>{
-
-    const promise = new Promise( (resolve, reject) => {
-
-      const localUserData = JSON.parse(localStorage.getItem('user'));
-      if (  localUserData != null  ){
-        const uid = localUserData.uid 
-        console.log(localUserData);
-          this.afStore.doc(
-            `users/${uid}`
-          ).update({
-            emailVerified : true
-          })
-          .then( (res) => {
-            console.log(res);
-
-            
-          })
-          .catch( (err) => {
-            alert(err);
-          });
-          resolve(true);
-
-      } else {
-        reject(false);
-      }
-
-    });
-
-    return promise;
-
-   /*  const verify = new Promise( (resolve,reject) => {
-      this.ngFireAuth.authState.subscribe((user) => { */
-        
-
-      /* });
-    }); */
-
-  }
+  
 
   // Recover password
   PasswordRecover(passwordResetEmail) {
