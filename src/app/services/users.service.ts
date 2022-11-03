@@ -43,8 +43,6 @@ export class UsersService {
 
   onUpdateUserProfile( displayName, photoURL) : Promise<any>{
     const auth = getAuth();
-
-
     const promise = new Promise( (resolve, reject) => {
       updateProfile(auth.currentUser, {
         displayName, photoURL

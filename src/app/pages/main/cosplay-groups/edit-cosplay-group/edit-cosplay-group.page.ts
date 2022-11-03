@@ -161,16 +161,12 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
     }
 
     this.actualMapImage = this.cosplayGroup.location.staticMapImageUrl;
-
-    
     console.log("Form data with saved info: "+ JSON.stringify(this.form.value));
   }
 
   //Submit form data ( Cosplay ) when ready
   onUpdateCosplayGroup() {
     if (!this.form.valid) return
-
-    
 
     this.loadingCtrl
     .create({
