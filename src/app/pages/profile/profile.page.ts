@@ -3,12 +3,21 @@ import { Capacitor } from '@capacitor/core';
 import { Share } from '@capacitor/share';
 import { Device } from '@capacitor/device';
 
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { UploadImageService } from 'src/app/services/upload-img.service';
+
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
 })
 export class ProfilePage implements OnInit {
+  userData = null;
+  isLoading = true;
+  imageUrl = null;
+  imageReady = false;
+
   instagram_url = '';
   instagram_user = 'SpaceRonin_v';
   instagram_name = 'SpaceRonin';
@@ -17,13 +26,40 @@ export class ProfilePage implements OnInit {
   twitter_user = 'SpaceRonin_v';
   twitter_name = 'SpaceRonin';
 
-  constructor() {
-    
-   }
+  constructor( private authFire : AngularFireAuth, private imgService : UploadImageService ) {
+    this.authFire.authState.subscribe((user) => {  
+      this.isLoading = false;
+
+      this.userData = user;
+      if( user.displayName == null ){
+        this.userData.displayName = user.email;
+      }
+
+      if(user.photoURL != null) {
+        this.getImageByFbUrl(user.photoURL,2).then((val)=>{
+          this.imageUrl = val; 
+          this.imageReady = true;
+        })
+      } else {
+        this.imageUrl = null;
+        this.imageReady = true;
+      }  
+
+      console.log(user);
+    });
+  }
 
   ngOnInit() {
+
+    
+
     this.instagram_url = `https://www.instagram.com/${this.instagram_user}/?hl=es`;
     this.twitter_url = `https://www.twitter.com/${this.twitter_user}/?hl=es`;
+  }
+
+
+  getImageByFbUrl(imageName: string, size: number){
+    return this.imgService.getStorageImgUrl(imageName,size);
   }
 
   async Share(){
