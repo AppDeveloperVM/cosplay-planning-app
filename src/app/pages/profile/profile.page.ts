@@ -22,9 +22,6 @@ export class ProfilePage implements OnInit {
    }
 
   ngOnInit() {
-
-    
-
     this.instagram_url = `https://www.instagram.com/${this.instagram_user}/?hl=es`;
     this.twitter_url = `https://www.twitter.com/${this.twitter_user}/?hl=es`;
   }

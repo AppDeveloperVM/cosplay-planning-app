@@ -246,8 +246,7 @@ export class AuthenticationService {
             emailVerified : true
           })
           .then( (res) => {
-            console.log(res);
-
+            //works!
           })
           .catch( (err) => {
             alert(err);
