@@ -55,6 +55,7 @@
           </ion-item>
 
           <app-image-picker
+          [selectedImage]="actualImage"
           [showPreview]="form.get('photoURL').value"
           (imagePick)="onImagePicked($event)"></app-image-picker>
           <div class="progress">

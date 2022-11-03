@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { getAuth, updateProfile } from "firebase/auth";
 import { FormGroup, FormGroupDirective, FormControl, Validators } from '@angular/forms';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { UploadImageService } from 'src/app/services/upload-img.service';
 import { Profile } from '../profile.model';
 import { ProfilePage } from '../profile.page';
+import { UsersService } from 'src/app/services/users.service';
 
 @Component({
   selector: 'app-edit-profile',
@@ -24,6 +26,7 @@ export class EditProfilePage implements OnInit {
     private alertCtrl: AlertController,
     private authFire : AngularFireAuth,
     private uploadService: UploadImageService,
+    private usersService: UsersService,
     private imgService : UploadImageService
   ) { }
 
@@ -39,6 +42,11 @@ export class EditProfilePage implements OnInit {
     });
 
     this.isLoading = true;
+
+    const auth = getAuth();
+    updateProfile(auth.currentUser, {
+      
+    })
 
     this.authFire.authState.subscribe((user) => {  
       this.userData = user;
@@ -78,7 +86,7 @@ export class EditProfilePage implements OnInit {
     .fullUploadProcess(imageData,this.form)
     .then((val) =>{
       this.isFormReady = val;
-      console.log("formReady: "+val);
+      console.log("formReady: "+val + ", img: ");
     })
     .catch(err => {
       console.log(err);
@@ -105,7 +113,27 @@ export class EditProfilePage implements OnInit {
         this.form.reset();
         this.router.navigate(['main/tabs/cosplays/my-cosplays']);
       }, 500);
- */
+      
+ */   
+
+      
+
+      this.usersService.onUpdateUserProfile( this.form.get('displayName').value , this.form.get('photoURL').value )
+      .then( (res) => {
+        console.log('Profile updated! :' + res); 
+        const info = this.form.value;
+        console.log(info);
+      } )
+      .catch( (err) => {
+        console.log(err);
+      })
+      .finally(
+        
+      );
+
+      setTimeout(() => { 
+        loadingEl.dismiss();
+      }, 500);  
       
     });
 
