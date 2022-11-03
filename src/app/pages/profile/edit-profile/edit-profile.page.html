@@ -83,7 +83,7 @@
 
       </form>
 
-      <ion-button size="small" (click)="onUpdateProfile()">
+      <ion-button size="small" (click)="onUpdateProfile()" [disabled]="!form.valid">
         Guardar cambios
       </ion-button>
 
