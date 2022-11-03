@@ -55,8 +55,8 @@
           </ion-item>
 
           <app-image-picker
-          [selectedImage]="actualImage"
-          [showPreview]="form.get('photoURL').value"
+          [selectedImage]="imgSrc"
+          [showPreview]="form.get('imageUrl').value"
           (imagePick)="onImagePicked($event)"></app-image-picker>
           <div class="progress">
             <div class="progress-bar progress-bar-stripped bg-success" role="progressbar" 
@@ -78,14 +78,15 @@
         
         </ion-item-group>
 
-      
       </ion-list>
-
       </form>
 
-      <ion-button size="small" (click)="onUpdateProfile()" [disabled]="!form.valid">
-        Guardar cambios
-      </ion-button>
+      <div class="ion-text-end">
+        <ion-button item-end size="small" (click)="onUpdateProfile()" [disabled]="!form.valid">
+          Guardar cambios
+        </ion-button>
+      </div>
+      
 
     </ion-col>
 </ion-row>

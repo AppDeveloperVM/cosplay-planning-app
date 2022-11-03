@@ -19,7 +19,8 @@ export class EditProfilePage implements OnInit {
   form: FormGroup;
   isLoading = false;
   isFormReady = true;
-  actualImage = "";
+  imageName = "";
+  imgSrc = "";
   
   constructor(
     private loadingCtrl: LoadingController,
@@ -34,19 +35,15 @@ export class EditProfilePage implements OnInit {
 
     this.form = new FormGroup({
       //this.profile.userName,
-      displayName: new FormControl({
+      displayName: new FormControl( null, 
+      {
         updateOn: 'blur',
         validators: [Validators.required]
       }),
-      photoURL: new FormControl(null)
+      imageUrl: new FormControl(null)
     });
 
     this.isLoading = true;
-
-    const auth = getAuth();
-    updateProfile(auth.currentUser, {
-      
-    })
 
     this.authFire.authState.subscribe((user) => {  
       this.userData = user;
@@ -58,10 +55,10 @@ export class EditProfilePage implements OnInit {
         //Use saved info from db
         this.getImageByFbUrl(this.userData.photoURL, 2)
         .then((val)=>{
-          this.actualImage = val;
+          this.imgSrc = val;
           //Use saved info from db
-          if(this.form.get('photoURL').value == null && this.userData.photoURL != null){
-            this.form.patchValue({ photoURL: this.userData.photoURL })
+          if(this.form.get('imageUrl').value == null && this.userData.photoURL != null){
+            this.form.patchValue({ imageUrl: this.userData.photoURL })
           }
         })
         .catch( (err) => {
@@ -86,7 +83,14 @@ export class EditProfilePage implements OnInit {
     .fullUploadProcess(imageData,this.form)
     .then((val) =>{
       const name = val.split('_')[0];
-      this.actualImage = name;
+      this.imageName = name;
+      this.getImageByFbUrl(this.imageName, 2)
+      .then( (res) => {
+        this.imgSrc = res;
+        console.log('imgSrc : ' + res);
+      } )
+      .catch();
+
       this.isFormReady = true;
       console.log("formReady, img src : "+ name );
     })
@@ -117,11 +121,11 @@ export class EditProfilePage implements OnInit {
       }, 500);   
       */   
 
-      this.usersService.onUpdateUserProfile( this.form.get('displayName').value , this.actualImage )
+      this.usersService.onUpdateUserProfile( this.form.get('displayName').value , this.imageName )
       .then( (res) => {
         console.log('Profile updated! :' + res); 
         const info = this.form.value;
-        console.log('img :',this.actualImage);
+        console.log('img :',this.imageName);
       } )
       .catch( (err) => {
         console.log(err);
