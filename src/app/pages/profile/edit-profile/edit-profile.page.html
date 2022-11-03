@@ -12,8 +12,10 @@
   <div text-center *ngIf="isLoading">
     <ion-progress-bar type="indeterminate"></ion-progress-bar>
   </div>
+
   <ion-row>
-    <ion-col size-md="3" size-sm="4" size-xs="12">
+
+    <!-- <ion-col size-md="3" size-sm="4" size-xs="12">
       <ion-list>  
         <ion-item button>General</ion-item>
         <ion-item button>Avatar</ion-item>
@@ -26,17 +28,21 @@
         <ion-item-divider></ion-item-divider>
         <ion-item button>Configuracion de privacidad</ion-item>
       </ion-list>
-    </ion-col>
-    <ion-col class="main-content" size-md="9" size-sm="8" size-xs="12">
+    </ion-col> -->
+
+    <ion-col class="main-content" size-sm="12"  size-md="8" offset-md="2" size-lg="6" offset-lg="3" size-xl="6" offset-xl="3">
         
       <ion-title class="title">GENERAL</ion-title>
       <div class="description">
         <p>En este apartado se tratan los ajustes más básicos.</p>
       </div>
 
-      <ion-list>
+      <form [formGroup]="form">
 
+      <ion-list>
         <ion-item-group>
+
+          
           <ion-item-divider >
             <ion-label>
               GENERAL
@@ -45,22 +51,40 @@
 
           <ion-item>
             <ion-label position="stacked">Nombre de Perfil</ion-label>
-          <ion-input></ion-input>
+            <ion-input type="text" formControlName="displayName"></ion-input>
           </ion-item>
-          <ion-item>
+
+          <app-image-picker
+          [showPreview]="form.get('photoURL').value"
+          (imagePick)="onImagePicked($event)"></app-image-picker>
+          <div class="progress">
+            <div class="progress-bar progress-bar-stripped bg-success" role="progressbar" 
+            [style.width]="(uploadPercent | async) + '%'">
+            </div>
+          </div>
+
+          <!-- <ion-item>
             <ion-label position="stacked">Nombre Real (?)</ion-label>
             <ion-input></ion-input>
             <ion-note slot="helper">El nombre por el que tus amigos te encontrarán</ion-note>
-            
-          </ion-item>
-          <ion-item lines="none">
+          </ion-item> -->
+
+          <!-- <ion-item lines="none">
             <ion-label position="stacked">URL Personalizado</ion-label>
             <ion-note slot="helper">Tu perfil estará disponible en '..'</ion-note>
             <ion-input></ion-input>
-          </ion-item>
+          </ion-item> -->
+        
         </ion-item-group>
 
+      
       </ion-list>
+
+      </form>
+
+      <ion-button size="small" (click)="onUpdateProfile()">
+        Guardar cambios
+      </ion-button>
 
     </ion-col>
 </ion-row>
