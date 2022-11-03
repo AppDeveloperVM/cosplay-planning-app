@@ -93,7 +93,7 @@ export class NewPlanningPage implements OnInit {
     this.uploadService
           .fullUploadProcess(imageData,this.form)
           .then((val) =>{
-            this.isFormReady = val;
+            this.isFormReady = true;
             console.log("formReady: "+val);
           })
           .catch(err => {

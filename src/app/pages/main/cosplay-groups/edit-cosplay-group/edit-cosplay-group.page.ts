@@ -198,7 +198,7 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
     this.uploadService
           .fullUploadProcess(imageData,this.form)
           .then((val) =>{
-            this.isFormReady = val;
+            this.isFormReady = true;
             console.log("formReady: "+val);
           })
           .catch(err => {
