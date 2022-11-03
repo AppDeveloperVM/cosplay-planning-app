@@ -65,7 +65,7 @@ export class EditProfilePage implements OnInit {
           }
         })
         .catch( (err) => {
-  
+          console.log('error obtaining data  : ' + err);
         });
       }
 
@@ -85,8 +85,10 @@ export class EditProfilePage implements OnInit {
     this.uploadService
     .fullUploadProcess(imageData,this.form)
     .then((val) =>{
-      this.isFormReady = val;
-      console.log("formReady: "+val + ", img: ");
+      const name = val.split('_')[0];
+      this.actualImage = name;
+      this.isFormReady = true;
+      console.log("formReady, img src : "+ name );
     })
     .catch(err => {
       console.log(err);
@@ -112,17 +114,14 @@ export class EditProfilePage implements OnInit {
         loadingEl.dismiss();
         this.form.reset();
         this.router.navigate(['main/tabs/cosplays/my-cosplays']);
-      }, 500);
-      
- */   
+      }, 500);   
+      */   
 
-      
-
-      this.usersService.onUpdateUserProfile( this.form.get('displayName').value , this.form.get('photoURL').value )
+      this.usersService.onUpdateUserProfile( this.form.get('displayName').value , this.actualImage )
       .then( (res) => {
         console.log('Profile updated! :' + res); 
         const info = this.form.value;
-        console.log(info);
+        console.log('img :',this.actualImage);
       } )
       .catch( (err) => {
         console.log(err);

@@ -86,7 +86,7 @@ export class UploadImageService {
                       }else if(index == 2){
                         console.log("index: "+index);
                         form.patchValue({ imageUrl: imageId })
-                        resolve(true);
+                        resolve(val);
                       }
                       
                       console.log("Img "+ index +" Compressed and Uploaded Successfully.")
