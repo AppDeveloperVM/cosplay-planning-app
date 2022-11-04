@@ -7,6 +7,7 @@ import { UploadImageService } from 'src/app/services/upload-img.service';
 import { Profile } from '../profile.model';
 import { ProfilePage } from '../profile.page';
 import { UsersService } from 'src/app/services/users.service';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'app-edit-profile',
@@ -19,6 +20,8 @@ export class EditProfilePage implements OnInit {
   form: FormGroup;
   isLoading = false;
   isFormReady = true;
+  imageChanged = false;
+  oldImgName = "";
   imageName = "";
   imgSrc = "";
   
@@ -28,7 +31,8 @@ export class EditProfilePage implements OnInit {
     private authFire : AngularFireAuth,
     private uploadService: UploadImageService,
     private usersService: UsersService,
-    private imgService : UploadImageService
+    private imgService : UploadImageService,
+    private storageService : StorageService
   ) { }
 
   ngOnInit() {
@@ -78,6 +82,7 @@ export class EditProfilePage implements OnInit {
   assignImage(){
 
     this.imageName = this.userData.photoURL;
+    this.oldImgName = this.userData.photoURL;
 
     this.getImageByFbUrl(this.userData.photoURL, 2)
         .then((val)=>{
@@ -106,6 +111,7 @@ export class EditProfilePage implements OnInit {
       this.getImageByFbUrl(this.imageName, 2)
       .then( (res) => {
         this.imgSrc = res;
+        this.imageChanged = true;
         console.log('imgSrc : ' + res);
       } )
       .catch();
@@ -128,23 +134,15 @@ export class EditProfilePage implements OnInit {
     })
     .then(loadingEl => {
       loadingEl.present();
-      /* const cosplay = this.form.value;
-      const cosplayId = this.cosplay?.id || null;
-      this.cosplaysService.onSaveCosplay(cosplay, cosplayId);
-      console.log(cosplay);
-
-      setTimeout(() => {
-        loadingEl.dismiss();
-        this.form.reset();
-        this.router.navigate(['main/tabs/cosplays/my-cosplays']);
-      }, 500);   
-      */   
 
       this.usersService.onUpdateUserProfile( this.form.get('displayName').value , this.imageName )
       .then( (res) => {
         console.log('Profile updated! : ' + res); 
         console.log('img : ',this.imageName);
-      } )
+        if(this.imageChanged){
+          this.storageService.deleteThumbnail(this.oldImgName);
+        }
+      })
       .catch( (err) => {
         console.log(err);
       })
