@@ -33,17 +33,25 @@ export class EditProfilePage implements OnInit {
 
   ngOnInit() {
 
-    this.form = new FormGroup({
-      //this.profile.userName,
-      displayName: new FormControl( null, 
-      {
-        updateOn: 'blur',
-        validators: [Validators.required]
-      }),
-      imageUrl: new FormControl(null)
-    });
-
     this.isLoading = true;
+
+    this.authFire.currentUser.then( (res) => {
+      this.userData = res;
+
+      this.form = new FormGroup({
+        //this.profile.userName,
+        displayName: new FormControl( null, 
+        {
+          updateOn: 'blur',
+          validators: [Validators.required]
+        }),
+        imageUrl: new FormControl(this.userData?.photoURL ? this.userData?.photoURL : null)
+      });
+
+      this.assignImage();
+      this.form.patchValue({ displayName : this.userData?.displayName });
+    })
+
 
     this.authFire.authState.subscribe((user) => {  
       this.userData = user;
@@ -53,17 +61,7 @@ export class EditProfilePage implements OnInit {
 
       if(this.userData.photoURL !== null){
         //Use saved info from db
-        this.getImageByFbUrl(this.userData.photoURL, 2)
-        .then((val)=>{
-          this.imgSrc = val;
-          //Use saved info from db
-          if(this.form.get('imageUrl').value == null && this.userData.photoURL != null){
-            this.form.patchValue({ imageUrl: this.userData.photoURL })
-          }
-        })
-        .catch( (err) => {
-          console.log('error obtaining data  : ' + err);
-        });
+        this.assignImage();
       }
 
       
@@ -74,6 +72,26 @@ export class EditProfilePage implements OnInit {
 
   getImageByFbUrl(imageName: string, size: number){
     return this.imgService.getStorageImgUrl(imageName,size);
+  }
+
+  assignImage(){
+
+    this.imageName = this.userData.photoURL;
+
+    this.getImageByFbUrl(this.userData.photoURL, 2)
+        .then((val)=>{
+          console.log('img to assign: ' + val);
+          
+          this.imgSrc = val;
+          //Use saved info from db
+          if(this.form.get('imageUrl').value == null && this.userData.photoURL != null){
+            this.form.patchValue({ imageUrl: this.userData.photoURL })
+          }
+        })
+        .catch( (err) => {
+          console.log('error obtaining data  : ' + err);
+        });
+
   }
 
   async onImagePicked(imageData: string | File) {
@@ -123,9 +141,8 @@ export class EditProfilePage implements OnInit {
 
       this.usersService.onUpdateUserProfile( this.form.get('displayName').value , this.imageName )
       .then( (res) => {
-        console.log('Profile updated! :' + res); 
-        const info = this.form.value;
-        console.log('img :',this.imageName);
+        console.log('Profile updated! : ' + res); 
+        console.log('img : ',this.imageName);
       } )
       .catch( (err) => {
         console.log(err);
