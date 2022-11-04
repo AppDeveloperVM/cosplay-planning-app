@@ -11,22 +11,20 @@ import { User } from '../models/user.model';
   providedIn: 'root'
 })
 export class UsersService {
-  private _users = new BehaviorSubject<User[]>([]);
+  users : any;
+  private dbPath = '/users';
   //Collections
   usersObsv: Observable<User[]>;
-  users : any;
-  private usersCollection: AngularFirestoreCollection<User>;
+  
+  private usersRef: AngularFirestoreCollection<User>;
 
   constructor( private readonly afs: AngularFirestore ) {
-    this.usersCollection = afs.collection<User>('users');
-    this.getUsers();
-    console.log("users: "+this.usersObsv);
-
+    this.usersRef = afs.collection<User>(this.dbPath);
   }
 
 
   getUsers(): void {
-    this.usersCollection.snapshotChanges().pipe(
+    this.usersRef.snapshotChanges().pipe(
         map( changes => 
           changes.map( a => 
             a.payload.doc.data() as User))
@@ -42,6 +40,14 @@ export class UsersService {
     .valueChanges()
   }
 
+  create(user: User): any {
+    return this.usersRef.add({...user});
+  }
+
+  update(id: string, data: any): Promise<void> {
+    return this.usersRef.doc(id).update(data);
+  }
+
   onUpdateUserProfile( displayName, photoURL) : Promise<any>{
 
     const auth = getAuth();
@@ -53,16 +59,14 @@ export class UsersService {
         console.log('uid: '+uid);
         
         console.log(localUserData);
-          const ref = this.afs.doc(
-            `users/${uid}`
-          ).update({
+          const ref = this.usersRef.doc(uid)
+          .update({
             photoURL,
             displayName
           })
           .then( (res) => {
             //works!
             console.log('updated doc of users: '+ res);
-            
           })
           .catch( (err) => {
             alert(err);
@@ -75,18 +79,15 @@ export class UsersService {
 
     });
 
-
     const updatedLocally = new Promise( (resolve, reject) => {
       updateProfile(auth.currentUser, {
         displayName, photoURL
       }).then((res) => {
         resolve(res);
-        
       }).catch((error) => {
         reject(error);
       });
     } );
-
 
     const promise = new Promise( (resolve, reject) => {
 
@@ -114,6 +115,10 @@ export class UsersService {
     });
 
     return promise;
+  }
+
+  delete(id: string): Promise<void> {
+    return this.usersRef.doc(id).delete();
   }
 
 
