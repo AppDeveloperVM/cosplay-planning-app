@@ -4,6 +4,7 @@ import { LoadingController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { CosplaysService } from 'src/app/services/cosplays.service';
 import { DataService } from 'src/app/services/data.service';
+import { StorageService } from 'src/app/services/storage.service';
 import { UploadImageService } from 'src/app/services/upload-img.service';
 import { Cosplay } from '../../../../../models/cosplay.model';
 
@@ -18,6 +19,7 @@ export class CosplayItemComponent implements OnInit {
   editMode : boolean;
   subscription: Subscription;
   imageUrl: String;
+  imageName : String;
   isLoading : boolean = true;
 
   constructor(
@@ -25,19 +27,20 @@ export class CosplayItemComponent implements OnInit {
     private loadingCtrl: LoadingController,
     private cosplaysService: CosplaysService,
     private dataService: DataService,
-    private uploadImgService : UploadImageService
+    private uploadImgService : UploadImageService,
+    private storageService : StorageService
   ) { }  
 
   ngOnInit() {
-    let imageName = this.cosplay.imageUrl;
+    this.imageName = this.cosplay.imageUrl;
 
-    if(imageName == null){
+    if(this.imageName == null){
       this.imageUrl = null;
       this.isLoading = false;
       return false;
     }
 
-      this.uploadImgService.getStorageImgUrl(imageName,0).then((val)=>{
+      this.uploadImgService.getStorageImgUrl(this.imageName, 0).then((val)=>{
         this.imageUrl = val;
       }).finally(() => {
         this.isLoading = false;
@@ -55,23 +58,35 @@ export class CosplayItemComponent implements OnInit {
 
   async onDeleteCosplay(cosplayId: string): Promise<void> {
 
-    await this.loadingCtrl
-    .create({
-      message: 'Deleting Cosplay...'
+    this.storageService.deleteThumbnail(this.imageName)
+    .then( async (res) => {
+      //Thumbnail deleted .. continue
+
+      await this.loadingCtrl
+      .create({
+        message: 'Deleting Cosplay...'
+      })
+      .then(loadingEl => {
+        loadingEl.present();
+          try {
+            this.cosplaysService.onDeleteCosplay(cosplayId);
+          }catch (err) {
+            console.log('Error deleting cosplay: ' + err);
+          }
+
+          setTimeout(() => {
+            loadingEl.dismiss();
+          }, 500);
+
+      });
+
     })
-    .then(loadingEl => {
-      loadingEl.present();
-        try {
-          this.cosplaysService.onDeleteCosplay(cosplayId);
-        }catch (err) {
-          console.log(err);
-        }
-
-        setTimeout(() => {
-          loadingEl.dismiss();
-        }, 500);
-
+    .catch( (err) => {
+      console.log('Error deleting cos Thumbnail :' + err);
+      
     });
+
+    
   }
 
 }
