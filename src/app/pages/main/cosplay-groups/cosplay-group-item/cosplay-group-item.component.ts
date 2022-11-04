@@ -6,6 +6,7 @@ import { NavigationExtras, Router } from '@angular/router';
 import { LoadingController, Platform } from '@ionic/angular';
 import { CosplayGroupService } from 'src/app/services/cosplay-group.service';
 import { DataService } from 'src/app/services/data.service';
+import { StorageService } from 'src/app/services/storage.service';
 
 
 @Component({
@@ -18,6 +19,7 @@ export class CosplayGroupItemComponent implements OnInit, AfterViewInit {
   public imgSrc: any;
   isMobile: boolean;
   imageUrl: String;
+  imageName : String;
   isLoading : boolean = true;
 
   navigationExtras: NavigationExtras = {
@@ -34,7 +36,8 @@ export class CosplayGroupItemComponent implements OnInit, AfterViewInit {
     private loadingCtrl: LoadingController,
     private cosplayGroupService: CosplayGroupService,
     private dataService: DataService,
-    private uploadImgService : UploadImageService
+    private uploadImgService : UploadImageService,
+    private storageService : StorageService
   ) {
     
   }
@@ -42,21 +45,21 @@ export class CosplayGroupItemComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     //console.log(this.cosplaygroup);
     this.checkPlatform();
-    let imageName = this.cosplaygroup.imageUrl;
+    this.imageName = this.cosplaygroup.imageUrl;
 
-    if(imageName == null){
+    if(this.imageName == null){
       this.imageUrl = null;
       this.isLoading = false;
       return false;
     }
 
-    this.uploadImgService.getStorageImgUrl(imageName,0).then((val)=>{
+    this.uploadImgService.getStorageImgUrl(this.imageName,0).then((val)=>{
       this.imageUrl = val;
     }).finally(() => {
       this.isLoading = false;
     });
 
-    this.uploadImgService.getStorageImgUrl(imageName,2).then((val)=>{
+    this.uploadImgService.getStorageImgUrl(this.imageName,2).then((val)=>{
       this.cosplaygroup.imageUrl = val;
     }).finally(() => {
       this.isLoading = false;
@@ -80,23 +83,32 @@ export class CosplayGroupItemComponent implements OnInit, AfterViewInit {
 
   async onDeleteCosGroup(cosGroupId: string): Promise<void> {
 
-    await this.loadingCtrl
-    .create({
-      message: 'Deleting Cosplay Group...'
+    this.storageService.deleteThumbnail(this.imageName)
+    .then( async (res) => {
+      //Thumbnail deleted .. continue
+
+      await this.loadingCtrl
+      .create({
+        message: 'Deleting Cosplay Group...'
+      })
+      .then(loadingEl => {
+        loadingEl.present();
+          try {
+            this.cosplayGroupService.onDeleteCosGroup(cosGroupId);
+          }catch (err) {
+            console.log(err);
+          }
+
+          setTimeout(() => {
+            loadingEl.dismiss();
+          }, 500);
+
+        //this.router.navigate(['main/tabs/cosplay-groups']);
+      });
+
     })
-    .then(loadingEl => {
-      loadingEl.present();
-        try {
-          this.cosplayGroupService.onDeleteCosGroup(cosGroupId);
-        }catch (err) {
-          console.log(err);
-        }
-
-        setTimeout(() => {
-          loadingEl.dismiss();
-        }, 500);
-
-      //this.router.navigate(['main/tabs/cosplay-groups']);
+    .catch( (err) => {
+      console.log('Error deleting cosGroup Thumbnail :' + err);
     });
   }
 
