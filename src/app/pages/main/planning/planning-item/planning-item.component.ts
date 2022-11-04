@@ -3,6 +3,7 @@ import { NavigationExtras, Router } from '@angular/router';
 import { LoadingController, Platform } from '@ionic/angular';
 import { DataService } from 'src/app/services/data.service';
 import { PlanningService } from 'src/app/services/planning.service';
+import { StorageService } from 'src/app/services/storage.service';
 import { UploadImageService } from 'src/app/services/upload-img.service';
 import { Planning } from '../planning.model';
 
@@ -16,6 +17,7 @@ export class PlanningItemComponent implements OnInit {
   public imgSrc: any;
   isMobile: boolean;
   imageUrl: String;
+  imageName : String;
 
   constructor(
     private router: Router, 
@@ -23,19 +25,20 @@ export class PlanningItemComponent implements OnInit {
     private loadingCtrl: LoadingController,
     private planningService: PlanningService,
     private dataService: DataService,
-    private uploadImgService : UploadImageService
+    private uploadImgService : UploadImageService,
+    private storageService : StorageService
   ) { }
 
   ngOnInit() {
     //console.log(this.planning);
     this.checkPlatform();
 
-    let imageName = this.planning.imageUrl;
-    this.uploadImgService.getStorageImgUrl(imageName,0).then((val)=>{
+    this.imageName = this.planning.imageUrl;
+    this.uploadImgService.getStorageImgUrl(this.imageName,0).then((val)=>{
       this.imageUrl = val;
     })
 
-    this.uploadImgService.getStorageImgUrl(imageName,2).then((val)=>{
+    this.uploadImgService.getStorageImgUrl(this.imageName,2).then((val)=>{
       this.planning.imageUrl = val;
     })
   }
@@ -54,23 +57,33 @@ export class PlanningItemComponent implements OnInit {
 
   async onDeletePlanning(planningId: string): Promise<void> {
 
-    await this.loadingCtrl
-    .create({
-      message: 'Deleting Planning...'
+    this.storageService.deleteThumbnail(this.imageName)
+    .then( async (res) => {
+      //Thumbnail deleted .. continue
+
+      await this.loadingCtrl
+      .create({
+        message: 'Deleting Planning...'
+      })
+      .then(loadingEl => {
+        loadingEl.present();
+          try {
+            this.planningService.onDeletePlanning(planningId);
+          }catch (err) {
+            console.log(err);
+          }
+
+          setTimeout(() => {
+            loadingEl.dismiss();
+          }, 500);
+
+        //this.router.navigate(['main/tabs/cosplay-groups']);
+      });
+
     })
-    .then(loadingEl => {
-      loadingEl.present();
-        try {
-          this.planningService.onDeletePlanning(planningId);
-        }catch (err) {
-          console.log(err);
-        }
-
-        setTimeout(() => {
-          loadingEl.dismiss();
-        }, 500);
-
-      //this.router.navigate(['main/tabs/cosplay-groups']);
+    .catch( (err) => {
+      console.log('Error deleting planning Thumbnail :' + err);
+      
     });
   }
 
