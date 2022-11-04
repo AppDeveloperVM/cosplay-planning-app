@@ -175,7 +175,7 @@ export class AuthenticationService {
             uid: this.uidGenerated,
             email: email,
             displayName: email,
-            photoURL : null,
+            photoURL : null, // maybe assign a default img
             emailVerified : false
           };
     
@@ -232,7 +232,6 @@ export class AuthenticationService {
 
 
   ChangeToVerifiedAccount() : Promise<any>{
-
     const promise = new Promise( (resolve, reject) => {
 
       const localUserData = JSON.parse(localStorage.getItem('user'));
