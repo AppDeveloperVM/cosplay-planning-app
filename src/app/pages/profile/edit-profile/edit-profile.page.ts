@@ -33,6 +33,7 @@ export class EditProfilePage implements OnInit {
 
   ngOnInit() {
 
+    this.usersService.getUsers();
     this.isLoading = true;
 
     this.authFire.currentUser.then( (res) => {
