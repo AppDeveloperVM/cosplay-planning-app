@@ -7,6 +7,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { UploadImageService } from 'src/app/services/upload-img.service';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'app-edit-cosplay',
@@ -25,6 +26,7 @@ export class EditCosplayPage implements OnInit, OnDestroy {
   uploadPercent: Observable<number>;
   ImageObs: Observable<string>;
   uploadReady : Observable<boolean>;
+  imageChanged = false;
   isFormReady = false;
 
   constructor(
@@ -36,7 +38,8 @@ export class EditCosplayPage implements OnInit, OnDestroy {
     private alertCtrl: AlertController,
     private cosplaysService: CosplaysService,
     private imgService : UploadImageService,
-    private uploadService: UploadImageService
+    private uploadService: UploadImageService,
+    private storageService : StorageService
   ) {
     this.validations = {
       'characterName': [
@@ -150,7 +153,14 @@ export class EditCosplayPage implements OnInit, OnDestroy {
       loadingEl.present();
       const cosplay = this.form.value;
       const cosplayId = this.cosplay?.id || null;
-      this.cosplaysService.onSaveCosplay(cosplay, cosplayId);
+      this.cosplaysService.onSaveCosplay(cosplay, cosplayId)
+      .then( (res) => {
+        if(this.imageChanged){
+          //this.storageService.deleteThumbnail();
+        }
+      } ) 
+      .catch();
+
       console.log(cosplay);
 
       setTimeout(() => {
@@ -168,6 +178,7 @@ export class EditCosplayPage implements OnInit, OnDestroy {
     this.uploadService
           .fullUploadProcess(imageData,this.form)
           .then((val) =>{
+            this.imageChanged = true;
             this.isFormReady = true;
             console.log("formReady: "+val);
           })
