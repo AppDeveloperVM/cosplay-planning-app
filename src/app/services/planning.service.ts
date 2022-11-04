@@ -8,6 +8,7 @@ import { PlaceLocation } from '../models/location.model';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { PlanningInterface } from '../models/planning.interface';
+import { StorageService } from './storage.service';
 
 interface PlanningData {
   title: string;
@@ -40,7 +41,8 @@ export class PlanningService {
   constructor(
     private authService: AuthService,
     private http: HttpClient,
-    private readonly afs: AngularFirestore
+    private readonly afs: AngularFirestore,
+    private storageService : StorageService
   ) {
     this.planningsCollection = afs.collection<PlanningData>('plannings');
     this.getPlannings();
@@ -72,7 +74,6 @@ export class PlanningService {
         }
     })
   }
-
 
   onDeletePlanning(planningId: string): Promise<void> {
      //should delete img of FireStorage

@@ -8,6 +8,8 @@ import { DataService } from 'src/app/services/data.service';
 
 //Firebase 
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreCollectionGroup } from '@angular/fire/compat/firestore';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { StorageService } from './storage.service';
 
 /*
 new Cosplay('c1', 'Samatoki', 'MTC rapper', 'https://pbs.twimg.com/media/DluGJLAUYAEdcIT?format=jpg&name=small', 'Hypmic', 0, '0', true,'user1'),
@@ -47,8 +49,9 @@ export class CosplaysService {
     private authService: AuthService,
     private dataService: DataService,
     private http: HttpClient,
-    private readonly afs: AngularFirestore
-
+    private readonly afs: AngularFirestore,
+    private storage : AngularFireStorage,
+    public storageService : StorageService
   ) {
       this.cosplaysCollection = afs.collection<CosplayData>('cosplays');
       this.getCosplays();
@@ -84,7 +87,8 @@ export class CosplaysService {
     
   }
 
-  
+
+  //deleteCosGallery(){ }
 
   onDeleteCosplay(cosplayId: string): Promise<void> {
     //should delete img of FireStorage
@@ -93,6 +97,9 @@ export class CosplaysService {
     const storageRef = db.storage().ref();
     storageRef.child('photo/' + photoId).delete();
     */ 
+
+    
+
     return new Promise (async (resolve, reject) => {
         try {
             const result = this.cosplaysCollection.doc(cosplayId).delete();
