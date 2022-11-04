@@ -14,24 +14,25 @@ export class UsersService {
   private _users = new BehaviorSubject<User[]>([]);
   //Collections
   usersObsv: Observable<User[]>;
+  users : any;
   private usersCollection: AngularFirestoreCollection<User>;
-
-
-  get users() {
-    return this._users.asObservable();
-  }
 
   constructor( private readonly afs: AngularFirestore ) {
     this.usersCollection = afs.collection<User>('users');
     this.getUsers();
     console.log("users: "+this.usersObsv);
+
   }
 
 
   getUsers(): void {
-    this.usersObsv = this.usersCollection.snapshotChanges().pipe(
-        map( actions => actions.map( a => a.payload.doc.data() as User))
-    )
+    this.usersCollection.snapshotChanges().pipe(
+        map( changes => 
+          changes.map( a => 
+            a.payload.doc.data() as User))
+    ).subscribe( data => {
+      this.users = data;
+    })
   }
 
   getUserById(userId: string) {
@@ -42,40 +43,78 @@ export class UsersService {
   }
 
   onUpdateUserProfile( displayName, photoURL) : Promise<any>{
+
     const auth = getAuth();
-    const promise = new Promise( (resolve, reject) => {
+    const updatedServer = new Promise( (resolve,reject) => {
+
+      const localUserData = JSON.parse(localStorage.getItem('user'));
+      if (  localUserData != null  ){
+        const uid = localUserData.uid ;
+        console.log('uid: '+uid);
+        
+        console.log(localUserData);
+          const ref = this.afs.doc(
+            `users/${uid}`
+          ).update({
+            photoURL,
+            displayName
+          })
+          .then( (res) => {
+            //works!
+            console.log('updated doc of users: '+ res);
+            
+          })
+          .catch( (err) => {
+            alert(err);
+          });
+          resolve(true);
+
+      } else {
+        reject(false);
+      }
+
+    });
+
+
+    const updatedLocally = new Promise( (resolve, reject) => {
       updateProfile(auth.currentUser, {
         displayName, photoURL
-      }).then(() => {
+      }).then((res) => {
+        resolve(res);
         
-        resolve(true);
-        // ...
       }).catch((error) => {
-        
-        reject(false);
-        // An error occurred
-        // ...
+        reject(error);
       });
     } );
+
+
+    const promise = new Promise( (resolve, reject) => {
+
+      updatedServer.then( (res) => {
+        console.log('Updated in Server: ',res);
+
+        updatedLocally.then( (r) => {
+          console.log('Updated Locally: ',res);
+          resolve(res);
+        })
+        .catch( (error) => {
+          console.log('Error Updating Locally: '+error);
+          reject(error);
+        })
+      })
+      .catch( (err) => {
+        console.log('Error Updating in Server: '+err);
+      })
+    }).then( (result) => {
+      //final result
+      console.log('Updating in Server and Locally succesful.');
+    }).catch( (errors) => {
+      //final errors
+      console.log(errors);
+    });
 
     return promise;
   }
 
-  onSaveUser(user: User, userId: string): Promise<void> {
-
-    return new Promise( async (resolve, reject) => {
-        try {
-            const id = userId || this.afs.createId();
-            const data = {id, ... user};
-            const result = await this.usersCollection.doc(id).set(data);
-            //then save the cosplay to localstorage
-            //this.dataService.addData('cosplay',cosplay);
-            resolve(result);
-        } catch (err) {
-            reject(err.message)
-        }
-    })
-    
-  }
 
 }
