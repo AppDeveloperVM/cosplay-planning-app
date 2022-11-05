@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CosplaysService } from '../../../../../services/cosplays.service';
-import { NavController, LoadingController, AlertController } from '@ionic/angular';
+import { NavController, LoadingController, AlertController, Platform, IonRouterOutlet } from '@ionic/angular';
 import { Cosplay } from '../../../../../models/cosplay.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
@@ -31,6 +31,10 @@ export class EditCosplayPage implements OnInit, OnDestroy {
   isLoading = true;
   imageChanged = false;
   isFormReady = false;
+  dataUpdated = false;
+
+  // This property will save the callback which we can unsubscribe when we leave this view
+  public unsubscribeBackEvent: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -42,7 +46,9 @@ export class EditCosplayPage implements OnInit, OnDestroy {
     private cosplaysService: CosplaysService,
     private imgService : UploadImageService,
     private uploadService: UploadImageService,
-    private storageService : StorageService
+    private storageService : StorageService,
+    public platform: Platform,
+    private routerOutlet: IonRouterOutlet
   ) {
     this.validations = {
       'characterName': [
@@ -60,6 +66,9 @@ export class EditCosplayPage implements OnInit, OnDestroy {
       // other validations
     };
   }
+
+
+  
 
   ngOnInit() {
     this.route.paramMap.subscribe(paramMap => {
@@ -193,10 +202,8 @@ export class EditCosplayPage implements OnInit, OnDestroy {
     .then(loadingEl => {
       loadingEl.present();
 
-      this.form.patchValue({ imageUrl: this.imageName });
-      const cosplay = this.form.value;
-      console.log('form values: ' , cosplay);
-      
+      this.form.patchValue({ imageUrl: this.imageName }); // img updated in form
+      const cosplay = this.form.value;      
       const cosplayId = this.cosplay?.id || null;
       
       this.cosplaysService.onSaveCosplay(cosplay, cosplayId)
@@ -206,6 +213,7 @@ export class EditCosplayPage implements OnInit, OnDestroy {
         if(this.imageChanged && this.imageName !== this.oldImgName){
           this.storageService.deleteThumbnail(this.oldImgName);
         }
+        this.dataUpdated = true;
       }) 
       .catch( (err) => {
         console.log(err);
@@ -222,10 +230,27 @@ export class EditCosplayPage implements OnInit, OnDestroy {
     });
   }
 
+
   ngOnDestroy() {
     if (this.cosplaySub) {
       this.cosplaySub.unsubscribe();
     }
+  }
+
+  //Called when view is left
+  ionViewWillLeave() {
+    // Unregister the custom back button action for this page
+    //this.unsubscribeBackEvent && this.unsubscribeBackEvent();
+    console.log('echar paso 1');
+    
+    if(this.imageChanged == true && this.dataUpdated == false){
+      console.log('echar para atrás');
+      console.log('delete img not changed : ' + this.imageName);
+      
+      
+      this.storageService.deleteThumbnail(this.imageName);
+    }
+    
   }
 
 }
