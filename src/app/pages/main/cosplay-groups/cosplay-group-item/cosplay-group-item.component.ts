@@ -53,15 +53,41 @@ export class CosplayGroupItemComponent implements OnInit, AfterViewInit {
       return false;
     }
 
-    this.uploadImgService.getStorageImgUrl(this.imageName,0).then((val)=>{
+    this.uploadImgService.getStorageImgUrl(this.imageName,0)
+    .then((val)=>{
       this.imageUrl = val;
-    }).finally(() => {
+      console.log(val);
+      
+    })
+    .catch((err) => {
+      console.log('Error img size 0: ' + err);
+      var custom_err = "";
+      
+      switch(err){
+        case 'storage/object-not-found':
+          custom_err = '';
+        break;
+      }
+    })
+    .finally(() => {
       this.isLoading = false;
     });
 
-    this.uploadImgService.getStorageImgUrl(this.imageName,2).then((val)=>{
+    this.uploadImgService.getStorageImgUrl(this.imageName,2)
+    .then((val)=>{
       this.cosplaygroup.imageUrl = val;
-    }).finally(() => {
+    })
+    .catch((err) => {
+      console.log('Error img size2 : ' + err);
+      var custom_err = "";
+      
+      switch(err){
+        case 'storage/object-not-found':
+          custom_err = '';
+        break;
+      }
+    })
+    .finally(() => {
       this.isLoading = false;
     });
   }
