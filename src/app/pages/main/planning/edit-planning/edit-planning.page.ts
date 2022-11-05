@@ -9,6 +9,7 @@ import { PlanningService } from '../../../../services/planning.service';
 import { switchMap } from 'rxjs/operators';
 import { PlaceLocation } from '../../../../models/location.model';
 import { UploadImageService } from 'src/app/services/upload-img.service';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'app-edit-planning',
@@ -18,12 +19,18 @@ import { UploadImageService } from 'src/app/services/upload-img.service';
 export class EditPlanningPage implements OnInit, OnDestroy {
   planning: any;
   planningId: string;
-  isLoading = true;
   private planningSub: Subscription;
   form: FormGroup;
-  actualImage = "";
-  actualMapImage = "";
+
   selectedLocationImage: string;
+
+  oldImgName = "";
+  imageName = "";
+  imgSrc = "";
+  actualMapImage = "";
+
+  isLoading = true;
+  imageChanged = false;
   isFormReady = false;
 
   constructor(
@@ -35,7 +42,8 @@ export class EditPlanningPage implements OnInit, OnDestroy {
     private modalCtrl: ModalController,
     private loadingCtrl: LoadingController,
     private router: Router,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private storageService : StorageService
   ) { 
     console.log("Entrando en edit planning");
 
@@ -59,6 +67,11 @@ export class EditPlanningPage implements OnInit, OnDestroy {
 
         if(planning!= null){
           this.buildForm();
+
+          if(this.planning?.imageUrl !== null && this.imageChanged == false){
+            this.assignImage();
+          }
+
         } else {
           console.log("Error loading item - not found");
           this.router.navigate(['/main/tabs/planning']);
@@ -91,30 +104,7 @@ export class EditPlanningPage implements OnInit, OnDestroy {
 
   }
 
-  //Submit form data ( Planning ) when ready
-  onUpdatePlanning() {
-    if (!this.form.valid) return
-
-    this.loadingCtrl
-    .create({
-      message: 'Updating Planning ...'
-    })
-    .then(loadingEl => {
-      loadingEl.present();
-      const planning = this.form.value;
-      const planningId = this.planning?.id || null;
-      this.planningService.onSavePlanning(planning, planningId);
-      console.log(planning);
-
-      setTimeout(() => {
-        loadingEl.dismiss();
-        console.log("Form values: " + this.form);
-        this.form.reset();
-        this.router.navigate(['main/tabs/planning']);
-      }, 500);
-
-    });
-  }
+  
 
   buildForm(){
     this.form = new FormGroup({
@@ -134,47 +124,116 @@ export class EditPlanningPage implements OnInit, OnDestroy {
         updateOn: 'blur',
         validators: [ Validators.required]
       }),
-      location: new FormControl(this.planning.location, {validators: [Validators.required]}),
+      location: new FormControl(this.planning.location),
       imageUrl: new FormControl(this.planning.imageUrl)
     });
 
     //Use saved info from db
     this.getImageByFbUrl(this.planning.imageUrl,2).then((val)=>{
-      this.actualImage = val;
+      this.imgSrc = val;
       //Use saved info from db
       if(this.form.get('imageUrl').value == null && this.planning.imageUrl != null){
         this.form.patchValue({ imageUrl: this.planning.imageUrl })
       }
     })
 
-    if(this.form.get('location').value == null && this.planning.location != null){
-      this.form.patchValue({ image : this.planning.location });
-    }
+    //if(this.form.get('location').value == null && this.planning.location != null){
+      this.form.patchValue({ location : this.planning.location });
+    //}
 
     this.actualMapImage = this.planning.location.staticMapImageUrl;
 
+  }
+
+  assignImage(){
+    this.imageName = this.planning.imageUrl;
+    this.oldImgName = this.planning.imageUrl;
+
+    this.getImageByFbUrl(this.planning.imageUrl, 2)
+      .then((val)=>{
+        console.log('img to assign: ' + val);
+        
+        this.imgSrc = val;
+        //Use saved info from db
+        if(this.form.get('imageUrl').value == null && this.planning.imageUrl != null){
+          this.form.patchValue({ imageUrl: this.planning.imageUrl })
+        }
+      })
+      .catch( (err) => {
+        console.log('error obtaining data  : ' + err);
+      });
+
+  }
+
+  getImageByFbUrl(imageName: string, size: number){
+    return this.imgService.getStorageImgUrl(imageName,size);
   }
 
   onLocationPicked(location: PlaceLocation) {
     this.form.patchValue({ location });
   }
 
-  onImagePicked(imageData: string | File) {
+  async onImagePicked(imageData: string | File) {
     this.isFormReady = false;
 
     this.uploadService
-          .fullUploadProcess(imageData,this.form)
-          .then((val) =>{
-            this.isFormReady = true;
-            console.log("formReady: "+val);
-          })
-          .catch(err => {
-            console.log(err);
-          });
+    .fullUploadProcess(imageData,this.form)
+    .then((val) =>{
+      const name = val.split('_')[0];
+      this.imageName = name;
+      console.log('imgName : ' + name);
+      console.log('Old imgName : ' + this.oldImgName);
+      this.getImageByFbUrl(this.imageName, 2)
+      .then( (res) => {
+        this.imgSrc = res;
+        this.imageChanged = true;
+        this.isFormReady = true;
+        console.log('imgSrc : ' + res);
+      } )
+      .catch();
+
+      console.log("formReady, img src : "+ name );
+    })
+    .catch(err => {
+      console.log(err);
+    });
+
   }
 
-  getImageByFbUrl(imageName: string, size: number){
-    return this.imgService.getStorageImgUrl(imageName,size);
+  //Submit form data ( Planning ) when ready
+  onUpdatePlanning() {
+    if (!this.form.valid) return
+
+    this.loadingCtrl
+    .create({
+      message: 'Updating Planning ...'
+    })
+    .then(loadingEl => {
+      loadingEl.present();
+      const planning = this.form.value;
+      const planningId = this.planning?.id || null;
+      this.planningService.onSavePlanning(planning, planningId)
+      .then( (res) => {
+        console.log('image to delete : ' + this.oldImgName);
+        
+        if(this.imageChanged && this.imageName !== this.oldImgName){
+          this.storageService.deleteThumbnail(this.oldImgName);
+        }
+      }) 
+      .catch( (err) => {
+        console.log(err);
+      });
+
+      console.log(planning);
+
+      setTimeout(() => {
+        loadingEl.dismiss();
+        console.log("Form values: " + this.form);
+        this.form.reset();
+        this.router.navigate(['main/tabs/planning']);
+      }, 500);
+
+    });
   }
 
   ngOnDestroy() {
