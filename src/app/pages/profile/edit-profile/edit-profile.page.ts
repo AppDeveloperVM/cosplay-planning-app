@@ -18,12 +18,15 @@ export class EditProfilePage implements OnInit {
   profile: Profile;
   public userData : any;
   form: FormGroup;
-  isLoading = false;
-  isFormReady = true;
-  imageChanged = false;
+
   oldImgName = "";
   imageName = "";
   imgSrc = "";
+  
+  isLoading = false;
+  isFormReady = true;
+  imageChanged = false;
+  
   
   constructor(
     private loadingCtrl: LoadingController,
@@ -112,11 +115,11 @@ export class EditProfilePage implements OnInit {
       .then( (res) => {
         this.imgSrc = res;
         this.imageChanged = true;
+        this.isFormReady = true;
         console.log('imgSrc : ' + res);
       } )
       .catch();
-
-      this.isFormReady = true;
+  
       console.log("formReady, img src : "+ name );
     })
     .catch(err => {

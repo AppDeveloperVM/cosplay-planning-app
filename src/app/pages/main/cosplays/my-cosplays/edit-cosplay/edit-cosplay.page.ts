@@ -18,16 +18,19 @@ export class EditCosplayPage implements OnInit, OnDestroy {
   cosplay: any;
   cosplayId: string;
   private cosplaySub: Subscription;
-  isLoading = true;
   form: FormGroup;
   validations = null;
-  actualImage : string = '';
-
   uploadPercent: Observable<number>;
   ImageObs: Observable<string>;
   uploadReady : Observable<boolean>;
+  
+  oldImgName = "";
+  imageName = "";
+  imgSrc : string = '';
+
   imageChanged = false;
   isFormReady = false;
+  isLoading = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -75,15 +78,32 @@ export class EditCosplayPage implements OnInit, OnDestroy {
         this.cosplay = cosplay;
         if(cosplay!= null){
 
-          this.buildForm();
+          this.form = new FormGroup({
+            characterName: new FormControl(this.cosplay.characterName , {
+              updateOn: 'blur',
+              validators: [Validators.required]
+            }),
+            series: new FormControl(this.cosplay.series, {
+              updateOn: 'blur',
+              validators: [Validators.required, Validators.maxLength(180)]
+            }),
+            description: new FormControl(this.cosplay.description, {
+              updateOn: 'blur',
+              validators: [Validators.required, Validators.maxLength(180)]
+            }),
+            imageUrl: new FormControl(this.cosplay?.imageUrl ? this.cosplay?.imageUrl : null)
+          });
       
-          //Use saved info from db
-          if(this.form.get('imageUrl').value == null && this.cosplay.imageUrl != null){
-            this.form.patchValue({ imageUrl: this.cosplay.imageUrl })
-            
+          console.log('this.cosplay?.imageUrl : ' + this.cosplay?.imageUrl);
+          
+          if(this.cosplay?.imageUrl !== null && this.imageChanged == false){
+            //Use saved info from db
+            this.assignImage();
           }
+          
           console.log("Form data with saved info: "+ JSON.stringify(this.form.value));
           this.isLoading = false;
+
         }else{
           console.log("Error loading item - not found");
           this.router.navigate(['/main/tabs/cosplays/my-cosplays']);
@@ -111,37 +131,58 @@ export class EditCosplayPage implements OnInit, OnDestroy {
 
   }
 
-  buildForm(){
-    this.form = new FormGroup({
-      characterName: new FormControl(this.cosplay.characterName , {
-        updateOn: 'blur',
-        validators: [Validators.required]
-      }),
-      series: new FormControl(this.cosplay.series, {
-        updateOn: 'blur',
-        validators: [Validators.required, Validators.maxLength(180)]
-      }),
-      description: new FormControl(this.cosplay.description, {
-        updateOn: 'blur',
-        validators: [Validators.required, Validators.maxLength(180)]
-      }),
-      imageUrl: new FormControl(null)
-    });
-    
-    this.getImageByFbUrl(this.cosplay.imageUrl,2).then((val)=>{
-      this.actualImage = val;
-      //Use saved info from db
-      if(this.form.get('imageUrl').value == null && this.cosplay.imageUrl != null){
-        this.form.patchValue({ imageUrl: this.cosplay.imageUrl })
-      }
-    })
-
-    
-    console.log("Form data with saved info: "+ JSON.stringify(this.form.value));
-    this.isLoading = false;
+  getImageByFbUrl(imageName: string, size: number){
+    return this.imgService.getStorageImgUrl(imageName,size);
   }
 
-    //Submit form data ( Cosplay ) when ready
+  assignImage(){
+    this.imageName = this.cosplay.imageUrl;
+    this.oldImgName = this.cosplay.imageUrl;
+
+    this.getImageByFbUrl(this.cosplay.imageUrl, 2)
+      .then((val)=>{
+        console.log('img to assign: ' + val);
+        
+        this.imgSrc = val;
+        //Use saved info from db
+        if(this.form.get('imageUrl').value == null && this.cosplay.imageUrl != null){
+          this.form.patchValue({ imageUrl: this.cosplay.imageUrl })
+        }
+      })
+      .catch( (err) => {
+        console.log('error obtaining data  : ' + err);
+      });
+
+  }
+
+  async onImagePicked(imageData: string | File) {
+    this.isFormReady = false;
+
+    this.uploadService
+    .fullUploadProcess(imageData,this.form)
+    .then((val) =>{
+      const name = val.split('_')[0];
+      this.imageName = name;
+      console.log('imgName : ' + name);
+      console.log('Old imgName : ' + this.oldImgName);
+      this.getImageByFbUrl(this.imageName, 2)
+      .then( (res) => {
+        this.imgSrc = res;
+        this.imageChanged = true;
+        this.isFormReady = true;
+        console.log('imgSrc : ' + res);
+      } )
+      .catch();
+
+      console.log("formReady, img src : "+ name );
+    })
+    .catch(err => {
+      console.log(err);
+    });
+
+  }
+
+  //Submit form data ( Cosplay ) when ready
   onUpdateCosplay() {
     if (!this.form.valid) return
 
@@ -151,15 +192,24 @@ export class EditCosplayPage implements OnInit, OnDestroy {
     })
     .then(loadingEl => {
       loadingEl.present();
+
+      this.form.patchValue({ imageUrl: this.imageName });
       const cosplay = this.form.value;
+      console.log('form values: ' , cosplay);
+      
       const cosplayId = this.cosplay?.id || null;
+      
       this.cosplaysService.onSaveCosplay(cosplay, cosplayId)
       .then( (res) => {
-        if(this.imageChanged){
-          //this.storageService.deleteThumbnail();
+        console.log('image to delete : ' + this.oldImgName);
+        
+        if(this.imageChanged && this.imageName !== this.oldImgName){
+          this.storageService.deleteThumbnail(this.oldImgName);
         }
-      } ) 
-      .catch();
+      }) 
+      .catch( (err) => {
+        console.log(err);
+      });
 
       console.log(cosplay);
 
@@ -170,26 +220,6 @@ export class EditCosplayPage implements OnInit, OnDestroy {
       }, 500);
 
     });
-  }
-
-  async onImagePicked(imageData: string | File) {
-    this.isFormReady = false;
-
-    this.uploadService
-          .fullUploadProcess(imageData,this.form)
-          .then((val) =>{
-            this.imageChanged = true;
-            this.isFormReady = true;
-            console.log("formReady: "+val);
-          })
-          .catch(err => {
-            console.log(err);
-          });
-
-  }
-
-  getImageByFbUrl(imageName: string, size: number){
-    return this.imgService.getStorageImgUrl(imageName,size);
   }
 
   ngOnDestroy() {
