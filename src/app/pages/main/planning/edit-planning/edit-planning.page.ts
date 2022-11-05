@@ -32,6 +32,7 @@ export class EditPlanningPage implements OnInit, OnDestroy {
   isLoading = true;
   imageChanged = false;
   isFormReady = false;
+  dataUpdated = false;
 
   constructor(
     private navCtrl: NavController,
@@ -142,7 +143,6 @@ export class EditPlanningPage implements OnInit, OnDestroy {
     //}
 
     this.actualMapImage = this.planning.location.staticMapImageUrl;
-
   }
 
   assignImage(){
@@ -219,6 +219,7 @@ export class EditPlanningPage implements OnInit, OnDestroy {
         if(this.imageChanged && this.imageName !== this.oldImgName){
           this.storageService.deleteThumbnail(this.oldImgName);
         }
+        this.dataUpdated = true;
       }) 
       .catch( (err) => {
         console.log(err);
@@ -240,6 +241,19 @@ export class EditPlanningPage implements OnInit, OnDestroy {
     if (this.planningSub) {
       this.planningSub.unsubscribe();
     }
+  }
+
+  //Called when view is left
+  ionViewWillLeave() {
+    // Unregister the custom back button action for this page
+    //this.unsubscribeBackEvent && this.unsubscribeBackEvent();
+    if(this.imageChanged == true && this.dataUpdated == false){
+      console.log('delete img not changed : ' + this.imageName);
+      
+      
+      this.storageService.deleteThumbnail(this.imageName);
+    }
+    
   }
 
 }

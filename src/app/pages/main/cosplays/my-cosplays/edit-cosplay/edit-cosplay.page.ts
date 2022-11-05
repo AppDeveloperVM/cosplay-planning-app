@@ -241,13 +241,9 @@ export class EditCosplayPage implements OnInit, OnDestroy {
   ionViewWillLeave() {
     // Unregister the custom back button action for this page
     //this.unsubscribeBackEvent && this.unsubscribeBackEvent();
-    console.log('echar paso 1');
-    
     if(this.imageChanged == true && this.dataUpdated == false){
-      console.log('echar para atrás');
       console.log('delete img not changed : ' + this.imageName);
-      
-      
+
       this.storageService.deleteThumbnail(this.imageName);
     }
     
