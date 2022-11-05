@@ -28,9 +28,9 @@ export class EditCosplayPage implements OnInit, OnDestroy {
   imageName = "";
   imgSrc : string = '';
 
+  isLoading = true;
   imageChanged = false;
   isFormReady = false;
-  isLoading = true;
 
   constructor(
     private route: ActivatedRoute,
