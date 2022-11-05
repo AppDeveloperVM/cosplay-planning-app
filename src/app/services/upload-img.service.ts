@@ -238,18 +238,39 @@ export class UploadImageService {
         }
         file = fileName + "_" + suffix;
 
-        const filePath = `images/${file}`
+        const filePath = `images/${file}`;
         const ref = this.storage.ref(filePath);
+
+        /* const storage = getStorage();
+        const storageRef = ref(storage, filePath);
+        getDownloadURL(storageRef)
+        .then(url => {
+        }) */
+
         var imageUrl = "";
-        this.ImageObs = ref.getDownloadURL()
+        console.log(ref.getDownloadURL());
+        
+        this.ImageObs = ref.getDownloadURL();
+
+        
 
           this.ImageObs.subscribe(
             url=>{
               imageUrl = url;
-              //console.log('Value:' + imageUrl);
-              
+              console.log('Value:' + imageUrl);
                 resolve(url)
-            
+            }, error => {
+              //console.log(error);
+              var custom_err = "";
+              var regex = /\(([^)]+)\)/; // get msg inside parenthesis
+              var err_mssg = regex.exec(error)[1];              
+      
+              switch(err_mssg){
+                case 'storage/object-not-found':
+                  custom_err = 'Image not found';
+                break;
+              }
+              reject(custom_err);
             }
           );
 
