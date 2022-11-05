@@ -83,18 +83,28 @@ export class CosplayGroupItemComponent implements OnInit, AfterViewInit {
 
   async onDeleteCosGroup(cosGroupId: string): Promise<void> {
 
-    this.storageService.deleteThumbnail(this.imageName)
-    .then( async (res) => {
-      //Thumbnail deleted .. continue
 
-      await this.loadingCtrl
+    await this.loadingCtrl
       .create({
         message: 'Deleting Cosplay Group...'
       })
       .then(loadingEl => {
         loadingEl.present();
           try {
-            this.cosplayGroupService.onDeleteCosGroup(cosGroupId);
+            this.cosplayGroupService.onDeleteCosGroup(cosGroupId)
+            .then( (res) => {
+
+              this.storageService.deleteThumbnail(this.imageName)
+              .then( async (res) => {
+                //Thumbnail deleted .. continue
+                console.log('Thumbnail deleted!');
+              })
+              .catch( (err) => {
+                console.log('Error deleting cosGroup Thumbnail :' + err);
+                //AVISA ADMIN
+              });
+
+            })
           }catch (err) {
             console.log(err);
           }
@@ -106,10 +116,7 @@ export class CosplayGroupItemComponent implements OnInit, AfterViewInit {
         //this.router.navigate(['main/tabs/cosplay-groups']);
       });
 
-    })
-    .catch( (err) => {
-      console.log('Error deleting cosGroup Thumbnail :' + err);
-    });
+    
   }
 
 }
