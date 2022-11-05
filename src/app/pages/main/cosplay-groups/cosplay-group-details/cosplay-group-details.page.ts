@@ -93,8 +93,14 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
           
           if(cosGroup!= null){
             if(this.cosplayGroup.imageUrl != null) {
-              this.getImageByFbUrl(this.cosplayGroup.imageUrl,2).then((val)=>{
+              this.getImageByFbUrl(this.cosplayGroup.imageUrl,2)
+              .then((val)=>{
                 this.imageUrl = val; 
+                this.imageReady = true;
+              })
+              .catch((err) => {
+                console.log(err);
+                this.imageUrl = null;
                 this.imageReady = true;
               })
             } else {

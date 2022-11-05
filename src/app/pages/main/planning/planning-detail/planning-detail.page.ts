@@ -77,8 +77,14 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
             this.placesData = this.planning.places != undefined ? this.planning.places : [] ;
             
             if(this.planning.imageUrl != null) {
-              this.getImageByFbUrl(this.planning.imageUrl,2).then((val)=>{
+              this.getImageByFbUrl(this.planning.imageUrl,2)
+              .then((val)=>{
                 this.imageUrl = val;
+                this.imageReady = true;
+              })
+              .catch((err) => {
+                console.log(err);
+                this.imageUrl = null;
                 this.imageReady = true;
               })
             } else {

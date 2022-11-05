@@ -100,8 +100,16 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
           this.cosplay = cosplay;
           if(cosplay!= null){
             if(this.cosplay.imageUrl != null) {
-              this.getImageByFbUrl(this.cosplay.imageUrl,2).then((val)=>{
+              this.getImageByFbUrl(this.cosplay.imageUrl,2)
+              .then((val)=>{
+                console.log(val);
+                
                 this.imageUrl = val;
+                this.imageReady = true;
+              })
+              .catch((err) => {
+                console.log(err);
+                this.imageUrl = null;
                 this.imageReady = true;
               })
             } else {
