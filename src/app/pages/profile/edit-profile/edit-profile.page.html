@@ -57,6 +57,8 @@
           <app-image-picker
           [selectedImage]="imgSrc"
           [showPreview]="form.get('imageUrl').value"
+          [roundCropper]="true"
+          [aspectRatio]="1 / 1"
           (imagePick)="onImagePicked($event)"></app-image-picker>
           <div class="progress">
             <div class="progress-bar progress-bar-stripped bg-success" role="progressbar" 
