@@ -13,10 +13,9 @@ import { PlanningItemComponent } from '../pages/main/planning/planning-item/plan
 import { CosgroupEditModalComponent } from './cosgroup-edit-modal/cosgroup-edit-modal.component';
 
 @NgModule({
-  declarations: [LocationPickerComponent, MapModalComponent, ImagePickerComponent,HeaderComponent,CosgroupEditModalComponent ],
-  imports: [ CommonModule, IonicModule,RouterModule ],
-  exports: [ LocationPickerComponent, MapModalComponent, ImagePickerComponent,HeaderComponent,CosgroupEditModalComponent],
-  entryComponents: [ MapModalComponent]
+    declarations: [LocationPickerComponent, MapModalComponent, ImagePickerComponent, HeaderComponent, CosgroupEditModalComponent],
+    imports: [CommonModule, IonicModule, RouterModule],
+    exports: [LocationPickerComponent, MapModalComponent, ImagePickerComponent, HeaderComponent, CosgroupEditModalComponent]
 })
 
 export class SharedModule {}

@@ -11,14 +11,13 @@ import { CosplayGroupItemComponent } from './cosplay-group-item/cosplay-group-it
 import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    CosplayGroupsPageRoutingModule,
-    SharedModule
-  ],
-  declarations: [CosplayGroupsPage, CosplayGroupItemComponent],
-  entryComponents: [ ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        CosplayGroupsPageRoutingModule,
+        SharedModule
+    ],
+    declarations: [CosplayGroupsPage, CosplayGroupItemComponent]
 })
 export class CosplayGroupsPageModule {}

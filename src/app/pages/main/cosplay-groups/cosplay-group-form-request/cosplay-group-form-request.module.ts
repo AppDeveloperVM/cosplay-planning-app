@@ -9,13 +9,12 @@ import { CosplayGroupFormRequestPageRoutingModule } from './cosplay-group-form-r
 import { CosplayGroupFormRequestPage } from './cosplay-group-form-request.page';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    CosplayGroupFormRequestPageRoutingModule
-  ],
-  declarations: [CosplayGroupFormRequestPage],
-  entryComponents: [ ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        CosplayGroupFormRequestPageRoutingModule
+    ],
+    declarations: [CosplayGroupFormRequestPage]
 })
 export class CosplayGroupFormRequestPageModule {}

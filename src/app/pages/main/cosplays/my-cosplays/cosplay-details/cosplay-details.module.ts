@@ -10,16 +10,14 @@ import { CosplayDetailsPage } from './cosplay-details.page';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-   
-    IonicModule,
-    CosplayDetailsPageRoutingModule,
-    SharedModule,
-    ReactiveFormsModule
-  ],
-  declarations: [CosplayDetailsPage],
-  entryComponents:[]
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        CosplayDetailsPageRoutingModule,
+        SharedModule,
+        ReactiveFormsModule
+    ],
+    declarations: [CosplayDetailsPage]
 })
 export class CosplayDetailsPageModule {}

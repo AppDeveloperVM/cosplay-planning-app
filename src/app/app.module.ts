@@ -35,41 +35,39 @@ import * as cordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 
 
 @NgModule({
-  declarations: [		
-    AppComponent, 
-    CosplayGroupSendRequestComponent,
-    CosElementTobuyModalComponent,
-    CosElementTomakeModalComponent,
-    CosTaskModalComponent,
-    MapModalLeafletComponent
-   ],
-  entryComponents: [CosplayGroupSendRequestComponent,PopinfoComponent],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    IonicModule.forRoot(),
-    AppRoutingModule,
-    ComponentsModule,
-    IonicModule,
-    ReactiveFormsModule,
-    AngularFireModule.initializeApp(firebaseConfig),
-    AngularFirestoreModule.enablePersistence({synchronizeTabs: true}),
-    AngularFireAuthModule,
-    SharedModule,
-    IonicStorageModule.forRoot({
-      name: "cosappdb",
-      driverOrder: [cordovaSQLiteDriver._driver,Drivers.IndexedDB, Drivers.LocalStorage]
-    })
-
-  ],
-  providers: [
-    StatusBar,
-    SplashScreen,
-    AngularFirestoreModule,
-    SettingsService,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
-    //{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
-  ],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        CosplayGroupSendRequestComponent,
+        CosElementTobuyModalComponent,
+        CosElementTomakeModalComponent,
+        CosTaskModalComponent,
+        MapModalLeafletComponent
+    ],
+    imports: [
+        BrowserModule,
+        HttpClientModule,
+        IonicModule.forRoot(),
+        AppRoutingModule,
+        ComponentsModule,
+        IonicModule,
+        ReactiveFormsModule,
+        AngularFireModule.initializeApp(firebaseConfig),
+        AngularFirestoreModule.enablePersistence({ synchronizeTabs: true }),
+        AngularFireAuthModule,
+        SharedModule,
+        IonicStorageModule.forRoot({
+            name: "cosappdb",
+            driverOrder: [cordovaSQLiteDriver._driver, Drivers.IndexedDB, Drivers.LocalStorage]
+        })
+    ],
+    providers: [
+        StatusBar,
+        SplashScreen,
+        AngularFirestoreModule,
+        SettingsService,
+        { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+        //{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule {}
