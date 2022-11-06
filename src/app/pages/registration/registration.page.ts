@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Form, NgForm,FormGroup, FormBuilder, Validators, ReactiveFormsModule  } from '@angular/forms';
+import { Form, NgForm,UntypedFormGroup, UntypedFormBuilder, Validators, ReactiveFormsModule  } from '@angular/forms';
 import { Router } from "@angular/router";
 import { AuthenticationService } from "../../services/authenticationService";
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -11,10 +11,10 @@ import { SharedModule } from 'src/app/shared/shared.module';
   styleUrls: ['./registration.page.scss'],
 })
 export class RegistrationPage implements OnInit {
-  ionicForm: FormGroup;
+  ionicForm: UntypedFormGroup;
 
   constructor(
-    public formBuilder: FormBuilder,
+    public formBuilder: UntypedFormBuilder,
     public authService: AuthenticationService,
     private router: Router
   ) { }

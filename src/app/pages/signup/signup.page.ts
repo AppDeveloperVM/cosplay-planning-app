@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
-import { Form, NgForm,FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Form, NgForm,UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-signup',
@@ -11,11 +11,11 @@ import { Form, NgForm,FormGroup, FormBuilder, Validators } from '@angular/forms'
 })
 
 export class SignupPage implements OnInit {
-  ionicForm: FormGroup;
+  ionicForm: UntypedFormGroup;
   isLoading = false;
   isSubmitted = false;
 
-  constructor(public formBuilder: FormBuilder,private authService: AuthService, private router: Router, private loadingCtrl: LoadingController) { }
+  constructor(public formBuilder: UntypedFormBuilder,private authService: AuthService, private router: Router, private loadingCtrl: LoadingController) { }
 
   ngOnInit() {
     this.ionicForm = this.formBuilder.group({

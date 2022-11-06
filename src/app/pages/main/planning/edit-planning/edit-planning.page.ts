@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Planning } from '../planning.model';
 import { Subscription } from 'rxjs';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 import { Route } from '@angular/compiler/src/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NavController, ModalController, LoadingController, AlertController } from '@ionic/angular';
@@ -20,7 +20,7 @@ export class EditPlanningPage implements OnInit, OnDestroy {
   planning: any;
   planningId: string;
   private planningSub: Subscription;
-  form: FormGroup;
+  form: UntypedFormGroup;
 
   selectedLocationImage: string;
 
@@ -108,25 +108,25 @@ export class EditPlanningPage implements OnInit, OnDestroy {
   
 
   buildForm(){
-    this.form = new FormGroup({
-      title: new FormControl(this.planning.title, {
+    this.form = new UntypedFormGroup({
+      title: new UntypedFormControl(this.planning.title, {
         updateOn: 'blur',
         validators: [Validators.required]
       }),
-      description: new FormControl(this.planning.description, {
+      description: new UntypedFormControl(this.planning.description, {
         updateOn: 'blur',
         validators: [Validators.required]
       }),
-      startsAt: new FormControl(this.planning.startsAt, {
+      startsAt: new UntypedFormControl(this.planning.startsAt, {
         updateOn: 'blur',
         validators: [ Validators.required]
       }),
-      endsAt: new FormControl(this.planning.endsAt, {
+      endsAt: new UntypedFormControl(this.planning.endsAt, {
         updateOn: 'blur',
         validators: [ Validators.required]
       }),
-      location: new FormControl(this.planning.location),
-      imageUrl: new FormControl(this.planning.imageUrl)
+      location: new UntypedFormControl(this.planning.location),
+      imageUrl: new UntypedFormControl(this.planning.imageUrl)
     });
 
     //Use saved info from db

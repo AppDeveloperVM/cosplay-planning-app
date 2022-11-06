@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormGroupDirective, FormControl, Validators } from '@angular/forms';
+import { UntypedFormGroup, FormGroupDirective, UntypedFormControl, Validators } from '@angular/forms';
 import { LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { finalize, switchMap } from 'rxjs/operators';
@@ -20,7 +20,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./new-planning.page.scss'],
 })
 export class NewPlanningPage implements OnInit {
-  form: FormGroup;
+  form: UntypedFormGroup;
   @ViewChild('createForm', { static: false }) createForm: FormGroupDirective;
 
   planning: PlanningInterface;
@@ -49,24 +49,24 @@ export class NewPlanningPage implements OnInit {
   }
 
   ngOnInit() {
-    this.form = new FormGroup({
-      title: new FormControl(null, {
+    this.form = new UntypedFormGroup({
+      title: new UntypedFormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required]
       }),
-      description: new FormControl(null, {
+      description: new UntypedFormControl(null, {
         updateOn: 'blur'
       }),
-      startsAt: new FormControl(null, {
+      startsAt: new UntypedFormControl(null, {
         updateOn: 'blur'
       }),
-      endsAt: new FormControl(null, {
+      endsAt: new UntypedFormControl(null, {
         updateOn: 'blur'
       }),
-      location: new FormControl(null, {
+      location: new UntypedFormControl(null, {
         validators: [Validators.required]
       }),
-      imageUrl: new FormControl(null)
+      imageUrl: new UntypedFormControl(null)
     });
 
   }

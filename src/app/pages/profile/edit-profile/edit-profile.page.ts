@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { getAuth, updateProfile } from "firebase/auth";
-import { FormGroup, FormGroupDirective, FormControl, Validators } from '@angular/forms';
+import { UntypedFormGroup, FormGroupDirective, UntypedFormControl, Validators } from '@angular/forms';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { UploadImageService } from 'src/app/services/upload-img.service';
 import { Profile } from '../profile.model';
@@ -17,7 +17,7 @@ import { StorageService } from 'src/app/services/storage.service';
 export class EditProfilePage implements OnInit {
   profile: Profile;
   public userData : any;
-  form: FormGroup;
+  form: UntypedFormGroup;
 
   oldImgName = "";
   imageName = "";
@@ -46,14 +46,14 @@ export class EditProfilePage implements OnInit {
     this.authFire.currentUser.then( (res) => {
       this.userData = res;
 
-      this.form = new FormGroup({
+      this.form = new UntypedFormGroup({
         //this.profile.userName,
-        displayName: new FormControl( null, 
+        displayName: new UntypedFormControl( null, 
         {
           updateOn: 'blur',
           validators: [Validators.required]
         }),
-        imageUrl: new FormControl(this.userData?.photoURL ? this.userData?.photoURL : null)
+        imageUrl: new UntypedFormControl(this.userData?.photoURL ? this.userData?.photoURL : null)
       });
 
       this.assignImage();

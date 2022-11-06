@@ -5,7 +5,7 @@ import { log } from 'console';
 import { CosElementToBuy } from 'src/app/models/cosElementToBuy.model';
 import { Cosplay } from 'src/app/models/cosplay.model';
 import { CosplayDevelopService } from 'src/app/services/cosplay-develop.service';
-import { FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -19,7 +19,7 @@ export class CosElementTobuyModalComponent implements OnInit {
   @Input() item;
   @Input() itemID;
   cosElementToBuy: CosElementToBuy;
-  element:FormGroup;
+  element:UntypedFormGroup;
   validations = null;
 
   name = null;
@@ -30,7 +30,7 @@ export class CosElementTobuyModalComponent implements OnInit {
     private loadingCtrl: LoadingController,
     private router: Router,
     private cosDevelopService: CosplayDevelopService,
-    public fb: FormBuilder
+    public fb: UntypedFormBuilder
   ) {
 
     this.validations = {
@@ -59,29 +59,29 @@ export class CosElementTobuyModalComponent implements OnInit {
   ngOnInit(): void {
     console.log(this.item);
     this.element = this.fb.group({
-      name: new FormControl( this.item?.name , {
+      name: new UntypedFormControl( this.item?.name , {
         validators: [Validators.required, Validators.maxLength(180)]
       }),
-      image: new FormControl( this.item?.image ? this.item?.image : null ),
-      cost: new FormControl( this.item?.cost ? this.item?.cost : 0, {
+      image: new UntypedFormControl( this.item?.image ? this.item?.image : null ),
+      cost: new UntypedFormControl( this.item?.cost ? this.item?.cost : 0, {
         updateOn: 'blur',
         validators: [Validators.maxLength(5), Validators.pattern("^([0-9]*)$")]
       }),
-      stores: new FormControl( this.item?.stores ? this.item?.stores : null, 
+      stores: new UntypedFormControl( this.item?.stores ? this.item?.stores : null, 
       {
         updateOn: 'blur',
         validators: [Validators.maxLength(180)]
       }),
-      notes: new FormControl( this.item?.notes ? this.item?.notes : null , {
+      notes: new UntypedFormControl( this.item?.notes ? this.item?.notes : null , {
         updateOn: 'blur',
         validators: [Validators.maxLength(180)]
       }),
-      important: new FormControl( this.item?.important ? this.item?.important :false ),
-      completed: new FormControl( this.item?.completed ? this.item?.completed : false , {
+      important: new UntypedFormControl( this.item?.important ? this.item?.important :false ),
+      completed: new UntypedFormControl( this.item?.completed ? this.item?.completed : false , {
         updateOn: 'blur',
         validators: [Validators.required]
       }),
-      elementID: new FormControl( this.itemID )
+      elementID: new UntypedFormControl( this.itemID )
     });
   }
   

@@ -4,7 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { NavController, ModalController, ToastController, AlertController, LoadingController } from '@ionic/angular';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { CosplayGroupService } from '../../../../services/cosplay-group.service';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 import { switchMap } from 'rxjs/operators';
 import { PlaceLocation } from '../../../../models/location.model';
 import { UploadImageService } from 'src/app/services/upload-img.service';
@@ -20,7 +20,7 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
   cosplayGroup: any;
   cosplayGroupId: string;
   private cosplayGroupSub: Subscription;
-  form: FormGroup;
+  form: UntypedFormGroup;
   validations = null;
 
   selectedLocationImage: string;
@@ -136,31 +136,31 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
   }
 
   buildForm(){
-    this.form = new FormGroup({
-      title: new FormControl(this.cosplayGroup.title, {
+    this.form = new UntypedFormGroup({
+      title: new UntypedFormControl(this.cosplayGroup.title, {
         updateOn: 'blur',
         validators: [Validators.required]
       }),
-      series: new FormControl(this.cosplayGroup.series, {
+      series: new UntypedFormControl(this.cosplayGroup.series, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
-      description: new FormControl(this.cosplayGroup.description, {
+      description: new UntypedFormControl(this.cosplayGroup.description, {
         updateOn: 'blur',
         validators: [ Validators.maxLength(180) ]
       }),
-      place: new FormControl(this.cosplayGroup.place, {
+      place: new UntypedFormControl(this.cosplayGroup.place, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
-      dateFrom: new FormControl(this.cosplayGroup.dateFrom, {
+      dateFrom: new UntypedFormControl(this.cosplayGroup.dateFrom, {
         updateOn: 'blur',
       }),
-      dateTo: new FormControl(this.cosplayGroup.dateTo, {
+      dateTo: new UntypedFormControl(this.cosplayGroup.dateTo, {
         updateOn: 'blur',
       }),
-      location: new FormControl(null),
-      imageUrl: new FormControl(null)
+      location: new UntypedFormControl(null),
+      imageUrl: new UntypedFormControl(null)
     });
  
   }

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 import { CosplayGroup } from '../cosplay-group.model';
 import { CosplayGroupService } from '../../../../services/cosplay-group.service';
 import { Router } from '@angular/router';
@@ -23,7 +23,7 @@ import { AsyncSubject, Observable } from 'rxjs';
   styleUrls: ['./new-cosplay-group.page.scss'],
 })
 export class NewCosplayGroupPage implements OnInit {
-  form: FormGroup;
+  form: UntypedFormGroup;
   validations = null;
   @Input() selectedCosplayGroup: CosplayGroup;
   @Input() selectedMode: 'select' | 'random';
@@ -82,31 +82,31 @@ export class NewCosplayGroupPage implements OnInit {
     const dateFrom = new Date();
     const dateTo = new Date();
 
-    this.form = new FormGroup({
-      title: new FormControl(null, {
+    this.form = new UntypedFormGroup({
+      title: new UntypedFormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
-      series: new FormControl(null, {
+      series: new UntypedFormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
-      description: new FormControl(null, {
+      description: new UntypedFormControl(null, {
         updateOn: 'blur',
         validators: [ Validators.maxLength(180) ]
       }),
-      place: new FormControl(null, {
+      place: new UntypedFormControl(null, {
         updateOn: 'blur',
         validators: [ Validators.maxLength(180) ]
       }),
-      dateFrom: new FormControl(null, {
+      dateFrom: new UntypedFormControl(null, {
         updateOn: 'blur'
       }),
-      dateTo: new FormControl(null, {
+      dateTo: new UntypedFormControl(null, {
         updateOn: 'blur'
       }),
-      location: new FormControl(null),
-      imageUrl: new FormControl(null)
+      location: new UntypedFormControl(null),
+      imageUrl: new UntypedFormControl(null)
     });
   }
 

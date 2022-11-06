@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { firebaseConfig } from 'src/environments/environment';
 import { FirebaseStorageService } from './firebase-storage.service';
 import firebase from 'firebase/compat/app';
@@ -44,7 +44,7 @@ export class UploadImageService {
         private alertCtrl: AlertController
     ) { }
 
-    form: FormGroup;
+    form: UntypedFormGroup;
     imgReference;
     public URLPublica = '';
     isFormReady = false;
@@ -53,11 +53,11 @@ export class UploadImageService {
     urlImage: String;
 
     //create Form component for the Image Upload
-    public archivoForm = new FormGroup({
-        archivo: new FormControl(null, Validators.required),
+    public archivoForm = new UntypedFormGroup({
+        archivo: new UntypedFormControl(null, Validators.required),
     });
 
-    async fullUploadProcess(imageData: string | File, form : FormGroup) : Promise<any> {
+    async fullUploadProcess(imageData: string | File, form : UntypedFormGroup) : Promise<any> {
 
       let upload = new Promise(async (resolve, reject) => { 
         await this.decodeFile(imageData)
@@ -176,7 +176,7 @@ export class UploadImageService {
       return promise;
     }
   
-    uploadToServer(imageFile,imageId = Math.random().toString(36).substring(2) ,form : FormGroup, index : Number = null) : Promise<any> {
+    uploadToServer(imageFile,imageId = Math.random().toString(36).substring(2) ,form : UntypedFormGroup, index : Number = null) : Promise<any> {
 
       var promise = new Promise((resolve, reject) => {
       

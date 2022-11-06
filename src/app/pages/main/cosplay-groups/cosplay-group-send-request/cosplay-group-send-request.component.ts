@@ -5,7 +5,7 @@ import { LoadingController, ModalController, NavController } from '@ionic/angula
 import { Cosplay } from '../../../../models/cosplay.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NoticesService } from 'src/app/services/notices.service';
-import { FormControl, ReactiveFormsModule, FormGroup, NgForm, Validators, FormBuilder } from '@angular/forms';
+import { UntypedFormControl, ReactiveFormsModule, UntypedFormGroup, NgForm, Validators, FormBuilder } from '@angular/forms';
 import { FirebaseStorageService } from 'src/app/services/firebase-storage.service';
 import { CharacterMember } from 'src/app/models/characterMember.model';
 import { CosGroupMember } from 'src/app/models/cosGroupMember.interface';
@@ -44,7 +44,7 @@ export class CosplayGroupSendRequestComponent implements OnInit {
   private notifications$ = this.noticesService.notices$;
 
 
-  form: FormGroup;
+  form: UntypedFormGroup;
   version: string;
   selectOptions: any = [
     {id : 'original', name: 'Original'},
@@ -80,22 +80,22 @@ export class CosplayGroupSendRequestComponent implements OnInit {
       this.notifications = data;
     })
 
-    this.form = new FormGroup({
-      characterName: new FormControl(null, {
+    this.form = new UntypedFormGroup({
+      characterName: new UntypedFormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required]
       }),
-      version: new FormControl(null, {
+      version: new UntypedFormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
-      versionName: new FormControl(null, {
+      versionName: new UntypedFormControl(null, {
         updateOn: 'blur',
         validators: [Validators.maxLength(180)]
       }),
-      image: new FormControl(null),
-      asistanceConfirmed: new FormControl(false),
-      requestConfirmed: new FormControl(false)
+      image: new UntypedFormControl(null),
+      asistanceConfirmed: new UntypedFormControl(false),
+      requestConfirmed: new UntypedFormControl(false)
     });
     this.onSetOriginalVersion();
   }

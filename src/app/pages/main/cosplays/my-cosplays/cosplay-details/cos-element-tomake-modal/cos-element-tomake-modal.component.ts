@@ -4,7 +4,7 @@ import { LoadingController, ModalController } from '@ionic/angular';
 import { CosElementToDo } from 'src/app/models/cosElementToDo.model';
 import { Cosplay } from 'src/app/models/cosplay.model';
 import { CosplayDevelopService } from 'src/app/services/cosplay-develop.service';
-import { FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @Component({
@@ -18,7 +18,7 @@ export class CosElementTomakeModalComponent implements OnInit {
   @Input() item;
   @Input() itemID;
 
-  element: FormGroup;
+  element: UntypedFormGroup;
   cosElementToMake: CosElementToDo;
   validations = null;
 
@@ -27,7 +27,7 @@ export class CosElementTomakeModalComponent implements OnInit {
     private loadingCtrl: LoadingController,
     private router: Router,
     private cosDevelopService: CosplayDevelopService,
-    public fb: FormBuilder
+    public fb: UntypedFormBuilder
   ) {
 
     this.validations = {
@@ -53,23 +53,23 @@ export class CosElementTomakeModalComponent implements OnInit {
 
   ngOnInit() {
     this.element =  this.fb.group({
-      name: new FormControl( this.item?.name ? this.item?.name : null, {
+      name: new UntypedFormControl( this.item?.name ? this.item?.name : null, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
-      hours: new FormControl( this.item?.hours ? this.item?.hours : '00' , {
+      hours: new UntypedFormControl( this.item?.hours ? this.item?.hours : '00' , {
         updateOn: 'blur',
         validators: [Validators.maxLength(2)]
       }),
-      minutes: new FormControl( this.item?.minutes ? this.item?.minutes : '01' , {
+      minutes: new UntypedFormControl( this.item?.minutes ? this.item?.minutes : '01' , {
         updateOn: 'blur',
         validators: [Validators.maxLength(2)]
       }),
-      notes: new FormControl(this.item?.notes ? this.item?.notes : null, {
+      notes: new UntypedFormControl(this.item?.notes ? this.item?.notes : null, {
         updateOn: 'blur',
         validators: [Validators.maxLength(180)]
       }),
-      elementID: new FormControl( this.itemID )
+      elementID: new UntypedFormControl( this.itemID )
     });
   }
 

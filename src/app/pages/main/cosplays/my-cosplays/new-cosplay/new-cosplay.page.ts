@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormGroupDirective, FormControl, Validators } from '@angular/forms';
+import { UntypedFormGroup, FormGroupDirective, UntypedFormControl, Validators } from '@angular/forms';
 import { ModalController, LoadingController, AlertController } from '@ionic/angular';
 import { Cosplay } from '../../../../../models/cosplay.model';
 import { CosplaysService } from '../../../../../services/cosplays.service';
@@ -23,7 +23,7 @@ import { Toast } from '@capacitor/toast';
   styleUrls: ['./new-cosplay.page.scss'],
 })
 export class NewCosplayPage implements OnInit {
-  form: FormGroup;
+  form: UntypedFormGroup;
   validations = null;
   @ViewChild('createForm', { static: false }) createForm: FormGroupDirective;
 
@@ -66,11 +66,11 @@ export class NewCosplayPage implements OnInit {
   }
 
   ngOnInit(): void {
-    this.form = new FormGroup({
-      characterName: new FormControl('', { validators: [ Validators.required, Validators.maxLength(100)] } ),
-      series: new FormControl('', { validators: [ Validators.required, Validators.maxLength(180)] } ),
-      description: new FormControl('', { validators: [ Validators.maxLength(180)] } ),
-      imageUrl: new FormControl(null)
+    this.form = new UntypedFormGroup({
+      characterName: new UntypedFormControl('', { validators: [ Validators.required, Validators.maxLength(100)] } ),
+      series: new UntypedFormControl('', { validators: [ Validators.required, Validators.maxLength(180)] } ),
+      description: new UntypedFormControl('', { validators: [ Validators.maxLength(180)] } ),
+      imageUrl: new UntypedFormControl(null)
     });
     
   }

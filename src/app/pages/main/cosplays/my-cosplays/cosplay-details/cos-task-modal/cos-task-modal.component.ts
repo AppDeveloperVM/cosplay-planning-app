@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoadingController, ModalController } from '@ionic/angular';
 import { Cosplay } from 'src/app/models/cosplay.model';
@@ -16,7 +16,7 @@ export class CosTaskModalComponent implements OnInit {
   @Input() item;
   @Input() itemID;
 
-  form: FormGroup;
+  form: UntypedFormGroup;
   task: CosTask;
 
   constructor(
@@ -29,24 +29,24 @@ export class CosTaskModalComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.form = new FormGroup({
-      name: new FormControl( this.item?.name ? this.item?.name : '-' , {
+    this.form = new UntypedFormGroup({
+      name: new UntypedFormControl( this.item?.name ? this.item?.name : '-' , {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
-      alarm: new FormControl( this.item?.alarm ? this.item?.alarm : false, {
+      alarm: new UntypedFormControl( this.item?.alarm ? this.item?.alarm : false, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
-      date: new FormControl( this.item?.date ? this.item?.date : new Date() , {
+      date: new UntypedFormControl( this.item?.date ? this.item?.date : new Date() , {
         updateOn: 'blur',
         validators: [Validators.maxLength(180)]
       }),
-      done: new FormControl( this.item?.done ? this.item?.done : false , {
+      done: new UntypedFormControl( this.item?.done ? this.item?.done : false , {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
-      taskID: new FormControl( this.itemID )
+      taskID: new UntypedFormControl( this.itemID )
     });
       
   }
