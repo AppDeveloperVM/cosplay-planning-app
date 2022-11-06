@@ -14,6 +14,8 @@
   },
   "private": true,
   "dependencies": {
+    "@angular-devkit/core": "^13.3.9",
+    "@angular-devkit/schematics": "^13.3.9",
     "@angular/common": "^14.2.9",
     "@angular/fire": "^7.2.0",
     "@angular/forms": "^14.2.9",
@@ -41,6 +43,7 @@
     "@ionic/pwa-elements": "^3.1.1",
     "@ionic/storage": "^3.0.6",
     "@ionic/storage-angular": "^3.0.6",
+    "@schematics/angular": "^13.3.9",
     "@types/esri-leaflet": "^2.1.9",
     "@types/google-maps": "3.2.2",
     "@types/leaflet": "^1.7.7",
