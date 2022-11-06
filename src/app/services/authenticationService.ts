@@ -67,21 +67,34 @@ export class AuthenticationService {
 
   // Login in with email/password
   SignIn(email, password) : Promise<any> {
-    return this.ngFireAuth.signInWithEmailAndPassword(email, password)
+
+    return new Promise( (resolve,reject) => {
+
+      this.ngFireAuth.signInWithEmailAndPassword(email, password)
       .then(async (response) => {
         console.log(response);
 
-        if(!this.getUserByEmail( response.user.email )){
+        this.getUserByEmail( response.user.email )
+        .subscribe( res => {
+          resolve(res);
+          this.router.navigate(['/']);  
+        },
+        async err => {
+          console.log(err);
+          
           const alert = await this.alertController.create({
             header: 'User doesnt exist.',
             message: '-',
             buttons: ['OK'],
           });
           await alert.present();
-          return false;
-        } else {
-          this.router.navigate(['/']);   
-        }
+
+          reject();
+        })
+
+      });
+
+        
 
         /* this.authService.isEmailVerified(email)
         .then( async (res) => {
