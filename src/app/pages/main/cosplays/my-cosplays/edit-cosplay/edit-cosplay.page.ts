@@ -208,10 +208,10 @@ export class EditCosplayPage implements OnInit, OnDestroy {
       
       this.cosplaysService.onSaveCosplay(cosplay, cosplayId)
       .then( (res) => {
-        console.log('image to delete : ' + this.oldImgName);
+        //console.log('image to delete : ' + this.oldImgName);
         
         if(this.imageChanged && this.imageName !== this.oldImgName){
-          this.storageService.deleteThumbnail(this.oldImgName);
+          //this.storageService.deleteThumbnail(this.oldImgName);
         }
         this.dataUpdated = true;
       }) 
@@ -242,9 +242,9 @@ export class EditCosplayPage implements OnInit, OnDestroy {
     // Unregister the custom back button action for this page
     //this.unsubscribeBackEvent && this.unsubscribeBackEvent();
     if(this.imageChanged == true && this.dataUpdated == false){
-      console.log('delete img not changed : ' + this.imageName);
+      //console.log('delete img not changed : ' + this.imageName);
 
-      this.storageService.deleteThumbnail(this.imageName);
+      //this.storageService.deleteThumbnail(this.imageName);
     }
     
   }

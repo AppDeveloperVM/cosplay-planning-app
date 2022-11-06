@@ -27,6 +27,7 @@
         <app-image-picker
         [selectedImage]="imgSrc"
         [showPreview]="form.get('imageUrl').value"
+        [roundCropper]="false"
         (imagePick)="onImagePicked($event)">
         </app-image-picker>
       </ion-col>
