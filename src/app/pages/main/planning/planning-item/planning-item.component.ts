@@ -1,10 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { LoadingController, Platform } from '@ionic/angular';
-import { DataService } from 'src/app/services/data.service';
-import { PlanningService } from 'src/app/services/planning.service';
-import { StorageService } from 'src/app/services/storage.service';
-import { UploadImageService } from 'src/app/services/upload-img.service';
+import { DataService } from '../../../../services/data.service';
+import { PlanningService } from '../../../../services/planning.service';
+import { StorageService } from '../../../../services/storage.service';
+import { UploadImageService } from '../../../../services/upload-img.service';
 import { Planning } from '../planning.model';
 
 @Component({

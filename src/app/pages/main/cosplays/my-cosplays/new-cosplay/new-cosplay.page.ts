@@ -5,15 +5,15 @@ import { Cosplay } from '../../../../../models/cosplay.model';
 import { CosplaysService } from '../../../../../services/cosplays.service';
 import { Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
-import { environment } from 'src/environments/environment.prod';
-import { FirebaseStorageService } from 'src/app/services/firebase-storage.service';
+import { environment } from '../../../../../../environments/environment.prod';
+import { FirebaseStorageService } from '../../../../../services/firebase-storage.service';
 import { getStorage, ref, uploadBytes,getDownloadURL } from "firebase/storage";
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { map } from 'leaflet';
 import imageCompression from 'browser-image-compression';
-import { UploadImageService } from 'src/app/services/upload-img.service';
+import { UploadImageService } from '../../../../../services/upload-img.service';
 import { Toast } from '@capacitor/toast';
 
 

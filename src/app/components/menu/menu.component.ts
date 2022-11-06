@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { DataService } from 'src/app/services/data.service';
-import { AuthenticationService } from 'src/app/services/authenticationService';
+import { DataService } from '../../services/data.service';
+import { AuthenticationService } from '../../services/authenticationService';
 import { Observable } from 'rxjs';
-import { Componente } from 'src/app/interfaces/interfaces';
+import { Componente } from '../../interfaces/interfaces';
 
 @Component({
   selector: 'app-menu',

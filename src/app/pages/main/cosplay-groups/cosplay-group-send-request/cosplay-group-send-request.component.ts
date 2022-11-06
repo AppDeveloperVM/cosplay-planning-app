@@ -1,15 +1,14 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Placeholder } from '@angular/compiler/src/i18n/i18n_ast';
 import { CosplayGroup } from '../cosplay-group.model';
 import { LoadingController, ModalController, NavController } from '@ionic/angular';
 import { Cosplay } from '../../../../models/cosplay.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NoticesService } from 'src/app/services/notices.service';
+import { NoticesService } from '../../../../services/notices.service';
 import { UntypedFormControl, ReactiveFormsModule, UntypedFormGroup, NgForm, Validators, FormBuilder } from '@angular/forms';
-import { FirebaseStorageService } from 'src/app/services/firebase-storage.service';
-import { CharacterMember } from 'src/app/models/characterMember.model';
-import { CosGroupMember } from 'src/app/models/cosGroupMember.interface';
-import { CosplayGroupService } from 'src/app/services/cosplay-group.service';
+import { FirebaseStorageService } from '../../../../services/firebase-storage.service';
+import { CharacterMember } from '../../../../models/characterMember.model';
+import { CosGroupMember } from '../../../../models/cosGroupMember.interface';
+import { CosplayGroupService } from '../../../../services/cosplay-group.service';
 
 function base64toBlob(base64Data, contentType) {
   contentType = contentType || '';

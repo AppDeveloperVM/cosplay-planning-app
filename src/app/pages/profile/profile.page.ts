@@ -4,7 +4,7 @@ import { Share } from '@capacitor/share';
 import { Device } from '@capacitor/device';
 
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { UploadImageService } from 'src/app/services/upload-img.service';
+import { UploadImageService } from '../../services/upload-img.service';
 
 
 @Component({

@@ -18,7 +18,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HeaderComponent } from './components/header/header.component';
 import { AuthInterceptor } from './services/auth-interceptor.service';
 
-import { firebaseConfig } from 'src/environments/environment';
+import { firebaseConfig } from '../environments/environment';
 
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';

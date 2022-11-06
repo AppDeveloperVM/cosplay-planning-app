@@ -2,16 +2,16 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { CosplaysService } from '../../../../services/cosplays.service';
 import { Cosplay } from '../../../../models/cosplay.model';
 import { SegmentChangeEventDetail } from '@ionic/core';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from '../../../../services/auth.service';
 import { PopoverController } from '@ionic/angular';
-import { PopinfoComponent } from 'src/app/components/popinfo/popinfo.component';
+import { PopinfoComponent } from '../../../../components/popinfo/popinfo.component';
 import { Data, RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Observable, Subscription } from 'rxjs';
-import { NoticesService } from 'src/app/services/notices.service';
-import { DataService } from 'src/app/services/data.service';
+import { NoticesService } from '../../../../services/notices.service';
+import { DataService } from '../../../../services/data.service';
 import { threadId } from 'worker_threads';
-import { SettingsService } from 'src/app/services/settings.service';
+import { SettingsService } from '../../../../services/settings.service';
 
 @Component({
   selector: 'app-my-cosplays',

@@ -4,14 +4,14 @@ import { Subscription } from 'rxjs';
 import { NavController, ModalController, AlertController, Platform } from '@ionic/angular';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { PlanningService } from '../../../../services/planning.service';
-import { MapModalComponent } from 'src/app/shared/map-modal/map-modal.component';
+import { MapModalComponent } from '../../../../shared/map-modal/map-modal.component';
 
-import { MapModalLeafletComponent } from 'src/app/shared/map-modal-leaflet/map-modal-leaflet.component';
+import { MapModalLeafletComponent } from '../../../../shared/map-modal-leaflet/map-modal-leaflet.component';
 
 import { NgForm } from '@angular/forms';
-import { PlaceDataService } from 'src/app/services/place-data.service';
+import { PlaceDataService } from '../../../../services/place-data.service';
 import { Coordinates } from '../../../../models/location.model';
-import { UploadImageService } from 'src/app/services/upload-img.service';
+import { UploadImageService } from '../../../../services/upload-img.service';
 
 interface PlaceLocation extends Coordinates {
   placeId: string;

@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { Form, NgForm,UntypedFormGroup, UntypedFormBuilder, Validators, ReactiveFormsModule  } from '@angular/forms';
 import { AuthenticationService } from "../../services/authenticationService";
-import { SharedModule } from 'src/app/shared/shared.module';
+import { SharedModule } from '../../shared/shared.module';
 
 
 @Component({

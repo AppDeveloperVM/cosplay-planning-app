@@ -6,18 +6,18 @@ import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { Cosplay } from '../../../../models/cosplay.model';
 import { Observable, Subscription } from 'rxjs';
-import { MapModalComponent } from 'src/app/shared/map-modal/map-modal.component';
-import { PlaceDataService } from 'src/app/services/place-data.service';
-import { MapModalLeafletComponent } from 'src/app/shared/map-modal-leaflet/map-modal-leaflet.component';
+import { MapModalComponent } from '../../../../shared/map-modal/map-modal.component';
+import { PlaceDataService } from '../../../../services/place-data.service';
+import { MapModalLeafletComponent } from '../../../../shared/map-modal-leaflet/map-modal-leaflet.component';
 
-import { CharacterMember } from 'src/app/models/characterMember.model';
-import { CosgroupEditModalComponent } from 'src/app/shared/cosgroup-edit-modal/cosgroup-edit-modal.component';
+import { CharacterMember } from '../../../../models/characterMember.model';
+import { CosgroupEditModalComponent } from '../../../../shared/cosgroup-edit-modal/cosgroup-edit-modal.component';
 import { CosplayGroupSendRequestComponent } from '../cosplay-group-send-request/cosplay-group-send-request.component';
 import { delay, map } from 'rxjs/operators';
-import { CosGroupMember } from 'src/app/models/cosGroupMember.interface';
+import { CosGroupMember } from '../../../../models/cosGroupMember.interface';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
-import { DataService } from 'src/app/services/data.service';
-import { UploadImageService } from 'src/app/services/upload-img.service';
+import { DataService } from '../../../../services/data.service';
+import { UploadImageService } from '../../../../services/upload-img.service';
 
 
 @Component({

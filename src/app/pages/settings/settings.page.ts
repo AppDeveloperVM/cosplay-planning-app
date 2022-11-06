@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { appSettingsConfig } from '../../models/appSettingsConfig.model';
 import { DataService } from '../../services/data.service';
 import { SettingsService } from '../../services/settings.service';
-import { AuthenticationService } from 'src/app/services/authenticationService';
+import { AuthenticationService } from '../../services/authenticationService';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 

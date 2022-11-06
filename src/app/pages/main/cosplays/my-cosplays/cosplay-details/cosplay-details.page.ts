@@ -5,18 +5,18 @@ import { Cosplay } from '../../../../../models/cosplay.model';
 import { CosplaysService } from '../../../../../services/cosplays.service';
 import { Subscription } from 'rxjs';
 import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
-import { UploadImageService } from 'src/app/services/upload-img.service';
+import { UploadImageService } from '../../../../../services/upload-img.service';
 import { CosElementTobuyModalComponent } from './cos-element-tobuy-modal/cos-element-tobuy-modal.component';
 import { CosElementTomakeModalComponent } from './cos-element-tomake-modal/cos-element-tomake-modal.component';
 import { CosTaskModalComponent } from './cos-task-modal/cos-task-modal.component';
-import { CosplayDevelopService } from 'src/app/services/cosplay-develop.service';
+import { CosplayDevelopService } from '../../../../../services/cosplay-develop.service';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
-import { CosElementToBuy } from 'src/app/models/cosElementToBuy.model';
-import { CosElementToDo } from 'src/app/models/cosElementToDo.model';
-import { CosTask } from 'src/app/models/cosTask.model';
+import { CosElementToBuy } from '../../../../../models/cosElementToBuy.model';
+import { CosElementToDo } from '../../../../../models/cosElementToDo.model';
+import { CosTask } from '../../../../../models/cosTask.model';
 import { map } from 'rxjs/operators';
 import { CosElementNewModalComponent } from './cos-element-new-modal/cos-element-new-modal.component';
-import { DataService } from 'src/app/services/data.service';
+import { DataService } from '../../../../../services/data.service';
 
 @Component({
   selector: 'app-cosplay-details',

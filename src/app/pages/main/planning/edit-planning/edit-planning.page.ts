@@ -2,14 +2,13 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Planning } from '../planning.model';
 import { Subscription } from 'rxjs';
 import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
-import { Route } from '@angular/compiler/src/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NavController, ModalController, LoadingController, AlertController } from '@ionic/angular';
 import { PlanningService } from '../../../../services/planning.service';
 import { switchMap } from 'rxjs/operators';
 import { PlaceLocation } from '../../../../models/location.model';
-import { UploadImageService } from 'src/app/services/upload-img.service';
-import { StorageService } from 'src/app/services/storage.service';
+import { UploadImageService } from '../../../../services/upload-img.service';
+import { StorageService } from '../../../../services/storage.service';
 
 @Component({
   selector: 'app-edit-planning',

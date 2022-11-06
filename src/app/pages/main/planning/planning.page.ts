@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Planning } from './planning.model';
 import { Subscription } from 'rxjs';
 import { PlanningService } from '../../../services/planning.service';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from '../../../services/auth.service';
 import { LoadingController, PopoverController } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 

@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { EditCosplayGroupPageRoutingModule } from './edit-cosplay-group-routing.module';
 
 import { EditCosplayGroupPage } from './edit-cosplay-group.page';
-import { SharedModule } from 'src/app/shared/shared.module';
+import { SharedModule } from '../../../../shared/shared.module';
 
 @NgModule({
   imports: [

@@ -2,9 +2,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoadingController, ModalController } from '@ionic/angular';
 import { log } from 'console';
-import { CosElementToBuy } from 'src/app/models/cosElementToBuy.model';
-import { Cosplay } from 'src/app/models/cosplay.model';
-import { CosplayDevelopService } from 'src/app/services/cosplay-develop.service';
+import { CosElementToBuy } from '../../../../../../models/cosElementToBuy.model';
+import { Cosplay } from '../../../../../../models/cosplay.model';
+import { CosplayDevelopService } from '../../../../../../services/cosplay-develop.service';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 

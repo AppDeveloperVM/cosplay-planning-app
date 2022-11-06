@@ -2,10 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
-import { CosplaysService } from 'src/app/services/cosplays.service';
-import { DataService } from 'src/app/services/data.service';
-import { StorageService } from 'src/app/services/storage.service';
-import { UploadImageService } from 'src/app/services/upload-img.service';
+import { CosplaysService } from '../../../../../services/cosplays.service';
+import { DataService } from '../../../../../services/data.service';
+import { StorageService } from '../../../../../services/storage.service';
+import { UploadImageService } from '../../../../../services/upload-img.service';
 import { Cosplay } from '../../../../../models/cosplay.model';
 
 @Component({

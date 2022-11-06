@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
-import { firebaseConfig } from 'src/environments/environment';
+import { firebaseConfig } from '../../environments/environment';
 import { FirebaseStorageService } from './firebase-storage.service';
 import firebase from 'firebase/compat/app';
 import { getStorage, ref, uploadBytes,getDownloadURL } from "firebase/storage";

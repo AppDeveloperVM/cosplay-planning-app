@@ -2,9 +2,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoadingController, ModalController } from '@ionic/angular';
-import { Cosplay } from 'src/app/models/cosplay.model';
-import { CosTask } from 'src/app/models/cosTask.model';
-import { CosplayDevelopService } from 'src/app/services/cosplay-develop.service';
+import { Cosplay } from '../../../../../../models/cosplay.model';
+import { CosTask } from '../../../../../../models/cosTask.model';
+import { CosplayDevelopService } from '../../../../../../services/cosplay-develop.service';
 
 @Component({
   selector: 'app-cos-task-modal',

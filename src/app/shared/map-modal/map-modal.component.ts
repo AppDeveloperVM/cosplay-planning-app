@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, Renderer2, OnDestroy, Input } from '@angular/core';
 import { ModalController, AlertController, ToastController } from '@ionic/angular';
 import { environment } from '../../../environments/environment';
-import { PlaceDataService } from 'src/app/services/place-data.service';
+import { PlaceDataService } from '../../services/place-data.service';
 import { from, fromEvent, Observable } from 'rxjs';
 
 @Component({

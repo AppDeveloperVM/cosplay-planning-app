@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Form, NgForm,UntypedFormGroup, UntypedFormBuilder, Validators, ReactiveFormsModule  } from '@angular/forms';
 import { Router } from "@angular/router";
 import { AuthenticationService } from "../../services/authenticationService";
-import { SharedModule } from 'src/app/shared/shared.module';
+import { SharedModule } from '../../shared/shared.module';
 
 
 @Component({

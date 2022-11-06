@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { PlaceLocation } from '../../../../models/location.model';
 import { finalize, switchMap } from 'rxjs/operators';
 import { LoadingController } from '@ionic/angular';
-import { CosGroup } from 'src/app/models/cosGroup.interface';
+import { CosGroup } from '../../../../models/cosGroup.interface';
 
 import { UploadImageService } from '../../../../services/upload-img.service';
 import { FirebaseStorageService } from '../../../../services/firebase-storage.service';

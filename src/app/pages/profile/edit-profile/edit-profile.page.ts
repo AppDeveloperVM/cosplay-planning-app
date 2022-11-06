@@ -3,11 +3,11 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { getAuth, updateProfile } from "firebase/auth";
 import { UntypedFormGroup, FormGroupDirective, UntypedFormControl, Validators } from '@angular/forms';
 import { AlertController, LoadingController } from '@ionic/angular';
-import { UploadImageService } from 'src/app/services/upload-img.service';
+import { UploadImageService } from '../../../services/upload-img.service';
 import { Profile } from '../profile.model';
 import { ProfilePage } from '../profile.page';
-import { UsersService } from 'src/app/services/users.service';
-import { StorageService } from 'src/app/services/storage.service';
+import { UsersService } from '../../../services/users.service';
+import { StorageService } from '../../../services/storage.service';
 
 @Component({
   selector: 'app-edit-profile',

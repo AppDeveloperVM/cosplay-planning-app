@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { SettingsService } from './services/settings.service';
 import { Observable } from 'rxjs';
 import { DataService } from './services/data.service';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { threadId } from 'worker_threads';
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
 

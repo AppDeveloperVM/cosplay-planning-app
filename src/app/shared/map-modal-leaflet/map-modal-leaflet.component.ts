@@ -4,7 +4,6 @@ import { AlertController, ModalController, NavController, ToastController } from
 // Leaflet
 import * as Leaflet from 'leaflet';
 import { antPath } from 'leaflet-ant-path';
-import 'leaflet/dist/leaflet.css';
 //import * as L from "leaflet";
 import * as vector from 'esri-leaflet-vector';
 import 'leaflet-routing-machine';
@@ -12,11 +11,11 @@ import { ApiKey } from '@esri/arcgis-rest-auth';
 import {
   solveRoute,
 } from "@esri/arcgis-rest-routing";
-import { PlaceDataService } from 'src/app/services/place-data.service';
-import { PlanningService } from 'src/app/services/planning.service';
-import { CosplaysService } from 'src/app/services/cosplays.service';
-import { CosplayGroupService } from 'src/app/services/cosplay-group.service';
-import { LocationService } from 'src/app/services/location.service';
+import { PlaceDataService } from '../../services/place-data.service';
+import { PlanningService } from '../../services/planning.service';
+import { CosplaysService } from '../../services/cosplays.service';
+import { CosplayGroupService } from '../../services/cosplay-group.service';
+import { LocationService } from '../../services/location.service';
 
 declare var L: any;
 

@@ -8,7 +8,7 @@ import { PlanningPageRoutingModule } from './planning-routing.module';
 
 import { PlanningPage } from './planning.page';
 import { PlanningItemComponent } from './planning-item/planning-item.component';
-import { SharedModule } from 'src/app/shared/shared.module';
+import { SharedModule } from '../../../shared/shared.module';
 import { RouterModule } from '@angular/router';
 
 @NgModule({

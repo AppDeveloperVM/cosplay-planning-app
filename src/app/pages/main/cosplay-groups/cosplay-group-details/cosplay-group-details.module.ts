@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { CosplayGroupDetailsPageRoutingModule } from './cosplay-group-details-routing.module';
 
 import { CosplayGroupDetailsPage } from './cosplay-group-details.page';
-import { SharedModule } from 'src/app/shared/shared.module';
+import { SharedModule } from '../../../../shared/shared.module';
 import { CosplayGroupSendRequestComponent } from '../cosplay-group-send-request/cosplay-group-send-request.component';
 
 @NgModule({

@@ -7,8 +7,8 @@ import { CosplayGroupService } from '../../../../services/cosplay-group.service'
 import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 import { switchMap } from 'rxjs/operators';
 import { PlaceLocation } from '../../../../models/location.model';
-import { UploadImageService } from 'src/app/services/upload-img.service';
-import { StorageService } from 'src/app/services/storage.service';
+import { UploadImageService } from '../../../../services/upload-img.service';
+import { StorageService } from '../../../../services/storage.service';
 
 
 @Component({

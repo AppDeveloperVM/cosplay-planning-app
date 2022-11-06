@@ -6,8 +6,8 @@ import { Cosplay } from '../../../../../models/cosplay.model';
 import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { UploadImageService } from 'src/app/services/upload-img.service';
-import { StorageService } from 'src/app/services/storage.service';
+import { UploadImageService } from '../../../../../services/upload-img.service';
+import { StorageService } from '../../../../../services/storage.service';
 
 @Component({
   selector: 'app-edit-cosplay',

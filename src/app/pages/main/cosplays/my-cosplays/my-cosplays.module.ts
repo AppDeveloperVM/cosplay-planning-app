@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { MyCosplaysPageRoutingModule } from './my-cosplays-routing.module';
 
 import { MyCosplaysPage } from './my-cosplays.page';
-import { SharedModule } from 'src/app/shared/shared.module';
+import { SharedModule } from '../../../../shared/shared.module';
 import { RouterModule } from '@angular/router';
 import { CosplayItemComponent } from './cosplay-item/cosplay-item.component';
 

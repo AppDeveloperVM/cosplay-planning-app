@@ -2,8 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CosplayGroup } from './cosplay-group.model';
 import { CosplayGroupService } from '../../../services/cosplay-group.service';
 import { Subscription } from 'rxjs';
-import { AuthService } from 'src/app/services/auth.service';
-import { NoticesService } from 'src/app/services/notices.service';
+import { AuthService } from '../../../services/auth.service';
+import { NoticesService } from '../../../services/notices.service';
 import { NavigationExtras, Router } from '@angular/router';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreCollectionGroup } from '@angular/fire/compat/firestore';
 

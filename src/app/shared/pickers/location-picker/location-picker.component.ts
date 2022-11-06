@@ -15,8 +15,8 @@ import { MapModalLeafletComponent } from '../../map-modal-leaflet/map-modal-leaf
 import * as L from "leaflet";
 import * as ELG from "esri-leaflet-geocoder";
 
-import { AddressData } from 'src/app/models/addressData.model'
-import { LocationService } from 'src/app/services/location.service';
+import { AddressData } from '../../../models/addressData.model';
+import { LocationService } from '../../../services/location.service';
 
 @Component({
   selector: 'app-location-picker',

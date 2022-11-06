@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Cosplay } from '../models/cosplay.model';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from '../services/auth.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { take, map, tap, delay, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { DataService } from 'src/app/services/data.service';
+import { DataService } from '../services/data.service';
 
 //Firebase 
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreCollectionGroup } from '@angular/fire/compat/firestore';

@@ -10,7 +10,7 @@ import { getStorage, ref, uploadBytes,getDownloadURL } from "firebase/storage";
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { UploadImageService } from '../../../../services/upload-img.service';
 import { FirebaseStorageService } from '../../../../services/firebase-storage.service';
-import { PlanningInterface } from 'src/app/models/planning.interface';
+import { PlanningInterface } from '../../../../models/planning.interface';
 import { Observable } from 'rxjs';
 
 

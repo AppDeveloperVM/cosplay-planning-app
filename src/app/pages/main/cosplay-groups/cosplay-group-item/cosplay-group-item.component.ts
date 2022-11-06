@@ -1,12 +1,12 @@
 import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import { CosplayGroup } from '../cosplay-group.model';
-import { UploadImageService } from 'src/app/services/upload-img.service';
+import { UploadImageService } from '../../../../services/upload-img.service';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { NavigationExtras, Router } from '@angular/router';
 import { LoadingController, Platform } from '@ionic/angular';
-import { CosplayGroupService } from 'src/app/services/cosplay-group.service';
-import { DataService } from 'src/app/services/data.service';
-import { StorageService } from 'src/app/services/storage.service';
+import { CosplayGroupService } from '../../../../services/cosplay-group.service';
+import { DataService } from '../../../../services/data.service';
+import { StorageService } from '../../../../services/storage.service';
 
 
 @Component({
