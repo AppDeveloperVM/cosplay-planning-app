@@ -28,6 +28,7 @@
         [selectedImage]="imgSrc"
         [showPreview]="form.get('imageUrl').value"
         [roundCropper]="false"
+        [aspectRatio]="1 / 1"
         (imagePick)="onImagePicked($event)">
         </app-image-picker>
       </ion-col>
