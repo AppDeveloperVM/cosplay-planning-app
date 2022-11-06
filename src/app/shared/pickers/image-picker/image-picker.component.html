@@ -1,4 +1,4 @@
-<div class="picker">
+<!-- <div class="picker">
   <ion-progress-bar type="indeterminate" *ngIf="isLoading"></ion-progress-bar>
   <ion-img 
   role="button"
@@ -8,10 +8,52 @@
   >
   </ion-img>
   <ion-button id="btn_overlay" color="primary" (click)="onPickImage()">
-  <!--*ngIf="!selectedImage || !showPreview"-->
+  
     <ion-icon class="icon_over" name="camera"></ion-icon>
     <ion-label class="label_over">Take picture</ion-label>
   </ion-button>
 </div>
 <input type="file" accept="image/jpeg"
-*ngIf="usePicker" #filePicker (change)="onFileChosen($event)" />
+*ngIf="usePicker" #filePicker (change)="onFileChosen($event)" /> -->
+
+  <ion-button (click)="selectImage()" expand="full" *ngIf="!myImage"
+    >Select image
+  </ion-button>
+  
+  <ion-row *ngIf="myImage">
+    <ion-progress-bar type="indeterminate" *ngIf="isLoading"></ion-progress-bar>
+    <ion-col size="3" class="ion-text-center">
+      <ion-button fill="clear" (click)="rotate()">
+        <ion-icon name="refresh" slot="start"></ion-icon> Rotate
+      </ion-button>
+    </ion-col>
+    <ion-col size="3" class="ion-text-center">
+      <ion-button fill="clear" (click)="flipHorizontal()"> Flip X </ion-button>
+    </ion-col> 
+    <ion-col size="3" class="ion-text-center">
+      <ion-button fill="clear" (click)="flipVertical()"> Flip Y </ion-button>
+    </ion-col>
+    <ion-col size="3" class="ion-text-center">
+      <ion-button fill="clear" (click)="discardChanges()"> Discard </ion-button>
+    </ion-col>
+    <ion-button (click)="cropImage()" *ngIf="myImage">
+      <ion-icon slot="icon-only" name="checkmark"></ion-icon>
+    </ion-button>
+  </ion-row>
+ 
+  <image-cropper
+    #cropper
+    [imageBase64]="myImage"
+    [maintainAspectRatio]="true"
+    [aspectRatio]="aspectRatio"
+    format="jpeg"
+    [hideResizeSquares]="isMobile"
+    [transform]="transform"
+    [autoCrop]="false"
+    [roundCropper]="roundCropper"
+    (imageCropped)="imageCropped($event)"
+    (loadImageFailed)="loadImageFailed()"
+    (imageLoaded)="imageLoaded()"
+  ></image-cropper>
+ 
+  <img [src]="selectedImage" *ngIf="selectedImage" />
