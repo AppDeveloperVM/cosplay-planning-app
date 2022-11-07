@@ -50,7 +50,7 @@ export class LocationService {
       console.log('checking permissions');
       const hasPermission = await this.checkGPSPermission();
       if (hasPermission) {
-          if (Capacitor.isNative) {
+          if (Capacitor.isPluginAvailable('Geolocation')) {
               const canUseGPS = await this.askToTurnOnGPS();
               this.postGPSPermission(canUseGPS);
           }
@@ -62,8 +62,20 @@ export class LocationService {
       else {
           console.log('14');
           const permission = await this.requestGPSPermission();
-          if (permission === 'CAN_REQUEST' || permission === 'GOT_PERMISSION') {
-              if (Capacitor.isNative) {
+
+          Geolocation.requestPermissions()
+          .then(async permission => {
+            console.log(permission);
+            
+          })
+          .catch((err) => {
+            console.log(err);
+            
+          })
+          ;
+
+          /* if (permission === 'CAN_REQUEST' || permission === 'GOT_PERMISSION') {
+              if (Capacitor.isPluginAvailable('Geolocation')) {
                   const canUseGPS = await this.askToTurnOnGPS();
                   this.postGPSPermission(canUseGPS);
               }
@@ -77,7 +89,8 @@ export class LocationService {
                   text: 'User denied location permission'
               })
               reject(false)
-          }
+          } */
+
       }
     })
   }
@@ -103,6 +116,7 @@ export class LocationService {
           else { resolve(true);  }
       })
   }
+  
 
   async requestGPSPermission(): Promise<string> {
     return await new Promise((resolve, reject) => {
@@ -223,7 +237,7 @@ export class LocationService {
             this.addressInfo.road = road;
             this.addressInfo.state = state;
             this.addressInfo.country = county;
-            //const staticMapImageUrl = this.getMapImage(pickedLocation.lat, pickedLocation.lng, 14)
+            const staticMapImageUrl = this.getMapImage(this.latlng.lat,this.latlng.lng, 14)
             address = this.addressInfo;
             resolve(address);
         });

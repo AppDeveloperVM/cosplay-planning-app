@@ -6,8 +6,8 @@ import { map, switchMap } from 'rxjs/operators';
 import { PlaceLocation, Coordinates } from '../../../models/location.model';
 import { Observable, of } from 'rxjs';
 
-import { Plugins, Capacitor, CallbackID } from '@capacitor/core';
-const { SplashScreen, Network, Device, StatusBar, Geolocation } = Plugins;
+import { Capacitor } from '@capacitor/core';
+import { Geolocation } from '@capacitor/geolocation';
 import { AndroidPermissions } from '@ionic-native/android-permissions';
 import { LocationAccuracy } from '@ionic-native/location-accuracy';
 
@@ -34,7 +34,7 @@ export class LocationPickerComponent implements OnInit {
   streetObserv: Observable<any>;
   streetData: any;
 
-  watchId: CallbackID = '';
+  //watchId: CallbackID = '';
   state: any;
   isLoading = false;
 
@@ -50,37 +50,22 @@ export class LocationPickerComponent implements OnInit {
   ngOnInit() {
     if(this.getCurrentLocation){
       this.platform.ready().then(() => {
-        let permissions = this.location.checkPermissions();
-        if(permissions)
+        //let permissions = this.location.checkPermissions();
+        //if(permissions)
         this.getCurrentCoords();
       });
     }
     
   }
 
-  onPickLocation() {
-    
-    this.actionSheetCtrl.create({header: 'Please Choose', buttons: [
-      {text: 'Auto-Locate', handler: () => {
-        this.locateUser();
-      }},
-      {text: 'Pick on Map', handler: () => {
-        this.openMap();
-      }},
-      {text: 'Cancel', role: 'cancel'}
-    ]}).then(actionSheetCtrl => {
-      actionSheetCtrl.present();
-    });
-  }
-
-  private locateUser() {
+  private async locateUser() {
     /*if (!Capacitor.isPluginAvailable('Geolocation')) {
       
       this.showErrorAlert();
       return;
     }*/
     this.isLoading = true;
-    Plugins.Geolocation.getCurrentPosition().
+    await Geolocation.getCurrentPosition().
     then(geoPosition => {
       const coordinates: Coordinates = {
         lat: geoPosition.coords.latitude,
@@ -97,7 +82,22 @@ export class LocationPickerComponent implements OnInit {
     });
   }
 
+  
 
+  onPickLocation() {
+    
+    this.actionSheetCtrl.create({header: 'Please Choose', buttons: [
+      {text: 'Auto-Locate', handler: () => {
+        this.locateUser();
+      }},
+      {text: 'Pick on Map', handler: () => {
+        this.openMap();
+      }},
+      {text: 'Cancel', role: 'cancel'}
+    ]}).then(actionSheetCtrl => {
+      actionSheetCtrl.present();
+    });
+  }
 
   private getCurrentCoords(){ 
     /*if (!Capacitor.isPluginAvailable('Geolocation')) {
@@ -105,7 +105,7 @@ export class LocationPickerComponent implements OnInit {
       return;
     }*/
     this.isLoading = true;
-    Plugins.Geolocation.getCurrentPosition().
+    Geolocation.getCurrentPosition().
       then(geoPosition => {
         const coordinates: Coordinates = {
           lat: geoPosition.coords.latitude,
@@ -113,15 +113,21 @@ export class LocationPickerComponent implements OnInit {
         };
         this.center = coordinates;
         
-        console.log('Coords Obtained: '+coordinates.lat+','+coordinates.lng);
-        this.createPlace(new L.LatLng(coordinates.lat, coordinates.lng));
+        console.log('Coords Obtained: '+coordinates.lat+', '+coordinates.lng);
+        //this.createPlace(new L.LatLng(coordinates.lat, coordinates.lng));
         this.isLoading = false;
       }).
       catch(err => {
         this.isLoading = false;
         this.showErrorAlert();
-        this.location.requestGPSPermission();     
+        //this.location.requestGPSPermission();  
+        
+        this.openLocationPopover();
       });
+  }
+
+  private openLocationPopover(){
+
   }
 
   private showErrorAlert(error: string = 'Please use the map to pick location') {
@@ -163,7 +169,7 @@ export class LocationPickerComponent implements OnInit {
   }
 
   private createPlace(latlng: any) {
-    console.log("coords: lat:"+latlng.lat+"lng: "+latlng.lng);
+    console.log("coords: lat:"+latlng.lat+", lng: "+latlng.lng);
 
     const pickedLocation: PlaceLocation = {
       lat: latlng.lat,
