@@ -222,8 +222,9 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
     ];
 
     let address_info;
-    this.locationService.setLocationCoords(e.latlng.lat,e.latlng.lng)
-    this.locationService.getAddressInfo().then((data) =>
+    this.locationService.setLocationCoords(e.latlng.lat,e.latlng.lng);
+    this.locationService.getAddressInfo()
+    .then((data) =>
     {
       address_info = data;
       const MarkerData = 
