@@ -32,7 +32,9 @@ import { SettingsService } from './services/settings.service';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { Drivers } from '@ionic/storage';
 import * as cordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
-
+// geolocation and native-geocoder
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 
 @NgModule({
     declarations: [
@@ -65,6 +67,9 @@ import * as cordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
         SplashScreen,
         AngularFirestoreModule,
         SettingsService,
+        
+        Geolocation,
+        NativeGeocoder,
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
         //{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
     ],
