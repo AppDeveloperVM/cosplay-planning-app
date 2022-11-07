@@ -27,12 +27,12 @@
           <ion-input type="text" formControlName="title"></ion-input>
         </ion-item>
         <div class="error-container">
-          <ng-container *ngFor="let validation of validations.title">
+          <div *ngFor="let validation of validations.title">
             <div class="error-message" *ngIf="form.get('title').hasError(validation.type) && (form.get('title').dirty || form.get('title').touched)">
               <ion-icon name="information-circle-outline"></ion-icon>
               <span>{{ validation.message }}</span>
             </div>
-          </ng-container>
+          </div>
         </div>
       </ion-col>
     </ion-row>
@@ -43,12 +43,12 @@
           <ion-input type="text" formControlName="series" ></ion-input>
         </ion-item>
         <div class="error-container">
-          <ng-container *ngFor="let validation of validations.series">
+          <div *ngFor="let validation of validations.series">
             <div class="error-message" *ngIf="form.get('series').hasError(validation.type) && (form.get('series').dirty || form.get('series').touched)">
               <ion-icon name="information-circle-outline"></ion-icon>
               <span>{{ validation.message }}</span>
             </div>
-          </ng-container>
+          </div>
         </div>
       </ion-col>
     </ion-row>
@@ -59,12 +59,12 @@
           <ion-textarea rows="3" formControlName="description"></ion-textarea>
         </ion-item>
         <div class="error-container">
-          <ng-container *ngFor="let validation of validations.description">
+          <div *ngFor="let validation of validations.description">
             <div class="error-message" *ngIf="form.get('description').hasError(validation.type) && (form.get('description').dirty || form.get('description').touched)">
               <ion-icon name="information-circle-outline"></ion-icon>
               <span>{{ validation.message }}</span>
             </div>
-          </ng-container>
+          </div>
         </div>
       </ion-col>
     </ion-row>
@@ -95,12 +95,12 @@
           </ion-datetime>
         </ion-item>
         <div class="error-container">
-          <ng-container *ngFor="let validation of validations.dateFrom">
+          <div *ngFor="let validation of validations.dateFrom">
             <div class="error-message" *ngIf="form.get('dateFrom').hasError(validation.type) && (form.get('dateFrom').dirty || form.get('dateFrom').touched)">
               <ion-icon name="information-circle-outline"></ion-icon>
               <span>{{ validation.message }}</span>
             </div>
-          </ng-container>
+          </div>
         </div>
       </ion-col>
       <ion-col size-sm="6" >
@@ -126,12 +126,12 @@
           (click)="clearDates()">Clear dates</ion-button>
         </div>
         <div class="error-container">
-          <ng-container *ngFor="let validation of validations.dateTo">
+          <div *ngFor="let validation of validations.dateTo">
             <div class="error-message" *ngIf="form.get('dateTo').hasError(validation.type) && (form.get('dateTo').dirty || form.get('dateTo').touched)">
               <ion-icon name="information-circle-outline"></ion-icon>
               <span>{{ validation.message }}</span>
             </div>
-          </ng-container>
+          </div>
         </div>
         
         
