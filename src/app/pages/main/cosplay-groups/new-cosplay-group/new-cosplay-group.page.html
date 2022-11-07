@@ -150,6 +150,7 @@
       <ion-col size-sm="12" offset-sm="">
         <app-image-picker
         [showPreview]="form.get('imageUrl').value"
+        [aspectRatio]="1 / 1"
         (imagePick)="onImagePicked($event)"></app-image-picker>
       </ion-col>
     </ion-row>

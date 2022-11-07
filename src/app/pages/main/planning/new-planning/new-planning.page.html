@@ -95,7 +95,9 @@
         <ion-col >
           <app-image-picker
           [showPreview]="form.get('imageUrl').value"
-          (imagePick)="onImagePicked($event)"></app-image-picker>
+          [aspectRatio]="1 / 1"
+          (imagePick)="onImagePicked($event)"
+          ></app-image-picker>
         </ion-col>
       </ion-row>
 
