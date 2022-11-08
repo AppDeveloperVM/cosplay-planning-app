@@ -1,18 +1,13 @@
-
 import { Capacitor } from "@capacitor/core";
 import { Toast } from "@capacitor/toast";
 import { Injectable } from '@angular/core';
 
-import { AndroidPermissions } from '@ionic-native/android-permissions/ngx'
-
 import { LocationAccuracy } from '@ionic-native/location-accuracy';
-import { CallbackID } from '@capacitor/core';
 import { Geolocation } from '@capacitor/geolocation';
 import { Platform } from "@ionic/angular";
 import { AddressData } from "../models/addressData.model";
 import { Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
-import { LatLng } from "leaflet";
 
 
 @Injectable({
@@ -20,13 +15,16 @@ import { LatLng } from "leaflet";
   })
 export class LocationService {
 
+    isMobile = Capacitor.getPlatform() !== 'web'; 
+
     latlng: any = {lat : null, lng : null};
     //OpenMapQuest key and url
     KEY = 'hmAnp6GU6CtArMcnLn38nJS0Sb1orh9Q';
     reversegeocodeurl = `https://open.mapquestapi.com/nominatim/v1/reverse.php?key=${this.KEY}&format=json&lat=${this.latlng.lat}&lon=${this.latlng.lng}`;
 
+
     state: any = { 0 : {center : '', loading: ''}};
-    watchId: CallbackID = '';
+    //watchId: CallbackID = '';
     streetObserv: Observable<any>;
     streetData: any;
     staticMapImageUrl;
@@ -45,34 +43,34 @@ export class LocationService {
     private httpClient: HttpClient
   ) { }
 
-  async checkPermissions(): Promise<Boolean>{
+  async checkPermissions(): Promise<any>{
+
     return await new Promise(async (resolve, reject) => {
+        
       console.log('checking permissions');
       const hasPermission = await this.checkGPSPermission();
       if (hasPermission) {
-          if (Capacitor.isPluginAvailable('Geolocation')) {
+          if ( Capacitor.isPluginAvailable('Geolocation') ) {
               const canUseGPS = await this.askToTurnOnGPS();
               this.postGPSPermission(canUseGPS);
           }
           else {
               this.postGPSPermission(true);
           }
-          resolve(true)
-      }
-      else {
-          console.log('14');
-          const permission = await this.requestGPSPermission();
+          resolve(true);
+      } else {
+          console.log('Doesnt have permissions');
+          //const permission = await this.requestGPSPermission();
 
           Geolocation.requestPermissions()
           .then(async permission => {
             console.log(permission);
-            
+            resolve(true);
           })
           .catch((err) => {
             console.log(err);
-            
-          })
-          ;
+            reject(false);
+          });
 
           /* if (permission === 'CAN_REQUEST' || permission === 'GOT_PERMISSION') {
               if (Capacitor.isPluginAvailable('Geolocation')) {
@@ -97,21 +95,23 @@ export class LocationService {
 
   // Check if application having GPS access permission
   async checkGPSPermission() : Promise<Boolean> {
-      return await new Promise((resolve, reject) => {
+      return await new Promise( (resolve, reject) => {
         console.log('check gps permission');
-          if (Capacitor.isNative) {
-              AndroidPermissions.checkPermission(AndroidPermissions.PERMISSION.ACCESS_FINE_LOCATION).then(
-                  result => {
+          if(this.isMobile) {
+              /* AndroidPermissions.checkPermission(AndroidPermissions.PERMISSION.ACCESS_FINE_LOCATION)
+              .then(
+                  (result) => {
                       if (result.hasPermission) {
                           // If having permission show 'Turn On GPS' dialogue
                           resolve(true);
                       } else {
                           // If not having permission ask for permission
-                          resolve(false);
+                          reject(false);
                       }
                   },
                   err => { alert(err); }
-              );
+              ); */
+              reject(false);
           }
           else { resolve(true);  }
       })
@@ -125,21 +125,21 @@ export class LocationService {
                 resolve('CAN_REQUEST');
             } else {
                 // Show 'GPS Permission Request' dialogue
-                AndroidPermissions.requestPermission(AndroidPermissions.PERMISSION.ACCESS_FINE_LOCATION)
+                /* AndroidPermissions.requestPermission(AndroidPermissions.PERMISSION.ACCESS_FINE_LOCATION)
                     .then(
                         (result) => {
                             if (result.hasPermission) {
                                 // call method to turn on GPS
                                 resolve('GOT_PERMISSION');
                             } else {
-                                resolve('DENIED_PERMISSION');
+                                reject('DENIED_PERMISSION');
                             }
                         },
                         error => {
                             // Show alert if user click on 'No Thanks'
                             alert('requestPermission Error requesting location permissions ' + error);
                         }
-                    );
+                    ); */
             }
         });
     })
@@ -168,7 +168,7 @@ export class LocationService {
                     },
                     error => { resolve(false); } );
             }
-            else { resolve(false);  }
+            else { reject(false);  }
         });
     })
   }
@@ -199,12 +199,12 @@ export class LocationService {
   }
 
   clearWatch() {
-    if (this.watchId != null) {
+    /* if (this.watchId != null) {
         //Geolocation.clearWatch({ id: this.watchId });
     }
     this.state({
         loading: false
-    })
+    }) */
   }
 
   setLocationCoords(lat: number, lng: number){
@@ -213,15 +213,20 @@ export class LocationService {
     this.reversegeocodeurl = `https://open.mapquestapi.com/nominatim/v1/reverse.php?key=${this.KEY}&format=json&lat=${this.latlng.lat}&lon=${this.latlng.lng}`;
   }
 
-  async getAddressInfo() : Promise<void> {
+  async getAddressInfo() : Promise<any> {
 
-    return new Promise( async (resolve, reject) => {
-        try {
+    return new Promise(  (resolve, reject) => {
+        
         let address;
         
         this.streetObserv = this.httpClient.get(this.reversegeocodeurl);
-        await this.streetObserv
+        this.streetObserv
         .subscribe(data => {
+
+            if(data == null){
+                reject(false);
+            }
+
             console.log('my data: ', data);
             this.streetData = data;
             const road = this.streetData['address']['road'] != undefined ? this.streetData['address']['road'] : null;
@@ -240,11 +245,11 @@ export class LocationService {
             const staticMapImageUrl = this.getMapImage(this.latlng.lat,this.latlng.lng, 14)
             address = this.addressInfo;
             resolve(address);
+            
         });
 
-        } catch(err) {
-            reject(err.message)
-        }
+        
+        
     })
   }
 
@@ -259,7 +264,7 @@ export class LocationService {
 
   async traceRoute() : Promise<any> {
 
-    return new Promise( async (resolve, reject) => {
+    return new Promise(  (resolve, reject) => {
     try {
         var routeInfo : any = { origin : null, waypoints : null, destination : null};
         var origin = {lat:0,lng:0};
