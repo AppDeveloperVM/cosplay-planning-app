@@ -11,7 +11,11 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content text-center padding>
+
+<div class="inner-content" text-center padding>
+  <div class="main">
+
+
   <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
     <ion-grid>
       <ion-row>
@@ -57,4 +61,6 @@
       </ion-row>
     </ion-grid>
   </form>
-  </ion-content>
+
+  </div>
+  </div>
