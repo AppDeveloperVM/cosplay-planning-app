@@ -85,10 +85,11 @@
       </ion-row>
       <ion-row>
         <ion-col >
-          <app-location-picker
+          <app-geolocation-picker
           [showPreview]="form.get('location').value"
           [multiple]="false"
-          (locationPick)="onLocationPicked($event)"></app-location-picker>
+          (locationPick)="onLocationPicked($event)">
+          </app-geolocation-picker>
         </ion-col>
       </ion-row>
       <ion-row>

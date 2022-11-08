@@ -70,12 +70,12 @@
       </ion-row>
       <ion-row>
         <ion-col >
-          <app-location-picker
+          <app-geolocation-picker
           [selectedLocationImage]="actualMapImage"
           [showPreview]="form.get('location').value"
           [getCurrentLocation]="false"
           (locationPick)="onLocationPicked($event)">
-        </app-location-picker>
+        </app-geolocation-picker>
         </ion-col>
       </ion-row>
       <ion-row>

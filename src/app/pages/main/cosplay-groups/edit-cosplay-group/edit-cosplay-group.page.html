@@ -124,19 +124,19 @@
       </ion-row>
       <ion-row>
         <ion-col>
-          <app-location-picker
+        <app-geolocation-picker
           [selectedLocationImage]="actualMapImage"
-          [showPreview]="form.get('location').value"
+          [showPreview]=""
           [getCurrentLocation]="false"
           (locationPick)="onLocationPicked($event)">
-        </app-location-picker>
+        </app-geolocation-picker>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col>
           <app-image-picker
           [selectedImage]="imgSrc"
-          [showPreview]="form.get('imageUrl').value"
+          [showPreview]=""
           [aspectRatio]="1 / 1"
           (imagePick)="onImagePicked($event)">
         </app-image-picker>
