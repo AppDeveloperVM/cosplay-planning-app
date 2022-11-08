@@ -11,9 +11,9 @@ export class PopoverComponent implements OnInit {
   constructor( private popoverCtrl: PopoverController ) { }
 
   ngOnInit() {
-   /*  setTimeout(() => {
+     setTimeout(() => {
       this.popoverCtrl.dismiss();
-    }, 8000) */
+    }, 8000) 
   }
 
   async presentPopover() {
@@ -21,7 +21,15 @@ export class PopoverComponent implements OnInit {
   }
 
   onOptionPressed(option : boolean){
-    this.popoverCtrl.dismiss(option);
+    this.popoverCtrl.dismiss(option)
+    .then((res)=> {
+      console.log(res);
+      
+    })
+    .catch((err)=> {
+      console.log(err);
+      
+    })
   }
 
 }
