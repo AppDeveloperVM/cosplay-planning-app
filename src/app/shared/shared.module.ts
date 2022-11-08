@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { LocationPickerComponent } from './pickers/location-picker/location-picker.component';
 import { MapModalComponent } from './map-modal/map-modal.component';
 
 import { MapModalLeafletComponent } from './map-modal-leaflet/map-modal-leaflet.component';
@@ -13,12 +12,12 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { PlanningItemComponent } from '../pages/main/planning/planning-item/planning-item.component';
 import { CosgroupEditModalComponent } from './cosgroup-edit-modal/cosgroup-edit-modal.component';
 import { PopoverComponent } from 'app/components/popover/popover.component';
+import { GeolocationPickerComponent } from './pickers/geolocation-picker/geolocation-picker.component';
 
 @NgModule({
-    declarations: [LocationPickerComponent, MapModalComponent, ImagePickerComponent, HeaderComponent, CosgroupEditModalComponent, PopoverComponent],
+    declarations: [GeolocationPickerComponent, MapModalComponent, ImagePickerComponent, HeaderComponent, CosgroupEditModalComponent, PopoverComponent],
     imports: [CommonModule, IonicModule, RouterModule, ImageCropperModule],
-    exports: [LocationPickerComponent, MapModalComponent, ImagePickerComponent, HeaderComponent, CosgroupEditModalComponent, PopoverComponent],
-    providers: [ PopoverComponent]
+    exports: [GeolocationPickerComponent, MapModalComponent, ImagePickerComponent, HeaderComponent, CosgroupEditModalComponent, PopoverComponent],
 })
 
 export class SharedModule {}
