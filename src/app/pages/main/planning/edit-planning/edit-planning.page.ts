@@ -141,7 +141,7 @@ export class EditPlanningPage implements OnInit, OnDestroy {
       this.form.patchValue({ location : this.planning.location });
     //}
 
-    this.actualMapImage = this.planning.location.staticMapImageUrl;
+    this.actualMapImage = this.planning.location?.staticMapImageUrl;
   }
 
   assignImage(){
