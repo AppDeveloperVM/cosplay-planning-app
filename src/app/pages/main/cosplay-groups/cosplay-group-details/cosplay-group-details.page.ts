@@ -166,9 +166,10 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
     .create(
       {
         component: CosplayGroupSendRequestComponent,
-          componentProps: {
-            selectedCosplayGroup: this.cosplayGroup,
-          }
+        cssClass:'custom-modal',
+        componentProps: {
+          selectedCosplayGroup: this.cosplayGroup,
+        }
       }
     ).then(modalEl => {
       modalEl.present();
