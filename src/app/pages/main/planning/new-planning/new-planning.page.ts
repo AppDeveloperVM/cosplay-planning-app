@@ -64,7 +64,7 @@ export class NewPlanningPage implements OnInit {
         updateOn: 'blur'
       }),
       location: new UntypedFormControl(null, {
-        validators: [Validators.required]
+        
       }),
       imageUrl: new UntypedFormControl(null)
     });
