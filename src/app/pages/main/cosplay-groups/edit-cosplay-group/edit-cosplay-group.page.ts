@@ -4,8 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { NavController, ModalController, ToastController, AlertController, LoadingController } from '@ionic/angular';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { CosplayGroupService } from '../../../../services/cosplay-group.service';
-import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
-import { switchMap } from 'rxjs/operators';
+import { UntypedFormGroup, FormControl, Validators } from '@angular/forms';
 import { PlaceLocation } from '../../../../models/location.model';
 import { UploadImageService } from '../../../../services/upload-img.service';
 import { StorageService } from '../../../../services/storage.service';
@@ -101,12 +100,12 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
           }
           
           //Location
-          if(this.form.get('location').value == null && this.cosplayGroup.location != null){
+          if(this.form.get('location')?.value == null && this.cosplayGroup?.location != null){
             this.form.patchValue({ location: this.cosplayGroup.location })
           }
       
           this.actualMapImage = this.cosplayGroup.location?.staticMapImageUrl ? this.cosplayGroup.location.staticMapImageUrl : null;
-          console.log("Form data with saved info: "+ JSON.stringify(this.form.value));
+          //console.log("Form data with saved info: "+ JSON.stringify(this.form.value));
 
         }else{
           console.log("Error loading item - not found");
@@ -137,30 +136,30 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
 
   buildForm(){
     this.form = new UntypedFormGroup({
-      title: new UntypedFormControl(this.cosplayGroup.title, {
+      title: new FormControl(this.cosplayGroup.title, {
         updateOn: 'blur',
         validators: [Validators.required]
       }),
-      series: new UntypedFormControl(this.cosplayGroup.series, {
+      series: new FormControl(this.cosplayGroup.series, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
-      description: new UntypedFormControl(this.cosplayGroup.description, {
+      description: new FormControl(this.cosplayGroup.description, {
         updateOn: 'blur',
         validators: [ Validators.maxLength(180) ]
       }),
-      place: new UntypedFormControl(this.cosplayGroup.place, {
+      place: new FormControl(this.cosplayGroup.place, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
       }),
-      dateFrom: new UntypedFormControl(this.cosplayGroup.dateFrom, {
+      dateFrom: new FormControl(this.cosplayGroup.dateFrom, {
         updateOn: 'blur',
       }),
-      dateTo: new UntypedFormControl(this.cosplayGroup.dateTo, {
+      dateTo: new FormControl(this.cosplayGroup.dateTo, {
         updateOn: 'blur',
       }),
-      location: new UntypedFormControl(null),
-      imageUrl: new UntypedFormControl(null)
+      location: new FormControl(null),
+      imageUrl: new FormControl(null)
     });
  
   }
@@ -194,29 +193,36 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
   }
 
   async onImagePicked(imageData: string | File) {
-    this.isFormReady = false;
+    try {
 
-    this.uploadService
-    .fullUploadProcess(imageData,this.form)
-    .then((val) =>{
-      const name = val.split('_')[0];
-      this.imageName = name;
-      console.log('imgName : ' + name);
-      console.log('Old imgName : ' + this.oldImgName);
-      this.getImageByFbUrl(this.imageName, 2)
-      .then( (res) => {
-        this.imgSrc = res;
-        this.imageChanged = true;
-        this.isFormReady = true;
-        console.log('imgSrc : ' + res);
-      } )
-      .catch();
+      this.isFormReady = false;
 
-      console.log("formReady, img src : "+ name );
-    })
-    .catch(err => {
+      this.uploadService
+      .fullUploadProcess(imageData,this.form)
+      .then((val) =>{
+        const name = val.split('_')[0];
+        this.imageName = name;
+        console.log('imgName : ' + name);
+        console.log('Old imgName : ' + this.oldImgName);
+        this.getImageByFbUrl(this.imageName, 2)
+        .then( (res) => {
+          this.imgSrc = res;
+          this.imageChanged = true;
+          this.isFormReady = true;
+          console.log('imgSrc : ' + res);
+        } )
+        .catch();
+
+        console.log("formReady, img src : "+ name );
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+    }catch(err){
       console.log(err);
-    });
+      
+    }
 
   }
 
@@ -230,7 +236,7 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
     })
     .then(loadingEl => {
       loadingEl.present();
-      const cosplay = this.form.value;
+      const cosplay = this.form?.value;
       const cosplayId = this.cosplayGroup?.id || null;
       this.cosplayGroupService.onSaveCosGroup(cosplay, cosplayId)
       .then( (res) => {
