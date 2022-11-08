@@ -1,25 +1,15 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { ModalController, ActionSheetController, AlertController, Platform, PopoverController } from '@ionic/angular';
-import { PopoverComponent } from 'app/components/popover/popover.component';
+import { PopoverComponent } from '../../../components/popover/popover.component';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
-import { map, switchMap } from 'rxjs/operators';
 import { PlaceLocation, Coordinates } from '../../../models/location.model';
 import { Observable, of } from 'rxjs';
-
 import { Capacitor } from '@capacitor/core';
-//import { Geolocation } from '@capacitor/geolocation';
-import { AndroidPermissions } from '@ionic-native/android-permissions';
-import { LocationAccuracy } from '@ionic-native/location-accuracy';
-
-import { Geolocation} from '@ionic-native/geolocation/ngx';
-
+import { Geolocation } from '@capacitor/geolocation';
 import { MapModalLeafletComponent } from '../../map-modal-leaflet/map-modal-leaflet.component';
-import * as L from "leaflet";
-import * as ELG from "esri-leaflet-geocoder";
-
 import { AddressData } from '../../../models/addressData.model';
 import { LocationService } from '../../../services/location.service';
+import { BrowserGeolocationService } from '../../../services/browser-geolocation.service';
 
 @Component({
   selector: 'app-location-picker',
@@ -32,19 +22,21 @@ export class LocationPickerComponent implements OnInit {
   @Input() showPreview = false;
   @Input() multiple = false;
   @Input() getCurrentLocation = true;
-  @Input() selectedLocationImage: string;
+  @Input() selectedLocationImage: string = '';
   @Input() center = {};
   isMobile = Capacitor.getPlatform() !== 'web'; 
   // Check platform for geo causes
   //  browser -> ion-native/geolocation
-  //  mobile ->
+  //  mobile -> gelocation
 
+  //-- Location data --
   streetObserv: Observable<any>;
   streetData: any;
 
   loc = "";
   latitude = null;
   longitude = null;
+  actualLocation = null;
   // geocoder options for webBrowser
  /*  nativeGeocoderOptions: NativeGeocoderOptions = {
     useLocale: true,
@@ -65,17 +57,30 @@ export class LocationPickerComponent implements OnInit {
       private location: LocationService,
       private platform: Platform,
 
+      private browserLocation : BrowserGeolocationService,
+
       private geolocation: Geolocation,
     ) { }
 
   ngOnInit() {
-    if(this.getCurrentLocation){
-      this.platform.ready().then(() => {
-        this.openLocationPopover();
-        //let permissions = this.location.checkPermissions();
-        //if(permissions)
+    if(this.getCurrentLocation == true){
+      this.platform.ready().then( () => {
 
-        //this.getCurrentCoords();
+        if(this.isMobile){
+          
+          this.location.checkPermissions()
+          .then((res) => {
+            //Got permission
+            console.log(res);
+            this.getCurrentCoords();
+          })
+          .catch((err)=> {
+            console.log(err);
+            //Need to enable location
+            this.openLocationPopover();
+          })
+        } 
+        
       });
     }
     
@@ -102,8 +107,8 @@ export class LocationPickerComponent implements OnInit {
 
   
 
- /*  onPickLocation() {
-    
+   onPickLocation() {
+    /* 
     this.actionSheetCtrl.create({header: 'Please Choose', buttons: [
       {text: 'Auto-Locate', handler: () => {
         this.locateUser();
@@ -114,14 +119,14 @@ export class LocationPickerComponent implements OnInit {
       {text: 'Cancel', role: 'cancel'}
     ]}).then(actionSheetCtrl => {
       actionSheetCtrl.present();
-    });
-  } */
+    }); */
+  } 
 
- /*  private getCurrentCoords(){ 
+   private getCurrentCoords(){ 
 
     this.isLoading = true;
 
-    this.openLocationPopover();
+    //this.openLocationPopover();
 
     Geolocation.getCurrentPosition().
       then(geoPosition => {
@@ -136,46 +141,57 @@ export class LocationPickerComponent implements OnInit {
         this.isLoading = false;
       }).
       catch(err => {
+        console.log(err);
+        
         this.isLoading = false;
         this.showErrorAlert(); 
         //this.location.requestGPSPermission();  
         
         this.openLocationPopover();
       });
-  } */
+  } 
 
   private async openLocationPopover(){
-    const popover = await this.popoverCtrl.create({
-      component : PopoverComponent,
-      cssClass: 'custom-popover',
-      translucent: true
-    });
+    
+    try {
+        const popover = await this.popoverCtrl.create({
+          component : PopoverComponent,
+          cssClass: 'custom-popover',
+          translucent: true
+        });
 
-    await popover.present();
-    const { data } = await popover.onDidDismiss();
-    console.log('onDiddismiss with data,' + data);
+        await popover.present();
+        const { data } = await popover.onDidDismiss();
+        console.log('onDidDismiss with data,' + data);
 
-    if(data) {
-      this.requestGeolocationPermission();
-    } else {
-      this.loc = "Example 1";
-    }
+        if(data) {
+          this.requestGeolocationPermission();
+        } else {
+          this.loc = "Example 1";
+        }
+
+      }catch(err){
+        console.log(err);
+        
+      }
   }
 
   async requestGeolocationPermission() {
-    try {
+    
+      if(this.isMobile){
+        //Mobile
 
-      this.geolocation.getCurrentPosition().then((resp) => {
-        console.log(resp)
-        this.latitude = resp.coords.latitude;
-        this.longitude = resp.coords.longitude;
-        //this.getAddress(this.latitude, this.longitude);
-       }).catch((error) => {
-         console.log('Error getting location', error);
-       });
-
-       
-       
+      } else {
+        //Browser
+        this.browserLocation.requestGeolocationPermission()
+        .then( (location) => {
+          this.actualLocation = location;
+        })
+        .catch( (error) => {
+          console.log('Error requesting Browser Location :' + error);
+        })
+      }
+   
       /* const permission = await Geolocation.requestPermissions()
       .then( (res) => {
         console.log(res);
@@ -186,11 +202,6 @@ export class LocationPickerComponent implements OnInit {
         
       }) */
 
-      
-      
-    }catch(err) {
-
-    }
   }
 
   // get address using coordinates
@@ -225,7 +236,11 @@ export class LocationPickerComponent implements OnInit {
       header: 'Could not get location, try selecting it',
       message: error,
       buttons : [ 'Okay']
-    }).then(alertEl => alertEl.present() );
+    })
+    .then(alertEl => alertEl.present() )
+    .catch((err)=> {
+      console.log(err);
+    })
   }
 
   private openMap() {
@@ -252,7 +267,7 @@ export class LocationPickerComponent implements OnInit {
             lng: modalData.data[0].lng
           };
           
-          this.createPlace(modalData.data[0]);
+          //this.createPlace(modalData.data[0]);
         });
         modalEl.present();
       });
@@ -281,7 +296,7 @@ export class LocationPickerComponent implements OnInit {
     var KEY = 'hmAnp6GU6CtArMcnLn38nJS0Sb1orh9Q';
     const reversegeocodeurl = `https://open.mapquestapi.com/nominatim/v1/reverse.php?key=${KEY}&format=json&lat=${latlng.lat}&lon=${latlng.lng}`;
  
-    this.streetObserv = this.httpClient.get(reversegeocodeurl);
+    /* this.streetObserv = this.httpClient.get(reversegeocodeurl);
     this.streetObserv
     .subscribe(data => {
       console.log('my data: ', data);
@@ -301,14 +316,15 @@ export class LocationPickerComponent implements OnInit {
       addressInfo.country = county;
       pickedLocation.address = addressInfo;
 
-      const staticMapImageUrl = this.getMapImage(pickedLocation.lat, pickedLocation.lng, 14)
-      pickedLocation.staticMapImageUrl = staticMapImageUrl;
-      this.selectedLocationImage = staticMapImageUrl;
+      // const staticMapImageUrl = this.getMapImage(pickedLocation.lat, pickedLocation.lng, 14)
+      // pickedLocation.staticMapImageUrl = staticMapImageUrl;
+      // this.selectedLocationImage = staticMapImageUrl;
       this.isLoading = false;
 
-      this.locationPick.emit(pickedLocation);
+      
       console.log("updated selectedLocationImage");
-    });
+    }); */
+    this.locationPick.emit(pickedLocation);
 
   }
 
