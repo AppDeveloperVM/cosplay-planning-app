@@ -95,6 +95,7 @@ export class UploadImageService {
                     (err) => console.error("Uploading error with img "+ index +" : "+err)
                   ).catch(err => {
                     console.log(err);
+                    reject(err);
                   });
                   
                 },
