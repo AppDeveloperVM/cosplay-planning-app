@@ -34,7 +34,7 @@
     
     <ion-row>
       <ion-col class="content-col" >
-        <ion-thumbnail *ngIf="imageUrl != null" class="user-image" >
+        <ion-thumbnail *ngIf="imageUrl != null" class="thumbnail" >
           <ion-progress-bar type="indeterminate" *ngIf="!imageReady"></ion-progress-bar>
           <img src="{{ imageUrl }}" *ngIf="imageReady">
         </ion-thumbnail>
