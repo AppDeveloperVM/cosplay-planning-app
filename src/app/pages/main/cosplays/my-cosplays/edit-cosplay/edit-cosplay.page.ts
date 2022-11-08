@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CosplaysService } from '../../../../../services/cosplays.service';
 import { NavController, LoadingController, AlertController, Platform, IonRouterOutlet } from '@ionic/angular';
 import { Cosplay } from '../../../../../models/cosplay.model';
-import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { UploadImageService } from '../../../../../services/upload-img.service';
@@ -18,7 +18,7 @@ export class EditCosplayPage implements OnInit, OnDestroy {
   cosplay: any;
   cosplayId: string;
   private cosplaySub: Subscription;
-  form: UntypedFormGroup;
+  form: FormGroup;
   validations = null;
   uploadPercent: Observable<number>;
   ImageObs: Observable<string>;
@@ -87,30 +87,30 @@ export class EditCosplayPage implements OnInit, OnDestroy {
         this.cosplay = cosplay;
         if(cosplay!= null){
 
-          this.form = new UntypedFormGroup({
-            characterName: new UntypedFormControl(this.cosplay.characterName , {
+          this.form = new FormGroup({
+            characterName: new FormControl(this.cosplay.characterName , {
               updateOn: 'blur',
               validators: [Validators.required]
             }),
-            series: new UntypedFormControl(this.cosplay.series, {
+            series: new FormControl(this.cosplay.series, {
               updateOn: 'blur',
               validators: [Validators.required, Validators.maxLength(180)]
             }),
-            description: new UntypedFormControl(this.cosplay.description, {
+            description: new FormControl(this.cosplay.description, {
               updateOn: 'blur',
               validators: [Validators.required, Validators.maxLength(180)]
             }),
-            imageUrl: new UntypedFormControl(this.cosplay?.imageUrl ? this.cosplay?.imageUrl : null)
+            imageUrl: new FormControl(this.cosplay?.imageUrl ? this.cosplay?.imageUrl : null)
           });
       
-          console.log('this.cosplay?.imageUrl : ' + this.cosplay?.imageUrl);
+          //console.log('this.cosplay?.imageUrl : ' + this.cosplay?.imageUrl);
           
           if(this.cosplay?.imageUrl !== null && this.imageChanged == false){
             //Use saved info from db
             this.assignImage();
           }
           
-          console.log("Form data with saved info: "+ JSON.stringify(this.form.value));
+          //console.log("Form data with saved info: "+ JSON.stringify(this.form.value));
           this.isLoading = false;
 
         }else{
