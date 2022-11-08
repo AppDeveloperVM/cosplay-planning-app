@@ -1,0 +1,32 @@
+.picker {
+    width: 30rem;
+    max-width: 80%;
+    height: 20rem;
+    max-height: 30vh;
+    border: 1px solid var(--ion-color-primary);
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .location-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  
+  
+  
+  .picker {
+    position: relative;
+  }
+  
+  .picker #btn_overlay {
+    position:absolute;
+  }
+  
+  .picker .image {
+    width: 100%;
+  }

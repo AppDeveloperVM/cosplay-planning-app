@@ -1,0 +1,18 @@
+<div class="picker">
+  <ion-progress-bar type="indeterminate" *ngIf="isLoading"></ion-progress-bar>
+  
+  <ion-img *ngIf="!isLoading"
+  role="button" class="location-image"
+  (click)="onPickLocation()"
+  >
+  </ion-img>
+
+  <ion-button 
+  *ngIf="(selectedLocationImage =='' || !showPreview ) && !isLoading"
+  id="btn_overlay" color="primary"
+  (click)="onPickLocation()">
+    <ion-icon class="icon_over" name="map"></ion-icon>
+    <ion-label class="label_over">Select location</ion-label>
+  </ion-button>
+
+</div>
