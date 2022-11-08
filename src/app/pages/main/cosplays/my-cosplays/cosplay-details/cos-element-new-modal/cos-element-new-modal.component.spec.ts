@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { CosElementModalComponent } from './cos-element-new-modal.component';
+import { CosElementNewModalComponent } from './cos-element-new-modal.component';
 
-describe('CosElementModalComponent', () => {
-  let component: CosElementModalComponent;
-  let fixture: ComponentFixture<CosElementModalComponent>;
+describe('CosElementNewModalComponent', () => {
+  let component: CosElementNewModalComponent;
+  let fixture: ComponentFixture<CosElementNewModalComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CosElementModalComponent ],
+      declarations: [ CosElementNewModalComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(CosElementModalComponent);
+    fixture = TestBed.createComponent(CosElementNewModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));
