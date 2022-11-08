@@ -9,6 +9,7 @@ import { latLng } from 'leaflet';
 export class BrowserGeolocationService {
   latitude = null;
   longitude = null;
+  actualLocation = latLng(null,null);
 
   constructor( private geolocation: Geolocation ) 
     {
@@ -21,20 +22,20 @@ export class BrowserGeolocationService {
       const promise = new Promise((resolve, reject) => {
 
         try {
-          this.geolocation.getCurrentPosition().then((resp) => {
+          this.geolocation.getCurrentPosition()
+          .then((resp) => {
             console.log(resp)
             this.latitude = resp.coords.latitude;
             this.longitude = resp.coords.longitude;
             //this.getAddress(this.latitude, this.longitude);
-            const LatLng = latLng(this.latitude, this.longitude);
-            resolve(LatLng);
-
-          }).catch((error) => {
-            console.log('Error getting location', error);
+            this.actualLocation = latLng(this.latitude, this.longitude);
+            resolve(this.actualLocation);
+          })
+          .catch((error) => {
             reject(error);
           });
         }catch(err){
-
+          console.log('try catch error, ' + err);
         }
       });
 
