@@ -16,6 +16,7 @@ import { PlanningService } from '../../services/planning.service';
 import { CosplaysService } from '../../services/cosplays.service';
 import { CosplayGroupService } from '../../services/cosplay-group.service';
 import { LocationService } from '../../services/location.service';
+import { Coordinates } from 'app/models/location.model';
 
 declare var L: any;
 
@@ -29,10 +30,11 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
   map: Leaflet.Map;
   apiKey = "AAPK80e3c05f540941038fc676d952b3d4dd4LfYwSmZOK8R8eaHkGd7zA3abSxbnaIUouru38-9EVrOyakBSsQ40oyMiuRcSrEw";
   basemapEnum = "ArcGIS:Streets";
+  
 
   @Input() item;
   @Input() itemType;
-  @Input() center ; // initial route point
+  @Input() center : Coordinates = {lat : 40.416729, lng: -3.703339}; // initial route point
   @Input() markers = []; // array of markers given
   @Input() selectable; // = true;
   @Input() multiple = false;
@@ -54,7 +56,7 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
   customIcon;
   MarkerOptions;
   markerLayer;
-  centerLatLng = [];
+  centerLatLng = {lat: 0, lng: 0};
   routingControl;
 
   
@@ -240,7 +242,7 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
 
       this.markers.push(MarkerData); 
       this.updateMarkers();
-      this.centerLatLng.push(e.latlng);
+      this.centerLatLng = e.latlng;
 
       const name = marker_name!= undefined ? marker_name : '';
       const address = address_info.full_address!= undefined ? address_info.full_address : null;
