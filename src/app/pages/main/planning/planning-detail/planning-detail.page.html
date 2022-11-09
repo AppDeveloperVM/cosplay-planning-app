@@ -63,8 +63,8 @@
           <ion-text><p>{{ planning.description }}</p></ion-text>
         </div>
 
-        <ion-row>
-          <ion-col  no-padding>
+        <ion-row *ngIf="planning.location?.staticMapImageUrl != null">
+          <ion-col no-padding>
             <ion-img role="button" (click)="onShowFullMap()" class="location-image" width="500" height="400" [src]="planning.location?.staticMapImageUrl"></ion-img>
           </ion-col>
         </ion-row>
