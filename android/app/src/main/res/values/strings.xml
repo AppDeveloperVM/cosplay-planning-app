@@ -4,4 +4,6 @@
     <string name="title_activity_main">CosPlanning</string>
     <string name="package_name">com.cosplay_planning.app</string>
     <string name="custom_url_scheme">com.cosplay_planning.app</string>
+    <string name="admob_app_id">ca-app-pub-9910402320172254~4715142265</string>
+
 </resources>
