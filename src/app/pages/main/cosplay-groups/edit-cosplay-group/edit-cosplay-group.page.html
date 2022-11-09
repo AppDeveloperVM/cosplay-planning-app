@@ -24,6 +24,16 @@
 
       <ion-row>
         <ion-col>
+          <app-image-picker
+          [selectedImage]="imgSrc"
+          [showPreview]=""
+          [aspectRatio]="1 / 1"
+          (imagePick)="onImagePicked($event)">
+        </app-image-picker>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
           <ion-item>
             <ion-label color="primary" position="floating">Title</ion-label>
             <ion-input type="text" formControlName="title"></ion-input>
@@ -78,70 +88,34 @@
           </div>
         </ion-col>
       </ion-row>
+
       <ion-row>
         <ion-col size-sm="6" >
-          <ion-item>
-            <ion-label position="floating" color="primary">Starts</ion-label>
+            <ion-label position="floating" color="primary">Fechas</ion-label>
             <ion-datetime
+            presentation="date"
+            [multiple]="true"
+            [value]="['2022-06-03', '2022-06-13', '2022-06-29']"
+
             display-format="MMM DD YYYY"
             picker-format="YY MMM DD"
             [min]=""
             [max]=""
-            formControlName="dateFrom"
             required
             ></ion-datetime>
-          </ion-item>
-          <div class="error-container">
-            <ng-container *ngFor="let validation of validations.dateFrom">
-              <div class="error-message" *ngIf="form.get('dateFrom').hasError(validation.type) && (form.get('dateFrom').dirty || form.get('dateFrom').touched)">
-                <ion-icon name="information-circle-outline"></ion-icon>
-                <span>{{ validation.message }}</span>
-              </div>
-            </ng-container>
-          </div>
         </ion-col>
-        <ion-col size-sm="6" >
-          <ion-item>
-            <ion-label position="floating" color="primary">Ends</ion-label>
-            <ion-datetime 
-            display-format="MMM DD YYYY"
-            picker-format="YY MMM DD"
-            [min]=""
-            [max]=""
-            formControlName="dateTo"
-            required
-            ></ion-datetime>
-          </ion-item>
-          <div class="error-container">
-            <ng-container *ngFor="let validation of validations.dateTo">
-              <div class="error-message" *ngIf="form.get('dateTo').hasError(validation.type) && (form.get('dateTo').dirty || form.get('dateTo').touched)">
-                <ion-icon name="information-circle-outline"></ion-icon>
-                <span>{{ validation.message }}</span>
-              </div>
-            </ng-container>
-          </div>
+
+        <ion-col size-sm="6">
+          <ion-label position="floating" color="primary">Localización</ion-label>
+          <app-geolocation-picker
+            [selectedLocationImage]="actualMapImage"
+            [showPreview]=""
+            [getCurrentLocation]="false"
+            (locationPick)="onLocationPicked($event)">
+          </app-geolocation-picker>
         </ion-col>
       </ion-row>
-      <ion-row>
-        <ion-col>
-        <app-geolocation-picker
-          [selectedLocationImage]="actualMapImage"
-          [showPreview]=""
-          [getCurrentLocation]="false"
-          (locationPick)="onLocationPicked($event)">
-        </app-geolocation-picker>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col>
-          <app-image-picker
-          [selectedImage]="imgSrc"
-          [showPreview]=""
-          [aspectRatio]="1 / 1"
-          (imagePick)="onImagePicked($event)">
-        </app-image-picker>
-        </ion-col>
-      </ion-row>
+      
 
   </ion-col>
   </ion-row>
