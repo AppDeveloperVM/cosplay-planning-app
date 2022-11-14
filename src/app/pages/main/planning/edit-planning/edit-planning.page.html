@@ -54,22 +54,7 @@
             ></ion-datetime>
           </ion-item>
         </ion-col>
-        <ion-col size-sm="6" >
-          <ion-item>
-            <ion-label color="primary" position="floating">Ends</ion-label>
-            <ion-datetime 
-            display-format="MMM DD YYYY"
-            picker-format="YY MMM DD"
-            [min]=""
-            [max]=""
-            formControlName="endsAt"
-            required
-            ></ion-datetime>
-          </ion-item>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col >
+        <ion-col size-sm="6" offset-sm="0">
           <app-geolocation-picker
           [selectedLocationImage]="actualMapImage"
           [showPreview]="form.get('location').value"
