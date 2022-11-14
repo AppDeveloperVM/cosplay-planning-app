@@ -60,19 +60,7 @@
             formControlName="startsAt"
             ></ion-datetime>
           </ion-item>
-        </ion-col>
-        <ion-col size-sm="3" >
-          <ion-item>
-            <ion-label position="floating">Ends</ion-label>
-            <ion-datetime 
-            display-format="MMM DD YYYY"
-            picker-format="YY MMM DD"
-            [(ngModel)]="endsAt"
-            [min]=""
-            [max]=""
-            formControlName="endsAt"
-            ></ion-datetime>
-          </ion-item>
+       
           <div class="ion-text-end">
             <ion-button 
             class="clearDates"
@@ -82,8 +70,6 @@
             (click)="clearDates()">Clear dates</ion-button>
           </div>
         </ion-col>
-      </ion-row>
-      <ion-row>
         <ion-col >
           <app-geolocation-picker
           [showPreview]="form.get('location').value"
