@@ -79,21 +79,38 @@
     </ion-row>
     <ion-row>
       <ion-col size-sm="6" >
-        <ion-item>
-          <ion-label position="floating">Starts</ion-label>
-          <ion-datetime
-          #startdate
-          monthShortNames="En, Feb, Mar, Abr, Mayo, Jun, Jul, Ago, Sept, Oct, Nov, Dic"
-          display-format="DD MMM YYYY HH:mm"
-          picker-format="DD MMM YYYY HH:mm"
-          [(ngModel)]="startDate"
-          [min]=""
-          [max]=""
-          [value]=""
-          (ionChange)="changedFromDate($event)"
-          formControlName="dateFrom">
-          </ion-datetime>
+
+        <ion-item id="open-modal">
+          <ion-icon icon="calendar-outline" slot="start" color="primary"></ion-icon>
+          <ion-label>Elige Fecha</ion-label>
+          <ion-text slot="end">{{ formattedString }}</ion-text>
         </ion-item>
+        <ion-modal class="datepicker_modal" trigger="open-modal" >
+          <ng-template>
+            <ion-content>
+              <ion-datetime  
+              #datetime
+              [value]="dateValue" size="cover"
+              (ionCancel)="showPicker = false"
+              (ionChange)="dateChanged(datetime.value)"
+              >
+              <ion-buttons slot="buttons">
+                <ion-button (click)="close()">Cancelar</ion-button>
+                <ion-button (click)="select()" color="primary">Listo</ion-button>
+              </ion-buttons>
+              </ion-datetime>
+            </ion-content>
+          </ng-template>
+        </ion-modal>
+        <!-- <ion-datetime *ngIf="showDatePicker" 
+        #datetime
+        [value]="dateValue" size="cover"
+        (ionChange)="dateChanged(datetime.value)"
+        showDefaultButtons="true"
+        (ionCancel)="showPicker = false"
+        >
+        </ion-datetime> -->
+
         <div class="error-container">
           <div *ngFor="let validation of validations.dateFrom">
             <div class="error-message" *ngIf="form.get('dateFrom').hasError(validation.type) && (form.get('dateFrom').dirty || form.get('dateFrom').touched)">
@@ -103,41 +120,7 @@
           </div>
         </div>
       </ion-col>
-      <ion-col size-sm="6" >
-        <ion-item>
-          <ion-label position="floating">Ends</ion-label>
-          <ion-datetime 
-          #enddate
-          monthShortNames="En, Feb, Mar, Abr, Mayo, Jun, Jul, Ago, Sept, Oct, Nov, Dic"
-          display-format="DD MMM YYYY HH:mm"
-          picker-format="DD MMM YYYY HH:mm"
-          [(ngModel)]="endDate"
-          [min]="minDate"
-          [max]=""
-          formControlName="dateTo">
-          </ion-datetime>
-        </ion-item>
-        <div class="ion-text-end">
-          <ion-button 
-          class="clearDates"
-          text-capitalize="false"
-          color="medium"
-          size="small" 
-          (click)="clearDates()">Clear dates</ion-button>
-        </div>
-        <div class="error-container">
-          <div *ngFor="let validation of validations.dateTo">
-            <div class="error-message" *ngIf="form.get('dateTo').hasError(validation.type) && (form.get('dateTo').dirty || form.get('dateTo').touched)">
-              <ion-icon name="information-circle-outline"></ion-icon>
-              <span>{{ validation.message }}</span>
-            </div>
-          </div>
-        </div>
-      </ion-col>
-    </ion-row>
-    
-    <ion-row>
-      <ion-col size-sm="12" >
+      <ion-col size-sm="6"  >
         <app-geolocation-picker
         [showPreview]="form.get('location').value"
         (locationPick)="onLocationPicked($event)">

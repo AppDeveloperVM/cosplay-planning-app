@@ -1,11 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 import { CosplayGroup } from '../cosplay-group.model';
 import { CosplayGroupService } from '../../../../services/cosplay-group.service';
 import { Router } from '@angular/router';
 import { PlaceLocation } from '../../../../models/location.model';
 import { finalize, switchMap } from 'rxjs/operators';
-import { LoadingController } from '@ionic/angular';
+import { IonDatetime, LoadingController } from '@ionic/angular';
 import { CosGroup } from '../../../../models/cosGroup.interface';
 
 import { UploadImageService } from '../../../../services/upload-img.service';
@@ -16,6 +16,7 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreCollectio
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { AsyncSubject, Observable } from 'rxjs';
+import { format, parseISO } from 'date-fns';
 
 @Component({
   selector: 'app-new-cosplay-group',
@@ -28,9 +29,14 @@ export class NewCosplayGroupPage implements OnInit {
   @Input() selectedCosplayGroup: CosplayGroup;
   @Input() selectedMode: 'select' | 'random';
   //  modes = ['date','datetime','month-year','time-date'];
+  showDatePicker = false;
+  dateValue = format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z';
+  formattedString = "";
   minDate: string;
   startDate: string;
   endDate: string;
+  @ViewChild(IonDatetime) datetime : IonDatetime;
+
   cosGroup: CosGroup;
   isLoading: boolean = false;
   isFormReady = true;
@@ -79,6 +85,8 @@ export class NewCosplayGroupPage implements OnInit {
   }
 
   ngOnInit() {
+    this.setToday();
+
     const dateFrom = new Date();
     const dateTo = new Date();
 
@@ -110,12 +118,32 @@ export class NewCosplayGroupPage implements OnInit {
     });
   }
 
+  //Dates Functions ----
+  setToday(){
+    this.formattedString = format(parseISO(format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z'), 'HH:mm, MMM d, yyyy');
+  }
+
   changedFromDate(startDate){
     //startDATE.detail.value
     console.log(startDate.detail.value);
     this.endDate = startDate.detail.value
     //console.log(new Date(startDate).toISOString());
     //this.endDate = new Date(startDate).toISOString();
+  }
+
+  dateChanged(value){
+    console.log(value);
+    this.dateValue = value;
+    this.formattedString = format(parseISO(value), 'HH:mm, MMM d, yyyy');
+    this.showDatePicker = false;
+  }
+
+  close(){
+    this.datetime.cancel(true);
+  }
+
+  select(){
+    this.datetime.confirm(true);
   }
 
   clearDates(){
@@ -126,6 +154,7 @@ export class NewCosplayGroupPage implements OnInit {
     this.form.patchValue({ location });
   }
 
+  //Images Functions -----
   async onImagePicked(imageData: string | File) {
     this.isFormReady = false;
 
