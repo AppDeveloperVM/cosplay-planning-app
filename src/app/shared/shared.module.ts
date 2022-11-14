@@ -13,11 +13,12 @@ import { PlanningItemComponent } from '../pages/main/planning/planning-item/plan
 import { CosgroupEditModalComponent } from './cosgroup-edit-modal/cosgroup-edit-modal.component';
 import { PopoverComponent } from 'app/components/popover/popover.component';
 import { GeolocationPickerComponent } from './pickers/geolocation-picker/geolocation-picker.component';
+import { DatetimePickerComponent } from './pickers/datetime-picker/datetime-picker.component';
 
 @NgModule({
-    declarations: [GeolocationPickerComponent, MapModalComponent, ImagePickerComponent, HeaderComponent, CosgroupEditModalComponent, PopoverComponent],
+    declarations: [GeolocationPickerComponent, MapModalComponent, ImagePickerComponent, DatetimePickerComponent, HeaderComponent, CosgroupEditModalComponent, PopoverComponent],
     imports: [CommonModule, IonicModule, RouterModule, ImageCropperModule],
-    exports: [GeolocationPickerComponent, MapModalComponent, ImagePickerComponent, HeaderComponent, CosgroupEditModalComponent, PopoverComponent],
+    exports: [GeolocationPickerComponent, MapModalComponent, ImagePickerComponent, DatetimePickerComponent, HeaderComponent, CosgroupEditModalComponent, PopoverComponent],
 })
 
 export class SharedModule {}
