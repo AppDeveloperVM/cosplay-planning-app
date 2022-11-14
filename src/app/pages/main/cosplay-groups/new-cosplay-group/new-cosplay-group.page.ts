@@ -30,8 +30,10 @@ export class NewCosplayGroupPage implements OnInit {
   @Input() selectedMode: 'select' | 'random';
   //  modes = ['date','datetime','month-year','time-date'];
   showDatePicker = false;
-  dateValue = format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z';
-  formattedString = "";
+  startDateValue = format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z';
+  endDateValue = format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z';
+  startDateformattedString = "";
+  endDateformattedString = "";
   minDate: string;
   startDate: string;
   endDate: string;
@@ -86,6 +88,9 @@ export class NewCosplayGroupPage implements OnInit {
 
   ngOnInit() {
     this.setToday();
+    const setted = this.setDate(new Date());
+    console.log('date set: ' + setted);
+    
 
     const dateFrom = new Date();
     const dateTo = new Date();
@@ -120,21 +125,28 @@ export class NewCosplayGroupPage implements OnInit {
 
   //Dates Functions ----
   setToday(){
-    this.formattedString = format(parseISO(format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z'), 'HH:mm, MMM d, yyyy');
+    this.startDateformattedString = format(parseISO(format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z'), 'MMM d yyyy, HH:mm');
+    this.endDateformattedString = format(parseISO(format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z'), 'MMM d yyyy, HH:mm');
+    console.log(this.startDateformattedString);
   }
 
-  changedFromDate(startDate){
-    //startDATE.detail.value
-    console.log(startDate.detail.value);
-    this.endDate = startDate.detail.value
-    //console.log(new Date(startDate).toISOString());
-    //this.endDate = new Date(startDate).toISOString();
+  setDate(date : Date){
+    return parseISO(format(date, 'yyyy-MM-dd') + 'T09:00:00.000Z');
   }
 
-  dateChanged(value){
+  startDateChanged(value){
     console.log(value);
-    this.dateValue = value;
-    this.formattedString = format(parseISO(value), 'HH:mm, MMM d, yyyy');
+    this.startDateValue = value;
+    this.startDateformattedString = format(parseISO(value), 'MMM d yyyy, HH:mm');
+    this.form.patchValue({ dateFrom : value});
+    this.showDatePicker = false;
+  }
+
+  endDateChanged(value){
+    console.log(value);
+    this.endDateValue = value;
+    this.endDateformattedString = format(parseISO(value), 'MMM d yyyy, HH:mm');
+    this.form.patchValue({ dateTo : value});
     this.showDatePicker = false;
   }
 
@@ -152,6 +164,16 @@ export class NewCosplayGroupPage implements OnInit {
 
   onLocationPicked(location: PlaceLocation) {
     this.form.patchValue({ location });
+  }
+
+  onFromDatePicked(formattedDate : string){
+    console.log(formattedDate);
+    this.form.patchValue({ dateFrom : formattedDate });
+  }
+
+  onToDatePicked(formattedDate : string){
+    console.log(formattedDate);
+    this.form.patchValue({ dateTo : formattedDate });
   }
 
   //Images Functions -----
