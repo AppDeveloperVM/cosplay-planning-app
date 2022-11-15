@@ -23,8 +23,8 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
   form: UntypedFormGroup;
   validations = null;
 
-  dateFrom = format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z';
-  dateTo = format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z';
+  dateFrom = null;
+  dateTo = null;
 
   selectedLocationImage: string;
   uploadPercent: Observable<number>;
@@ -98,8 +98,11 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
 
           this.buildForm();
           //dates
-          this.dateFrom = this.cosplayGroup.dateFrom.toString() 
-          this.dateTo = this.cosplayGroup.dateTo.toString() ;
+          if(this.cosplayGroup.dateFrom != null) {
+            this.dateFrom = this.cosplayGroup.dateFrom.toString() 
+            this.dateTo = this.cosplayGroup.dateTo.toString() ;
+          }
+          
 
           if(this.cosplayGroup?.imageUrl !== null && this.imageChanged == false){
             //Use saved info from db
