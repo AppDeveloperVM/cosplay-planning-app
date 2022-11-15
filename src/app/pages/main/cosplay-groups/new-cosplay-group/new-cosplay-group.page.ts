@@ -87,10 +87,6 @@ export class NewCosplayGroupPage implements OnInit {
   }
 
   ngOnInit() {
-    this.setToday();
-    const setted = this.setDate(new Date());
-    console.log('date set: ' + setted);
-    
 
     const dateFrom = new Date();
     const dateTo = new Date();
@@ -123,48 +119,11 @@ export class NewCosplayGroupPage implements OnInit {
     });
   }
 
-  //Dates Functions ----
-  setToday(){
-    this.startDateformattedString = format(parseISO(format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z'), 'MMM d yyyy, HH:mm');
-    this.endDateformattedString = format(parseISO(format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z'), 'MMM d yyyy, HH:mm');
-    console.log(this.startDateformattedString);
-  }
-
-  setDate(date : Date){
-    return parseISO(format(date, 'yyyy-MM-dd') + 'T09:00:00.000Z');
-  }
-
-  startDateChanged(value){
-    console.log(value);
-    this.startDateValue = value;
-    this.startDateformattedString = format(parseISO(value), 'MMM d yyyy, HH:mm');
-    this.form.patchValue({ dateFrom : value});
-    this.showDatePicker = false;
-  }
-
-  endDateChanged(value){
-    console.log(value);
-    this.endDateValue = value;
-    this.endDateformattedString = format(parseISO(value), 'MMM d yyyy, HH:mm');
-    this.form.patchValue({ dateTo : value});
-    this.showDatePicker = false;
-  }
-
-  close(){
-    this.datetime.cancel(true);
-  }
-
-  select(){
-    this.datetime.confirm(true);
-  }
-
   clearDates(){
     this.form.patchValue({ dateFrom : null,dateTo : null});
   }
 
-  onLocationPicked(location: PlaceLocation) {
-    this.form.patchValue({ location });
-  }
+  
 
   onFromDatePicked(formattedDate : string){
     console.log(formattedDate);
@@ -174,6 +133,11 @@ export class NewCosplayGroupPage implements OnInit {
   onToDatePicked(formattedDate : string){
     console.log(formattedDate);
     this.form.patchValue({ dateTo : formattedDate });
+  }
+
+  //Location functions -----
+  onLocationPicked(location: PlaceLocation) {
+    this.form.patchValue({ location });
   }
 
   //Images Functions -----
