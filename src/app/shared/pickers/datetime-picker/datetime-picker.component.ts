@@ -9,6 +9,7 @@ import { format, parseISO } from 'date-fns';
 })
 export class DatetimePickerComponent implements OnInit {
   @ViewChild(IonDatetime) datetime : IonDatetime;
+  @Input() id = '1';
   @Input() dateValue = new Date();
   @Input() formattedString = "";
   @Input() tempRef = "datetime";
@@ -17,12 +18,21 @@ export class DatetimePickerComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log('dateValue init: ' + this.dateValue);
+    this.setFormattedDate();
+  }
 
   //Dates Functions ----
   setToday(){
     this.formattedString = format(parseISO(format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z'), 'MMM d yyyy, HH:mm');
     console.log(this.formattedString);
+  }
+
+  setFormattedDate(){
+    console.log('about to format date : '+ this.dateValue);
+    
+    this.formattedString = format(parseISO( this.dateValue.toString() ), 'MMM d yyyy, HH:mm');
   }
 
   dateChanged(value){

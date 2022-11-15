@@ -1,17 +1,17 @@
-<ion-item id="open-modal-1">
+<ion-item id="open-modal-{{id}}">
   <ion-icon icon="calendar-outline" slot="start" color="primary"></ion-icon> 
   <ion-label>Fecha Inicio</ion-label>
   <ion-text slot="end">{{ formattedString }}</ion-text>
 </ion-item>
 
-<ion-modal class="datepicker_modal" trigger="open-modal-1" >
+<ion-modal class="datepicker_modal" trigger="open-modal-{{id}}" >
   <ng-template>
     <ion-content>
       <ion-datetime  
-      #[tempRef]
+      #datetime
       [value]="dateValue" size="cover"
       (ionCancel)="showPicker = false"
-      (ionChange)="dateChanged(tempRef.value)"
+      (ionChange)="dateChanged(datetime.value)"
       >
       <ion-buttons slot="buttons">
         <ion-button (click)="close()">Cancelar</ion-button>
