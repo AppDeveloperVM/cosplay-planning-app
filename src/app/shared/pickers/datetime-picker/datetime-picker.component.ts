@@ -10,7 +10,7 @@ import { format, parseISO } from 'date-fns';
 export class DatetimePickerComponent implements OnInit {
   @ViewChild(IonDatetime) datetime : IonDatetime;
   @Input() id = '1';
-  @Input() dateValue = new Date();
+  @Input() dateValue = null;
   @Input() formattedString = "";
   @Input() tempRef = "datetime";
   @Output() dateTimePick = new EventEmitter<Date>();
@@ -20,7 +20,10 @@ export class DatetimePickerComponent implements OnInit {
 
   ngOnInit() {
     console.log('dateValue init: ' + this.dateValue);
-    this.setFormattedDate();
+    if(this.dateValue !=null){
+      this.setFormattedDate();
+    }
+   
   }
 
   //Dates Functions ----
