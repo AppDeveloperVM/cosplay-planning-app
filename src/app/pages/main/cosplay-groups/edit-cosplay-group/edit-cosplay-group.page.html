@@ -88,24 +88,29 @@
           </div>
         </ion-col>
       </ion-row>
+      
+      <ion-row>
+        <ion-col size-xs="12" size-sm="12" size-md="6">
+          <app-datetime-picker [id]="1" [dateValue]="dateFrom"
+          (dateTimePick)="onFromDatePicked($event)">
+          </app-datetime-picker>
+        </ion-col>
+        <ion-col size-xs="12" size-sm="12" size-md="6">
+          <app-datetime-picker [id]="2" [dateValue]="dateTo"
+          (dateTimePick)="onToDatePicked($event)">
+          </app-datetime-picker>
+        <!--
+          [min]=""
+          [max]=""
+          display-format="MMM DD YYYY"
+          picker-format="YY MMM DD"
+          formControlName="startsAt"
+        -->
+        </ion-col>
+      </ion-row>
 
       <ion-row>
-        <ion-col size-sm="6" >
-            <ion-label position="floating" color="primary">Fechas</ion-label>
-            <ion-datetime
-            presentation="date"
-            [multiple]="true"
-            [value]="['2022-06-03', '2022-06-13', '2022-06-29']"
-
-            display-format="MMM DD YYYY"
-            picker-format="YY MMM DD"
-            [min]=""
-            [max]=""
-            required
-            ></ion-datetime>
-        </ion-col>
-
-        <ion-col size-sm="6">
+        <ion-col size-sm="12">
           <ion-label position="floating" color="primary">Localización</ion-label>
           <app-geolocation-picker
             [selectedLocationImage]="actualMapImage"

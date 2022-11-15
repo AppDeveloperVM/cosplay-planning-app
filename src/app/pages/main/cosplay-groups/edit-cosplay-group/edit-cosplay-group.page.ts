@@ -8,6 +8,7 @@ import { UntypedFormGroup, FormControl, Validators } from '@angular/forms';
 import { PlaceLocation } from '../../../../models/location.model';
 import { UploadImageService } from '../../../../services/upload-img.service';
 import { StorageService } from '../../../../services/storage.service';
+import { format, parseISO } from 'date-fns';
 
 
 @Component({
@@ -21,6 +22,9 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
   private cosplayGroupSub: Subscription;
   form: UntypedFormGroup;
   validations = null;
+
+  dateFrom = format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z';
+  dateTo = format(new Date(), 'yyyy-MM-dd') + 'T09:00:00.000Z';
 
   selectedLocationImage: string;
   uploadPercent: Observable<number>;
@@ -93,6 +97,9 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
         if(cosplay!= null){
 
           this.buildForm();
+          //dates
+          this.dateFrom = this.cosplayGroup.dateFrom.toString() 
+          this.dateTo = this.cosplayGroup.dateTo.toString() ;
 
           if(this.cosplayGroup?.imageUrl !== null && this.imageChanged == false){
             //Use saved info from db
@@ -150,7 +157,7 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
       }),
       place: new FormControl(this.cosplayGroup.place, {
         updateOn: 'blur',
-        validators: [Validators.required, Validators.maxLength(180)]
+        validators: [Validators.maxLength(180)]
       }),
       dateFrom: new FormControl(this.cosplayGroup.dateFrom, {
         updateOn: 'blur',
@@ -187,6 +194,19 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
       });
 
   }
+
+  //Dates functions ----
+  onFromDatePicked(formattedDate : string){
+    console.log(formattedDate);
+    this.form.patchValue({ dateFrom : formattedDate });
+  }
+
+  onToDatePicked(formattedDate : string){
+    console.log(formattedDate);
+    this.form.patchValue({ dateTo : formattedDate });
+  }
+
+  //Location Functions ----
 
   onLocationPicked(location: PlaceLocation) {
     this.form.patchValue({ location });
