@@ -1,7 +1,8 @@
 {
-  "/api/*": {
-    "target": "https://open.mapquestapi.com",
+  "/*": {
+    "target": "https://www.mapquestapi.com",
     "secure": false,
-    "logLevel": "debug"
+    "logLevel": "debug",
+    "changeOrigin": true
   }
 }
