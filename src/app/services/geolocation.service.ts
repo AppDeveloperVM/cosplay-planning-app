@@ -205,7 +205,7 @@ export class GeolocationService {
 
   }
 
-  private getMapImage(lat: number, lng: number, zoom: number = 1) {
+  private getMapImage(lat: number, lng: number, zoom: number = 15.25) {
     //xFxSX20K-2HftLNcqHdmh_a-gh209fOHIZGqqEBWxkenDTslII3JKlbPvQYI9o_rjfW9CPhtvo2JJBTTLrErgw
     const mapboxtoken = 'pk.eyJ1Ijoidm1tYXBkZXZlbG9wZXIiLCJhIjoiY2w0bXQ2bzdyMGZzNDNjbnM2YTllaDVlbyJ9.KJMSxBbt482Bs-1ihJZoVg';
     const user = 'mapbox';
@@ -215,6 +215,7 @@ export class GeolocationService {
     const width = 400;
     const height = 400;
     //{overlay}/{lon},{lat},{zoom},{bearing},{pitch}|{bbox}|{auto}/{width}x{height}{@2x}
+    //example -122.4241,37.78 ,15.25,0,60
     return `${this.staticimageurl}/${user}/${style}/static/${lat},${lng},${zoom},${bearing},${pitch}/${width}x${height}/?access_token=${mapboxtoken}`;
   }
 
