@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Capacitor } from '@capacitor/core';
-import { ActionSheetController, AlertController, ModalController, Platform, PopoverController } from '@ionic/angular';
-import { Observable } from 'rxjs';
+import { Http } from '@capacitor-community/http';
+import { ActionSheetController, AlertController, isPlatform, ModalController, Platform, PopoverController } from '@ionic/angular';
+import { from, Observable } from 'rxjs';
 
 import { LocationService } from 'app/services/location.service';
 import { Geolocation } from '@capacitor/geolocation';
@@ -12,6 +13,7 @@ import { AddressData } from 'app/models/addressData.model';
 import { HttpClient } from '@angular/common/http';
 import * as L from 'leaflet';
 import { PopoverComponent } from 'app/components/popover/popover.component';
+import { map } from 'rxjs/operators';
 
 
 
@@ -269,7 +271,7 @@ export class GeolocationPickerComponent implements OnInit {
     var KEY = 'hmAnp6GU6CtArMcnLn38nJS0Sb1orh9Q';
     const reversegeocodeurl = `https://open.mapquestapi.com/nominatim/v1/reverse.php?key=${KEY}&format=json&lat=${latlng.lat}&lon=${latlng.lng}`;
  
-    this.streetObserv = this.httpClient.get(reversegeocodeurl);
+    this.streetObserv = this.getRequest(reversegeocodeurl);
     this.streetObserv
     .subscribe(data => {
       console.log('my data: ', data);
@@ -331,6 +333,20 @@ export class GeolocationPickerComponent implements OnInit {
     .catch((err)=> {
       console.log(err);
     })
+  }
+
+  getRequest(url) {
+    if (isPlatform('capacitor')){
+      return from(Http.request({
+        method: 'GET',
+        url
+      })
+      ).pipe(
+        map(result => result.data)
+      );
+    } else {
+      return this.httpClient.get(`https://api.allorigins.win/get?url=${url}`);
+    }
   }
 
 }
