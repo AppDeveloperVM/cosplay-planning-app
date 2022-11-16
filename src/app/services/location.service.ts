@@ -4,10 +4,12 @@ import { Injectable } from '@angular/core';
 
 import { LocationAccuracy } from '@ionic-native/location-accuracy';
 import { Geolocation } from '@capacitor/geolocation';
-import { Platform } from "@ionic/angular";
+import { isPlatform, Platform } from "@ionic/angular";
 import { AddressData } from "../models/addressData.model";
-import { Observable } from "rxjs";
+import { from, Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
+import { Http } from "@capacitor-community/http";
+import { map } from "rxjs/operators";
 
 
 @Injectable({
@@ -212,14 +214,14 @@ export class LocationService {
     this.latlng.lng = lng;
     this.reversegeocodeurl = `https://open.mapquestapi.com/nominatim/v1/reverse.php?key=${this.KEY}&format=json&lat=${this.latlng.lat}&lon=${this.latlng.lng}`;
   }
-
+county
   async getAddressInfo() : Promise<any> {
 
     return new Promise(  (resolve, reject) => {
         
         let address;
         
-        this.streetObserv = this.httpClient.get(this.reversegeocodeurl);
+        this.streetObserv = this.getRequest(this.reversegeocodeurl);
         this.streetObserv
         .subscribe(data => {
 
@@ -242,7 +244,9 @@ export class LocationService {
             this.addressInfo.road = road;
             this.addressInfo.state = state;
             this.addressInfo.country = county;
-            const staticMapImageUrl = this.getMapImage(this.latlng.lat,this.latlng.lng, 14)
+            const staticMapImageUrl = this.getMapImage(this.latlng.lat,this.latlng.lng, 14);
+            console.log(staticMapImageUrl);
+            
             address = this.addressInfo;
             resolve(address);
             
@@ -297,6 +301,20 @@ export class LocationService {
         reject(err.message)
     }})
 
+  }
+
+  getRequest(url) {
+    if (isPlatform('capacitor')){
+      return from(Http.request({
+        method: 'GET',
+        url
+      })
+      ).pipe(
+        map(result => result.data)
+      );
+    } else {
+      return this.httpClient.get(`${url}`);
+    }
   }
 
 }
