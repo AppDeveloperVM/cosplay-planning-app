@@ -222,22 +222,19 @@ export class GeolocationPickerComponent implements OnInit {
       modalEl => {
         modalEl.onDidDismiss()
         .then(modalData => {
-          console.log("data returned  :",modalData);
+          console.log("data returned  :",modalData +','+  modalData.data.lat);
 
-          /* if (!modalData.data) {
-            return;
-          } */
-          
 
           if(modalData != null){
-            var coordinates: Coordinates = {
-              lat: modalData.data.lat,
-              lng: modalData.data.lng
-            };
+
+            var coordinates = new L.LatLng(modalData.data.lat, modalData.data.lng);
             this.center = coordinates;
             
-            if(coordinates ! = null)
-            this.createPlace(coordinates);
+            if(coordinates != null){
+              console.log('create place');
+              
+              this.createPlace(coordinates);
+            }
           }
           
         });
