@@ -277,7 +277,7 @@ export class GeolocationPickerComponent implements OnInit {
       this.selectedLocationImage = res.staticMapImageUrl;
 
       this.isLoading = false;
-      this.locationPick.emit(pickedLocation.address);
+      this.locationPick.emit(pickedLocation);
     })
 
     
