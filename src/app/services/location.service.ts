@@ -21,8 +21,11 @@ export class LocationService {
 
     latlng: any = {lat : null, lng : null};
     //OpenMapQuest key and url
-    KEY = 'hmAnp6GU6CtArMcnLn38nJS0Sb1orh9Q';
-    reversegeocodeurl = `https://open.mapquestapi.com/nominatim/v1/reverse.php?key=${this.KEY}&format=json&lat=${this.latlng.lat}&lon=${this.latlng.lng}`;
+
+    KEY = ' ';
+
+    reversegeocodeurl = `https://revgeocode.search.hereapi.com/v1/revgeocode?
+    at=${this.latlng.lat}%2C${this.latlng.lng}&lang=en-US&apiKey=${this.KEY}`;
 
 
     state: any = { 0 : {center : '', loading: ''}};
@@ -57,7 +60,9 @@ export class LocationService {
               this.postGPSPermission(canUseGPS);
           }
           else {
-              this.postGPSPermission(true);
+            console.log('Plugin NOT available');
+            
+            this.postGPSPermission(true);
           }
           resolve(true);
       } else {
@@ -212,9 +217,12 @@ export class LocationService {
   setLocationCoords(lat: number, lng: number){
     this.latlng.lat = lat;
     this.latlng.lng = lng;
-    this.reversegeocodeurl = `https://open.mapquestapi.com/nominatim/v1/reverse.php?key=${this.KEY}&format=json&lat=${this.latlng.lat}&lon=${this.latlng.lng}`;
+
+    var KEY = 'VAoFjQOKPlpfD9WAbLgg4kYC3YBVSt8811TxV6hf2Pg';
+
+    this.reversegeocodeurl = `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${this.latlng.lat}%2C${this.latlng.lng}&lang=en-US&apiKey=${KEY}`;
   }
-county
+
   async getAddressInfo() : Promise<any> {
 
     return new Promise(  (resolve, reject) => {
@@ -230,7 +238,7 @@ county
             }
 
             console.log('my data: ', data);
-            this.streetData = data;
+            this.streetData = data.items[0];
             const road = this.streetData['address']['road'] != undefined ? this.streetData['address']['road'] : null;
             const county = this.streetData['address']['county'] != undefined ? this.streetData['address']['county'] : null;
             const state = this.streetData['address']['state'] != undefined ? this.streetData['address']['state'] : null;
@@ -257,16 +265,16 @@ county
     })
   }
 
-  private getMapImage(lat: number, lng: number, zoom: number) {
+  private getMapImage(lat: number, lng: number, zoom: number = 1) {
     var KEY = 'hmAnp6GU6CtArMcnLn38nJS0Sb1orh9Q';
-    return `https://open.mapquestapi.com/staticmap/v4/getplacemap?key=${KEY}&location=${lat},${lng}&size=600,400&zoom=9&showicon=red_1-1`;
+    return `https://image.maps.ls.hereapi.com/mia/1.6/mapview?apiKey=${KEY}&c=${lat},${lng}&u=${zoom}k`;
   }
 
   setMarkersArray(markers:any){
     this.markers = markers;
   }
 
-  async traceRoute() : Promise<any> {
+  /* async traceRoute() : Promise<any> {
 
     return new Promise(  (resolve, reject) => {
     try {
@@ -301,7 +309,7 @@ county
         reject(err.message)
     }})
 
-  }
+  } */
 
   getRequest(url) {
     if (isPlatform('capacitor')){
