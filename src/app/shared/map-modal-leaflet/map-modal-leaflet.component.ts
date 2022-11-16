@@ -278,14 +278,14 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
 
   updateMarkers(){
     console.log(this.item);
-
     
     if( this.itemType == 'planning' ){
       this.item.places = this.markers;
 
       const planning = this.item;
       const planningId = planning?.id || null;
-      this.planningService.onSavePlanning(planning, planningId).then(
+      this.planningService.onSavePlanning(planning, planningId)
+      .then(
         (data) => {
           this.showToast('Markers updated:'+ data);
         },
@@ -316,7 +316,7 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
 
   defineRoute(){
     this.locationService.setMarkersArray(this.markers);
-    this.locationService.traceRoute().then((data) => {
+    /*this.locationService.traceRoute().then((data) => {
       console.log('data returned:',data);
       
       
@@ -332,10 +332,11 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
       )
 
       
-    });
+    });*/
 
   }
 
+  // Routes 
   createRoute(){
     // Add a DOM Node to display the text routing directions
     this.directions = document.createElement("div");
@@ -384,6 +385,7 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
     });
   }
   
+
   onCancel() {
     if(this.multiple){
       this.modalCtrl.dismiss(this.markers);
