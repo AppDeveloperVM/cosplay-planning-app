@@ -14,6 +14,7 @@ import { HttpClient } from '@angular/common/http';
 import * as L from 'leaflet';
 import { PopoverComponent } from 'app/components/popover/popover.component';
 import { map } from 'rxjs/operators';
+import { GeolocationService } from 'app/services/geolocation.service';
 
 
 
@@ -51,8 +52,8 @@ export class GeolocationPickerComponent implements OnInit {
     private popoverCtrl : PopoverController,
     private actionSheetCtrl: ActionSheetController,
 
-    private location: LocationService,
     private browserLocation : BrowserGeolocationService,
+    private geolocationService: GeolocationService,
     private httpClient: HttpClient,
   ) { }
 
@@ -60,7 +61,7 @@ export class GeolocationPickerComponent implements OnInit {
     this.platform.ready().then( () => {
       if(this.isMobile){
         //Check permissions and request them
-        this.location.checkPermissions()
+        this.geolocationService.checkPermissions()
         .then((res) => {
           //Got permission
           console.log(res);
@@ -139,7 +140,7 @@ export class GeolocationPickerComponent implements OnInit {
       this.center = coordinates;
       console.log(coordinates);
       
-      //this.createPlace(coordinates);
+      this.createPlace(coordinates);
       this.isLoading = false;
     }).
     catch(err => {
@@ -251,13 +252,13 @@ export class GeolocationPickerComponent implements OnInit {
   private createPlace(latlng: any) {
     console.log("coords: lat:"+latlng.lat+", lng: "+latlng.lng);
 
-    const pickedLocation: PlaceLocation = {
+    var pickedLocation: PlaceLocation = {
       lat: latlng.lat,
       lng: latlng.lng,
       address: null,
       staticMapImageUrl: null
     };
-    const addressInfo : AddressData = {
+    var addressInfo : AddressData = {
       full_address: null,
       road: null,
       country: null,
@@ -266,46 +267,25 @@ export class GeolocationPickerComponent implements OnInit {
     }
 
     this.isLoading = true;
-    
-    //OpenMapQuest key and url
-    var KEY = 'hmAnp6GU6CtArMcnLn38nJS0Sb1orh9Q';
-    const reversegeocodeurl = `https://open.mapquestapi.com/nominatim/v1/reverse.php?key=${KEY}&format=json&lat=${latlng.lat}&lon=${latlng.lng}`;
- 
-    this.streetObserv = this.getRequest(reversegeocodeurl);
-    this.streetObserv
-    .subscribe(data => {
-      console.log('my data: ', data);
-      this.streetData = data;
-      const road = this.streetData['address']['road'] != undefined ? this.streetData['address']['road'] : null;
-      const county = this.streetData['address']['county'] != undefined ? this.streetData['address']['county'] : null;
-      const state = this.streetData['address']['state'] != undefined ? this.streetData['address']['state'] : null;
-      //save info if not null
-      let fullAddress;
-      let fullAddressNotEmpty = [ road, county, state ].filter(function (val) {return val;}).join(', ');
-      fullAddress = fullAddressNotEmpty
-      console.log("fulladdress: " +fullAddress);
-      //Address Info
-      addressInfo.full_address = fullAddress;
-      addressInfo.road = road;
-      addressInfo.state = state;
-      addressInfo.country = county;
-      pickedLocation.address = addressInfo;
 
-      const staticMapImageUrl = this.getMapImage(pickedLocation.lat, pickedLocation.lng, 14)
-      pickedLocation.staticMapImageUrl = staticMapImageUrl;
-      this.selectedLocationImage = staticMapImageUrl;
-      this.isLoading = false;
-
+    this.geolocationService.getAddressInfo(latlng)
+    .then((res)=> {
+      //returns address info ( fullAddress, road, state, country, staticMapImageUrl )
+      console.log('AddresData returned: ' , res);
       
-      console.log("updated selectedLocationImage");
-    }); 
-    this.locationPick.emit(pickedLocation);
+      pickedLocation.address = res.addressInfo;
+      pickedLocation.staticMapImageUrl = res.staticMapImageUrl;
+      addressInfo = res;
 
-  }
+      this.selectedLocationImage = res.staticMapImageUrl;
 
-  private getMapImage(lat: number, lng: number, zoom: number) {
-    var KEY = 'hmAnp6GU6CtArMcnLn38nJS0Sb1orh9Q';
-    return `https://open.mapquestapi.com/staticmap/v4/getplacemap?key=${KEY}&location=${lat},${lng}&size=600,400&zoom=9&showicon=red_1-1`;
+      this.isLoading = false;
+      this.locationPick.emit(pickedLocation.address);
+    })
+
+    
+    
+
   }
 
   // address
@@ -333,20 +313,6 @@ export class GeolocationPickerComponent implements OnInit {
     .catch((err)=> {
       console.log(err);
     })
-  }
-
-  getRequest(url) {
-    if (isPlatform('capacitor')){
-      return from(Http.request({
-        method: 'GET',
-        url
-      })
-      ).pipe(
-        map(result => result.data)
-      );
-    } else {
-      return this.httpClient.get(`https://api.allorigins.win/get?url=${url}`);
-    }
   }
 
 }

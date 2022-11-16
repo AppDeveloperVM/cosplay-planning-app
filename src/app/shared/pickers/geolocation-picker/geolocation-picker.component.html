@@ -1,9 +1,11 @@
 <div class="picker">
   <ion-progress-bar type="indeterminate" *ngIf="isLoading"></ion-progress-bar>
   
-  <ion-img *ngIf="!isLoading"
+  <ion-img
   role="button" class="location-image"
   (click)="onPickLocation()"
+  [src]="selectedLocationImage"
+  *ngIf="selectedLocationImage !='' && !isLoading"
   >
   </ion-img>
 
