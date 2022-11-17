@@ -215,6 +215,7 @@ export class GeolocationService {
   }
 
   private getMapImage(lat: number, lng: number, zoom: number = 15.25) {
+    const staticMapKey = 'VAoFjQOKPlpfD9WAbLgg4kYC3YBVSt8811TxV6hf2Pg'
     //xFxSX20K-2HftLNcqHdmh_a-gh209fOHIZGqqEBWxkenDTslII3JKlbPvQYI9o_rjfW9CPhtvo2JJBTTLrErgw
     const mapboxtoken = 'pk.eyJ1Ijoidm1tYXBkZXZlbG9wZXIiLCJhIjoiY2w0bXQ2bzdyMGZzNDNjbnM2YTllaDVlbyJ9.KJMSxBbt482Bs-1ihJZoVg';
     const user = 'mapbox';
@@ -225,7 +226,8 @@ export class GeolocationService {
     const height = 400;
     //{overlay}/{lon},{lat},{zoom},{bearing},{pitch}|{bbox}|{auto}/{width}x{height}{@2x}
     //example -122.4241,37.78 ,15.25,0,60
-    return `${this.staticimageurl}/${user}/${style}/static/${lat},${lng},${zoom},${bearing},${pitch}/${width}x${height}/?access_token=${mapboxtoken}`;
+    //return `${this.staticimageurl}/${user}/${style}/static/${lat},${lng},${zoom},${bearing},${pitch}/${width}x${height}/?access_token=${mapboxtoken}`;
+    return `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${lat},${lng}&lang=en-US&apiKey=${staticMapKey}`
   }
 
   // address
@@ -247,7 +249,12 @@ export class GeolocationService {
     if (isPlatform('capacitor')){
       return from(Http.request({
         method: 'GET',
-        url
+        url,
+        /* headers: { 
+        'Access-Control-Allow-Origin': '*',  
+        'Access-Control-Allow-Methods':'GET',  
+        'Access-Control-Allow-Headers':'application/json'
+        }, */
       })
       ).pipe(
         map(result => result.data)
