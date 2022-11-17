@@ -23,7 +23,7 @@ export class GeolocationService {
   //'pk.eyJ1Ijoidm1tYXBkZXZlbG9wZXIiLCJhIjoiY2w0bXQ2bzdyMGZzNDNjbnM2YTllaDVlbyJ9.KJMSxBbt482Bs-1ihJZoVg';
   //https://api.mymappi.com/v2/geocoding/reverse VAoFjQOKPlpfD9WAbLgg4kYC3YBVSt8811TxV6hf2Pg
   reversegeocodeurl = `https://api.mapbox.com/geocoding/v5/mapbox.places/`;
-  staticimageurl = `https://api.mapbox.com/styles/v1`; 
+  staticimageurl = ``; 
 
   latlng: any = {lat : null, lng : null};
   state: any = { };
@@ -214,9 +214,12 @@ export class GeolocationService {
 
   }
 
-  private getMapImage(lat: number, lng: number, zoom: number = 15.25) {
-    const staticMapKey = 'VAoFjQOKPlpfD9WAbLgg4kYC3YBVSt8811TxV6hf2Pg'
-    //xFxSX20K-2HftLNcqHdmh_a-gh209fOHIZGqqEBWxkenDTslII3JKlbPvQYI9o_rjfW9CPhtvo2JJBTTLrErgw
+  private getMapImage(lat: number, lng: number, zoom: number = 13) {
+    const staticMapKey = 'VAoFjQOKPlpfD9WAbLgg4kYC3YBVSt8811TxV6hf2Pg';
+
+    // https://api.mapbox.com/styles/v1 // maps too poor
+    /*
+    xFxSX20K-2HftLNcqHdmh_a-gh209fOHIZGqqEBWxkenDTslII3JKlbPvQYI9o_rjfW9CPhtvo2JJBTTLrErgw
     const mapboxtoken = 'pk.eyJ1Ijoidm1tYXBkZXZlbG9wZXIiLCJhIjoiY2w0bXQ2bzdyMGZzNDNjbnM2YTllaDVlbyJ9.KJMSxBbt482Bs-1ihJZoVg';
     const user = 'mapbox';
     const style = 'streets-v11';
@@ -224,10 +227,25 @@ export class GeolocationService {
     const pitch = 60;
     const width = 400;
     const height = 400;
-    //{overlay}/{lon},{lat},{zoom},{bearing},{pitch}|{bbox}|{auto}/{width}x{height}{@2x}
-    //example -122.4241,37.78 ,15.25,0,60
-    //return `${this.staticimageurl}/${user}/${style}/static/${lat},${lng},${zoom},${bearing},${pitch}/${width}x${height}/?access_token=${mapboxtoken}`;
-    return `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${lat},${lng}&lang=en-US&apiKey=${staticMapKey}`
+    {overlay}/{lon},{lat},{zoom},{bearing},{pitch}|{bbox}|{auto}/{width}x{height}{@2x}
+    example -122.4241,37.78 ,15.25,0,60
+    return `https://api.mapbox.com/styles/v1/${user}/${style}/static/${lat},${lng},${zoom},${bearing},${pitch}/${width}x${height}/?access_token=${mapboxtoken}`;
+    */
+
+    // https://image.maps.ls.hereapi.com // works with callback function
+    //w=600&h=300&z=13&nodot=false&style=flame&f=1&ppi=72
+    const width = 600;
+    const height = 300;
+    const nodot = false;
+    const style = 'flame';
+    const f = 1;
+    const ppi = 72;
+    const lang = 'en-US';
+    return `https://image.maps.ls.hereapi.com/mia/1.6/mapview?c=${lat},${lng}&w=${lat}&h=${height}&z=${zoom}3&nodot=${nodot}&style=${style}&f=${f}&ppi=${ppi}&lang=${lang}&apiKey=${staticMapKey}&callback=loggy`
+  }
+
+  loggy(res){
+    console.log(res);
   }
 
   // address
