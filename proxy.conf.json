@@ -1,6 +1,6 @@
 {
-  "/*": {
-    "target": "https://www.mapquestapi.com",
+  "api/": {
+    "target": "revgeocode.search.hereapi.com/",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
