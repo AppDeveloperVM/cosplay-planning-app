@@ -268,11 +268,11 @@ export class GeolocationService {
       return from(Http.request({
         method: 'GET',
         url,
-        /* headers: { 
+         headers: { 
         'Access-Control-Allow-Origin': '*',  
         'Access-Control-Allow-Methods':'GET',  
         'Access-Control-Allow-Headers':'application/json'
-        }, */
+        }, 
       })
       ).pipe(
         map(result => result.data)
