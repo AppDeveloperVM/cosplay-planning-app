@@ -276,9 +276,15 @@ export class GeolocationPickerComponent implements OnInit {
 
       this.selectedLocationImage = res.staticMapImageUrl;
 
-      this.isLoading = false;
       this.locationPick.emit(pickedLocation);
     })
+    .catch((err) => {
+      console.log(err);
+      
+    })
+    .finally(()=>{
+      this.isLoading = false;
+    });
 
     
     

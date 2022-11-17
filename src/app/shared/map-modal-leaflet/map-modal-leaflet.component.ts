@@ -259,7 +259,11 @@ export class MapModalLeafletComponent implements OnInit, OnDestroy {
       this.placeDataService.setPlace(MarkerData);
       this.showToast('Lugar añadido!');
 
-    });
+    })
+    .catch((err) => {
+      console.log(err);
+      
+    })
     
   }
 

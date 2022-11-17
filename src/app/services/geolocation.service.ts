@@ -175,32 +175,41 @@ export class GeolocationService {
       this.streetObserv = this.getRequest(`https://revgeocode.search.hereapi.com/v1/revgeocode?at=${latlng.lat}%2C${latlng.lng}&lang=en-US&apiKey=${this.KEY}`);
       this.streetObserv
         .subscribe(res => {
-          if(res.items[0] == null) reject(false);
+          if(!res?.items[0]){ 
+            reject(null); 
+          } else {
 
-          console.log('response: ', res.items[0]);
-          this.streetData = res.items[0];
-          const road = this.streetData['address']['label'] != undefined ? this.streetData['address']['label'] : null;
-          const county = this.streetData['address']['county'] != undefined ? this.streetData['address']['county'] : null;
-          const state = this.streetData['address']['state'] != undefined ? this.streetData['address']['state'] : null;
-          //save info if not null
-          let fullAddress;
-          let fullAddressNotEmpty = [ road, county, state ].filter(function (val) {return val;}).join(', ');
-          fullAddress = fullAddressNotEmpty
-          console.log("fullAddress: " +fullAddress);
-          //Address Info
-          this.locationData.addressInfo.full_address = fullAddress;
-          this.locationData.addressInfo.road = road;
-          this.locationData.addressInfo.state = state;
-          this.locationData.addressInfo.country = county;
+            console.log('response: ', res.items[0]);
+            this.streetData = res.items[0];
+            const road = this.streetData['address']['label'] != undefined ? this.streetData['address']['label'] : null;
+            const county = this.streetData['address']['county'] != undefined ? this.streetData['address']['county'] : null;
+            const state = this.streetData['address']['state'] != undefined ? this.streetData['address']['state'] : null;
+            //save info if not null
+            let fullAddress;
+            let fullAddressNotEmpty = [ road, county, state ].filter(function (val) {return val;}).join(', ');
+            fullAddress = fullAddressNotEmpty
+            console.log("fullAddress: " +fullAddress);
+            //Address Info
+            this.locationData.addressInfo.full_address = fullAddress;
+            this.locationData.addressInfo.road = road;
+            this.locationData.addressInfo.state = state;
+            this.locationData.addressInfo.country = county;
+            
+            this.staticMapImageUrl = this.getMapImage(latlng.lat,latlng.lng, 20);
+            this.locationData.staticMapImageUrl = this.staticMapImageUrl;
+            console.log(this.staticMapImageUrl);
+            
+            address = this.locationData;
+            resolve(address);
+
+          }
           
-          this.staticMapImageUrl = this.getMapImage(latlng.lat,latlng.lng, 14);
-          this.locationData.staticMapImageUrl = this.staticMapImageUrl;
-          console.log(this.staticMapImageUrl);
+        },err => {
+          console.log(err);
           
-          address = this.locationData;
-          resolve(address);
-          
-        });
+        }
+        )
+        
     });
 
   }
