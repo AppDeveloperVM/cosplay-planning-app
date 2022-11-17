@@ -265,7 +265,7 @@ export class CosplayGroupDetailsPage implements OnInit, OnDestroy {
       itemType: 'cosGroup',
       center: { lat: this.cosplayGroup.location.lat, lng: this.cosplayGroup.location.lng },
       markers: this.placesData , // array of markers
-      selectable: true,
+      selectable: false,
       closeButtonText: 'close',
       title: this.cosplayGroup.title
     } }).then(modalEl => {

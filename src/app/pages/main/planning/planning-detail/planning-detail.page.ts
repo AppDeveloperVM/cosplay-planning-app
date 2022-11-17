@@ -140,7 +140,7 @@ export class PlanningDetailPage implements OnInit, OnDestroy {
         center: { lat: this.planning.location.lat, lng: this.planning.location.lng }, //bcn
         //{ lat: this.cosplayGroup.location.lat, lng: this.cosplayGroup.location.lng },
         markers: this.placesData , // array of markers
-        selectable: true,
+        selectable: false,
         multiple: true,
         closeButtonText: 'cerrar',
       } }).then(modalEl => {
