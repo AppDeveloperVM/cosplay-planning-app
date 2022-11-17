@@ -56,7 +56,7 @@
                 </ion-thumbnail>
               </div>
 
-              <div *ngIf="cosplayGroup.location != null">
+              <div *ngIf="cosplayGroup.location?.address != null">
                 <div>
                   <ion-text>
                     <p><ion-icon name="location" color="secondary"></ion-icon><ion-text class="space-left strong">{{ cosplayGroup.location.address.state}}</ion-text></p>
@@ -76,7 +76,7 @@
           </div>
         </ion-col>
       </ion-row>
-      <ion-row *ngIf="cosplayGroup.location != null">
+      <ion-row *ngIf="cosplayGroup.location?.staticMapImageUrl != null">
         <ion-col  padding>
           <ion-img role="button" (click)="onShowFullMap()" class="location-image" [src]="cosplayGroup.location.staticMapImageUrl"></ion-img>
         </ion-col>

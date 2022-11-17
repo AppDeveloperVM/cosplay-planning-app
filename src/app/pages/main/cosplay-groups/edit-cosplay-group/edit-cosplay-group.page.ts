@@ -114,7 +114,7 @@ export class EditCosplayGroupPage implements OnInit, OnDestroy {
             this.form.patchValue({ location: this.cosplayGroup.location })
           }
       
-          this.actualMapImage = this.cosplayGroup.location?.staticMapImageUrl ? this.cosplayGroup.location.staticMapImageUrl : null;
+          this.actualMapImage = this.cosplayGroup.location?.staticMapImageUrl ? this.cosplayGroup.location.staticMapImageUrl : '';
           //console.log("Form data with saved info: "+ JSON.stringify(this.form.value));
 
         }else{
