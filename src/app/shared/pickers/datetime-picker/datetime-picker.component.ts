@@ -10,6 +10,7 @@ import { format, parseISO } from 'date-fns';
 export class DatetimePickerComponent implements OnInit {
   @ViewChild(IonDatetime) datetime : IonDatetime;
   @Input() id = '1';
+  @Input() nombreCampo = '';
   @Input() dateValue = null;
   @Input() formattedString = "";
   @Input() tempRef = "datetime";

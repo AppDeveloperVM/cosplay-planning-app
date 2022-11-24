@@ -88,10 +88,10 @@
     </ion-row>
     <ion-row>
       <ion-col size-xs="12" size-sm="12" size-md="6">
-        <app-datetime-picker [id]="1" (dateTimePick)="onFromDatePicked($event)"></app-datetime-picker>
+        <app-datetime-picker [id]="1" [nombreCampo]="Fecha Inicio" (dateTimePick)="onFromDatePicked($event)"></app-datetime-picker>
       </ion-col>
       <ion-col size-xs="12" size-sm="12" size-md="6">
-        <app-datetime-picker [id]="2" (dateTimePick)="onToDatePicked($event)"></app-datetime-picker>
+        <app-datetime-picker [id]="2" [nombreCampo]="Fecha Fin" (dateTimePick)="onToDatePicked($event)"></app-datetime-picker>
       </ion-col>
     </ion-row>
     <ion-row>
