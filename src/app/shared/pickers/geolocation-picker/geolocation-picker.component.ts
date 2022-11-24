@@ -43,7 +43,7 @@ export class GeolocationPickerComponent implements OnInit {
  
   isLoading = false;
   isMobile = Capacitor.getPlatform() !== 'web'; 
-  
+  isLocationEnabled = false;
 
   constructor(
     private platform: Platform,
@@ -58,33 +58,7 @@ export class GeolocationPickerComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.platform.ready().then( () => {
-      if(this.isMobile){
-        //Check permissions and request them
-        this.geolocationService.checkPermissions()
-        .then((res) => {
-          //Got permission
-          console.log(res);
-          this.getCurrentCoords();
-        })
-        .catch((err)=> {
-          console.log(err);
-          //Need to enable location
-          this.openLocationPopover();
-        })
-      } else {
-        //Browser
-        this.browserLocation.requestGeolocationPermission()
-        .then((location)=> {
-          console.log(location);
-          this.actualLocation = location;
-          this.center = location;
-        })
-        .catch((err)=> {
-          console.log(err);
-        })
-      }
-    });
+    
   }
 
   private async openLocationPopover(){
@@ -112,9 +86,25 @@ export class GeolocationPickerComponent implements OnInit {
       }
   }
 
+  
+
   onPickLocation() {
     console.log('OnPickLocation');
 
+    this.checkPermissions()
+    .then((res)=>{
+      console.log(res);
+      this.chooseLocationOptions();
+    })
+    .catch((err)=>{
+      this.showErrorAlert(err.message);
+    })
+
+    
+     
+  } 
+
+  chooseLocationOptions() {
     this.actionSheetCtrl.create({header: 'Please Choose', buttons: [
       {text: 'Auto-Locate', handler: () => {
         this.locateUser();
@@ -125,8 +115,8 @@ export class GeolocationPickerComponent implements OnInit {
       {text: 'Cancel', role: 'cancel'}
     ]}).then(actionSheetCtrl => {
       actionSheetCtrl.present();
-    }); 
-  } 
+    });
+  }
 
   private async locateUser() {
     this.isLoading = true;
@@ -204,7 +194,53 @@ export class GeolocationPickerComponent implements OnInit {
       
     }) */
 
-}
+  }
+
+  checkPermissions() : Promise<any>{
+
+    const PermissionsPromise = new Promise((resolve,reject) => {
+
+      this.platform.ready()
+      .then( () => {
+        if(this.isMobile){
+          //Check permissions and request them
+          this.geolocationService.checkPermissions()
+          .then((res) => {
+            //isLocationEnabled
+            resolve(res);
+            //Got permission
+            //this.getCurrentCoords();
+          })
+          .catch((err)=> {
+            //Need to enable location
+            this.openLocationPopover();
+            reject(err);
+          })
+        } else {
+          this.isLoading = true;
+          //Browser
+          this.browserLocation.requestGeolocationPermission()
+          .then((location)=> {
+            this.actualLocation = location;
+            this.center = location;
+            this.isLoading = false;
+            resolve(location);
+          })
+          .catch((err)=> {
+            reject(err);
+          })
+        }
+      })
+      .catch((err)=> {
+        reject(err);
+      })
+
+    })
+
+    return PermissionsPromise;
+
+    
+  }
 
   private openMap() {
     this.modalCtrl.create(
@@ -306,10 +342,10 @@ export class GeolocationPickerComponent implements OnInit {
     return address.slice(0, -2);
   }
 
-  private showErrorAlert(error: string = 'Please use the map to pick location') {
+  private showErrorAlert(error: string = 'El usuario debe de habilitar la posición antes de utilizar el mapa.') {
     this.alertCtrl.create({
-      header: 'Error',
-      message: 'Could not get location, try selecting it, or enable Location',
+      header: 'Aviso',
+      message: error,
       buttons : [ 'Okay']
     })
     .then(alertEl => alertEl.present() )
