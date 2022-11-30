@@ -7,6 +7,7 @@ import { LoadingController, Platform } from '@ionic/angular';
 import { CosplayGroupService } from '../../../../services/cosplay-group.service';
 import { DataService } from '../../../../services/data.service';
 import { StorageService } from '../../../../services/storage.service';
+import{ GlobalConstants } from './../../../../common/global-constants';
 
 
 @Component({
@@ -21,6 +22,7 @@ export class CosplayGroupItemComponent implements OnInit, AfterViewInit {
   imageUrl: String;
   imageName : String;
   isLoading : boolean = true;
+  defaultImg = GlobalConstants.defaultImgSRC;
 
   navigationExtras: NavigationExtras = {
     state : {
@@ -53,9 +55,11 @@ export class CosplayGroupItemComponent implements OnInit, AfterViewInit {
       return false;
     }
 
+    var imgSrc = null;
+
     this.uploadImgService.getStorageImgUrl(this.imageName,0)
     .then((val)=>{
-      this.imageUrl = val;
+      imgSrc = val;
       console.log(val);
       
     })
@@ -68,8 +72,10 @@ export class CosplayGroupItemComponent implements OnInit, AfterViewInit {
           custom_err = '';
         break;
       }
-    })
-    .finally(() => {
+    }).finally(() => {
+      console.log('image loaded');
+      
+      this.imageUrl = imgSrc;
       this.isLoading = false;
     });
 
