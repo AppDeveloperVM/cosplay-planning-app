@@ -10,6 +10,7 @@ import { MyCosplaysPage } from './my-cosplays.page';
 import { SharedModule } from '../../../../shared/shared.module';
 import { RouterModule } from '@angular/router';
 import { CosplayItemComponent } from './cosplay-item/cosplay-item.component';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
 
 @NgModule({
   imports: [
@@ -19,6 +20,7 @@ import { CosplayItemComponent } from './cosplay-item/cosplay-item.component';
     MyCosplaysPageRoutingModule,
     RouterModule,
     SharedModule,
+    LazyLoadImageModule
   ],
   declarations: [MyCosplaysPage, CosplayItemComponent]
 })

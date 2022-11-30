@@ -35,6 +35,7 @@ import * as cordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 // geolocation and native-geocoder
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
 
 @NgModule({
     declarations: [
@@ -43,7 +44,7 @@ import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
         CosElementTobuyModalComponent,
         CosElementTomakeModalComponent,
         CosTaskModalComponent,
-        MapModalLeafletComponent
+        MapModalLeafletComponent,
     ],
     imports: [
         BrowserModule,
@@ -57,6 +58,7 @@ import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
         AngularFirestoreModule.enablePersistence({ synchronizeTabs: true }),
         AngularFireAuthModule,
         SharedModule,
+        LazyLoadImageModule,
         IonicStorageModule.forRoot({
             name: "cosappdb",
             driverOrder: [cordovaSQLiteDriver._driver, Drivers.IndexedDB, Drivers.LocalStorage]
