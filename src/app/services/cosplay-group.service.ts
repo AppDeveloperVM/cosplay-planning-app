@@ -4,7 +4,7 @@ import { Cosplay } from '../models/cosplay.model';
 import { CharacterMember } from '../models/characterMember.model';
 import { AuthService } from '../services/auth.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { take, map, delay, tap, switchMap } from 'rxjs/operators';
+import { take, map, delay, tap, switchMap, debounceTime } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { PlaceLocation } from '../models/location.model';
 import { stringify } from 'querystring';
@@ -75,7 +75,7 @@ export class CosplayGroupService {
     private getcosGroups(): void {
         this.cosGroups = this.cosgroupsCollection.snapshotChanges().pipe(
             map( actions => actions.map( a => a.payload.doc.data() as CosplayGroup))
-            ,take(1)
+            ,debounceTime(500)
         )
     }
 

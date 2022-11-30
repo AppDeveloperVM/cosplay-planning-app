@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Cosplay } from '../models/cosplay.model';
 import { AuthService } from '../services/auth.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { take, map, tap, delay, switchMap } from 'rxjs/operators';
+import { take, map, tap, delay, switchMap, debounceTime } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { DataService } from '../services/data.service';
 
@@ -61,8 +61,8 @@ export class CosplaysService {
   getCosplays(): void {
     this.cosplaysObsv = this.cosplaysCollection.snapshotChanges()
     .pipe(
-        map( actions => actions.map( a => a.payload.doc.data() as Cosplay)),
-        take(1)
+        map( actions => actions.map( a => a.payload.doc.data() as Cosplay))
+        ,debounceTime(500)
     )
   }
 
