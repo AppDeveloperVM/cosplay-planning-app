@@ -247,6 +247,24 @@
         max-width: 100%;
         aspect-ratio: attr(width) / attr(height);
     }
+
+    img.ng-lazyloaded {
+        animation: fadein 2.5s;
+    }
+
+    @keyframes fadein {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    .image {
+        transition: background-image 1s ease-out;
+    }
     
 }
 
