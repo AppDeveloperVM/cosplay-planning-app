@@ -47,6 +47,9 @@ export class MyCosplaysPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.isLoading = true;
     this.cosplays$.subscribe(cos => {
+      console.log('loaded coss');
+      
+      this.loadedCosplays = cos
       this.isLoading = false;
     });
     
