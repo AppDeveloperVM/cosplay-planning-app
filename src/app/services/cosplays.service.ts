@@ -41,8 +41,8 @@ export class CosplaysService {
   }
 
   //Collections
-  cosplaysObsv: Observable<CosplayData[]>;
-  private cosplaysCollection: AngularFirestoreCollection<CosplayData>;
+  cosplaysObsv: Observable<Cosplay[]>;
+  private cosplaysCollection: AngularFirestoreCollection<Cosplay>;
 
 
   constructor(
@@ -53,14 +53,16 @@ export class CosplaysService {
     private storage : AngularFireStorage,
     public storageService : StorageService
   ) {
-      this.cosplaysCollection = afs.collection<CosplayData>('cosplays');
+      this.cosplaysCollection = afs.collection<Cosplay>('cosplays');
       this.getCosplays();
       console.log("cosplays: "+this.cosplaysObsv);
   }
 
   getCosplays(): void {
-    this.cosplaysObsv = this.cosplaysCollection.snapshotChanges().pipe(
-        map( actions => actions.map( a => a.payload.doc.data() as CosplayData))
+    this.cosplaysObsv = this.cosplaysCollection.snapshotChanges()
+    .pipe(
+        map( actions => actions.map( a => a.payload.doc.data() as Cosplay)),
+        take(1)
     )
   }
 
@@ -71,7 +73,7 @@ export class CosplaysService {
     .valueChanges()
   }
 
-  onSaveCosplay(cosplay: CosplayData, cosplayId: string): Promise<void> {
+  onSaveCosplay(cosplay: Cosplay, cosplayId: string): Promise<void> {
     return new Promise( async (resolve, reject) => {
         try {
             const id = cosplayId || this.afs.createId();
