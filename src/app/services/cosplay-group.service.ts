@@ -55,9 +55,9 @@ export class CosplayGroupService {
     
 
     //Collections
-    cosGroups: Observable<CosplayGroupData[]>;
+    cosGroups: Observable<CosplayGroup[]>;
     cosGroupMemberRequest: Observable<CosGroupMember>[];
-    private cosgroupsCollection: AngularFirestoreCollection<CosplayGroupData>;
+    private cosgroupsCollection: AngularFirestoreCollection<CosplayGroup>;
     private cosGroupRequestCollection: AngularFirestoreCollection<CosGroupMember>;
     private actualCollection
 
@@ -66,7 +66,7 @@ export class CosplayGroupService {
         private http: HttpClient,
         private readonly afs: AngularFirestore
     ) {
-        this.cosgroupsCollection = afs.collection<CosplayGroupData>('cosplay-groups');
+        this.cosgroupsCollection = afs.collection<CosplayGroup>('cosplay-groups');
         this.cosGroupRequestCollection = afs.collection<CosGroupMember>('cosMembers');
         this.getcosGroups();
         //console.log("cosGroups: "+this.cosGroups);
@@ -74,7 +74,8 @@ export class CosplayGroupService {
 
     private getcosGroups(): void {
         this.cosGroups = this.cosgroupsCollection.snapshotChanges().pipe(
-            map( actions => actions.map( a => a.payload.doc.data() as CosplayGroupData))
+            map( actions => actions.map( a => a.payload.doc.data() as CosplayGroup))
+            ,take(1)
         )
     }
 
@@ -85,7 +86,7 @@ export class CosplayGroupService {
         .valueChanges()
     }
 
-    onSaveCosGroup(cosGroup: CosplayGroupData, cosGroupId: string): Promise<void> {
+    onSaveCosGroup(cosGroup: CosplayGroup, cosGroupId: string): Promise<void> {
         return new Promise( async (resolve, reject) => {
             try {
                 const id = cosGroupId || this.afs.createId();
