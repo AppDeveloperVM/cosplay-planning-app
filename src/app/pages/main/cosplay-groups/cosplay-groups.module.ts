@@ -9,6 +9,8 @@ import { CosplayGroupsPageRoutingModule } from './cosplay-groups-routing.module'
 import { CosplayGroupsPage } from './cosplay-groups.page';
 import { CosplayGroupItemComponent } from './cosplay-group-item/cosplay-group-item.component';
 import { SharedModule } from '../../../shared/shared.module';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
+
 
 @NgModule({
     imports: [
@@ -16,7 +18,8 @@ import { SharedModule } from '../../../shared/shared.module';
         FormsModule,
         IonicModule,
         CosplayGroupsPageRoutingModule,
-        SharedModule
+        SharedModule,
+        LazyLoadImageModule
     ],
     declarations: [CosplayGroupsPage, CosplayGroupItemComponent]
 })
