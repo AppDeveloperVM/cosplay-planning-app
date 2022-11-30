@@ -5,13 +5,14 @@
   detail
   class="cosplay_item">
 
-  <ion-spinner *ngIf="isLoading == true"></ion-spinner>
-  <div *ngIf="isLoading == false">
-    <ion-thumbnail class="thumbnail_icon" *ngIf="imageUrl != null" slot="start">
-      <ion-img [src]="imageUrl"></ion-img>
-    </ion-thumbnail>
-    <div class="thumbnail_icon" *ngIf="imageUrl == null">
-      <ion-icon *ngIf="imageUrl == null" slot="start" name="image" size="large"></ion-icon>
+  
+  <div >
+    <div class="thumbnail_icon" >
+      <ion-thumbnail class="thumbnail_icon" slot="start">
+        <img class="image"  [defaultImage]="defaultImg" [lazyLoad]="imageUrl" [errorImage]="defaultImg" 
+        > 
+        <!-- [debug]="true" (onStateChange)="onImgLazyLoaded($event)"-->
+      </ion-thumbnail>
     </div>
   </div>
   

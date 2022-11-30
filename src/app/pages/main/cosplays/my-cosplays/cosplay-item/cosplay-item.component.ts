@@ -7,6 +7,8 @@ import { DataService } from '../../../../../services/data.service';
 import { StorageService } from '../../../../../services/storage.service';
 import { UploadImageService } from '../../../../../services/upload-img.service';
 import { Cosplay } from '../../../../../models/cosplay.model';
+import{ GlobalConstants } from './../../../../../common/global-constants';
+import { StateChange } from 'ng-lazyload-image';
 
 @Component({
   selector: 'app-cosplay-item',
@@ -21,6 +23,7 @@ export class CosplayItemComponent implements OnInit {
   imageUrl: String;
   imageName : String;
   isLoading : boolean = true;
+  defaultImg = GlobalConstants.defaultImgSRC;
 
   constructor(
     private router: Router,
@@ -32,6 +35,8 @@ export class CosplayItemComponent implements OnInit {
   ) { }  
 
   ngOnInit() {
+    console.log('nginit');
+    
     this.imageName = this.cosplay.imageUrl;
 
     if(this.imageName == null){
@@ -40,16 +45,18 @@ export class CosplayItemComponent implements OnInit {
       return false;
     }
 
-      this.uploadImgService.getStorageImgUrl(this.imageName, 0).then((val)=>{
-        this.imageUrl = val;
+    var imgSrc = null;
+
+      this.uploadImgService.getStorageImgUrl(this.imageName, 0)
+      .then((val)=>{
+        imgSrc = val;
       }).finally(() => {
+        console.log('image loaded');
+        
+        this.imageUrl = imgSrc;
         this.isLoading = false;
       });
  
-  }
-
-  ngAfterViewInit() {
-
   }
 
   onGoToSee(cosplayId: string): void {
@@ -88,5 +95,35 @@ export class CosplayItemComponent implements OnInit {
 
     
   }
+
+ /*  onImgLazyLoaded(event: StateChange) {
+    switch (event.reason) {
+      case 'setup':
+        // The lib has been instantiated but we have not done anything yet.
+        break;
+      case 'observer-emit':
+        // The image observer (intersection/scroll/custom observer) has emit a value so we
+        // should check if the image is in the viewport.
+        // `event.data` is the event in this case.
+        break;
+      case 'start-loading':
+        // The image is in the viewport so the image will start loading
+        break;
+      case 'mount-image':
+        // The image has been loaded successfully so lets put it into the DOM
+        break;
+      case 'loading-succeeded':
+        // The image has successfully been loaded and placed into the DOM
+        break;
+      case 'loading-failed':
+        // The image could not be loaded for some reason.
+        // `event.data` is the error in this case
+        break;
+      case 'finally':
+        // The last event before cleaning up
+        break;
+    }
+
+  } */
 
 }
