@@ -249,11 +249,9 @@ export class UploadImageService {
         }) */
 
         var imageUrl = "";
-        console.log(ref.getDownloadURL());
+        //console.log(ref.getDownloadURL());
         
-        this.ImageObs = ref.getDownloadURL();
-
-        
+        this.ImageObs = ref.getDownloadURL();  
 
           this.ImageObs.subscribe(
             url=>{
