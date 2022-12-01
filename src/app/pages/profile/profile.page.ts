@@ -80,7 +80,7 @@ export class ProfilePage implements OnInit {
     await Share.share({
       title: 'Comparte tu perfil',
       text: 'Conecta conmigo en la app de CosPlanning',
-      url: `https://www.instagram.com/${this.instagram_user}/?hl=es`,
+      url: `https://cosplay-planning-app.vercel.app`, // añadir /user/nombre de usuario
       dialogTitle: 'Share with buddies',
     });
     
