@@ -20,16 +20,17 @@
 
 <ion-content [fullscreen]="true" >
 
-  <ion-row *ngIf="!isLoading">
-    <ion-col text-center size-sm="12" size-md="12" size-lg="8" offset-lg="2" size-xl="8" offset-xl="2">
-      <ion-avatar class="user-image">
-        <img src="/assets/avatar.png" *ngIf="userData.photoURL == null">
-        <img src="{{imageUrl}}" *ngIf="userData.photoURL != null">
-      </ion-avatar>
-      <ion-text color="dark">
-        <h2 class="user-name">{{ userData.displayName }}</h2>
-      </ion-text>
-
+  <ion-row >
+    <ion-col  text-center size-sm="12" size-md="12" size-lg="8" offset-lg="2" size-xl="8" offset-xl="2">
+      <div class="avatar">
+        <ion-avatar class="user-image">
+          <img [defaultImage]="defaultImg" [lazyLoad]="imageUrl" [errorImage]="defaultImg">
+        
+        </ion-avatar>
+        <ion-text color="dark">
+          <h2 class="user-name">{{ userData?.displayName ? userData?.displayName : "-" }}</h2>
+        </ion-text>
+      </div>
       <ion-list>
         <ion-item target="_blank" href={{instagram_url}}>
           <ion-label color="primary" position="stacked">Instagram</ion-label>
@@ -86,7 +87,5 @@
     </ion-col>
   </ion-row>
 
-  <ion-spinner *ngIf="isLoading">
-  </ion-spinner>
 
 </ion-content>

@@ -5,6 +5,7 @@ import { Device } from '@capacitor/device';
 
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { UploadImageService } from '../../services/upload-img.service';
+import { GlobalConstants } from 'app/common/global-constants';
 
 
 @Component({
@@ -17,6 +18,7 @@ export class ProfilePage implements OnInit {
   isLoading = true;
   imageUrl = null;
   imageReady = false;
+  defaultImg = GlobalConstants.defaultImgSRC;
 
   instagram_url = '';
   instagram_user = 'SpaceRonin_v';
