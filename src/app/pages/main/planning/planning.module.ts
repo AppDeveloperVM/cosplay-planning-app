@@ -10,6 +10,7 @@ import { PlanningPage } from './planning.page';
 import { PlanningItemComponent } from './planning-item/planning-item.component';
 import { SharedModule } from '../../../shared/shared.module';
 import { RouterModule } from '@angular/router';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import { RouterModule } from '@angular/router';
     IonicModule,
     PlanningPageRoutingModule,
     RouterModule,
-    SharedModule
+    SharedModule,
+    LazyLoadImageModule
   ],
   declarations: [PlanningPage, PlanningItemComponent]
 })

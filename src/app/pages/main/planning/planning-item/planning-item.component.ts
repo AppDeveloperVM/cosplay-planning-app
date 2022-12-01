@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { LoadingController, Platform } from '@ionic/angular';
+import { GlobalConstants } from 'app/common/global-constants';
 import { DataService } from '../../../../services/data.service';
 import { PlanningService } from '../../../../services/planning.service';
 import { StorageService } from '../../../../services/storage.service';
@@ -18,6 +19,7 @@ export class PlanningItemComponent implements OnInit {
   isMobile: boolean;
   imageUrl: String;
   imageName : String;
+  defaultImg = GlobalConstants.defaultImgSRC;
 
   constructor(
     private router: Router, 
