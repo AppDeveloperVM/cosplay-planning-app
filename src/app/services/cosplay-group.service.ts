@@ -59,7 +59,7 @@ export class CosplayGroupService {
     cosGroupMemberRequest: Observable<CosGroupMember>[];
     private cosgroupsCollection: AngularFirestoreCollection<CosplayGroup>;
     private cosGroupRequestCollection: AngularFirestoreCollection<CosGroupMember>;
-    private actualCollection
+    private actualCollection;
 
     constructor( 
         private authService: AuthService,
@@ -137,7 +137,18 @@ export class CosplayGroupService {
     }
 
 
-   /*  getCosplayGroup(id: string) {
+   
+    uploadImage(image: File) {
+        const uploadData = new FormData();
+        uploadData.append('image', image);
+
+        return this.http.post<{imageUrl: string, imagePath: string}>(
+            'https://us-central1-cosplay-planning-app.cloudfunctions.net/storeImage',
+            uploadData
+        );
+    }
+
+    /*  getCosplayGroup(id: string) {
         return this.http.get<CosplayGroupData>(
             `https://cosplay-planning-app.firebaseio.com/cosplay-groups/${id}.json`
           ).pipe(
@@ -400,16 +411,6 @@ export class CosplayGroupService {
             
     } 
     */
-
-    uploadImage(image: File) {
-        const uploadData = new FormData();
-        uploadData.append('image', image);
-
-        return this.http.post<{imageUrl: string, imagePath: string}>(
-            'https://us-central1-cosplay-planning-app.cloudfunctions.net/storeImage',
-            uploadData
-        );
-    }
 
 
 }
