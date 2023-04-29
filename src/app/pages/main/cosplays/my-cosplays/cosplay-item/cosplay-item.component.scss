@@ -16,6 +16,20 @@ h1 {
 
 .cosplay_item {
 
+    img.ng-lazyloaded {
+        animation: fadein 2.5s;
+    }
+
+    @keyframes fadein {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
     ion-thumbnail{
         margin-top: 0;
         margin-bottom: 0px;
