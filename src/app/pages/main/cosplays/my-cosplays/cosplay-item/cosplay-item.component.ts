@@ -1,14 +1,18 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
-import { Subscription } from 'rxjs';
+import { from, Observable, Subscription } from 'rxjs';
 import { CosplaysService } from '../../../../../services/cosplays.service';
 import { DataService } from '../../../../../services/data.service';
 import { StorageService } from '../../../../../services/storage.service';
 import { UploadImageService } from '../../../../../services/upload-img.service';
 import { Cosplay } from '../../../../../models/cosplay.model';
 import{ GlobalConstants } from './../../../../../common/global-constants';
-import { StateChange } from 'ng-lazyload-image';
+import { map } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { Attributes } from 'ng-lazyload-image';
+
+
 
 
 
@@ -24,6 +28,7 @@ export class CosplayItemComponent implements OnInit {
   subscription: Subscription;
   imageUrl: String;
   imageName : String;
+  imgObsv : Observable<any>;
   isLoading : boolean = true;
   defaultImg = GlobalConstants.defaultImgSRC;
 
@@ -33,7 +38,8 @@ export class CosplayItemComponent implements OnInit {
     private cosplaysService: CosplaysService,
     private dataService: DataService,
     private uploadImgService : UploadImageService,
-    private storageService : StorageService
+    private storageService : StorageService,
+    private http: HttpClient
   ) { }  
 
   ngOnInit() {
@@ -56,10 +62,26 @@ export class CosplayItemComponent implements OnInit {
         console.log('image loaded');
         
         this.imageUrl = imgSrc;
+        this.loadImage(imgSrc);
         this.isLoading = false;
       });
  
   }
+
+  async loadImage({ imagePath }: Attributes) {
+    return [imagePath];
+  }
+
+  /* loadImage(imgSource) {
+    this.imgObsv = from(fetch(imgSource)).pipe(map(data => {
+      return data.url;
+      
+    }))
+    this.imgObsv.subscribe(res => {
+      console.log(res);
+      
+    })
+  } */
 
   onGoToSee(cosplayId: string): void {
     this.router.navigate(['main/tabs/cosplays/my-cosplays/details/'+cosplayId]);
