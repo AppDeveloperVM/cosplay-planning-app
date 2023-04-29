@@ -48,23 +48,16 @@
         </ion-item>
       </ion-list>
 
-     <!--  <ion-item class="list-header">Actividad Reciente</ion-item>
-      <ion-list>
-        <ion-item class="post-item">
-          <ion-thumbnail slot="start">
-            <ion-img src="./../../assets/images/stock5.jpg"></ion-img>
-          </ion-thumbnail>
-          <ion-thumbnail slot="start">
-            <ion-img src="./../../assets/images/stock6.jpg"></ion-img>
-          </ion-thumbnail>
-          <ion-thumbnail slot="start">
-            <ion-img src="./../../assets/images/stock7.jpg"></ion-img>
-          </ion-thumbnail>
-          <ion-thumbnail slot="start">
-            <ion-img src="./../../assets/images/stock8.jpg"></ion-img>
-          </ion-thumbnail>
+     <ion-item class="list-header">Actividad Reciente</ion-item>
+      <ion-list *ngIf="false">
+        <ion-item class="item">
         </ion-item>
       </ion-list>
+      <div *ngIf="true">
+        <ion-text>No hay publicaciones.</ion-text>
+      </div>
+
+      <!--
       
       <ion-row class="gallery">
         <ion-col>
