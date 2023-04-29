@@ -251,12 +251,7 @@ export class UploadImageService {
         var imageUrl = "";
         //console.log(ref.getDownloadURL());
         
-<<<<<<< Updated upstream
         this.ImageObs = ref.getDownloadURL();  
-=======
-        this.ImageObs = ref.getDownloadURL();
-
->>>>>>> Stashed changes
 
           this.ImageObs.subscribe(
             url=>{
