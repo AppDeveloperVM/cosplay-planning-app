@@ -1,35 +1,35 @@
-import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef, Input, getPlatform } from '@angular/core';
-import { Platform, LoadingController } from '@ionic/angular';
+import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef, Input } from '@angular/core';
+import { Platform, LoadingController, AlertController, ToastController } from '@ionic/angular';
 import { Capacitor} from '@capacitor/core';
 import { Camera, CameraSource, CameraResultType } from '@capacitor/camera';
-import {
-  ImageCroppedEvent,
-  ImageCropperComponent,
-  ImageTransform,
-} from 'ngx-image-cropper';
+import { ImageCroppedEvent, ImageCropperComponent, ImageTransform } from 'ngx-image-cropper';
 
 @Component({
   selector: 'app-image-picker',
   templateUrl: './image-picker.component.html',
-  styleUrls: ['./image-picker.component.scss'],
+  styleUrls: ['./image-picker.component.scss']
 })
 export class ImagePickerComponent implements OnInit {
+
   @ViewChild('filePicker', { static: false }) filePicker: ElementRef<HTMLInputElement>;
   @ViewChild('cropper') cropper: ImageCropperComponent;
-  @Output() imagePick = new EventEmitter<string | File>();
-  @Input() showPreview = false;
-  @Input() selectedImage: any = '';
-  @Input() roundCropper = false;
-  @Input() aspectRatio = "4 / 3";
-  imageReady = false;
-  //usePicker = false;
-  isMobile = Capacitor.getPlatform() !== 'web';
-  isLoading = false;
 
+  @Output() imagePick = new EventEmitter<string | File>();
+  @Input() showPreview: boolean = false;
+  @Input() selectedImage: any = '';
+  @Input() roundCropper: boolean = false;
+  @Input() aspectRatio = "4 / 3";
+
+  imageReady: boolean = false;
+  isMobile: boolean = Capacitor.getPlatform() !== 'web';
+  isLoading: boolean = false;
+  originalImage: any = null;
   myImage: any = null;
   transform: ImageTransform = {};
+  isButtonDisabled = false;
 
-  constructor(private platform: Platform, private loadingCtrl : LoadingController) { }
+  constructor(private platform: Platform, private loadingCtrl : LoadingController,
+    private alertCtrl: AlertController, private toastCtrl: ToastController) { }
 
   ngOnInit() {
     console.log('------------------');
@@ -45,97 +45,81 @@ export class ImagePickerComponent implements OnInit {
     } */
   }
 
-  /* onPickImage() {
-    if (!Capacitor.isPluginAvailable('Camera')) {
-      this.filePicker.nativeElement.click();
-      return;
-    }
-    Camera.getPhoto({
-      quality: 50,
-      source: CameraSource.Prompt, // Prompt : ask for picture from camera or gallery
-      correctOrientation: true,
-      width: 600,
-      resultType: CameraResultType.DataUrl
-    }).then(image => {
-      //selectedImage => src de campo <img>
-      this.selectedImage = image.dataUrl;
-      this.imagePick.emit(image.dataUrl);
-    }).catch(error => {
-      console.log(error);
-      if (this.usePicker) {
-        this.filePicker.nativeElement.click();
-      }
-      return false;
-    });
-  }
-
-  onFileChosen(event: Event) {
-    const pickedFile = (event.target as HTMLInputElement).files[0];
-    if (!pickedFile) {
-      return;
-    }
-    const fr = new FileReader();
-    fr.onload = () => {
-      //selectedImage => src de campo <img>
-      const dataUrl = fr.result.toString();
-      this.selectedImage = dataUrl;
-      this.imagePick.emit(pickedFile);
-      //this.imageReady = true;
-    };
-    fr.readAsDataURL(pickedFile);
-  } */
-
-  //Image cropper methods 
   async selectImage() {
+    try {
+      const image = await Camera.getPhoto({
+        quality: 100,
+        allowEditing: true,
+        resultType: CameraResultType.Base64,
+      });
 
-    const image = await Camera.getPhoto({
-      quality: 100,
-      allowEditing: true,
-      resultType: CameraResultType.Base64,
-    })
-    .then( async (image) => {
       const loading = await this.loadingCtrl.create();
       await loading.present();
-    
+      this.originalImage = this.selectedImage;
+      this.selectedImage = null;
       this.myImage = `data:image/jpeg;base64,${image.base64String}`;
-      
-    })
-    .catch( (err) => {
 
-    })
-  
-    this.selectedImage = null;
+    } catch (err) {
+      const toast = await this.toastCtrl.create({
+        message: 'Could not load image',
+        duration: 3000,
+        color: 'danger',
+        position: 'top',
+      });
+      await toast.present();
+    } finally {
+      this.loadingCtrl.dismiss();
+    }
   }
 
-  // Called when cropper is ready
   imageLoaded() {
     this.loadingCtrl.dismiss();
   }
  
-  // Called when we finished editing (because autoCrop is set to false)
   imageCropped(event: ImageCroppedEvent) {
     this.selectedImage = event.base64;
     this.imagePick.emit(this.selectedImage);
   }
  
-  // We encountered a problem while loading the image
-  loadImageFailed() {
-    console.log('Image load failed!');
+  async loadImageFailed() {
+    const toast = await this.toastCtrl.create({
+      message: 'Could not load image',
+      duration: 3000,
+      color: 'danger',
+      position: 'top',
+    });
+    await toast.present();
   }
  
-  // Manually trigger the crop
-  cropImage() {
-    this.cropper.crop();
+  async cropImage() {
+    this.isButtonDisabled = true;
+    await this.cropper.crop();
     this.myImage = null;
+    this.isButtonDisabled = false;
   }
  
-  // Discard all changes
-  discardChanges() {
-    this.myImage = null;
-    this.selectedImage = null;
+  async discardChanges() {
+    const alert = await this.alertCtrl.create({
+      header: 'Discard Changes?',
+      message: 'Are you sure you want to discard the changes?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'Discard',
+          handler: () => {
+            this.myImage = null;
+            this.selectedImage = this.originalImage;
+          }
+        }
+      ]
+    });
+
+  await alert.present();
   }
  
-  // Edit the image
   rotate() {
     const newValue = ((this.transform.rotate ?? 0) + 90) % 360;
  
@@ -158,5 +142,4 @@ export class ImagePickerComponent implements OnInit {
       flipV: !this.transform.flipV,
     };
   }
-
 }
