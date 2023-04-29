@@ -24,6 +24,7 @@ export class ImagePickerComponent implements OnInit {
   imageReady = false;
   //usePicker = false;
   isMobile = Capacitor.getPlatform() !== 'web';
+  isLoading = false;
 
   myImage: any = null;
   transform: ImageTransform = {};
