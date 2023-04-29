@@ -68,7 +68,7 @@ export class CosplayDetailsPage implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private navCtrl: NavController,
-    private dataService: DataService,
+    public dataService: DataService,
     private cosplaysService: CosplaysService,
     private imgService : UploadImageService,
     private alertCtrl: AlertController,

@@ -10,6 +10,8 @@ import { Cosplay } from '../../../../../models/cosplay.model';
 import{ GlobalConstants } from './../../../../../common/global-constants';
 import { StateChange } from 'ng-lazyload-image';
 
+
+
 @Component({
   selector: 'app-cosplay-item',
   templateUrl: './cosplay-item.component.html',
@@ -18,7 +20,7 @@ import { StateChange } from 'ng-lazyload-image';
 export class CosplayItemComponent implements OnInit {
   @Input() cosplay: Cosplay;
   public imgSrc: any;
-  editMode : boolean;
+  editMode$ = this.dataService.editMode$
   subscription: Subscription;
   imageUrl: String;
   imageName : String;

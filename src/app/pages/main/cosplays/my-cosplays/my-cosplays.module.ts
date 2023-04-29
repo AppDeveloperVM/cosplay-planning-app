@@ -19,6 +19,7 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
     IonicModule,
     MyCosplaysPageRoutingModule,
     RouterModule,
+    LazyLoadImageModule,
     SharedModule,
     LazyLoadImageModule
   ],

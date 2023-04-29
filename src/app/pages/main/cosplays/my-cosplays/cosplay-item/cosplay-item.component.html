@@ -5,15 +5,10 @@
   detail
   class="cosplay_item">
 
-  
   <div >
-    <div class="thumbnail_icon" >
-      <ion-thumbnail class="thumbnail_icon" slot="start">
-        <img class="image"  [defaultImage]="defaultImg" [lazyLoad]="imageUrl" [errorImage]="defaultImg" 
-        > 
-        <!-- [debug]="true" (onStateChange)="onImgLazyLoaded($event)"-->
-      </ion-thumbnail>
-    </div>
+    <ion-thumbnail class="thumbnail_icon" slot="start">
+      <img [debug]="true" [defaultImage]="defaultImg" [lazyLoad]="imageUrl" >
+    </ion-thumbnail>
   </div>
   
 
@@ -25,7 +20,7 @@
         <p>{{ cosplay.series }}</p>
       </div>
       <ion-button 
-      *ngIf="dataService.editMode$ | async"
+      *ngIf="editMode$ | async"
       slot="end" size="medium" color="danger" 
       (click)="onDeleteCosplay(cosplay.id);$event.stopPropagation();">
         <ion-icon  name="close" ></ion-icon>

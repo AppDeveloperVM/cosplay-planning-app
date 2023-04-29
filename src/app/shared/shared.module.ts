@@ -15,9 +15,11 @@ import { PopoverComponent } from 'app/components/popover/popover.component';
 import { GeolocationPickerComponent } from './pickers/geolocation-picker/geolocation-picker.component';
 import { DatetimePickerComponent } from './pickers/datetime-picker/datetime-picker.component';
 
+import { LazyLoadImageModule } from 'ng-lazyload-image';
+
 @NgModule({
     declarations: [GeolocationPickerComponent, MapModalComponent, ImagePickerComponent, DatetimePickerComponent, HeaderComponent, CosgroupEditModalComponent, PopoverComponent],
-    imports: [CommonModule, IonicModule, RouterModule, ImageCropperModule],
+    imports: [CommonModule, IonicModule, RouterModule, ImageCropperModule, LazyLoadImageModule],
     exports: [GeolocationPickerComponent, MapModalComponent, ImagePickerComponent, DatetimePickerComponent, HeaderComponent, CosgroupEditModalComponent, PopoverComponent],
 })
 

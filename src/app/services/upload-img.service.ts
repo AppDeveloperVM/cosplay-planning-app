@@ -222,8 +222,8 @@ export class UploadImageService {
     }
 
     async getStorageImgUrl(fileName: String, size : Number) : Promise<any> {
-   
-      var promise = new Promise((resolve, reject) => {
+
+      return new Promise((resolve, reject) => {
         
         let file = '';
         let suffix = '';
@@ -251,7 +251,12 @@ export class UploadImageService {
         var imageUrl = "";
         //console.log(ref.getDownloadURL());
         
+<<<<<<< Updated upstream
         this.ImageObs = ref.getDownloadURL();  
+=======
+        this.ImageObs = ref.getDownloadURL();
+
+>>>>>>> Stashed changes
 
           this.ImageObs.subscribe(
             url=>{
@@ -274,7 +279,7 @@ export class UploadImageService {
           );
 
       })
-      return promise;
+      
 
    }
 
