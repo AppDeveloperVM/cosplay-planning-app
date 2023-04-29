@@ -68,8 +68,6 @@ export class EditCosplayPage implements OnInit, OnDestroy {
   }
 
 
-  
-
   ngOnInit() {
     this.route.paramMap.subscribe(paramMap => {
       if (!paramMap.has('cosplayId')) {
