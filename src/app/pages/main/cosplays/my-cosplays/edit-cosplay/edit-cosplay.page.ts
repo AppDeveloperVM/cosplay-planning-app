@@ -29,6 +29,7 @@ export class EditCosplayPage implements OnInit, OnDestroy {
   imgSrc : string = '';
 
   isLoading = true;
+  isUploading = false;
   imageChanged = false;
   isFormReady = false;
   dataUpdated = false;
@@ -164,16 +165,20 @@ export class EditCosplayPage implements OnInit, OnDestroy {
 
   async onImagePicked(imageData: string | File) {
     this.isFormReady = false;
+    this.isUploading = true;
+    this.uploadPercent = this.uploadService.uploadPercent;
 
     this.uploadService
     .fullUploadProcess(imageData,this.form)
-    .then((val) =>{
-      const name = val.split('_')[0];
+    .then((result) =>{
+      const name = result.imageId.split('_')[0];
+      
       this.imageName = name;
       console.log('imgName : ' + name);
       console.log('Old imgName : ' + this.oldImgName);
       this.getImageByFbUrl(this.imageName, 2)
       .then( (res) => {
+        this.isUploading = false;
         this.imgSrc = res;
         this.imageChanged = true;
         this.isFormReady = true;
