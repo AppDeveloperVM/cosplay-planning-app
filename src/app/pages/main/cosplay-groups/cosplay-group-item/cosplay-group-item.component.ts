@@ -19,8 +19,8 @@ export class CosplayGroupItemComponent implements OnInit, AfterViewInit {
   @Input() cosplaygroup: CosplayGroup;
   public imgSrc: any;
   isMobile: boolean;
-  imageUrl: String;
-  imageName : String;
+  imageUrl: string;
+  imageName : string;
   isLoading : boolean = true;
   defaultImg = GlobalConstants.defaultImgSRC;
 

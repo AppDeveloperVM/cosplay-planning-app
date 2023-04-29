@@ -26,8 +26,8 @@ export class CosplayItemComponent implements OnInit {
   public imgSrc: any;
   editMode$ = this.dataService.editMode$
   subscription: Subscription;
-  imageUrl: String;
-  imageName : String;
+  imageUrl: string;
+  imageName : string;
   imgObsv : Observable<any>;
   isLoading : boolean = true;
   defaultImg = GlobalConstants.defaultImgSRC;

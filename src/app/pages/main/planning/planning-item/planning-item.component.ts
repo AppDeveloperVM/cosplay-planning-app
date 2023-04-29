@@ -17,8 +17,8 @@ export class PlanningItemComponent implements OnInit {
   @Input() planning: Planning;
   public imgSrc: any;
   isMobile: boolean;
-  imageUrl: String;
-  imageName : String;
+  imageUrl: string;
+  imageName : string;
   defaultImg = GlobalConstants.defaultImgSRC;
 
   constructor(
